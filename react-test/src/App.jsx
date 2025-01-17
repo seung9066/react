@@ -1,6 +1,13 @@
 /* eslint-disable */
 // warning 메시지 안 뜨게 해준다. (error : 에러, warning : 권장사항)
 
+/**
+ * useState, useEffect
+ * 
+ * 컴포넌트 렌더링 시 특정 작업을 실행할 수 있도록 하는 Hook
+ * useState : 데이터 변동시 html 자동 렌더링 된다.
+ * useEffect : side effect, 라이프사이클 훅(componentDidMount, componentDidUpdate, componentWillUnmount)
+ */
 import { useState, useEffect } from 'react'
 import './App.css'
 import Customer from '@components/customer/Customer'
@@ -37,7 +44,6 @@ function App() {
  * return안에 태그는 병렬로 적지 않는다. (병렬이 필요할 시 <></>로 전체를 감싸준다.)
  */
 function GetTime() {
-  // useState - 데이터 변동시 html 자동 렌더링 된다.
   const [time, setTime] = useState(new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString());
 
   useEffect(() => {
