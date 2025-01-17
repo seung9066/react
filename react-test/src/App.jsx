@@ -3,11 +3,15 @@
 
 import { useState, useEffect } from 'react'
 import './App.css'
-import Menu from '@components/menu'
+import Customer from '@components/customer/Customer'
+import Props from '@components/Props'
 
 function App() {
+  let propsData = {
+                  name : 'nameData'
+                  , age : 'ageData'
+                  }
   
-  let [tbData, setTbData] = useState(['a' ,'b']);
   return (
     <>
       <div className="App">
@@ -15,7 +19,8 @@ function App() {
           <h1>Hello World!</h1>
           <GetTime />
           <ClickBtn />
-          <p>{tbData[0]}</p>
+          <Props obj={propsData} />
+          <Customer />
         </div>
       </div>
     </>
