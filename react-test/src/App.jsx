@@ -25,7 +25,7 @@ function App() {
 /**
  * 컴포넌트 룰
  * 
- * 컴포넌트는 html 코드를 하나로 묶은 것
+ * 컴포넌트는 html 코드를 하나로 묶은 것 
  * 
  * function은 메인 function 밖에 만든다.
  * function은 대문자로 시작한다.
