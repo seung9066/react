@@ -3,14 +3,19 @@ import { Link } from 'react-router-dom'
 
 import '../css/Menu.css'
 
-function Menu() {
+function Menu({ getMenuNm }) {
+    const clickMenu = (e) => {
+        let newMenuNm = e.target.innerText;
+        getMenuNm(newMenuNm);
+    };
+    
     return (
         <>
             <div className="navbar">
-                <Link to={'/'} className="navbarMenu">Home</Link>
-                <Link to={'/props'} className="navbarMenu">Props</Link>
-                <Link to={'/referenceDataType'} className="navbarMenu">ReferenceDataType</Link>
-                <Link to={'/lifeCycleHook'} className="navbarMenu">LifeCycleHook</Link>
+                <Link to={'/'} className="navbarMenu" onClick={clickMenu}>React</Link>
+                <Link to={'/props'} className="navbarMenu" onClick={clickMenu}>Props</Link>
+                <Link to={'/referenceDataType'} className="navbarMenu" onClick={clickMenu}>ReferenceDataType</Link>
+                <Link to={'/lifeCycleHook'} className="navbarMenu" onClick={clickMenu}>LifeCycleHook</Link>
             </div>
         </>
     )

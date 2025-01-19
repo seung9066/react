@@ -18,6 +18,11 @@ import ReferenceDataType from '@components/ReferenceDataType'
 import LifeCycleHook from '@components/LifeCycleHook'
 
 function App() {
+  const [menuNm, setMenuNm] = useState('React');
+  const getMenuNm = (value) => {
+    setMenuNm(value);
+  };
+
   let propsData = {
                   name : 'nameData'
                   , age : 'ageData'
@@ -28,9 +33,9 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <div>
-          <Menu />
-          <h1>React</h1>
+          <Menu getMenuNm={getMenuNm}/>
           <GetTime />
+          <h1>{menuNm}</h1>
         </div>
       </div>
       <Routes>

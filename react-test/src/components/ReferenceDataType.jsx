@@ -21,10 +21,13 @@ function ReferenceDataType() {
   };
 
   return (
-    <button
-      onClick={() => {
+    <>
+      <p>Array, Object 타입</p>
+      <button
+        onClick={() => {
           clkBtn()
         }}>{arrData[0]}</button>
+    </>
   )
 }
 
