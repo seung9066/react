@@ -2,6 +2,8 @@ import { useState } from "react"
 
 import CodeTextArea from "./CodeTextArea";
 
+import '../css/Props.css'
+
 /**
  * props
  * 

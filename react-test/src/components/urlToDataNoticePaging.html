@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>urlToData</title>
     <style>
-        body {
-            padding-left: 10%;
-            padding-right: 10%;
-        }
-
         div {
             margin-top: 20px;
         }
@@ -20,12 +15,12 @@
 
         /* 테이블 전체 스타일 */
         .table-container {
-            width: 100%;
+            width: 99%;
             overflow-x: auto; /* 작은 화면에서 가로 스크롤 가능 */
         }
 
         table {
-            width: 100%;
+            width: 99%;
             border-collapse: collapse;
             font-size: 16px;
             min-width: 600px; /* 너무 작아지는 걸 방지 */
@@ -197,7 +192,7 @@
 
         /* 폼 컨테이너 */
         .form-container {
-            width: 100%;
+            width: 99%;
             margin: 0 auto;
             padding: 5px;
             background-color: #f7f7f7;
@@ -215,7 +210,7 @@
 
         /* 입력 필드 기본 스타일 */
         input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;  /* 입력 필드 너비 100% */
+            width: 99%;  /* 입력 필드 너비 100% */
             padding: 10px 10px;
             font-size: 14px;
             border: 2px solid #ccc;
@@ -234,7 +229,7 @@
         /* 작은 화면에서 각 입력 필드를 한 줄로 배치 */
         @media (max-width: 768px) {
             .input-container {
-                width: 100%;  /* 화면이 작아지면 각 입력 필드가 100% width를 차지 */
+                width: 99%;  /* 화면이 작아지면 각 입력 필드가 100% width를 차지 */
                 margin: 10px 0;  /* 여백을 수직으로 변경 */
             }
         }
@@ -246,7 +241,6 @@
         /* h1 태그 기본 스타일 */
         h1 {
             font-size: 30px;
-            margin-top: 50px;
             font-weight: lighter;
             text-align: center;
             animation: rainbow 1.5s infinite alternate;
@@ -319,6 +313,7 @@
 <body>
     <div class="toast-container" id="toast-container"></div>
     <h1>상남자는 DB를 쓰지 않는다.</h1>
+
     <div class="formRight"><button id="moveBtn" onclick="onclickMoveBtn()">클릭</button></div>
     <div class="formImg">
         <img id="topImg" />
@@ -335,7 +330,7 @@
         <button class="fileUpload" onclick="copyUrl()">url 복사</button>
     </div>
     <div id="noticeList">
-        <table style="width: 100%;" id="noticeGrid" class="table-container">
+        <table style="width: 99%;" id="noticeGrid" class="table-container">
             <thead>
                 <tr>
                     <th style="width: 7%;">번호</th>
@@ -343,13 +338,13 @@
                     <th style="width: 40%;">내용</th>
                     <th style="width: 25%;">날짜</th>
                 </tr>
-             </thead>
-             <tbody id="noticeGridBody">
-             </tbody>
+            </thead>
+            <tbody id="noticeGridBody">
+            </tbody>
         </table>
         <div id="formPaging" class="formCenter"><a onclick="paging(this)">1</a></div>
     </div>
-    <div id="noticeDetail" style="width: 100%;" >
+    <div id="noticeDetail" style="width: 99%;" >
         <form id="writeForm" class="form-container">
             <input type="hidden" name="no" id="no" />
             <label for="title">제목</label>
@@ -372,7 +367,7 @@
         </div>
         <button type="button" onclick="show431Error()">431 오류</button>
     </div>
-
+    
     <script>
         function show431Error() {
             const errorDiv = document.getElementById('error431');
@@ -381,10 +376,10 @@
             } else {
                 errorDiv.style.display = 'none';
             }
-
+            
             sendHeight();
         }
-
+        
         // 부모 url에 저장을 해야해서 부모로 postMessage 보내고 부모에서 그걸 받으면 다시 자식으로 받았다는 메시지를 보냄 이후 그리드와 이미지 그려줌
         window.addEventListener("message", function(event) {
             if (event.data.data) {

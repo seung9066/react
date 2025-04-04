@@ -17,6 +17,7 @@ import Menu from '@components/Menu'
 import Props from '@components/Props'
 import ReferenceDataType from '@components/ReferenceDataType'
 import UrlDataNotice from '@components/UrlDataNotice'
+import ProgramDesign from '@components/ProgramDesign'
 
 function App() {
   const [menuNm, setMenuNm] = useState('React');
@@ -40,13 +41,16 @@ function App() {
           <h1>{menuNm}</h1>
         </div>
       </div>
-      <Routes>
-        <Route path="/" element={ <main /> } />
-        <Route path="/props" element={ <Props obj={propsData} />} />
-        <Route path="/referenceDataType" element={ <ReferenceDataType />} />
-        <Route path="/lifeCycleHook" element={ <LifeCycleHook />} />
-        <Route path="/urlDataNotice" element={ <UrlDataNotice urlData={urlData} setUrlData={setUrlData} />} />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path="/" element={ <main /> } />
+          <Route path="/props" element={ <Props obj={propsData} />} />
+          <Route path="/referenceDataType" element={ <ReferenceDataType />} />
+          <Route path="/lifeCycleHook" element={ <LifeCycleHook />} />
+          <Route path="/urlDataNotice" element={ <UrlDataNotice urlData={urlData} setUrlData={setUrlData} />} />
+          <Route path="/programDesign" element={ <ProgramDesign />} />
+        </Routes>
+      </div>
     </BrowserRouter>
     </>
   )
