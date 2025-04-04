@@ -8,17 +8,19 @@
  * useState : 데이터 변동시 html 자동 렌더링 된다.
  * useEffect : side effect, 라이프사이클 훅(componentDidMount, componentDidUpdate, componentWillUnmount)
  */
-import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 
+import LifeCycleHook from '@components/LifeCycleHook'
 import Menu from '@components/Menu'
 import Props from '@components/Props'
 import ReferenceDataType from '@components/ReferenceDataType'
-import LifeCycleHook from '@components/LifeCycleHook'
+import UrlDataNotice from '@components/UrlDataNotice'
 
 function App() {
   const [menuNm, setMenuNm] = useState('React');
+  const [urlData, setUrlData] = useState('');
   const getMenuNm = (value) => {
     setMenuNm(value);
   };
@@ -43,6 +45,7 @@ function App() {
         <Route path="/props" element={ <Props obj={propsData} />} />
         <Route path="/referenceDataType" element={ <ReferenceDataType />} />
         <Route path="/lifeCycleHook" element={ <LifeCycleHook />} />
+        <Route path="/urlDataNotice" element={ <UrlDataNotice urlData={urlData} setUrlData={setUrlData} />} />
       </Routes>
     </BrowserRouter>
     </>

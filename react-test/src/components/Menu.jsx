@@ -16,6 +16,7 @@ function Menu({ getMenuNm }) {
                 <Link to={'/props'} className="navbarMenu" onClick={clickMenu}>Props</Link>
                 <Link to={'/referenceDataType'} className="navbarMenu" onClick={clickMenu}>ReferenceDataType</Link>
                 <Link to={'/lifeCycleHook'} className="navbarMenu" onClick={clickMenu}>LifeCycleHook</Link>
+                <Link to={'/urlDataNotice'} className="navbarMenu" onClick={clickMenu}>UrlDataNotice</Link>
             </div>
         </>
     )

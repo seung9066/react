@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>urlToData</title>
+    <style>
+        body {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+
+        div {
+            margin-top: 20px;
+        }
+
+        a {
+            font-size: 20px;
+        }
+
+        /* 테이블 전체 스타일 */
+        .table-container {
+            width: 100%;
+            overflow-x: auto; /* 작은 화면에서 가로 스크롤 가능 */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            min-width: 600px; /* 너무 작아지는 걸 방지 */
+        }
+
+        /* 테이블 헤더 스타일 */
+        thead {
+            background-color: #59708a;
+            color: white;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody {
+            text-align: center;
+        }
+
+        /* 짝수 행 배경색 변경 */
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* 마우스 호버 시 천천히 */
+        tbody tr {
+            transition: background-color 0.1s ease-in-out;
+        }
+        
+        /* 마우스 호버 효과 */
+        tbody tr:hover {
+            background-color: #e0dfdf;
+        }
+
+
+        /* 반응형 테이블 - 작은 화면에서 가로 스크롤 */
+        @media screen and (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+        }
+
+        /* 기본 버튼 스타일 */
+        button {
+            padding: 8px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            background-color: #5994d4;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        /* 호버 시 버튼 스타일 */
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px); /* 살짝 위로 올라가도록 */
+        }
+
+        /* 클릭 시 스타일 */
+        button:active {
+            transform: translateY(2px); /* 클릭하면 눌리는 효과 */
+        }
+
+        /* 비활성화된 버튼 */
+        button:disabled {
+            background-color: #d6d6d6;
+            cursor: not-allowed;
+        }
+
+        /* 버튼에 애니메이션 추가 (색상 변화) */
+        button:focus {
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.6); /* 파란색 그림자 */
+        }
+
+        /* 다양한 스타일을 위한 버튼 크기와 색상 설정 */
+        button.primary {
+            background-color: #28a745;
+        }
+
+        button.primary:hover {
+            background-color: #218838;
+        }
+
+        button.secondary {
+            background-color: #6c757d;
+        }
+
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+
+        button.danger {
+            background-color: #dc3545;
+        }
+
+        button.danger:hover {
+            background-color: #c82333;
+        }
+
+        button.fileUpload {
+            background-color: #b603fd;
+        }
+
+        button.fileUpload:hover {
+            background-color: #732392;
+        }
+
+        button.fileSave {
+            background-color: #7e05ad;
+        }
+
+        button.fileSave:hover {
+            background-color: #400358;
+        }
+
+        .formRight {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .formImg {
+            display: flex;
+            flex-direction: column; /* 세로 정렬 (이미지 위, 인풋 아래) */
+            align-items: center; /* 가로 중앙 정렬 */
+            justify-content: center; /* 세로 중앙 정렬 */
+        }
+
+        .formCenter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* 토스트 컨테이너 (우측 상단) */
+        .toast-container {
+            position: fixed;
+            top: -40px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        /* 토스트 메시지 스타일 */
+        .toast {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 1;
+            transition: opacity 0.5s, transform 0.5s;
+            transform: translateX(0);
+        }
+
+        /* 토스트 메시지 사라질 때 */
+        .toast.hide {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        /* 폼 컨테이너 */
+        .form-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 5px;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 입력 필드들을 가로로 배치 */
+        .input-container {
+            display: inline-block;
+            width: 32%;  /* 3개를 한 줄에 배치하려면 약간의 여백을 두기 위해 32% */
+            margin: 10px 1%;  /* 입력 필드 사이에 여백 추가 */
+            vertical-align: top;  /* 세로 정렬 */
+        }
+
+        /* 입력 필드 기본 스타일 */
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;  /* 입력 필드 너비 100% */
+            padding: 10px 10px;
+            font-size: 14px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        /* 입력 필드 포커스 상태 */
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        }
+
+        /* 작은 화면에서 각 입력 필드를 한 줄로 배치 */
+        @media (max-width: 768px) {
+            .input-container {
+                width: 100%;  /* 화면이 작아지면 각 입력 필드가 100% width를 차지 */
+                margin: 10px 0;  /* 여백을 수직으로 변경 */
+            }
+        }
+
+        label {
+            display: none;
+        }
+
+        /* h1 태그 기본 스타일 */
+        h1 {
+            font-size: 30px;
+            margin-top: 50px;
+            font-weight: lighter;
+            text-align: center;
+            animation: rainbow 1.5s infinite alternate;
+        }
+
+        /* 글자 색상이 번쩍이는 효과 (애니메이션) */
+        @keyframes blink {
+            0% {
+                color: #000; /* 기본 색상 */
+            }
+            50% {
+                color: #ff0000; /* 번쩍이는 색상 */
+            }
+            100% {
+                color: #000; /* 기본 색상 */
+            }
+        }
+
+        /* 무지개 색깔로 번쩍이는 효과 */
+        @keyframes rainbow {
+            0% {
+                color: red;
+                text-shadow: 0 0 3px red, 0 0 3px red, 0 0 3px red;
+            }
+            14% {
+                color: orange;
+                text-shadow: 0 0 3px orange, 0 0 3px orange, 0 0 3px orange;
+            }
+            28% {
+                color: yellow;
+                text-shadow: 0 0 3px yellow, 0 0 3px yellow, 0 0 3px yellow;
+            }
+            42% {
+                color: green;
+                text-shadow: 0 0 3px green, 0 0 3px green, 0 0 3px green;
+            }
+            57% {
+                color: blue;
+                text-shadow: 0 0 3px blue, 0 0 3px blue, 0 0 3px blue;
+            }
+            71% {
+                color: indigo;
+                text-shadow: 0 0 3px indigo, 0 0 3px indigo, 0 0 3px indigo;
+            }
+            85% {
+                color: violet;
+                text-shadow: 0 0 3px violet, 0 0 3px violet, 0 0 3px violet;
+            }
+            100% {
+                color: red;
+                text-shadow: 0 0 3px red, 0 0 3px red, 0 0 3px red;
+            }
+        }
+
+        /* 버튼 기본 스타일 */
+        #moveBtn {
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            background-color: #ff1919;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            position: absolute;
+            transition: transform 0.1s ease; /* 빠르게 움직이도록 설정 */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="toast-container" id="toast-container"></div>
+    <h1>상남자는 DB를 쓰지 않는다.</h1>
+    <div class="formRight"><button id="moveBtn" onclick="onclickMoveBtn()">클릭</button></div>
+    <div class="formImg">
+        <img id="topImg" />
+        <input type="file" id="file" accept="image/*" onchange="readURL(this)" style="display: none;" />
+        <div class="formCenter">
+            <button onclick="document.getElementById('file').click()">대표이미지 설정</button>
+            <button onclick="clearImg()">대표이미지 삭제</button>
+        </div>
+    </div>
+    <div class="formRight" id="fileForm">
+        <input type="file" id="upFile" accept=".json" onchange="readJsonFile(this)" style="display: none;" />
+        <button class="fileUpload" onclick="loadFile()">JSON 파일 불러오기</button>
+        <button class="fileSave" onclick="saveFile()">JSON 파일 저장</button>
+        <button class="fileUpload" onclick="copyUrl()">url 복사</button>
+    </div>
+    <div id="noticeList">
+        <table style="width: 100%;" id="noticeGrid" class="table-container">
+            <thead>
+                <tr>
+                    <th style="width: 7%;">번호</th>
+                    <th style="width: 28%;">제목</th>
+                    <th style="width: 40%;">내용</th>
+                    <th style="width: 25%;">날짜</th>
+                </tr>
+             </thead>
+             <tbody id="noticeGridBody">
+             </tbody>
+        </table>
+        <div id="formPaging" class="formCenter"><a onclick="paging(this)">1</a></div>
+    </div>
+    <div id="noticeDetail" style="width: 100%;" >
+        <form id="writeForm" class="form-container">
+            <input type="hidden" name="no" id="no" />
+            <label for="title">제목</label>
+            <input type="text" name="title" id="title" style="width: 25%;" placeholder="제목" class="input-container" onkeydown="pressEnter(event, this)" />
+            <label for="title">내용</label>
+            <input type="text" name="content" id="content" style="width: 50%;" placeholder="내용" class="input-container" onkeydown="pressEnter(event, this)" />
+        </form>
+    </div>
+    <div id="btnForm" class="formRight">
+        <button type="button" onclick=resetBtn() id="btnReset" class="secondary">초기화</button>
+        <button type="button" onclick=addGridData() id="btnSave" class="primary">저장</button>
+        <button type="button" onclick=deleteGridData() id="btnDelete" class="danger">삭제</button>
+        <button type="button" onclick=deleteGridDataAll() id="btnDelete" class="danger">전체삭제</button>
+    </div>
+    <div>
+        <div id="error431" style="display: none;">
+            <p>431 오류는 요청 헤더 필드가 너무 긴 경우 발생</p>
+            <p>해당 명령어를 통해 node.js의 헤더 길이 늘려주기</p>
+            <p>node --max-http-header-size=1000000 node_modules/vite/bin/vite.js</p>
+        </div>
+        <button type="button" onclick="show431Error()">431 오류</button>
+    </div>
+
+    <script>
+        function show431Error() {
+            const errorDiv = document.getElementById('error431');
+            if (errorDiv.style.display === 'none') {
+                errorDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+
+            sendHeight();
+        }
+
+        // 부모 url에 저장을 해야해서 부모로 postMessage 보내고 부모에서 그걸 받으면 다시 자식으로 받았다는 메시지를 보냄 이후 그리드와 이미지 그려줌
+        window.addEventListener("message", function(event) {
+            if (event.data.data) {
+                makeGrid();
+                inputImg();
+            }
+        });
+
+        function sendHeight() {
+            const height = document.body.scrollHeight;
+            window.parent.postMessage({ height }, "*"); // 부모 창(React)로 높이 전달
+        }
+
+        window.onload = sendHeight; // 페이지 로드 시 높이 전달
+        window.onresize = sendHeight; // 창 크기 변경 시 높이 전달
+
+        let timerStart = null; // 움직이기 시작한 시간을 저장할 변수
+        let movementTime = 0; // 움직인 시간 (초 단위)
+        let moving = false; // 버튼이 움직이는 중인지 여부
+
+        document.addEventListener('mousemove', (e) => {
+            const button = document.getElementById('moveBtn'); // 버튼 요소
+            const mouseX = e.clientX; // 마우스 X 위치
+            const mouseY = e.clientY; // 마우스 Y 위치
+            const buttonRect = button.getBoundingClientRect(); // 버튼의 위치와 크기 정보
+            const buttonX = buttonRect.left + buttonRect.width / 2; // 버튼 중앙의 X 좌표
+            const buttonY = buttonRect.top + buttonRect.height / 2; // 버튼 중앙의 Y 좌표
+
+            const distanceX = mouseX - buttonX; // X축으로 마우스와 버튼 사이의 거리
+            const distanceY = mouseY - buttonY; // Y축으로 마우스와 버튼 사이의 거리
+
+            const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY); // 두 점 사이의 거리 계산
+
+            // 마우스와 버튼 사이의 거리가 일정 거리보다 가까워지면 피하도록 설정
+            if (distance < 150) {
+                if (!moving) {
+                    moving = true;
+                }
+
+                // 마우스가 버튼에 가까워지면, 버튼이 그 반대 방향으로 이동하도록 설정
+                const moveX = (distanceX / distance) * 100; // X축으로 이동
+                const moveY = (distanceY / distance) * 100; // Y축으로 이동
+                button.style.transform = `translate(${-moveX}px, ${-moveY}px)`; // 마우스 반대 방향으로 이동
+            } else {
+                if (moving) {
+                    moving = false; // 움직임 상태 리셋
+                }
+
+                // 마우스가 버튼에서 멀어지면 버튼이 원래 위치로 돌아가도록 설정
+                button.style.transform = `translate(0, 0)`;
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (moving) {
+                showToast('ㅋㅋ 오소이. (느리다는 뜻)');
+            }
+        });
+
+        function onclickMoveBtn() {
+            for (let i = 0; i < 5; i++) {
+                showToast('이걸 잡네 ㅋㅋ');
+            }
+        }
+
+        // 페이징 현재 페이지
+        let currentPage = 1;
+        // 페이지당 보여줄 게시글 수
+        const perPage = 10;
+        // 페이징 버튼 수
+        const pageBtn = 10;
+
+        // 이미지 태그에 이미지 적용되었는지 체크용
+        let chkImgUpload = 0;
+
+        run();
+
+        function run() {
+            makeGrid();
+            inputImg();
+        }
+
+        // url parameter 값 가져오기
+        function getParamData() {
+            if (window.parent !== window) {
+                const parentParams = new URLSearchParams(window.parent.location.search);
+                if (parentParams.has('data')) {
+                    let dataBase64 = parentParams.get('data');
+                    let dataStringify = decodeURIComponent(escape(atob( dataBase64 )));
+                    let data = JSON.parse(dataStringify);
+                    return data;
+                } else {
+                    return {};
+                }
+            }
+        }
+
+        // url parameter 값 설정
+        function setParamDataEnc(data) {
+            let newData = {...data};
+            let sendData = "";
+            if (newData.grid || newData.img) {
+                const dataStringify = JSON.stringify(newData);
+                const dataBase64 = btoa(unescape(encodeURIComponent( dataStringify )));
+                sendData = dataBase64;
+            }
+
+            window.parent.postMessage({ data: sendData }, "*");
+        }
+
+        // 저장
+        function addGridData() {
+            let writeForm = document.getElementById('writeForm');
+            let writeObj = {};
+            let chkNoData = 0;
+            let chkLength = 0;
+            
+            writeForm.querySelectorAll("input").forEach((item) => {
+                if (item.name == "no" && !item.value) {
+                    item.value = getParamData().grid ? getParamData().grid.length + 1 : 1;
+                }
+                
+                if (!item.value) {
+                    chkNoData++;
+                }
+
+                if (item.value.length > 100) {
+                    chkLength++;
+                    item.value = "";
+                }
+
+                writeObj[item.name] = item.value;
+            })
+            
+            if (chkNoData > 0) {
+                showToast('데이터를 입력해주세요.');
+                return;
+            }
+
+            if (chkLength > 0) {
+                showToast('100자 이내로 입력해주세요.');
+                return;
+            }
+
+            writeObj["date"] = getDate();
+
+            let data = getParamData();
+            if (data.grid) {
+                let chkSameTr = 0;
+
+                // 수정
+                for (let i = 0; i < data.grid.length; i++) {
+                    if (data.grid[i].no == writeObj.no) {
+                        data.grid[i] = writeObj;
+                        chkSameTr++;
+                    }
+                }
+
+                // 저장
+                if (chkSameTr == 0) {
+                    data.grid.push(writeObj);
+                    data["page"] = 1;
+                }
+            } else {
+                // 최초 저장
+                data["grid"] = [writeObj];
+                data["page"] = 1;
+            }
+
+            // 순서 초기화 작업
+            for (let i = 0; i < data.grid.length; i++) {
+                data.grid[i].no = i + 1;
+            }
+
+            setParamDataEnc(data);
+
+            makeGrid();
+        }
+
+        function clearImg() {
+            let data = getParamData();
+            delete data.img;
+            setParamDataEnc(data);
+            inputImg();
+        }
+
+        // noticeList 그리기
+        function makeGrid() {
+            const noticeGridBody = document.getElementById('noticeGridBody');
+            const formPaging = document.getElementById('formPaging');
+
+            const data = getParamData();
+
+            if (data && data.grid) {
+                if (data.page) {
+                    currentPage = data.page;
+                } else {
+                    currentPage = 1;
+                }
+                const totalPage = Math.ceil(data.grid.length / perPage);
+
+                let pagination = '';
+                let startBtn = Math.floor((currentPage - 1) / pageBtn) * pageBtn;
+                startBtn = startBtn < 1 ? 1 : startBtn + 1;
+                let lastBtn = startBtn + (pageBtn - 1);
+                lastBtn = lastBtn < totalPage ? lastBtn : totalPage;
+
+                for (let i = startBtn; i <= lastBtn; i++) {
+                    if (i != 1 && i == startBtn) {
+                        pagination += '<a onclick="paging(' + 1 + ')" style="cursor: pointer; letter-spacing: -5px"> << </a>';
+                        pagination += '<a onclick="paging(' + (i - 1) + ')" style="cursor: pointer;"> < </a>';
+                    }
+
+                    if (i == currentPage) {
+                        pagination += '<a onclick="paging(' + i + ')" style="cursor: pointer; color: lightgray"> ' + i + ' </a>';
+                    } else {
+                        pagination += '<a onclick="paging(' + i + ')" style="cursor: pointer;"> ' + i + ' </a>';
+                    }
+
+                    if (i == lastBtn && i < totalPage) {
+                        pagination += '<a onclick="paging(' + (i + 1) + ')" style="cursor: pointer;"> > </a>';
+                        pagination += '<a onclick="paging(' + totalPage + ')" style="cursor: pointer; letter-spacing: -5px"> >> </a>';
+                    }
+                }
+
+                formPaging.innerHTML = pagination;
+
+                let grid = '';
+                let gridData = data.grid;
+                let startNo = (currentPage - 1) * perPage;
+                let lastNo = startNo + perPage;
+                lastNo = lastNo > gridData.length ? gridData.length : lastNo;
+                
+                let newArr = [];
+                gridData.reverse();
+                for (let i = startNo; i < lastNo; i++) {
+                    newArr.push(gridData[i]);
+                }
+
+                for (let i = 0; i < newArr.length; i++) {
+                    grid += '<tr onclick=getTr(this) id="tr' + newArr[i].no + '">';
+                    grid += '<td name="no"></td>';
+                    grid += '<td name="title"></td>';
+                    grid += '<td name="content"></td>';
+                    grid += '<td name="date"></td>';
+                    grid += '</tr>';
+                }
+
+                for (let i = 0; i < perPage - newArr.length; i++) {
+                    grid += '<tr><td colspan="4">&nbsp;</td></tr>';
+                }
+
+                noticeGridBody.innerHTML = grid;
+
+                for (let i = 0; i < newArr.length; i++) {
+                    let tr = document.getElementById("tr" + newArr[i].no);
+                    let no = tr.querySelector('[name="no"]');
+                    let title = tr.querySelector('[name="title"]');
+                    let content = tr.querySelector('[name="content"]');
+                    let date = tr.querySelector('[name="date"]');
+
+                    no.innerText = newArr[i].no;
+                    title.innerText = newArr[i].title;
+                    content.innerText = newArr[i].content;
+                    date.innerText = newArr[i].date;
+                }
+            } else {
+                let grid = "<tr><td colspan='4'>데이터가 없습니다.</td></tr>";
+                noticeGridBody.innerHTML = grid;
+
+                formPaging.innerHTML = '';
+            }
+
+            resetBtn();
+            sendHeight();
+        }
+
+        // 페이징
+        function paging(pageNum) {
+            let data = getParamData();
+            currentPage = pageNum;
+            data["page"] = currentPage;
+            setParamDataEnc(data);
+            makeGrid();
+        }
+
+        // 파일 읽어오기
+        function loadFile() {
+            let file = document.getElementById('upFile');
+            file.click();
+        }
+
+        // JSON 파일 읽기
+        function readJsonFile() {
+            let file = document.getElementById('upFile').files[0];
+            let reader = new FileReader();
+            let fileName = file.name;
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+
+            if (fileExtension == "json") {
+                reader.onload = function(e) {
+                    let dataBase64 = e.target.result;
+                    dataBase64 = dataBase64.replace(/^"|"$/g, '');
+                    let dataStringify = decodeURIComponent(escape(atob( dataBase64 )));
+                    let data = JSON.parse(dataStringify);
+                    setParamDataEnc(data);
+                    makeGrid();
+                    inputImg();
+                }
+
+                reader.readAsText(file);
+            } else {
+                showToast('JSON 파일만 업로드 가능합니다.');
+            }
+
+        }
+
+        // 파일 저장
+        function saveFile() {
+            if (window.parent !== window) {
+                const parentParams = new URLSearchParams(window.parent.location.search);
+                if (parentParams.has('data')) {
+                    let dataBase64 = parentParams.get('data');
+                    const jsonUrl = JSON.stringify(dataBase64);
+                    const blob = new Blob([jsonUrl], { type: 'application/json' });
+                    const urlBlob = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = urlBlob;
+                    a.download = 'Man doesnt use a database.json';
+                    a.click();
+                } else {
+                    showToast('저장할 데이터가 없습니다.');
+                }
+            } else {
+                showToast('저장할 데이터가 없습니다.');
+            }
+        }
+
+        // url 복사
+        function copyUrl() {
+            if (window.parent !== window) {
+                const parentParams = new URLSearchParams(window.parent.location.search);
+                if (parentParams.has('data')) {
+                    let url = new URL(window.parent.location.href);
+                    navigator.clipboard.writeText(url);
+
+                    showToast('주소가 복사되었습니다.');
+                }
+            }
+        }
+
+        // 엔터키 입력
+        function pressEnter(e, t) {
+            if (e.key == "Enter") {
+                t.id == "content" ? (addGridData(), document.getElementById("title").focus()) : document.getElementById("content").focus();
+            }
+        }
+
+        // 행클릭시 데이터 가져오기
+        function getTr(e) {
+            let noticeGrid = document.getElementById('noticeGrid');
+            noticeGrid.querySelectorAll('tr').forEach((item) => {
+                item.style.backgroundColor = "";
+            })
+
+            e.style.backgroundColor = "lightblue";
+
+            let data = getParamData();
+            let trDom = e;
+            let noTd = e.querySelector('td');
+            let no = noTd.innerText
+            let trData = data["grid"][no - 1];
+
+            let writeForm = document.getElementById('writeForm');
+            for (const key in trData) {
+                if (key != "date") {
+                    writeForm.querySelector(`input[name=${key}]`).value = trData[key];
+                }
+            }
+
+            let btnSave = document.getElementById('btnSave');
+            btnSave.innerText = "수정";
+        }
+
+        // 삭제
+        function deleteGridData() {
+            let data = getParamData();
+            let writeForm = document.getElementById('writeForm');
+            let no = writeForm.querySelector('input[name=no]').value;
+
+            if (no && data.grid) {
+                data.grid.splice(no - 1, 1);
+    
+                // 순서 초기화 작업
+                for (let i = 0; i < data.grid.length; i++) {
+                    data.grid[i].no = i + 1;
+                }
+
+                // 데이터가 없으면 key 삭제
+                if (data.grid.length == 0) {
+                    delete data.grid;
+                }
+    
+                setParamDataEnc(data);
+    
+                makeGrid();
+            } else {
+                showToast('삭제할 데이터를 선택해주세요.');
+            }
+
+        }
+
+        // 전체 삭제
+        function deleteGridDataAll() {
+            let data = getParamData();
+            if (data.grid) {
+                if (confirm('목록을 전부 삭제하시겠습니까?')) {
+                    delete data.grid;
+                    setParamDataEnc(data);
+                    makeGrid();
+                }
+            } else {
+                showToast('삭제할 데이터가 없습니다.');
+            }
+        }
+
+        // 초기화
+        function resetBtn() {
+            // input 태그 초기화
+            let writeForm = document.getElementById('writeForm');
+            writeForm.querySelectorAll("input").forEach((item) => {
+                item.value = "";
+            })
+
+            // 버튼 수정 > 저장
+            let btnSave = document.getElementById('btnSave');
+            btnSave.innerText = "저장";
+
+            // 행선택 표시 제거
+            let noticeGrid = document.getElementById('noticeGrid');
+            if (noticeGrid && noticeGrid.querySelectorAll('tr').length > 0) {
+                noticeGrid.querySelectorAll('tr').forEach((item) => {
+                    item.style.backgroundColor = "";
+                })
+            }
+        }
+
+        // 사진
+        function inputImg() {
+            let data = getParamData();
+            let topImg = document.getElementById('topImg');
+            const fileForm = document.getElementById('fileForm');
+            if (data.img) {
+                topImg.src = data.img;
+                fileForm.style.marginTop = '30px';
+            } else {
+                topImg.src = "";
+                fileForm.style.marginTop = '100px';
+            }
+
+            sendHeight();
+        }
+
+        // 이미지 base64 변환 및 리사이징
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                let file = input.files[0];
+                let fileName = file.name;
+                const fileExtension = fileName.split('.').pop().toLowerCase();
+
+                if (fileExtension != "jpg" && fileExtension != "jpeg" && fileExtension != "png") {
+                    showToast('이미지 파일(jpg, jpeg, png)만 업로드 가능합니다.');
+                    return;
+                } else {
+                    reader.onload = function(e) {
+                        let img = document.getElementById('topImg');
+                        img.src = e.target.result;
+            
+                        img.onload = function() {
+                            // 캔버스 생성
+                            var canvas = document.createElement("canvas");
+                            var ctx = canvas.getContext("2d");
+                            
+                            // 최대폭을 넘어가는 경우 canvas 크기 변경
+                            var MAX_WIDTH = 350;
+                            var MAX_HEIGHT = 350;
+                            var width = img.width;
+                            var height = img.height;
+                            
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            
+                            // 이미지 리사이징한거 그려주기
+                            var ctx = canvas.getContext("2d");
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            // canvas에 그린 이미지를 다시 data URL로 변환
+                            var dataurl = canvas.toDataURL("image/jpeg");
+                            
+                            // 무한 호출 방지
+                            if (chkImgUpload == 0) {
+                                let data = getParamData();
+                                data["img"] = dataurl;
+                                setParamDataEnc(data);
+            
+                                inputImg();
+                                chkImgUpload++;
+                            }
+                        }
+                    }
+                    chkImgUpload = 0;
+            
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        }
+
+        function showToast(message) {
+            const toastContainer = document.getElementById("toast-container");
+
+            // 토스트 요소 생성
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.textContent = message;
+
+            // 컨테이너에 추가
+            toastContainer.appendChild(toast);
+
+            // 자동 사라짐
+            setTimeout(() => {
+                toast.classList.add("hide");
+                setTimeout(() => {
+                    toast.remove();
+                }, 500);
+            }, 1000);
+        }
+
+        function getDate() {
+            let date = new Date();
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month < 10 ? '0' + month : month;
+            let day = date.getDate();
+            day = day < 10 ? '0' + day : day;
+            let hour = date.getHours();
+            hour = hour < 10 ? '0' + hour : hour;
+            let minute = date.getMinutes();
+            minute = minute < 10 ? '0' + minute : minute;
+            let second = date.getSeconds();
+            second = second < 10 ? '0' + second : second;
+
+            return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+        }
+    </script>
+</body>
+</html>
