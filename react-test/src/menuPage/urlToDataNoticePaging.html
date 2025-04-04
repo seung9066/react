@@ -401,45 +401,6 @@
         let movementTime = 0; // 움직인 시간 (초 단위)
         let moving = false; // 버튼이 움직이는 중인지 여부
 
-        document.addEventListener('mousemove', (e) => {
-            const button = document.getElementById('moveBtn'); // 버튼 요소
-            const mouseX = e.clientX; // 마우스 X 위치
-            const mouseY = e.clientY; // 마우스 Y 위치
-            const buttonRect = button.getBoundingClientRect(); // 버튼의 위치와 크기 정보
-            const buttonX = buttonRect.left + buttonRect.width / 2; // 버튼 중앙의 X 좌표
-            const buttonY = buttonRect.top + buttonRect.height / 2; // 버튼 중앙의 Y 좌표
-
-            const distanceX = mouseX - buttonX; // X축으로 마우스와 버튼 사이의 거리
-            const distanceY = mouseY - buttonY; // Y축으로 마우스와 버튼 사이의 거리
-
-            const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY); // 두 점 사이의 거리 계산
-
-            // 마우스와 버튼 사이의 거리가 일정 거리보다 가까워지면 피하도록 설정
-            if (distance < 150) {
-                if (!moving) {
-                    moving = true;
-                }
-
-                // 마우스가 버튼에 가까워지면, 버튼이 그 반대 방향으로 이동하도록 설정
-                const moveX = (distanceX / distance) * 100; // X축으로 이동
-                const moveY = (distanceY / distance) * 100; // Y축으로 이동
-                button.style.transform = `translate(${-moveX}px, ${-moveY}px)`; // 마우스 반대 방향으로 이동
-            } else {
-                if (moving) {
-                    moving = false; // 움직임 상태 리셋
-                }
-
-                // 마우스가 버튼에서 멀어지면 버튼이 원래 위치로 돌아가도록 설정
-                button.style.transform = `translate(0, 0)`;
-            }
-        });
-
-        document.addEventListener('click', (e) => {
-            if (moving) {
-                showToast('ㅋㅋ 오소이. (느리다는 뜻)');
-            }
-        });
-
         function onclickMoveBtn() {
             for (let i = 0; i < 5; i++) {
                 showToast('이걸 잡네 ㅋㅋ');
