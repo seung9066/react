@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@css/RunawayButton.css';
-import ToastAlert from '@components/ToastAlert';
 
-const RunawayButton = () => {
+const RunawayButton = ({ toastRef }) => {
   const buttonRef = useRef(null);
-  const toastRef = useRef(null);
   const [moving, setMoving] = useState(false);
-  const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -51,8 +48,6 @@ const RunawayButton = () => {
       <button ref={buttonRef} className="runaway-btn" onClick={function() {alert("이걸 잡네 ㅋㅋ")}}>
         클릭
       </button>
-
-      <ToastAlert ref={toastRef} />
     </div>
   );
 };

@@ -8,12 +8,13 @@
  * useState : 데이터 변동시 html 자동 렌더링 된다.
  * useEffect : side effect, 라이프사이클 훅(componentDidMount, componentDidUpdate, componentWillUnmount)
  */
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import Menu from '@components/Menu'
 import ScrollToTopButton from '@components/TopBtn'
+import ToastAlert from "@components/ToastAlert";
 
 import Main from '@page/Main'
 import Study from '@page/Study'
@@ -23,6 +24,7 @@ import Lotto from '@page/MakeLotto'
 
 
 function App() {
+  const toastRef = useRef(null);
   const [menuNm, setMenuNm] = useState('React');
   const [urlDataNotice, setUrlDataNotice] = useState('');
   const getMenuNm = (value) => {
@@ -37,6 +39,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
+      <ToastAlert ref={toastRef} />
       <div className="App">
         <div>
           <Menu getMenuNm={getMenuNm}/>
@@ -48,11 +51,11 @@ function App() {
       </div>
       <div className="container">
         <Routes>
-          <Route path="/" element={ <Main /> } />
-          <Route path="/study" element={ <Study obj={propsData} />} />
-          <Route path="/urlDataNotice" element={ <UrlDataNotice urlDataNotice={urlDataNotice} setUrlDataNotice={setUrlDataNotice} />} />
-          <Route path="/programDesign" element={ <ProgramDesign />} />
-          <Route path="/lotto" element={ <Lotto />} />
+          <Route path="/" element={ <Main toastRef={toastRef} /> } />
+          <Route path="/study" element={ <Study obj={propsData} toastRef={toastRef} />} />
+          <Route path="/urlDataNotice" element={ <UrlDataNotice urlDataNotice={urlDataNotice} setUrlDataNotice={setUrlDataNotice} toastRef={toastRef} />} />
+          <Route path="/programDesign" element={ <ProgramDesign toastRef={toastRef} />} />
+          <Route path="/lotto" element={ <Lotto toastRef={toastRef} />} />
         </Routes>
       </div>
       <ScrollToTopButton />

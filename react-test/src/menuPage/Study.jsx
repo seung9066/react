@@ -15,7 +15,7 @@ function Study ( props ) {
             </div>
             <div>
                 { showStudy === 'lifeCycleHook' && <LifeCycleHook /> }
-                { showStudy === 'props' && <Props obj={props} /> }
+                { showStudy === 'props' && <Props obj={props.obj} /> }
                 { showStudy === 'referenceDataType' && <ReferenceDataType /> }
             </div>
         </>

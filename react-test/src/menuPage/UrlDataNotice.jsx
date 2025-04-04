@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import ToastAlert from "@components/ToastAlert";
-
-function UrlDataTest ({ urlDataNotice, setUrlDataNotice }) {
-    const toastRef = useRef(null);
-
+function UrlDataTest ({ urlDataNotice, setUrlDataNotice, toastRef }) {
     const [iframeHeight, setIframeHeight] = useState("100px"); // 기본 높이
     const iframeRef = useRef(null);
 
@@ -57,7 +53,6 @@ function UrlDataTest ({ urlDataNotice, setUrlDataNotice }) {
 
     return (
         <>
-            <ToastAlert ref={toastRef} />
             <iframe ref={iframeRef} src="../src/menuPage/urlToDataNoticePaging.html" width={"100%"} height={iframeHeight} style={{ border: "none" }} onLoad={() => {
                 if (iframeRef.current) {
                     iframeRef.current.contentWindow.postMessage("getHeight", "*");

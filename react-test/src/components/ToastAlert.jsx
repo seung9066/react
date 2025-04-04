@@ -1,7 +1,7 @@
 import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
 import '@css/ToastAlert.css';
 
-const ToastManager = forwardRef((props, ref) => {
+const ToastAlert = forwardRef((props, ref) => {
     const [toasts, setToasts] = useState([]);
 
     // 부모 컴포넌트에서 showToast 호출 가능하도록 설정
@@ -34,4 +34,4 @@ const ToastManager = forwardRef((props, ref) => {
     );
 });
 
-export default ToastManager;
+export default ToastAlert;
