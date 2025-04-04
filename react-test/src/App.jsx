@@ -19,6 +19,7 @@ import Main from '@page/Main'
 import Study from '@page/Study'
 import UrlDataNotice from '@page/UrlDataNotice'
 import ProgramDesign from '@page/ProgramDesign'
+import Lotto from '@page/MakeLotto'
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
           <Route path="/study" element={ <Study obj={propsData} />} />
           <Route path="/urlDataNotice" element={ <UrlDataNotice urlDataNotice={urlDataNotice} setUrlDataNotice={setUrlDataNotice} />} />
           <Route path="/programDesign" element={ <ProgramDesign />} />
+          <Route path="/lotto" element={ <Lotto />} />
         </Routes>
       </div>
       <ScrollToTopButton />

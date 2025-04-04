@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from 'react-router-dom'
 
 import '../css/Menu.css'
@@ -17,6 +16,7 @@ function Menu({ getMenuNm }) {
                     <Link to={'/study'} className="navbarMenu" onClick={clickMenu}>Study</Link>
                     <Link to={'/urlDataNotice'} className="navbarMenu" onClick={clickMenu}>UrlDataNotice</Link>
                     <Link to={'/programDesign'} className="navbarMenu" onClick={clickMenu}>ProgramDesign</Link>
+                    <Link to={'/lotto'} className="navbarMenu" onClick={clickMenu}>Lotto</Link>
                 </div>
             </div>
         </>
