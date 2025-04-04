@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 function MakeLotto () {
     const [totalArr, setTotalArr] = useState([]);
@@ -20,12 +20,6 @@ function MakeLotto () {
         }
 
         totalArr.push(chooseNumArr);
-    }
-
-    const enterRun = (e) => {
-        if (e.key == "Enter") {
-            runAvg();
-        }
     }
 
     const runAvg = () => {
@@ -58,7 +52,9 @@ function MakeLotto () {
 
         let txt = "";
         txt = sortMax(score);
+        txt += "<br/>";
         txt += sortAvg(score);
+        txt += "<br/>";
         txt += sortMin(score);
                     
         setAvgNumDiv(txt);
@@ -160,8 +156,10 @@ function MakeLotto () {
 
     return (
         <>
-            <button onClick={runAvg}>십만번 돌리기</button>
-            <div dangerouslySetInnerHTML={{ __html: avgNumDiv }}></div>
+            <div>
+                <button onClick={runAvg}>십만번 돌리기</button>
+                <div dangerouslySetInnerHTML={{ __html: avgNumDiv }} style={{ marginTop: "10%" }}></div>
+            </div>
         </>
     )
 }
