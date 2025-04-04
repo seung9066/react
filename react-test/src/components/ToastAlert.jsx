@@ -1,37 +1,37 @@
-import { useState } from "react";
+import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
+import '@css/ToastAlert.css';
 
-function ToastAlert({ msg }) {
-    const [msgList, setMsgList] = useState([]);
+const ToastManager = forwardRef((props, ref) => {
+    const [toasts, setToasts] = useState([]);
 
-    function showToast(message) {
-        // 토스트 요소 생성
-        const toast = document.createElement("div");
-        toast.className = "toast";
-        toast.textContent = message;
+    // 부모 컴포넌트에서 showToast 호출 가능하도록 설정
+    useImperativeHandle(ref, () => ({
+        showToast(message) {
+            setToasts(prev => [...prev, { id: Date.now(), message }]);
+        }
+    }));
 
-        // 컨테이너에 추가
-        toastContainer.current.appendChild(toast);
+    useEffect(() => {
+        if (toasts.length === 0) return; // 토스트가 없으면 실행 X
 
-        // 자동 사라짐
-        setTimeout(() => {
-            toast.classList.add("hide");
+        const timers = toasts.map(toast =>
             setTimeout(() => {
-                toast.remove();
-            }, 500);
-        }, 1000);
-    }
+                setToasts(prev => prev.filter(t => t.id !== toast.id)); // 개별적으로 제거
+            }, 1000) // 1초 후 제거
+        );
+
+        return () => timers.forEach(timer => clearTimeout(timer)); // 정리(cleanup)
+    }, [toasts]); // 토스트 배열이 변경될 때마다 실행
 
     return (
-        <>
-            <div className="toast-container" id="toast-container" ref={toastContainer} style={{ marginTop:"100px" }}>
-                { msgList.map((item) => {
-                    <div className="toast">
-                        { item }
-                    </div>
-                }) }
-            </div>
-        </>
-    )
-}
+        <div className="toast-container">
+            {toasts.map((toast) => (
+                <div key={toast.id} className="toast show">
+                    {toast.message}
+                </div>
+            ))}
+        </div>
+    );
+});
 
-export default ToastAlert;
+export default ToastManager;

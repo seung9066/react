@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@css/RunawayButton.css';
-
-let toastId = 0;
+import ToastAlert from '@components/ToastAlert';
 
 const RunawayButton = () => {
   const buttonRef = useRef(null);
+  const toastRef = useRef(null);
   const [moving, setMoving] = useState(false);
   const [toasts, setToasts] = useState([]);
 
@@ -42,11 +42,7 @@ const RunawayButton = () => {
 
   const handleClick = () => {
     if (moving) {
-      const id = toastId++;
-      setToasts((prev) => [...prev, { id }]);
-      setTimeout(() => {
-        setToasts((prev) => prev.filter((t) => t.id !== id));
-      }, 1000);
+      toastRef.current.showToast("ㅋㅋ 오소이. (느리다는 뜻)");
     }
   };
 
@@ -56,13 +52,7 @@ const RunawayButton = () => {
         클릭
       </button>
 
-      <div className="toast-container">
-        {toasts.map((toast) => (
-          <div key={toast.id} className="toast">
-            ㅋㅋ 오소이. (느리다는 뜻)
-          </div>
-        ))}
-      </div>
+      <ToastAlert ref={toastRef} />
     </div>
   );
 };

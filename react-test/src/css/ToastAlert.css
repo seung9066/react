@@ -1,0 +1,59 @@
+.toast-container {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+/* 토스트 메시지 */
+.toast {
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-15px);
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+/* 토스트 사라질 때 */
+.toast.hide {
+    animation: fadeOut 1s ease-in-out forwards;
+    transform: translateY(-20px);
+}
+
+/* 나타날 때 애니메이션 */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* 사라질 때 애니메이션 */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
