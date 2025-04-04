@@ -44,7 +44,7 @@ function UrlDataTest ({ urlDataNotice, setUrlDataNotice }) {
 
     return (
         <>
-            <iframe ref={iframeRef} src="../src/components/urlToDataNoticePaging.html" width={"100%"} height={iframeHeight} style={{ border: "none" }} onLoad={() => {
+            <iframe ref={iframeRef} src="../src/menuPage/urlToDataNoticePaging.html" width={"100%"} height={iframeHeight} style={{ border: "none" }} onLoad={() => {
                 if (iframeRef.current) {
                     iframeRef.current.contentWindow.postMessage("getHeight", "*");
                 }

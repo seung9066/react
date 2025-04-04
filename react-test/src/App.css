@@ -120,6 +120,7 @@ button:active {
 
 .container {
   max-width: 1500px;
+  min-height: 70vh;
   margin: auto;
   padding: 20px;
   background: #fff;

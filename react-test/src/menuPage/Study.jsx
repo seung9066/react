@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import LifeCycleHook from '@components/LifeCycleHook'
-import Props from '@components/Props'
-import ReferenceDataType from '@components/ReferenceDataType'
+import LifeCycleHook from '@page/study/LifeCycleHook'
+import Props from '@page/study/Props'
+import ReferenceDataType from '@page/study/ReferenceDataType'
 
 function Study ( props ) {
     const [showStudy, setShowStudy] = useState();

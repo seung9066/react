@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import LifeCycleImg from '../img/lifecycle.png'
+import LifeCycleImg from '@img/lifecycle.png'
 
 /**
  * 리액트 생명주기

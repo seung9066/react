@@ -13,11 +13,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import Menu from '@components/Menu'
-import Study from '@components/Study'
-import UrlDataNotice from '@components/UrlDataNotice'
-import ProgramDesign from '@components/ProgramDesign'
-
 import ScrollToTopButton from '@components/TopBtn'
+
+import Main from '@page/Main'
+import Study from '@page/Study'
+import UrlDataNotice from '@page/UrlDataNotice'
+import ProgramDesign from '@page/ProgramDesign'
+
 
 function App() {
   const [menuNm, setMenuNm] = useState('React');
@@ -45,7 +47,7 @@ function App() {
       </div>
       <div className="container">
         <Routes>
-          <Route path="/" element={ <main /> } />
+          <Route path="/" element={ <Main /> } />
           <Route path="/study" element={ <Study obj={propsData} />} />
           <Route path="/urlDataNotice" element={ <UrlDataNotice urlDataNotice={urlDataNotice} setUrlDataNotice={setUrlDataNotice} />} />
           <Route path="/programDesign" element={ <ProgramDesign />} />

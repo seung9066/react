@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import CodeTextArea from "./CodeTextArea";
+import CodeTextArea from "@components/CodeTextArea";
 
 /**
  * Array, Object 타입 (reference data type)

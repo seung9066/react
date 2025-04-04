@@ -17,7 +17,7 @@ function UrlDataTest () {
 
     return (
         <>
-            <iframe ref={iframeRef} src="../src/components/programDesign.html" width={"100%"} height={iframeHeight} style={{ border: "none" }} onLoad={() => {
+            <iframe ref={iframeRef} src="../src/menuPage/programDesign.html" width={"100%"} height={iframeHeight} style={{ border: "none" }} onLoad={() => {
                 if (iframeRef.current) {
                     iframeRef.current.contentWindow.postMessage("getHeight", "*");
                 }
