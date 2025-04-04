@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 
-function UrlDataTest ({ urlData, setUrlData }) {
+function UrlDataTest ({ urlDataNotice, setUrlDataNotice }) {
     const [iframeHeight, setIframeHeight] = useState("100px"); // 기본 높이
     const iframeRef = useRef(null);
 
     useEffect(() => {
         let param = new URLSearchParams(location.search);
 
-        if (urlData) {
-            param.set('data', urlData);
+        if (urlDataNotice) {
+            param.set('data', urlDataNotice);
             history.pushState(null, null, '?' + param.toString());
         }
 
         if (param.get('data')) {
-            setUrlData(param.get('data'));
+            setUrlDataNotice(param.get('data'));
         }
 
         const handleMessage = (event) => {
@@ -28,7 +28,7 @@ function UrlDataTest ({ urlData, setUrlData }) {
                 } else {
                     param.delete('data');
                 }
-                setUrlData(data);
+                setUrlDataNotice(data);
                 history.pushState(null, null, '?' + param.toString());
 
                 // 자식에게 해당 메시지 보내면 그리드랑 이미지 그림

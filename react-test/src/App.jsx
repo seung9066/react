@@ -21,7 +21,7 @@ import ScrollToTopButton from '@components/TopBtn'
 
 function App() {
   const [menuNm, setMenuNm] = useState('React');
-  const [urlData, setUrlData] = useState('');
+  const [urlDataNotice, setUrlDataNotice] = useState('');
   const getMenuNm = (value) => {
     setMenuNm(value);
   };
@@ -47,7 +47,7 @@ function App() {
         <Routes>
           <Route path="/" element={ <main /> } />
           <Route path="/study" element={ <Study obj={propsData} />} />
-          <Route path="/urlDataNotice" element={ <UrlDataNotice urlData={urlData} setUrlData={setUrlData} />} />
+          <Route path="/urlDataNotice" element={ <UrlDataNotice urlDataNotice={urlDataNotice} setUrlDataNotice={setUrlDataNotice} />} />
           <Route path="/programDesign" element={ <ProgramDesign />} />
         </Routes>
       </div>
