@@ -12,12 +12,12 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 
-import LifeCycleHook from '@components/LifeCycleHook'
 import Menu from '@components/Menu'
-import Props from '@components/Props'
-import ReferenceDataType from '@components/ReferenceDataType'
+import Study from '@components/Study'
 import UrlDataNotice from '@components/UrlDataNotice'
 import ProgramDesign from '@components/ProgramDesign'
+
+import ScrollToTopButton from '@components/TopBtn'
 
 function App() {
   const [menuNm, setMenuNm] = useState('React');
@@ -37,6 +37,8 @@ function App() {
       <div className="App">
         <div>
           <Menu getMenuNm={getMenuNm}/>
+        </div>
+        <div style={{ marginTop: "60px", textAlign: "center" }}>
           <GetTime />
           <h1>{menuNm}</h1>
         </div>
@@ -44,13 +46,12 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={ <main /> } />
-          <Route path="/props" element={ <Props obj={propsData} />} />
-          <Route path="/referenceDataType" element={ <ReferenceDataType />} />
-          <Route path="/lifeCycleHook" element={ <LifeCycleHook />} />
+          <Route path="/study" element={ <Study obj={propsData} />} />
           <Route path="/urlDataNotice" element={ <UrlDataNotice urlData={urlData} setUrlData={setUrlData} />} />
           <Route path="/programDesign" element={ <ProgramDesign />} />
         </Routes>
       </div>
+      <ScrollToTopButton />
     </BrowserRouter>
     </>
   )
