@@ -21,7 +21,7 @@ import Study from '@page/Study'
 import UrlDataNotice from '@page/UrlDataNotice'
 import ProgramDesign from '@page/ProgramDesign'
 import Lotto from '@page/MakeLotto'
-
+import TicTacToe from '@page/TicTacToe'
 
 function App() {
   const toastRef = useRef(null);
@@ -53,6 +53,7 @@ function App() {
         <Routes>
           <Route path="/" element={ <Main toastRef={toastRef} /> } />
           <Route path="/study" element={ <Study obj={propsData} toastRef={toastRef} />} />
+          <Route path="/ticTacToe" element={ <TicTacToe toastRef={toastRef} />} />
           <Route path="/urlDataNotice" element={ <UrlDataNotice urlDataNotice={urlDataNotice} setUrlDataNotice={setUrlDataNotice} toastRef={toastRef} />} />
           <Route path="/programDesign" element={ <ProgramDesign toastRef={toastRef} />} />
           <Route path="/lotto" element={ <Lotto toastRef={toastRef} />} />

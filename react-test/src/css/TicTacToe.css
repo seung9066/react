@@ -1,0 +1,13 @@
+.ticTacToeTable {
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+.ticTacToeTable td {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    font-size: 6em;
+    border: 3px solid black;
+    cursor: pointer;
+}
