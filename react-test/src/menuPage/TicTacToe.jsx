@@ -17,44 +17,68 @@ function TicTacToe ({ toastRef }) {
     // 게임 칸 클릭
     const clickTd = (e) => {
         if (!winner) {
+            // 승자, 무승부가 아닌 경우
             const index = parseInt(e.target.id);
             if (gameState[index]) {
                 toastRef.current.showToast("이미 선택된 칸입니다.");
                 return;
             }
             
+            // 칸 칠하기
             const newGameState = [...gameState];
             newGameState[index] = palyer;
             setPlayer(palyer === 'O' ? 'X' : 'O');
             setGameState(newGameState);
         } else {
-            toastRef.current.showToast(winner + "승리! 초기화 버튼을 눌러주세요.");
+            winner === "무승부" ? toastRef.current.showToast("무승부 초기화 버튼을 눌러주세요.") : toastRef.current.showToast(winner + "승리! 초기화 버튼을 눌러주세요.");
         }
     }
 
     // 게임 초기화
     const resetGame = () => {
+        // 칸 초기화
         setGameState(Array(9).fill(null));
+        // 플레이어 초기화
         setPlayer('O');
+        // 승리자 초기화
         setWinner(null);
+        // 승리 조건 초기화
         setWin(howToWin(size));
     }
 
     useEffect(() => {
+        let OWin = 0;
+        let XWin = 0;
+        let chkSize = Number(size);
+        // 승리 조건 확인
         for (const item of win) {
-            let OWin = 0;
-            let XWin = 0;
+            OWin = 0;
+            XWin = 0;
             for (const i of item) {
                 gameState[i] === null ? (OWin--, XWin--) : null;
                 gameState[i] === 'O' ? OWin++ : gameState[i] === 'X' ? XWin++ : null;
             }
-            OWin === size ? (toastRef.current.showToast("O 승리!"), setWinner("O")) : null;
-            XWin === size ? (toastRef.current.showToast("X 승리!"), setWinner("X")) : null;
+            OWin === chkSize ? (toastRef.current.showToast("O 승리!"), setWinner("O")) : null;
+            XWin === chkSize ? (toastRef.current.showToast("X 승리!"), setWinner("X")) : null;
         }
+        
+        // 무승부 확인
+        let draw = 0;
+        for (const item of gameState) {
+            if (item === null) {
+                draw++;
+            }
+        }
+        if (draw === 0 && winner === null) {
+            setWinner("무승부");
+            toastRef.current.showToast("무승부!");
+        }
+
     }, [gameState]);
 
     useEffect(() => {
-        setWin(howToWin(size));
+        // 칸 수 변경 시 게임 초기화
+        resetGame();
     }, [size])
 
     return (

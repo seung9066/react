@@ -325,6 +325,8 @@
                 // 테이블 양식 가리기
                 document.getElementById('tblFrmT').style.display = 'none';
             }
+
+            sendHeight();
         }
 
         // 중복값 제거
@@ -415,14 +417,17 @@
             var cnt = document.querySelectorAll('input[name="tableFrm"]').length;
             var html = `<br><label>테이블 양식<input type="text" id="tableFrm` + cnt + `" name="tableFrm"></label>`;
             document.querySelector('.tblFrm').insertAdjacentHTML('beforeend', html);
-        }
 
+            sendHeight();
+        }
+        
         // 테이블 양식 초기화 (테이블 양식 직접 입력 시 사용)
         function resetTableFrm() {
             document.getElementById('tblDiv').innerHTML = '';
             var html = `<label>테이블 양식<input type="text" id="tableFrm0" name="tableFrm"></label>`;
             document.querySelector('.tblFrm').insertAdjacentHTML('beforeend', html);
-
+            
+            sendHeight();
         }
 
         // 산출물 양식 지정
