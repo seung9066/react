@@ -113,38 +113,38 @@ function TicTacToe ({ toastRef }) {
     )
 }
 
-function howToWin(size) {
+function howToWin(getSize) {
     const combinations = [];
 
     // 가로 승리 조건
-    for (let row = 0; row < size; row++) {
+    for (let row = 0; row < getSize; row++) {
         let colArr = [];
-        for (let col = 0; col < size; col++) {
-            colArr.push(row * size + col);
+        for (let col = 0; col < getSize; col++) {
+            colArr.push(row * getSize + col);
         }
         combinations.push(colArr);
     }
 
     // 세로 승리 조건
-    for (let col = 0; col < size; col++) {
+    for (let col = 0; col < getSize; col++) {
         let rowArr = [];
-        for (let row = 0; row < size; row++) {
-            rowArr.push(col + size * row);
+        for (let row = 0; row < getSize; row++) {
+            rowArr.push(col + getSize * row);
         }
         combinations.push(rowArr);
     }
 
     // 왼쪽 위 ➝ 오른쪽 아래 대각선
     let diagArr1 = [];
-    for (let i = 0; i < size; i++) {
-        diagArr1.push(i * (size + 1));
+    for (let i = 0; i < getSize; i++) {
+        diagArr1.push(i * (getSize + 1));
     }
     combinations.push(diagArr1);
 
     // 오른쪽 위 ➝ 왼쪽 아래 대각선
     let diagArr2 = [];
-    for (let i = 1; i <= size; i++) {
-        diagArr2.push(i * (size - 1));
+    for (let i = 1; i <= getSize; i++) {
+        diagArr2.push(i * (getSize - 1));
     }
     combinations.push(diagArr2);
 
