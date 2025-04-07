@@ -26,5 +26,42 @@
 }
 
 .navbarMenuForm {
+    display: flex; /* 가로 정렬 */
     margin-right: 30px;
+}
+
+.navbarMenuWrapper {
+    position: relative;
+    margin-right: 30px;
+}
+
+.subMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #111;
+    padding: 10px 0;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    min-width: 150px;
+    z-index: 999;
+}
+
+.navbarMenuWrapper:hover .subMenu {
+    display: flex;
+}
+
+.subMenuItem {
+    color: white;
+    text-decoration: none;
+    padding: 8px 20px;
+    font-size: 16px;
+    white-space: nowrap;
+    transition: background 0.3s;
+}
+
+.subMenuItem:hover {
+    background-color: #00bfff;
+    color: #000;
 }
