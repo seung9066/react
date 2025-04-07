@@ -344,9 +344,12 @@
             const errorDiv = document.getElementById('error431');
             if (errorDiv.style.display === 'none') {
                 errorDiv.style.display = 'block';
+                navigator.clipboard.writeText('node --max-http-header-size=1000000 node_modules/vite/bin/vite.js');
+                showToast('명령어 복사 완료');
             } else {
                 errorDiv.style.display = 'none';
             }
+
             
             sendHeight();
         }
