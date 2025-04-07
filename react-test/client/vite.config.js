@@ -4,6 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  root:'.',
   plugins: [react()],
   resolve: {
     alias: {
@@ -13,5 +14,10 @@ export default defineConfig({
       '@img': path.resolve(__dirname, 'src/img/'),
       '@data': path.resolve(__dirname, 'src/data/'),
     },
+  },
+  server: {
+    proxy: {
+      '/api': 'http://localhost:5000'
+    }
   },
 })

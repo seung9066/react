@@ -12,8 +12,8 @@ import { useEffect, useState, useRef } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 
-import Menu from '@components/Menu'
-import ScrollToTopButton from '@components/TopBtn'
+import Menu from '@components/Menu';
+import ScrollToTopButton from '@components/TopBtn';
 import ToastAlert from "@components/ToastAlert";
 
 // components 폴더 내의 모든 .jsx 파일을 비동기로 가져오는 객체 생성

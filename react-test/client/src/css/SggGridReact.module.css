@@ -1,0 +1,56 @@
+.tableContainer {
+    width: 99%;
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 99%;
+    border-collapse: collapse;
+    font-size: 16px;
+    min-width: 600px;
+  }
+  
+  .thead {
+    background-color: #59708a;
+    color: white;
+    text-align: center;
+  }
+  
+  .th, .td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .tbody {
+    text-align: center;
+  }
+  
+  .tbodyRow:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .tbodyRow {
+    transition: background-color 0.1s ease-in-out;
+  }
+  
+  .tbodyRow:hover {
+    background-color: #e0dfdf;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  
+  .pagination a {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  /* 반응형 */
+  @media screen and (max-width: 768px) {
+    .table {
+      font-size: 14px;
+    }
+  }
+  

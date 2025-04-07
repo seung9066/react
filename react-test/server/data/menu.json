@@ -1,0 +1,72 @@
+[
+    {
+        "showTitle": "React",
+        "title": "React",
+        "path": "/",
+        "id": "A001",
+        "upId": null
+    },
+    {
+        "showTitle": "Study",
+        "title": "Study",
+        "path": "/study",
+        "id": "A002",
+        "upId": null
+    },
+    {
+        "showTitle": "Play",
+        "title": "TicTacToe",
+        "path": "/ticTacToe",
+        "id": "A003",
+        "upId": null
+    },
+    {
+        "showTitle": "TicTacToe",
+        "title": "TicTacToe",
+        "path": "/ticTacToe",
+        "id": "B001",
+        "upId": "A003"
+    },
+    {
+        "showTitle": "Program",
+        "title": "UrlDataNotice",
+        "path": "/urlDataNotice",
+        "id": "A004",
+        "upId": null
+    },
+    {
+        "showTitle": "UrlDataNotice",
+        "title": "UrlDataNotice",
+        "path": "/urlDataNotice",
+        "id": "B001",
+        "upId": "A004"
+    },
+    {
+        "showTitle": "ProgramDesign",
+        "title": "ProgramDesign",
+        "path": "/programDesign",
+        "id": "B002",
+        "upId": "A004"
+    },
+    {
+        "showTitle": "Lotto",
+        "title": "Lotto",
+        "path": "/lotto",
+        "id": "B003",
+        "upId": "A004"
+    },
+    {
+        "showTitle": "Admin",
+        "title": "Menu",
+        "path": "/menu",
+        "id": "A005",
+        "upId": null
+    },
+    {
+        "showTitle": "Menu",
+        "title": "Menu",
+        "path": "/menu",
+        "id": "B001",
+        "upId": "A005"
+    }
+]
