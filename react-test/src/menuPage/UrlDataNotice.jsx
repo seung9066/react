@@ -12,10 +12,11 @@ function UrlDataTest ({ urlDataNotice, setUrlDataNotice, toastRef }) {
             param.set('data', urlDataNotice);
             history.pushState(null, null, '?' + param.toString());
         }
-
+        
         // urlDataNotice가 없으면 url에 있는 값을 가져온다.
         if (param.get('data')) {
             setUrlDataNotice(param.get('data'));
+            history.pushState(null, null, '?' + param.toString());
         }
 
         const handleMessage = (event) => {
