@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import '@css/TicTacToe.css';
 
-function TicTacToe ({ toastRef }) {
+function TicTacToe ( props ) {
     // 칸 수
     const [size, setSize] = useState(3);
     // 플레이어 O, X
@@ -20,7 +20,7 @@ function TicTacToe ({ toastRef }) {
             // 승자, 무승부가 아닌 경우
             const index = parseInt(e.target.id);
             if (gameState[index]) {
-                toastRef.current.showToast("이미 선택된 칸입니다.");
+                props.props.toastRef.current.showToast("이미 선택된 칸입니다.");
                 return;
             }
             
@@ -30,7 +30,7 @@ function TicTacToe ({ toastRef }) {
             setPlayer(palyer === 'O' ? 'X' : 'O');
             setGameState(newGameState);
         } else {
-            winner === "무승부" ? toastRef.current.showToast("무승부 초기화 버튼을 눌러주세요.") : toastRef.current.showToast(winner + "승리! 초기화 버튼을 눌러주세요.");
+            winner === "무승부" ? props.props.toastRef.current.showToast("무승부 초기화 버튼을 눌러주세요.") : props.props.toastRef.current.showToast(winner + "승리! 초기화 버튼을 눌러주세요.");
         }
     }
 
@@ -58,8 +58,8 @@ function TicTacToe ({ toastRef }) {
                 gameState[i] === null ? (OWin--, XWin--) : null;
                 gameState[i] === 'O' ? OWin++ : gameState[i] === 'X' ? XWin++ : null;
             }
-            OWin === chkSize ? (toastRef.current.showToast("O 승리!"), setWinner("O")) : null;
-            XWin === chkSize ? (toastRef.current.showToast("X 승리!"), setWinner("X")) : null;
+            OWin === chkSize ? (props.props.toastRef.current.showToast("O 승리!"), setWinner("O")) : null;
+            XWin === chkSize ? (props.props.toastRef.current.showToast("X 승리!"), setWinner("X")) : null;
         }
         
         // 무승부 확인
@@ -71,7 +71,7 @@ function TicTacToe ({ toastRef }) {
         }
         if (draw === 0 && winner === null) {
             setWinner("무승부");
-            toastRef.current.showToast("무승부!");
+            props.props.toastRef.current.showToast("무승부!");
         }
 
     }, [gameState]);

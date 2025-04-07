@@ -1,49 +1,25 @@
 import { Link } from 'react-router-dom';
 import '@css/Menu.css';
+import MenuData from '@data/menu.json';
 
 function Menu({ getMenuNm }) {
-    const clickMenu = (e) => {
-        let newMenuNm = e.target.innerText;
+    const clickMenu = (e, title) => {
+        let newMenuNm = title;
         getMenuNm(newMenuNm);
     };
-
-    const menuItems = [
-        {
-            title: "React",
-            path: "/",
-        },
-        {
-            title: "Study",
-            path: "/study",
-        },
-        {
-            title: "Play",
-            subMenu: [
-                { title: "TicTacToe", path: "/ticTacToe" },
-            ],
-        },
-        {
-            title: "Program",
-            subMenu: [
-                { title: "UrlDataNotice", path: "/urlDataNotice" },
-                { title: "ProgramDesign", path: "/programDesign" },
-                { title: "Lotto", path: "/lotto" },
-            ],
-        },
-    ];
 
     return (
         <div className="navbar">
             <div className="navbarMenuForm">
-                {menuItems.map((menu, index) => (
+                {MenuData.map((menu, index) => (
                     <div className="navbarMenuWrapper" key={index}>
                         {menu.path ? (
-                            <Link to={menu.path} className="navbarMenu" onClick={clickMenu}>
-                                {menu.title}
+                            <Link to={menu.path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)}>
+                                {menu.showTitle}
                             </Link>
                         ) : (
                             <div className="navbarMenu">
-                                {menu.title}
+                                {menu.showTitle}
                             </div>
                         )}
                         {menu.subMenu && (
@@ -53,9 +29,9 @@ function Menu({ getMenuNm }) {
                                         to={sub.path}
                                         className="subMenuItem"
                                         key={subIndex}
-                                        onClick={clickMenu}
+                                        onClick={(e) => clickMenu(e, sub.title)}
                                     >
-                                        {sub.title}
+                                        {sub.showTitle}
                                     </Link>
                                 ))}
                             </div>

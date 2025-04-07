@@ -16,17 +16,13 @@ import Menu from '@components/Menu'
 import ScrollToTopButton from '@components/TopBtn'
 import ToastAlert from "@components/ToastAlert";
 
-import Main from '@page/Main'
-import Study from '@page/Study'
-import UrlDataNotice from '@page/UrlDataNotice'
-import ProgramDesign from '@page/ProgramDesign'
-import Lotto from '@page/MakeLotto'
-import TicTacToe from '@page/TicTacToe'
+// components 폴더 내의 모든 .jsx 파일을 비동기로 가져오는 객체 생성
+const modules = import.meta.glob('./menuPage/*.jsx');
 
 function App() {
   const toastRef = useRef(null);
   const [menuNm, setMenuNm] = useState('React');
-  const [urlDataNotice, setUrlDataNotice] = useState('');
+  const [urlDataNotice, setUrlDataNoticeData] = useState('');
   const getMenuNm = (value) => {
     setMenuNm(value);
   };
@@ -35,6 +31,34 @@ function App() {
                   name : 'nameData'
                   , age : 'ageData'
                   }
+
+  let props = {
+    toastRef: toastRef,
+    urlDataNotice: urlDataNotice,
+    setUrlDataNoticeData: setUrlDataNoticeData,
+    propsData: propsData,
+  }
+
+  // 동적으로 불러온 컴포넌트들을 저장할 state
+  const [components, setComponents] = useState([]);
+
+  useEffect(() => {
+      // 컴포넌트 동적 로딩 함수
+      const loadComponents = async () => {
+          // modules 객체의 각 파일을 import() 해서 default export만 추출
+          const loaded = await Promise.all(
+              Object.entries(modules).map(async ([path, importer]) => {
+                  const mod = await importer();
+                  return mod.default;
+              })
+          );
+
+          // 추출한 컴포넌트 배열로 상태 설정
+          setComponents(loaded);
+      };
+
+      loadComponents();
+  }, []);
   
   return (
     <>
@@ -51,12 +75,13 @@ function App() {
       </div>
       <div className="container">
         <Routes>
-          <Route path="/" element={ <Main toastRef={toastRef} /> } />
-          <Route path="/study" element={ <Study obj={propsData} toastRef={toastRef} />} />
-          <Route path="/ticTacToe" element={ <TicTacToe toastRef={toastRef} />} />
-          <Route path="/urlDataNotice" element={ <UrlDataNotice urlDataNotice={urlDataNotice} setUrlDataNotice={setUrlDataNotice} toastRef={toastRef} />} />
-          <Route path="/programDesign" element={ <ProgramDesign toastRef={toastRef} />} />
-          <Route path="/lotto" element={ <Lotto toastRef={toastRef} />} />
+          {/* 컴포넌트 동적 생성 */}
+          { components.map((Component) => {
+            let pathName = Component.name;
+            pathName = pathName.charAt(0).toLowerCase() + pathName.slice(1);
+            pathName === "main" ? pathName = "" : null;
+            return <Route path={pathName} element={ <Component props={props} /> } />
+          })}
         </Routes>
       </div>
       <ScrollToTopButton />

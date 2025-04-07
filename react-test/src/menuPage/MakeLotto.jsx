@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function MakeLotto () {
+function Lotto () {
     const [totalArr, setTotalArr] = useState([]);
     const [avgNumDiv, setAvgNumDiv] = useState();
 
@@ -164,4 +164,4 @@ function MakeLotto () {
     )
 }
 
-export default MakeLotto;
+export default Lotto;

@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 
-function UrlDataTest ({ urlDataNotice, setUrlDataNotice, toastRef }) {
+function UrlDataNotice ( props ) {
     const [iframeHeight, setIframeHeight] = useState("100px"); // 기본 높이
     const iframeRef = useRef(null);
 
     useEffect(() => {
         let param = new URLSearchParams(location.search);
 
-        // urlDataNotice가 있으면 url에 넣어준다.
-        if (urlDataNotice) {
-            param.set('data', urlDataNotice);
+        // props.props.urlDataNotice가 있으면 url에 넣어준다.
+        if (props.props.urlDataNotice) {
+            param.set('data', props.props.urlDataNotice);
             history.pushState(null, null, '?' + param.toString());
         }
         
-        // urlDataNotice가 없으면 url에 있는 값을 가져온다.
+        // props.props.urlDataNotice가 없으면 url에 있는 값을 가져온다.
         if (param.get('data')) {
-            setUrlDataNotice(param.get('data'));
+            props.props.setUrlDataNoticeData(param.get('data'));
             history.pushState(null, null, '?' + param.toString());
         }
 
@@ -27,7 +27,7 @@ function UrlDataTest ({ urlDataNotice, setUrlDataNotice, toastRef }) {
 
             // iframe에서 보낸 toast
             if (event.data.toast) {
-                toastRef.current.showToast(event.data.toast);
+                props.props.toastRef.current.showToast(event.data.toast);
             }
 
             // iframe에서 보낸 data
@@ -38,7 +38,7 @@ function UrlDataTest ({ urlDataNotice, setUrlDataNotice, toastRef }) {
                 } else {
                     param.delete('data');
                 }
-                setUrlDataNotice(data);
+                props.props.setUrlDataNoticeData(data);
                 history.pushState(null, null, '?' + param.toString());
 
                 // 자식에게 해당 메시지 보내면 그리드랑 이미지 그림
@@ -63,4 +63,4 @@ function UrlDataTest ({ urlDataNotice, setUrlDataNotice, toastRef }) {
     )
 }
 
-export default UrlDataTest;
+export default UrlDataNotice;

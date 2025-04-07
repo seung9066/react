@@ -412,13 +412,17 @@
         }
 
         // url parameter 값 설정
-        function setParamDataEnc(data) {
+        function setParamDataEnc(data, msg) {
             let newData = {...data};
             let sendData = "";
             if (newData.grid || newData.img) {
                 const dataStringify = JSON.stringify(newData);
                 const dataBase64 = btoa(unescape(encodeURIComponent( dataStringify )));
                 sendData = dataBase64;
+            }
+
+            if (msg) {
+                showToast(msg);
             }
 
             window.parent.postMessage({ data: sendData }, "*");
@@ -461,6 +465,7 @@
             writeObj["date"] = getDate();
 
             let data = getParamData();
+            let msg = "";
             if (data.grid) {
                 let chkSameTr = 0;
 
@@ -476,6 +481,9 @@
                 if (chkSameTr == 0) {
                     data.grid.push(writeObj);
                     data["page"] = 1;
+                    msg = "저장 되었습니다."
+                } else {
+                    msg = "수정 되었습니다."
                 }
             } else {
                 // 최초 저장
@@ -488,7 +496,7 @@
                 data.grid[i].no = i + 1;
             }
 
-            setParamDataEnc(data);
+            setParamDataEnc(data, msg);
 
             makeGrid();
         }

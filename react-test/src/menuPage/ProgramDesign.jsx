@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-function UrlDataTest () {
+function ProgramDesign () {
     const [iframeHeight, setIframeHeight] = useState("100px"); // 기본 높이
     const iframeRef = useRef(null);
 
@@ -26,4 +26,4 @@ function UrlDataTest () {
     )
 }
 
-export default UrlDataTest;
+export default ProgramDesign;

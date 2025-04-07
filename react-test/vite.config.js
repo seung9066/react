@@ -11,6 +11,7 @@ export default defineConfig({
       '@page': path.resolve(__dirname, 'src/menuPage/'),
       '@css': path.resolve(__dirname, 'src/css/'),
       '@img': path.resolve(__dirname, 'src/img/'),
+      '@data': path.resolve(__dirname, 'src/data/'),
     },
   },
 })

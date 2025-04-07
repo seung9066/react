@@ -1,10 +1,10 @@
 import RunawayButton from '@components/RunawayButton'
 
-function Main ({ toastRef }) {
+function Main ( props ) {
 
     return (
         <>
-            <RunawayButton toastRef={toastRef} />
+            <RunawayButton toastRef={props.props.toastRef} />
         </>
     )
 }
