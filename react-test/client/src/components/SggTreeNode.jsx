@@ -11,14 +11,18 @@ import styles from '@css/SggTreeNode.module.css';
  * @param {object} selectedNode - 현재 선택된 노드
  * @param {function} onNodeSelect - 선택 상태 업데이트 콜백
  */
-const SggTree = ({ node, depth = 0, onSelect, children, selectedNode, onNodeSelect }) => {
+const SggTree = ({ node, depth = 0, onSelect, children, selectedNode, onNodeSelect, notFold }) => {
     // 자식이 있다면 기본적으로 펼친 상태로 초기화
     const [expanded, setExpanded] = useState(children && children.length > 0);
 
     const handleClick = () => {
-        // 자식이 있을 경우 확장 상태 토글
-        if (children && children.length > 0) {
-            setExpanded(!expanded);
+        if (notFold) {
+            setExpanded(true);
+        } else {
+            // 자식이 있을 경우 확장 상태 토글
+            if (children && children.length > 0) {
+                setExpanded(!expanded);
+            }
         }
 
         // 선택 노드 상태 업데이트
@@ -99,7 +103,7 @@ const transformDataToTree = (data) => {
  * @param {array} data - 평면 구조의 데이터 배열
  * @param {function} onSelect - 노드 선택 시 실행할 콜백 함수
  */
-const SggTreeNode = ({ data, onSelect, diSelect }) => {
+const SggTreeNode = ({ data, onSelect, diSelect, notFold }) => {
     const [selectedNode, setSelectedNode] = useState(null); // 선택된 노드 상태
 
     // 트리 구조로 변환된 데이터를 메모이제이션
@@ -125,6 +129,7 @@ const SggTreeNode = ({ data, onSelect, diSelect }) => {
                     children={node.children}
                     selectedNode={selectedNode}
                     onNodeSelect={handleNodeSelect}
+                    notFold={notFold}
                 />
             ))}
         </div>

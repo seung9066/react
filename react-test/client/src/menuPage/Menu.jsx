@@ -80,13 +80,17 @@ function Menu( props ) {
             }
 
             if (chkId > 0 && value != selectId) {
-                props.props.toastRef.current.showToast("ID는 중복 불가능합니다.");
+                showToast("ID는 중복 불가능합니다.");
                 value = selectId;
             }
 
         }
         
         setSelectedData({ ...selectedData, [name] : value });
+    }
+
+    const showToast = (msg) => {
+        props.props.toastRef.current.showToast(msg);
     }
 
     // server에서 메뉴 정보 가져오기
@@ -100,7 +104,29 @@ function Menu( props ) {
             const data = await res.json();
             setMenuData(data);
         } catch (err) {
-            props.props.toastRef.current.showToast("메뉴 데이터 로드 실패 ", err);
+            showToast("메뉴 데이터 로드 실패 ", err);
+        }
+    };
+
+    // server에서 메뉴 정보 저장
+    const saveMenu = async (menuData) => {
+        try {
+            const res = await fetch('/api/menu/updateMenu', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(menuData),
+            });
+    
+            if (!res.ok) {
+                throw new Error('서버 응답 오류');
+            }
+    
+            const data = await res.json();
+            return data.message;
+        } catch (err) {
+            showToast("메뉴 정보 저장 실패 ", err);
         }
     };
     
@@ -125,20 +151,31 @@ function Menu( props ) {
     const CBtn = async () => {
         let newMenuData = concatMenu();
 
+        let msg = await saveMenu(newMenuData);
+        showToast(msg);
+        
         await getMenu();
+        RBtn();
     }
     
     // 수정
     const UBtn = async () => {
         let newMenuData = concatMenu();
-
+        
+        let msg = await saveMenu(newMenuData);
+        showToast(msg);
+        
         await getMenu();
+        RBtn();
     }
     
     // 삭제
     const DBtn = async () => {
         let newMenuData = concatMenu("d");
         RBtn();
+        
+        let msg = await saveMenu(newMenuData);
+        showToast(msg);
 
         await getMenu();
     }
@@ -147,7 +184,7 @@ function Menu( props ) {
     const AddBtn = () => {
         let newSelectedData = {...selectedData};
         if (newSelectedData.upId) {
-            props.props.toastRef.current.showToast("최상위 메뉴에만 하위메뉴를 추가할 수 있습니다.");
+            showToast("최상위 메뉴에만 하위메뉴를 추가할 수 있습니다.");
             return false;
         }
         setSelectId();
@@ -186,7 +223,7 @@ function Menu( props ) {
     return (
         <>
             <div>
-                {menuData && <SggTreeNode data={menuData} onSelect={selectedTree} diSelect={diSelect} />}
+                {menuData && <SggTreeNode data={menuData} onSelect={selectedTree} diSelect={diSelect} notFold={true} />}
             </div>
 
             <div className="input-wrapper">

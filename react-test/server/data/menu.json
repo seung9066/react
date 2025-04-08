@@ -67,6 +67,7 @@
         "title": "Menu",
         "path": "/menu",
         "id": "B005",
-        "upId": "A005"
+        "upId": "A005",
+        "children": []
     }
 ]

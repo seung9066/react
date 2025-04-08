@@ -29,12 +29,13 @@ router.get('/getMenu', (req, res) => {
 router.post('/updateMenu', (req, res) => {
     try {
         fs.writeFileSync(dataPath, JSON.stringify(req.body, null, 4));
-        res.sendStatus(200);
+        res.status(200).json({ message: '메뉴 저장 완료' });
     } catch (err) {
         console.error('menu.json 저장 중 오류:', err);
         res.status(500).send('서버 에러');
     }
 });
+
 
 
 // 라우터 모듈 외부로 내보냄 (다른 곳에서 import 가능)
