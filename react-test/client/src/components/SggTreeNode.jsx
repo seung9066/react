@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styles from '@css/SggTreeNode.module.css';
 
 /**
@@ -99,7 +99,7 @@ const transformDataToTree = (data) => {
  * @param {array} data - 평면 구조의 데이터 배열
  * @param {function} onSelect - 노드 선택 시 실행할 콜백 함수
  */
-const SggTreeNode = ({ data, onSelect }) => {
+const SggTreeNode = ({ data, onSelect, diSelect }) => {
     const [selectedNode, setSelectedNode] = useState(null); // 선택된 노드 상태
 
     // 트리 구조로 변환된 데이터를 메모이제이션
@@ -110,6 +110,10 @@ const SggTreeNode = ({ data, onSelect }) => {
         setSelectedNode(node);
         onSelect?.(node);
     };
+
+    useEffect(() => {
+        diSelect ? setSelectedNode() : null;
+    }, [diSelect])
 
     return (
         <div className={styles.treeContainer}>

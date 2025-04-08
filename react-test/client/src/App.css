@@ -69,9 +69,23 @@ button:active {
 }
 
 /* 비활성화된 버튼 */
-button:disabled {
-  background-color: #d6d6d6;
+button:disabled,
+button:disabled:hover {
+  background-color: #b4b4b4 !important; /* 우선순위 강제 */
   cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 혹시 모를 예외 상황 대비 개별 클래스도 명시적으로 */
+button.accept:disabled,
+button.etc:disabled,
+button.primary:disabled,
+button.secondary:disabled,
+button.danger:disabled,
+button.fileUpload:disabled,
+button.fileSave:disabled {
+  background-color: #b4b4b4 !important;
 }
 
 /* 버튼에 애니메이션 추가 (색상 변화) */
@@ -80,6 +94,22 @@ button:focus {
 }
 
 /* 다양한 스타일을 위한 버튼 크기와 색상 설정 */
+button.accept {
+  background-color: #007bff;
+}
+
+button.accept:hover {
+  background-color: #0065d1;
+}
+
+button.etc {
+  background-color: #429cfd;
+}
+
+button.etc:hover {
+  background-color: #3178c5;
+}
+
 button.primary {
   background-color: #28a745;
 }
@@ -176,20 +206,96 @@ body {
   padding: 20px;
 }
 
-/* 입력 필드 기본 스타일 */
-input[type="text"], input[type="email"], input[type="password"] {
-  width: 99%;  /* 입력 필드 너비 100% */
-  padding: 10px 10px;
-  font-size: 14px;
+/* 입력 필드 스타일 */
+input[type="text"], input[type="number"] {
+  width: 200px;
+  padding: 12px;
   border: 2px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  transition: all 0.3s ease;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease-in-out;
+  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 600px;       /* 🔼 기존 400px → 600px 으로 확장 */
+  width: 100%;            /* 너비를 꽉 차게 */
+  box-sizing: border-box; /* 패딩 포함한 사이징 */
+}
+
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-row label {
+  width: 60px;
+  font-weight: 300;
+  color: #333;
+}
+
+.form-row input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-row input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
   outline: none;
 }
 
-/* 입력 필드 포커스 상태 */
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+.formLeft,
+.formCenter,
+.formRight {
+    display: flex;
+    width: 100%;             /* 전체 가로 영역 사용 */
+    flex-wrap: wrap;         /* 요소가 많을 경우 줄바꿈 */
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.formLeft {
+    justify-content: flex-start;
+}
+
+.formCenter {
+    justify-content: center;
+}
+
+.formRight {
+    justify-content: flex-end;
+}
+
+.scroll-box {
+  max-height: 00px;         /* 최대 높이 지정 */
+  overflow-y: auto;          /* 수직 스크롤 자동 */
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.container > div {
+  margin-bottom: 20px;
 }
