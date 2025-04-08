@@ -2,41 +2,60 @@ import React, { useState, useMemo } from 'react';
 import styles from '@css/SggTreeNode.module.css';
 
 /**
- * 개별 트리 노드 컴포넌트
- * @param {object} node - 트리 항목 데이터
- * @param {number} depth - 트리의 깊이 (들여쓰기 계산용)
+ * SggTree 컴포넌트 - 개별 노드를 렌더링
+ *
+ * @param {object} node - 현재 노드 데이터
+ * @param {number} depth - 트리 깊이 (들여쓰기 기준)
  * @param {function} onSelect - 노드 클릭 시 호출할 콜백 함수
+ * @param {array} children - 자식 노드 배열
+ * @param {object} selectedNode - 현재 선택된 노드
+ * @param {function} onNodeSelect - 선택 상태 업데이트 콜백
  */
-const SggTree = ({ node, depth = 0, onSelect, children, upId }) => {
-    const [expanded, setExpanded] = useState(false); // 노드의 확장 여부 상태
+const SggTree = ({ node, depth = 0, onSelect, children, selectedNode, onNodeSelect }) => {
+    // 자식이 있다면 기본적으로 펼친 상태로 초기화
+    const [expanded, setExpanded] = useState(children && children.length > 0);
 
-    // 노드 클릭 시, 자식이 있으면 확장/축소 상태 토글, 부모 컴포넌트로 선택된 노드 전달
     const handleClick = () => {
-        // 자식이 있을 때만 확장/축소 토글
+        // 자식이 있을 경우 확장 상태 토글
         if (children && children.length > 0) {
             setExpanded(!expanded);
         }
-        onSelect?.(node); // 부모에서 콜백이 있으면 노드 데이터 전달
+
+        // 선택 노드 상태 업데이트
+        onNodeSelect?.(node);
     };
 
+    const isSelected = selectedNode?.id === node.id;
+
     return (
-        <div
-            className={styles.treeNode}
-            style={{ paddingLeft: depth * 16 }} // 트리 깊이에 따라 들여쓰기
-        >
-            <div className={styles.nodeLabel} onClick={handleClick}>
+        <div style={{ paddingLeft: depth * 32 }} className={styles.treeNode}>
+            <div
+                className={`${styles.nodeLabel} ${isSelected ? styles.selected : ''}`}
+                onClick={handleClick}
+            >
                 <span className={styles.nodeIcon}>
                     {children && children.length > 0
-                        ? '📂' : node.upId 
-                                ? '📄' : '📁'} {/* 최상위면 폴더 아이콘, 최하위는 파일 아이콘 */}
+                        ? '📂' // 폴더 아이콘
+                        : node.upId
+                        ? '📄' // 파일 아이콘
+                        : '📁' // 루트 아이콘 
+                    }
                 </span>
-                <span className={styles.nodeTitle}>{node.showTitle}</span> {/* 노드 제목 */}
-                <span className={styles.nodePath}>{node.path}</span> {/* 노드 경로 */}
+                <span className={styles.nodeTitle}>{node.showTitle}</span>
+                <span className={styles.nodePath}>{node.path}</span>
             </div>
-            {children && children.length > 0 && expanded && ( // 자식 노드가 있을 때만 렌더링
+            {children && children.length > 0 && expanded && (
                 <div>
                     {children.map((child) => (
-                        <SggTree key={child.id} node={child} depth={depth + 1} onSelect={onSelect} children={child.children} />
+                        <SggTree
+                            key={child.id}
+                            node={child}
+                            depth={depth + 1}
+                            onSelect={onSelect}
+                            children={child.children}
+                            selectedNode={selectedNode}
+                            onNodeSelect={onNodeSelect}
+                        />
                     ))}
                 </div>
             )}
@@ -45,29 +64,29 @@ const SggTree = ({ node, depth = 0, onSelect, children, upId }) => {
 };
 
 /**
- * 트리 데이터 변환 함수
- * @param {Array} data - 평면화된 트리 데이터
- * @returns {Array} - 트리 구조로 변환된 데이터
+ * transformDataToTree - 평면 구조 데이터를 트리 구조로 변환
+ *
+ * @param {array} data - 평면 구조의 데이터 (id, upId 포함)
+ * @returns {array} 트리 구조의 루트 노드 배열
  */
 const transformDataToTree = (data) => {
     const map = new Map();
     const roots = [];
 
-    // 평면 데이터를 Map에 넣고, children 배열을 초기화
+    // 각 노드를 Map에 등록하고 children 초기화
     data.forEach((item) => {
         map.set(item.id, { ...item, children: [] });
     });
 
-    // 각 노드에 대해 upId를 기준으로 부모-자식 관계 설정
+    // 부모-자식 관계 설정
     data.forEach((item) => {
-        const currentNode = map.get(item.id);
-        if (item.upId === null) {
-            roots.push(currentNode); // upId가 null인 노드는 루트로 추가
+        const node = map.get(item.id);
+        if (item.upId === null || !map.has(item.upId)) {
+            // 부모가 없으면 루트 노드로 간주
+            roots.push(node);
         } else {
             const parent = map.get(item.upId);
-            if (parent) {
-                parent.children.push(currentNode); // 부모 노드에 자식 추가
-            }
+            parent.children.push(node);
         }
     });
 
@@ -75,17 +94,34 @@ const transformDataToTree = (data) => {
 };
 
 /**
- * 트리 전체를 렌더링하는 컴포넌트
- * @param {Array} data - 트리 데이터 (평면화된 형태)
- * @param {function} onSelect - 노드 클릭 시 실행되는 콜백 함수
+ * SggTreeNode - 전체 트리를 렌더링하는 루트 컴포넌트
+ *
+ * @param {array} data - 평면 구조의 데이터 배열
+ * @param {function} onSelect - 노드 선택 시 실행할 콜백 함수
  */
 const SggTreeNode = ({ data, onSelect }) => {
+    const [selectedNode, setSelectedNode] = useState(null); // 선택된 노드 상태
+
+    // 트리 구조로 변환된 데이터를 메모이제이션
     const treeData = useMemo(() => transformDataToTree(data), [data]);
+
+    // 노드 선택 처리
+    const handleNodeSelect = (node) => {
+        setSelectedNode(node);
+        onSelect?.(node);
+    };
 
     return (
         <div className={styles.treeContainer}>
             {treeData.map((node) => (
-                <SggTree key={node.id} node={node} onSelect={onSelect} children={node.children} />
+                <SggTree
+                    key={node.id}
+                    node={node}
+                    onSelect={onSelect}
+                    children={node.children}
+                    selectedNode={selectedNode}
+                    onNodeSelect={handleNodeSelect}
+                />
             ))}
         </div>
     );

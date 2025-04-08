@@ -45,4 +45,13 @@
     font-size: 14px;
     color: #888;
   }
-  
+ 
+.nodeLabel {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.selected {
+    background-color: #e0f7ff;
+}

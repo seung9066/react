@@ -10,9 +10,12 @@ function Menu( props ) {
         getMenu();
     }, []);
 
+    useEffect(() => {
+        console.log(selectedData)
+    }, [selectedData])
+
     const selectedTree = (node) => {
         setSelectedData(node);
-        console.log(node)
     }
 
     // server에서 메뉴 정보 가져오기
