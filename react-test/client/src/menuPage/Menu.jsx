@@ -59,11 +59,29 @@ function Menu( props ) {
         setSelectedData(node);
         setSelectId(node.id);
         setSelectUpId(node.id);
-        setBtnDisabled({
-            ...btnDisabled,
-            CBtn : true,
-            UBtn : false,
-            DBtn : false,
+
+        if (node.upId) {
+            setBtnDisabled({
+                ...btnDisabled,
+                CBtn : true,
+                UBtn : false,
+                DBtn : false,
+                etcBtn : true,
+            })
+        } else {
+            setBtnDisabled({
+                ...btnDisabled,
+                CBtn : true,
+                UBtn : false,
+                DBtn : false,
+                etcBtn: false,
+            })
+        }
+
+        setInputDisabled({
+            ...inputDisabled,
+            id: true,
+            upId: true,
         })
     }
 
@@ -145,6 +163,8 @@ function Menu( props ) {
 
         // CRUD 버튼
         setBtnDisabled(defaultBtn);
+        // input
+        setInputDisabled(defaultInput);
     }
 
     // 등록
@@ -193,6 +213,12 @@ function Menu( props ) {
         setBtnDisabled({
             ...btnDisabled,
             CBtn: false,
+        })
+
+        setInputDisabled({
+            ...inputDisabled,
+            upId: true,
+            id: false,
         })
     }
 
