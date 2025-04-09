@@ -9,7 +9,7 @@ const SggTree = ({
     children,
     selectedNode,
     onNodeSelect,
-    notFold,
+    alwaysOpen,
     onDropNode
 }) => {
     // 노드 확장 상태 관리
@@ -17,7 +17,7 @@ const SggTree = ({
 
     // 노드 클릭 시 확장/축소 또는 선택 처리
     const handleClick = () => {
-        if (notFold) {
+        if (alwaysOpen) {
             setExpanded(true);
         } else if (children && children.length > 0) {
             setExpanded(!expanded);
@@ -80,7 +80,7 @@ const SggTree = ({
                             children={child.children}
                             selectedNode={selectedNode}
                             onNodeSelect={onNodeSelect}
-                            notFold={notFold}
+                            alwaysOpen={alwaysOpen}
                             onDropNode={onDropNode}
                         />
                     ))}
@@ -115,7 +115,7 @@ const transformDataToTree = (data) => {
 };
 
 // 트리 컴포넌트 전체 컨트롤러
-const SggTreeNode = ({ data, setData, onSelect, diSelect, notFold }) => {
+const SggTreeNode = ({ data, setData, onSelect, diSelect, alwaysOpen }) => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [treeData, setTreeData] = useState(data);
 
@@ -188,7 +188,7 @@ const SggTreeNode = ({ data, setData, onSelect, diSelect, notFold }) => {
                     children={node.children}
                     selectedNode={selectedNode}
                     onNodeSelect={handleNodeSelect}
-                    notFold={notFold}
+                    alwaysOpen={alwaysOpen}
                     onDropNode={handleDropNode}
                 />
             ))}

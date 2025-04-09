@@ -4,28 +4,66 @@
         "title": "React",
         "path": "/",
         "id": "A001",
-        "upId": null
+        "upId": null,
+        "children": []
     },
     {
         "showTitle": "Study",
         "title": "Study",
-        "path": "/study",
+        "path": "study",
         "id": "A002",
-        "upId": null
+        "upId": null,
+        "children": []
     },
     {
         "showTitle": "Play",
         "title": "TicTacToe",
-        "path": "/ticTacToe",
+        "path": "ticTacToe",
         "id": "A003",
-        "upId": null
+        "upId": null,
+        "children": [
+            {
+                "showTitle": "TicTacToe",
+                "title": "TicTacToe",
+                "path": "/ticTacToe",
+                "id": "B001",
+                "upId": "A003",
+                "children": []
+            }
+        ]
     },
     {
         "showTitle": "Program",
         "title": "UrlDataNotice",
-        "path": "/urlDataNotice",
+        "path": "urlDataNotice",
         "id": "A004",
-        "upId": null
+        "upId": null,
+        "children": [
+            {
+                "showTitle": "UrlDataNotice",
+                "title": "UrlDataNotice",
+                "path": "/urlDataNotice",
+                "id": "B002",
+                "upId": "A004",
+                "children": []
+            },
+            {
+                "showTitle": "ProgramDesign",
+                "title": "ProgramDesign",
+                "path": "/programDesign",
+                "id": "B003",
+                "upId": "A004",
+                "children": []
+            },
+            {
+                "showTitle": "Lotto",
+                "title": "Lotto",
+                "path": "/lotto",
+                "id": "B004",
+                "upId": "A004",
+                "children": []
+            }
+        ]
     },
     {
         "showTitle": "UrlDataNotice",
@@ -37,9 +75,10 @@
     {
         "showTitle": "ProgramDesign",
         "title": "ProgramDesign",
-        "path": "/programDesign",
+        "path": "programDesign",
         "id": "B003",
-        "upId": "A004"
+        "upId": "A004",
+        "children": []
     },
     {
         "showTitle": "TicTacToe",
@@ -51,16 +90,27 @@
     {
         "showTitle": "Lotto",
         "title": "Lotto",
-        "path": "/lotto",
+        "path": "lotto",
         "id": "B004",
-        "upId": "A004"
+        "upId": "A004",
+        "children": []
     },
     {
         "showTitle": "Admin",
         "title": "Menu",
-        "path": "/menu",
+        "path": "menu",
         "id": "A005",
-        "upId": null
+        "upId": null,
+        "children": [
+            {
+                "showTitle": "Menu",
+                "title": "Menu",
+                "path": "/menu",
+                "id": "B005",
+                "upId": "A005",
+                "children": []
+            }
+        ]
     },
     {
         "showTitle": "Menu",

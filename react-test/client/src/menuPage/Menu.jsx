@@ -44,22 +44,33 @@ function Menu( props ) {
 
     // 트리 선택
     useEffect(() => {
-        if (selectedData) {
-            let id = selectedData.id;
-
-            let newMenuData = menuData.map((item) => {
-                return item;
-            })
-        }
+        
     }, [selectedData])
 
-    // 메뉴 데이터 => 트리구조 obj
     useEffect(() => {
+        // 메뉴 데이터 => 트리구조 obj
         setTreeMenuData(transformDataToTree(menuData));
+        
+        // 항상 메인페이지는 젤 처음에
+        if (menuData.length > 0 && menuData[0].path !== '/') {
+            // 깊은 복사
+            let newMenuData = structuredClone(menuData);
+            // 인덱스 찾기
+            let idx = newMenuData.findIndex(item => item.path === '/');
+            let [item] = newMenuData.splice(idx, 1);
+            newMenuData.unshift(item);
+            setMenuData(newMenuData);
+
+            showToast('메인 페이지는 항상 처음에 와야합니다.');
+        }
     }, [menuData])
 
     // 트리 선택
     const selectedTree = (node) => {
+        if (node.path === '/') {
+            RBtn();
+            return false;
+        }
         // 트리 선택 행 표시 on
         setDiSelect(false);
 
@@ -97,21 +108,26 @@ function Menu( props ) {
 
     // input 값 입력
     const changeValue = (e) => {
+        let id = e.target.id;
         let name = e.target.name;
         let value = e.target.value;
 
-        if (name === 'id') {
+        if (name !== 'title' && name !== 'upId') {
+            // 깊은 복사
             let newMenuData = structuredClone(menuData);
-            let chkId = 0;
+            let chk = 0;
             for (const item of newMenuData) {
-                item.id === value ? chkId++ : null;
+                console.log(item[name])
+                item[name] === value ? chk++ : null;
             }
 
-            if (chkId > 0 && value != selectId) {
-                showToast("ID는 중복 불가능합니다.");
-                value = selectId;
+            // 연결된 label
+            let label = document.querySelector(`label[for="${id}"]`);
+            let labelText = label?.textContent
+            if (chk > 0) {
+                showToast(labelText + "는 중복 불가능합니다.")
+                name === 'id' ? value = selectId??'' : value = '';
             }
-
         }
         
         setSelectedData({ ...selectedData, [name] : value });
@@ -141,7 +157,7 @@ function Menu( props ) {
                 parent.children.push(node);
             }
         });
-    
+
         return roots;
     };
 
@@ -316,7 +332,7 @@ function Menu( props ) {
             <div>
                 <button type='button' onClick={resetOrderBtn}>순서 초기화</button>
                 <button type='button' onClick={orderBtn}>순서 저장</button>
-                {menuData && <SggTreeNode data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} notFold={true} />}
+                {menuData && <SggTreeNode data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} alwaysOpen={true} />}
             </div>
 
             <div className="input-wrapper">
