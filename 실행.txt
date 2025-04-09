@@ -3,3 +3,9 @@ node --max-http-header-size=1000000 node_modules/vite/bin/vite.js
 
 // server
 npx nodemon index.js
+
+// root
+npm install concurrently --save-dev
+
+package.json scripts 부분에 추가
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
