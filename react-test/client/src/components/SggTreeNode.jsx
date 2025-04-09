@@ -34,7 +34,7 @@ const SggTree = ({
         e.preventDefault();
         const draggedNodeId = e.dataTransfer.getData("application/node-id");
         if (draggedNodeId && draggedNodeId !== node.id) {
-            onDropNode?.(draggedNodeId, node.id, node);
+            onDropNode?.(draggedNodeId, node.id);
         }
     };
 
@@ -123,7 +123,7 @@ const SggTreeNode = ({ data, setData, onSelect, diSelect, notFold }) => {
         if (diSelect) setSelectedNode(null);
     }, [diSelect]);
 
-    const handleDropNode = (draggedId, dropTargetId, node) => {
+    const handleDropNode = (draggedId, dropTargetId) => {
         const draggedNode = treeData.find((n) => n.id === draggedId);
         const dropTargetNode = treeData.find((n) => n.id === dropTargetId);
 
@@ -154,7 +154,7 @@ const SggTreeNode = ({ data, setData, onSelect, diSelect, notFold }) => {
             });
         }
 
-        node.upId ? onSelect?.({ ...draggedNode, upId: newParentId }) : onSelect?.(draggedNode);
+        draggedNode.upId ? (onSelect?.({ ...draggedNode, upId: newParentId })) : onSelect?.(draggedNode);
         setTreeData(newTree);
     };
 
