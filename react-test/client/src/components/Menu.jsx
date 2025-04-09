@@ -2,13 +2,11 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import '@css/Menu.css';
 
-function Menu({ getMenuNm }) {
+function Menu({ getMenuNm, menuData, setMenuData }) {
     const clickMenu = (e, title) => {
         let newMenuNm = title;
         getMenuNm(newMenuNm);
     };
-    const [menuData, setMenuData] = useState();
-
     useEffect(() => {
         getMenu();
     }, []);

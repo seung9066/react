@@ -21,6 +21,7 @@ const modules = import.meta.glob('./menuPage/*.jsx');
 
 function App() {
   const toastRef = useRef(null);
+  const [menuData, setMenuData] = useState([]);
   const [menuNm, setMenuNm] = useState('React');
   const [urlDataNotice, setUrlDataNoticeData] = useState('');
   const getMenuNm = (value) => {
@@ -66,7 +67,7 @@ function App() {
       <ToastAlert ref={toastRef} />
       <div className="App">
         <div>
-          <Menu getMenuNm={getMenuNm}/>
+          <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} />
         </div>
         <div style={{ marginTop: "60px", textAlign: "center" }}>
           <GetTime />
@@ -76,11 +77,11 @@ function App() {
       <div className="container">
         <Routes>
           {/* 컴포넌트 동적 생성 */}
-          { components.map((Component) => {
+          { components && components.map((Component) => {
             let pathName = Component.name;
             pathName = pathName.charAt(0).toLowerCase() + pathName.slice(1);
             pathName === "main" ? pathName = "" : null;
-            return <Route path={pathName} element={ <Component props={props} /> } />
+            return <Route path={pathName} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } />
           })}
         </Routes>
       </div>

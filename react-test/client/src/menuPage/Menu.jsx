@@ -6,6 +6,8 @@ import CRUDButton from "@components/CRUDButton";
 function Menu( props ) {
     // 메뉴 데이터
     const [menuData, setMenuData] = useState([]);
+    // 메뉴 데이터 트리 obj
+    const [treeMenuData, setTreeMenuData] = useState([]);
     // 선택행 데이터
     const [selectedData, setSelectedData] = useState({});
     // 선택행 id
@@ -18,11 +20,11 @@ function Menu( props ) {
 
     // input disable
     let defaultInput = {
-        showTitle: false,
-        title: false,
-        path: false,
-        id: false,
-        upId: false,
+        showTitle: true,
+        title: true,
+        path: true,
+        id: true,
+        upId: true,
     }
     const [inputDisabled, setInputDisabled] = useState(defaultInput)
 
@@ -50,6 +52,15 @@ function Menu( props ) {
             })
         }
     }, [selectedData])
+
+    // 메뉴 데이터 => 트리구조 obj
+    useEffect(() => {
+        setTreeMenuData(transformDataToTree(menuData));
+    }, [menuData])
+
+    useEffect(() => {
+        props.setMenu(treeMenuData);
+    }, [treeMenuData])
 
     // 트리 선택
     const selectedTree = (node) => {
@@ -81,7 +92,11 @@ function Menu( props ) {
         setInputDisabled({
             ...inputDisabled,
             id: true,
-            upId: true,
+            upId: false,
+            showTitle: false,
+            path: false,
+            title: false,
+            // upId: true,
         })
     }
 
@@ -110,6 +125,30 @@ function Menu( props ) {
     const showToast = (msg) => {
         props.props.toastRef.current.showToast(msg);
     }
+
+    const transformDataToTree = (data) => {
+        const map = new Map();
+        const roots = [];
+    
+        // 각 노드를 Map에 등록하고 children 초기화
+        data.forEach((item) => {
+            map.set(item.id, { ...item, children: [] });
+        });
+    
+        // 부모-자식 관계 설정
+        data.forEach((item) => {
+            const node = map.get(item.id);
+            if (item.upId === null || !map.has(item.upId)) {
+                // 부모가 없으면 루트 노드로 간주
+                roots.push(node);
+            } else {
+                const parent = map.get(item.upId);
+                parent.children.push(node);
+            }
+        });
+    
+        return roots;
+    };
 
     // server에서 메뉴 정보 가져오기
     const getMenu = async () => {
@@ -148,6 +187,16 @@ function Menu( props ) {
         }
     };
     
+    // 순서 저장
+    const orderBtn = async () => {
+        let newMenuData = menuData.map((item) => item);
+        
+        let msg = await saveMenu(newMenuData);
+        showToast(msg);
+
+        await getMenu();
+        RBtn();
+    }
 
     // 초기화
     const RBtn = () => {
@@ -215,11 +264,25 @@ function Menu( props ) {
             CBtn: false,
         })
 
-        setInputDisabled({
-            ...inputDisabled,
-            upId: true,
-            id: false,
-        })
+        if (selectUpId) {
+            setInputDisabled({
+                ...inputDisabled,
+                id: false,
+                upId: true,
+                showTitle: false,
+                path: false,
+                title: false,
+            })
+        } else {
+            setInputDisabled({
+                ...inputDisabled,
+                id: false,
+                upId: false,
+                showTitle: false,
+                path: false,
+                title: false,
+            })
+        }
     }
 
     // 메뉴 데이터 합치기
@@ -249,7 +312,8 @@ function Menu( props ) {
     return (
         <>
             <div>
-                {menuData && <SggTreeNode data={menuData} onSelect={selectedTree} diSelect={diSelect} notFold={true} />}
+                <button type='button' onClick={orderBtn}>순서저장</button>
+                {menuData && <SggTreeNode data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} notFold={true} />}
             </div>
 
             <div className="input-wrapper">
@@ -258,13 +322,21 @@ function Menu( props ) {
                     { id: 'title', label: '화면명' },
                     { id: 'path', label: '경로' },
                     { id: 'id', label: 'ID' },
-                    { id: 'upId', label: '상위 ID' },
                 ].map((field) => (
                     <div className="form-row" key={field.id}>
                         <label htmlFor={field.id}>{field.label}</label>
                         <input type="text" id={field.id} name={field.id} value={selectedData[field.id] ?? ''} disabled={inputDisabled[field.id]} onChange={changeValue} />
                     </div>
                 ))}
+                <div className='form-row'>
+                    <label htmlFor='upId'>상위 ID</label>
+                    <select id='upId' name='upId' disabled={inputDisabled['upId']} onChange={changeValue} value={selectedData['upId'] ?? ''}>
+                        <option value=''></option>
+                        {treeMenuData && treeMenuData.map((item) => 
+                            <option value={item.id} key={item.id}>{item.showTitle}</option>
+                        )}
+                    </select>
+                </div>
             </div>
 
             <div>
