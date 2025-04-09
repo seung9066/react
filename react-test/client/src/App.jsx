@@ -16,6 +16,8 @@ import Menu from '@components/Menu';
 import ScrollToTopButton from '@components/TopBtn';
 import ToastAlert from "@components/ToastAlert";
 
+import NotFound from "@components/NotFound";
+
 // components 폴더 내의 모든 .jsx 파일을 비동기로 가져오는 객체 생성
 const modules = import.meta.glob('./menuPage/*.jsx');
 
@@ -83,6 +85,7 @@ function App() {
             pathName === "main" ? pathName = "" : null;
             return <Route path={pathName} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } />
           })}
+          <Route path="*" element={<NotFound props={props} />} />
         </Routes>
       </div>
       <ScrollToTopButton />
