@@ -44,7 +44,7 @@ function Menu( props ) {
 
     // 트리 선택
     useEffect(() => {
-        
+
     }, [selectedData])
 
     useEffect(() => {
@@ -86,6 +86,15 @@ function Menu( props ) {
                 DBtn : false,
                 etcBtn : true,
             })
+            
+            setInputDisabled({
+                ...inputDisabled,
+                id: true,
+                upId: false,
+                showTitle: false,
+                path: false,
+                title: false,
+            })
         } else {
             setBtnDisabled({
                 ...btnDisabled,
@@ -94,16 +103,17 @@ function Menu( props ) {
                 DBtn : false,
                 etcBtn: false,
             })
+
+            setInputDisabled({
+                ...inputDisabled,
+                id: true,
+                upId: true,
+                showTitle: false,
+                path: false,
+                title: false,
+            })
         }
 
-        setInputDisabled({
-            ...inputDisabled,
-            id: true,
-            upId: false,
-            showTitle: false,
-            path: false,
-            title: false,
-        })
     }
 
     // input 값 입력
