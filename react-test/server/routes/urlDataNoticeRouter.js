@@ -11,7 +11,7 @@ import path from 'path';
 const router = express.Router();
 
 // menu.json 파일의 절대 경로를 설정 (서버 기준으로 접근 가능해야 함)
-const dataPath = path.resolve('./data/Man _doesnt_use_a_database.json');
+const dataPath = path.resolve('./data/Man_doesnt_use_a_database.json');
 
 // GET: menu.json 데이터 읽기
 router.get('/getData', (req, res) => {
