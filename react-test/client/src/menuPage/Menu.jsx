@@ -58,10 +58,6 @@ function Menu( props ) {
         setTreeMenuData(transformDataToTree(menuData));
     }, [menuData])
 
-    useEffect(() => {
-        props.setMenu(treeMenuData);
-    }, [treeMenuData])
-
     // 트리 선택
     const selectedTree = (node) => {
         // 트리 선택 행 표시 on
@@ -96,7 +92,6 @@ function Menu( props ) {
             showTitle: false,
             path: false,
             title: false,
-            // upId: true,
         })
     }
 
@@ -196,6 +191,8 @@ function Menu( props ) {
 
         await getMenu();
         RBtn();
+
+        props.setMenu(treeMenuData);
     }
 
     // 초기화

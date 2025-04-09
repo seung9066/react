@@ -296,8 +296,8 @@
     </div>
     <div class="formRight" id="fileForm">
         <input type="file" id="upFile" accept=".json" onchange="readJsonFile(this)" style="display: none;" />
-        <button class="fileUpload" onclick="loadFile()">JSON 파일 불러오기</button>
-        <button class="fileSave" onclick="saveFile()">JSON 파일 저장</button>
+        <button class="fileUpload" onclick="loadFile()">서버 파일 불러오기</button>
+        <button class="fileSave" onclick="saveFile()">서버 저장</button>
         <button class="fileUpload" onclick="copyUrl()">url 복사</button>
     </div>
     <div id="noticeList">
@@ -610,8 +610,9 @@
 
         // 파일 읽어오기
         function loadFile() {
-            let file = document.getElementById('upFile');
-            file.click();
+            window.parent.postMessage({ getData: true }, "*");
+            // let file = document.getElementById('upFile');
+            // file.click();
         }
 
         // JSON 파일 읽기
@@ -641,6 +642,20 @@
 
         // 파일 저장
         function saveFile() {
+            let data = getParamData();
+
+            let newData = {...data};
+            let sendData = "";
+            if (newData.grid || newData.img) {
+                const dataStringify = JSON.stringify(newData);
+                const dataBase64 = btoa(unescape(encodeURIComponent( dataStringify )));
+                sendData = dataBase64;
+            }
+
+            window.parent.postMessage({ saveData: sendData }, "*");
+
+            return;
+
             if (window.parent !== window) {
                 const parentParams = new URLSearchParams(window.parent.location.search);
                 if (parentParams.has('data')) {
@@ -648,6 +663,10 @@
                     const jsonUrl = JSON.stringify(dataBase64);
                     const blob = new Blob([jsonUrl], { type: 'application/json' });
                     const urlBlob = URL.createObjectURL(blob);
+
+                    window.parent.postMessage({ saveData : blob }, "*");
+
+                    return false;
                     const a = document.createElement('a');
                     a.href = urlBlob;
                     a.download = 'Man doesnt use a database.json';
