@@ -28,7 +28,6 @@ router.get('/getData', (req, res) => {
 // POST: menu.json 파일 저장
 router.post('/updateData', (req, res) => {
     try {
-        console.log(req.body)
         fs.writeFileSync(dataPath, JSON.stringify(req.body, null, 4));
         res.status(200).json({ message: '저장 완료' });
     } catch (err) {
