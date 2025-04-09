@@ -9,20 +9,23 @@
 // express 모듈을 불러옴 (웹 서버 프레임워크)
 import express from 'express';
 
-// 메뉴 관련 라우터 파일을 불러옴
-import menuRouter from './routes/menuRouter.js';
-
-// urlDataNotice 관련 라우터 파일을 불러옴
-import urlDataNoticeRouter from './routes/urlDataNoticeRouter.js';
-
 // CORS(Cross-Origin Resource Sharing) 설정을 위한 모듈
 import cors from 'cors';
+
+// path와 fs/promises 모듈로 라우터 자동 로딩
+import path from 'path';
+import { readdir } from 'fs/promises';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 // Express 애플리케이션 생성
 const app = express();
 
 // 서버가 실행될 포트 번호
 const PORT = 5000;
+
+// __dirname 대체 (ESM 환경에서)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // CORS 허용 설정 (다른 도메인에서 API 접근 가능하도록 허용)
 app.use(cors());
@@ -31,13 +34,30 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// "/api/menu"로 시작하는 요청은 menuRouter에서 처리
-app.use('/api/menu', menuRouter);
+// "routes" 디렉토리 내 라우터 파일 자동 로딩
+const loadRoutes = async () => {
+    const routesDir = path.join(__dirname, 'routes');
+    const files = await readdir(routesDir);
 
-// "/api/menu"로 시작하는 요청은 urlDataNoticeRouter 처리
-app.use('/api/urlDataNotice', urlDataNoticeRouter);
+    for (const file of files) {
+        if (file.endsWith('.js')) {
+            try {
+                const modulePath = pathToFileURL(path.join(routesDir, file)).href;
+                const module = await import(modulePath);
+                const route = module.default;
+                const routePath = `/api/${file.replace('Router.js', '')}`;
+                app.use(routePath, route);
+                console.log(`📦 라우터 등록됨: ${routePath}`);
+            } catch (err) {
+                console.error(`❌ 라우터 로딩 실패: ${file}`, err);
+            }
+        }
+    }
+};
 
-// 서버 실행 및 포트 5000에서 대기 시작
-app.listen(PORT, () => {
-    console.log(`서버 실행 중: http://localhost:${PORT}`);
+// 라우터 로딩 후 서버 시작
+loadRoutes().then(() => {
+    app.listen(PORT, () => {
+        console.log(`🚀 서버 실행 중: http://localhost:${PORT}`);
+    });
 });
