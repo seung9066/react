@@ -6,6 +6,5 @@ npx nodemon index.js
 
 // root
 npm install concurrently --save-dev
-
-package.json scripts 부분에 추가
-    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+>
+npm run dev
