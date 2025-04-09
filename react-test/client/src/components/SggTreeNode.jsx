@@ -167,6 +167,8 @@ const SggTreeNode = ({ data, setData, onSelect, diSelect, notFold }) => {
             });
         }
 
+        setSelectedNode(draggedNode);
+
         // 선택된 노드 콜백
         draggedNode.upId ? (onSelect?.({ ...draggedNode, upId: newParentId })) : onSelect?.(draggedNode);
 
