@@ -83,7 +83,7 @@ function App() {
             let pathName = Component.name;
             pathName = pathName.charAt(0).toLowerCase() + pathName.slice(1);
             pathName === "main" ? pathName = "" : null;
-            return <Route path={pathName} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } />
+            return <Route path={pathName} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } key={Component.name + 'route'} />
           })}
           <Route path="*" element={<NotFound props={props} />} />
         </Routes>

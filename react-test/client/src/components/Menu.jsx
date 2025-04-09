@@ -59,16 +59,16 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
                 {menuData && menuData.map((menu, index) => (
                     <div className="navbarMenuWrapper" key={index}>
                         {menu.path ? (
-                            <Link to={menu.path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)}>
+                            <Link to={menu.path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
                                 {menu.showTitle}
                             </Link>
                         ) : (
-                            <div className="navbarMenu">
+                            <div className="navbarMenu" key={index}>
                                 {menu.showTitle}
                             </div>
                         )}
                         {menu.children.length > 0 && (
-                            <div className="subMenu">
+                            <div className="subMenu" key={menu.children.id}>
                                 {menu.children.map((sub, subIndex) => (
                                     <Link
                                         to={sub.path}
