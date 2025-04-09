@@ -75,6 +75,7 @@ function UrlDataNotice ( props ) {
             const data = await res.json();
             let param = new URLSearchParams(location.search);
             param.set('data', data.data);
+            props.props.setUrlDataNoticeData(param.get('data'));
             history.pushState(null, null, '?' + param.toString());
 
             // 자식에게 해당 메시지 보내면 그리드랑 이미지 그림
