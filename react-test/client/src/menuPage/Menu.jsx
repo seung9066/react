@@ -181,6 +181,11 @@ function Menu( props ) {
             showToast("메뉴 정보 저장 실패 ", err);
         }
     };
+
+    // 순서 초기화
+    const resetOrderBtn = async() => {
+        await getMenu();
+    }
     
     // 순서 저장
     const orderBtn = async () => {
@@ -309,7 +314,8 @@ function Menu( props ) {
     return (
         <>
             <div>
-                <button type='button' onClick={orderBtn}>순서저장</button>
+                <button type='button' onClick={resetOrderBtn}>순서 초기화</button>
+                <button type='button' onClick={orderBtn}>순서 저장</button>
                 {menuData && <SggTreeNode data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} notFold={true} />}
             </div>
 
