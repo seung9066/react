@@ -67,7 +67,52 @@ function App() {
       };
 
       loadComponents();
+
+      getMenu();
   }, []);
+
+  // server에서 메뉴 정보 가져오기
+  const getMenu = async () => {
+    fetch('/api/menu/getMenu')
+    .then((res) => {
+        if (!res.ok) {
+            throw new Error('서버 응답 오류');
+        }
+        return res.json();
+    })
+    .then((data) => {
+        const transformDataToTree = (data) => {
+            const map = new Map();
+            const roots = [];
+        
+            // 평면 데이터를 Map에 넣고, children 배열을 초기화
+            data.forEach((item) => {
+                map.set(item.id, { ...item, children: [] });
+            });
+        
+            // 각 노드에 대해 upId를 기준으로 부모-자식 관계 설정
+            data.forEach((item) => {
+                const currentNode = map.get(item.id);
+                if (item.upId === null) {
+                    roots.push(currentNode); // upId가 null인 노드는 루트로 추가
+                } else {
+                    const parent = map.get(item.upId);
+                    if (parent) {
+                        parent.children.push(currentNode); // 부모 노드에 자식 추가
+                    }
+                }
+            });
+        
+            return roots;
+        };
+
+        let newData = transformDataToTree(data);
+        setMenuData(newData);
+    })
+    .catch((err) => {
+        console.error('메뉴 데이터 로드 실패:', err);
+    });
+  }
   
   return (
     <>
@@ -75,7 +120,7 @@ function App() {
       <ToastAlert ref={toastRef} />
       <div className="App">
         <div>
-          <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} />
+          {menuData.length > 0 && <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} />}
         </div>
         <div style={{ marginTop: "60px", textAlign: "center" }}>
           <GetTime />
