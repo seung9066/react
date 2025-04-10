@@ -5,6 +5,7 @@ import styles from '@css/SggTreeNode.module.css';
 const SggTree = ({
     node,
     depth = 0,
+    showCol,
     onSelect,
     children,
     selectedNode,
@@ -64,8 +65,7 @@ const SggTree = ({
                     {children && children.length > 0 ? '📂' : node.upId ? '📄' : '📁'}
                 </span>
                 {/* 노드 제목과 경로 */}
-                <span className={styles.nodeTitle}>{node.title}</span>
-                <span className={styles.nodePath}>{node.path}</span>
+                {showCol && showCol.map((item, idx) => <span className={idx === 0 ? styles.nodeTitle : styles.nodePath} key={'tree' + item}>{node[item]}</span>)}
             </div>
 
             {/* 자식 노드 재귀 렌더링 */}
@@ -75,6 +75,7 @@ const SggTree = ({
                         <SggTree
                             key={child.id}
                             node={child}
+                            showCol={showCol}
                             depth={depth + 1}
                             onSelect={onSelect}
                             children={child.children}
@@ -115,7 +116,7 @@ const transformDataToTree = (data) => {
 };
 
 // 트리 컴포넌트 전체 컨트롤러
-const SggTreeNode = ({ data, setData, onSelect, diSelect, alwaysOpen }) => {
+const SggTreeNode = ({ showCol, data, setData, onSelect, diSelect, alwaysOpen }) => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [treeData, setTreeData] = useState(data);
 
@@ -184,6 +185,7 @@ const SggTreeNode = ({ data, setData, onSelect, diSelect, alwaysOpen }) => {
                 <SggTree
                     key={node.id}
                     node={node}
+                    showCol={showCol}
                     onSelect={onSelect}
                     children={node.children}
                     selectedNode={selectedNode}

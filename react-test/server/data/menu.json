@@ -1,62 +1,80 @@
 [
     {
         "title": "React",
-        "path": "/",
+        "path": "/main",
         "id": "A001",
         "upId": null
     },
     {
         "title": "Study",
-        "path": null,
+        "path": "/study",
         "id": "A002",
         "upId": null
     },
     {
         "title": "Play",
-        "path": "",
+        "path": "/play",
         "id": "A003",
         "upId": null
     },
     {
         "title": "Program",
-        "path": "",
+        "path": "/program",
         "id": "A004",
         "upId": null
     },
     {
         "title": "UrlDataNotice",
-        "path": "urlDataNotice",
+        "path": "/urlDataNotice",
         "id": "B002",
         "upId": "A004"
     },
     {
         "title": "ProgramDesign",
-        "path": "programDesign",
+        "path": "/programDesign",
         "id": "B003",
         "upId": "A004"
     },
     {
         "title": "TicTacToe",
-        "path": "ticTacToe",
+        "path": "/ticTacToe",
         "id": "B001",
         "upId": "A003"
     },
     {
         "title": "Lotto",
-        "path": "lotto",
+        "path": "/lotto",
         "id": "B004",
         "upId": "A004"
     },
     {
         "title": "Admin",
-        "path": "",
+        "path": "/admin",
         "id": "A005",
         "upId": null
     },
     {
         "title": "Menu",
-        "path": "menu",
+        "path": "/menu",
         "id": "B005",
         "upId": "A005"
+    },
+    {
+        "upId": "A002",
+        "title": "LifeCycleHook",
+        "path": "/lifeCycleHook",
+        "id": "B006"
+    },
+    {
+        "upId": "A002",
+        "title": "Props",
+        "path": "/props",
+        "id": "B007"
+    },
+    {
+        "upId": "A002",
+        "title": "ReferenceDataType",
+        "path": "/referenceDataType",
+        "id": "B008"
     }
 ]

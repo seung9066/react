@@ -14,7 +14,13 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
             getMenuNm(title);
         } else {
             let url = new URL(window.parent.location.href);
-            let path = url.pathname.replace("/", "");
+            let path = url.pathname;
+            let lastSlash = 0;
+            for (let i = 0; i < path.length; i++) {
+                (path[i] === '/' && i !== path.length - 1) ? lastSlash = i : null;
+            }
+            path = path.slice(lastSlash + 1);
+            path = path.replace('/', '');
             path = path.charAt(0).toUpperCase() + path.slice(1);
             path ? getMenuNm(path) : null;
         }
@@ -71,16 +77,12 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
             <div className="navbarMenuForm">
                 {menuData && menuData.map((menu, index) => (
                     <div className="navbarMenuWrapper" key={index}>
-                        {menu.path ? (
-                            <Link to={menu.path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
-                                {menu.title}
-                            </Link>
-                        ) : (
+                        {(
                             menu.children.length > 0 ? (
-                            <Link to={menu.children[0].path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.children[0].title)} key={menu.id}>
+                            <Link to={menu.path + menu.children[0].path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.children[0].title)} key={menu.id}>
                                 {menu.title}
                             </Link> ) : (
-                            <Link to={menu.title.charAt(0).toLowerCase() + menu.title.slice(1)} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
+                            <Link to={menu.path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
                                 {menu.title}
                             </Link> 
                             )
@@ -89,7 +91,7 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
                             <div className="subMenu" key={menu.children.id}>
                                 {menu.children.map((sub, subIndex) => (
                                     <Link
-                                        to={sub.path}
+                                        to={(menu.path + sub.path)}
                                         className="subMenuItem"
                                         key={subIndex}
                                         onClick={(e) => clickMenu(e, sub.title)}

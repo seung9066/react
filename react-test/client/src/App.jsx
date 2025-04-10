@@ -20,6 +20,7 @@ import NotFound from "@components/NotFound";
 
 // components 폴더 내의 모든 .jsx 파일을 비동기로 가져오는 객체 생성
 const modules = import.meta.glob('./menuPage/*.jsx');
+const modules2 = import.meta.glob('./menuPage/*/*.jsx');
 
 function App() {
   const toastRef = useRef(null);
@@ -49,11 +50,15 @@ function App() {
   useEffect(() => {
       // 컴포넌트 동적 로딩 함수
       const loadComponents = async () => {
+          const totalModules = Object.assign({}, modules, modules2);
           // modules 객체의 각 파일을 import() 해서 default export만 추출
           const loaded = await Promise.all(
-              Object.entries(modules).map(async ([path, importer]) => {
+              Object.entries(totalModules).map(async ([path, importer]) => {
                   const mod = await importer();
-                  return mod.default;
+                  return {
+                    component : mod.default,
+                    path
+                  };
               })
           );
 
@@ -80,18 +85,23 @@ function App() {
       <div className="container">
         <Routes>
           {/* 컴포넌트 동적 생성 */}
-          { components && components.map((Component, idx) => {
+          { components && components.map(({ component: Component, path}, idx) => {
             let pathName = Component.name;
             let nextPathName = "";
             if (idx !== components.length - 1) {
-              nextPathName = components[idx + 1].name;
+              nextPathName = components[idx + 1].component.name;
               nextPathName = nextPathName.charAt(0).toLowerCase() + nextPathName.slice(1);
             }
             pathName = pathName.charAt(0).toLowerCase() + pathName.slice(1);
             
-            pathName === "main" ? pathName = "" : null;
+            // pathName === "main" ? pathName = "" : null;
+            let root = './menuPage';
+            let pagePath = path?.substring(root.length).replace('.jsx', '')??'';
+            let nextPagePath = (idx !== components.length - 1) ? components[idx + 1].path.substring(root.length).replace('.jsx', '') : '';
 
-            return <Route path={pathName} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } key={Component.name + 'route'} />
+            pagePath === '' ? pagePath = nextPagePath : null;
+
+            return <Route path={pagePath} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } key={Component.name + 'route'} />
           })}
           <Route path="*" element={<NotFound props={props} />} />
         </Routes>

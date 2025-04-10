@@ -43,34 +43,29 @@ function Menu( props ) {
 
     // 트리 선택
     useEffect(() => {
-        if (selectedData.upId) {
+        if (selectedData.id !== 'A001' && selectedData.id) {
             setInputDisabled({
                 ...inputDisabled,
                 path: false,
             })
-        } else {
+        } else if (!selectUpId) {
             setInputDisabled({
                 ...inputDisabled,
                 path: true,
             })
-
-            setSelectedData({
-                ...selectedData,
-                path: null,
-            })
         }
-    }, [selectedData.upId])
+    }, [selectedData.id])
 
     useEffect(() => {
         // 메뉴 데이터 => 트리구조 obj
         setTreeMenuData(transformDataToTree(menuData));
         
         // 항상 메인페이지는 젤 처음에
-        if (menuData.length > 0 && menuData[0].path !== '/') {
+        if (menuData.length > 0 && menuData[0].path !== '/main') {
             // 깊은 복사
             let newMenuData = structuredClone(menuData);
             // 인덱스 찾기
-            let idx = newMenuData.findIndex(item => item.path === '/');
+            let idx = newMenuData.findIndex(item => item.path === '/main');
             let [item] = newMenuData.splice(idx, 1);
             newMenuData.unshift(item);
             setMenuData(newMenuData);
@@ -101,7 +96,7 @@ function Menu( props ) {
             }
         }
 
-        if (node.path === '/') {
+        if (node.path === '/main') {
             // 메인 메뉴 클릭
             selectTreeHomeDisabled();
         }
@@ -159,7 +154,7 @@ function Menu( props ) {
             ...inputDisabled,
             id: true,
             upId: true,
-            path: true,
+            path: false,
             title: false,
         })
     }
@@ -316,7 +311,8 @@ function Menu( props ) {
     // 등록
     const CBtn = async () => {
         let newMenuData = concatMenu();
-
+        newMenuData.map((item) => item.children ? delete item.children : item);
+        
         let msg = await saveMenu(newMenuData);
         showToast(msg);
         
@@ -327,6 +323,7 @@ function Menu( props ) {
     // 수정
     const UBtn = async () => {
         let newMenuData = concatMenu();
+        newMenuData.map((item) => item.children ? delete item.children : item);
         
         let msg = await saveMenu(newMenuData);
         showToast(msg);
@@ -338,18 +335,19 @@ function Menu( props ) {
     // 삭제
     const DBtn = async () => {
         let newMenuData = concatMenu("d");
-        RBtn();
+        newMenuData.map((item) => item.children ? delete item.children : item);
         
         let msg = await saveMenu(newMenuData);
         showToast(msg);
-
+        
         await getMenu();
+        RBtn();
     }
 
     // 추가
     const AddBtn = () => {
         let newSelectedData = {...selectedData};
-        if (newSelectedData.upId) {
+        if (newSelectedData.upId && !selectUpId) {
             showToast("최상위 메뉴에만 하위메뉴를 추가할 수 있습니다.");
             return false;
         }
@@ -374,7 +372,7 @@ function Menu( props ) {
                 ...inputDisabled,
                 id: false,
                 upId: false,
-                path: true,
+                path: false,
                 title: false,
             })
         }
@@ -409,7 +407,7 @@ function Menu( props ) {
             <div>
                 <button type='button' className='secondary' onClick={resetOrderBtn}>순서 초기화</button>
                 <button type='button' className='primary' onClick={orderBtn}>순서 저장</button>
-                {menuData && <SggTreeNode data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} alwaysOpen={true} />}
+                {menuData && <SggTreeNode showCol={['title', 'path', 'id']} data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} alwaysOpen={true} />}
             </div>
 
             <div className="input-wrapper">
@@ -426,9 +424,11 @@ function Menu( props ) {
                 <div className='form-row'>
                     <label htmlFor='upId'>상위 ID</label>
                     <select id='upId' name='upId' disabled={inputDisabled['upId']} onChange={changeValue} value={selectedData['upId'] ?? ''}>
-                        <option value=''></option>
+                        {!selectedData['upId'] && (
+                            <option value=''></option>
+                        )}
                         {treeMenuData && treeMenuData.map((item) => 
-                            <option value={item.id} key={item.id}>{item.title}</option>
+                            item.id !== 'A001' && <option value={item.id} key={item.id}>{item.title}</option>
                         )}
                     </select>
                 </div>

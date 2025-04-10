@@ -11,7 +11,7 @@ import '@css/Props.css'
  * 읽기 전용으로 자식 컴포넌트에서 직접 props 수정 불가능
  * 객체의 형태로 key-value 구조
  */
-function PropsTest(props) {
+function Props(props) {
     // 화면 표시 여부를 위한 useState
     const [showProps1, setShowProps1] = useState(false);
     const [showProps2, setShowProps2] = useState(false);
@@ -59,7 +59,7 @@ function PropsTest(props) {
                 <CodeTextArea code={returnCode(2)} />
                 <button 
                     onClick={clkBtn2}>console.log(name, age)</button>
-                {showProps2 && <PropsTest2 name={props.obj.name} age={props.obj.age} />}
+                {showProps2 && <PropsTest2 name={props.props.propsData.name} age={props.props.propsData.age} />}
             </div>
             <div className='textDiv'>
                 <h2>자식 {'>'} 부모</h2>
@@ -178,4 +178,4 @@ function returnCode(codeNm) {
     return code;
 }
 
-export default PropsTest;
+export default Props;
