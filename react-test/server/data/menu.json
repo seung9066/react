@@ -7,9 +7,10 @@
     },
     {
         "title": "Study",
-        "path": "",
+        "path": null,
         "id": "A002",
-        "upId": ""
+        "upId": null,
+        "children": []
     },
     {
         "title": "Play",

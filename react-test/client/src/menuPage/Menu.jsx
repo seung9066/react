@@ -56,7 +56,7 @@ function Menu( props ) {
 
             setSelectedData({
                 ...selectedData,
-                path: '',
+                path: null,
             })
         }
     }, [selectedData.upId])
