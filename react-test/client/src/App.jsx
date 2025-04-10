@@ -26,6 +26,7 @@ function App() {
   const [menuData, setMenuData] = useState([]);
   const [menuNm, setMenuNm] = useState('React');
   const [urlDataNotice, setUrlDataNoticeData] = useState('');
+
   const getMenuNm = (value) => {
     setMenuNm(value);
   };
@@ -41,10 +42,10 @@ function App() {
     setUrlDataNoticeData: setUrlDataNoticeData,
     propsData: propsData,
   }
-
+  
   // 동적으로 불러온 컴포넌트들을 저장할 state
   const [components, setComponents] = useState([]);
-
+  
   useEffect(() => {
       // 컴포넌트 동적 로딩 함수
       const loadComponents = async () => {
@@ -79,10 +80,17 @@ function App() {
       <div className="container">
         <Routes>
           {/* 컴포넌트 동적 생성 */}
-          { components && components.map((Component) => {
+          { components && components.map((Component, idx) => {
             let pathName = Component.name;
+            let nextPathName = "";
+            if (idx !== components.length - 1) {
+              nextPathName = components[idx + 1].name;
+              nextPathName = nextPathName.charAt(0).toLowerCase() + nextPathName.slice(1);
+            }
             pathName = pathName.charAt(0).toLowerCase() + pathName.slice(1);
+            
             pathName === "main" ? pathName = "" : null;
+
             return <Route path={pathName} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } key={Component.name + 'route'} />
           })}
           <Route path="*" element={<NotFound props={props} />} />

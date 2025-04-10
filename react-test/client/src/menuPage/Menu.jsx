@@ -127,8 +127,7 @@ function Menu( props ) {
             let newMenuData = structuredClone(menuData);
             let chk = 0;
             for (const item of newMenuData) {
-                console.log(item[name])
-                item[name] === value ? chk++ : null;
+                (item[name] === value && value !== "") ? chk++ : null;
             }
 
             // 연결된 label

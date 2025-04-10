@@ -63,9 +63,14 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
                                 {menu.showTitle}
                             </Link>
                         ) : (
+                            menu.children.length > 0 ? (
+                            <Link to={menu.children[0].path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
+                                {menu.showTitle}
+                            </Link> ) : (
                             <div className="navbarMenu" key={index}>
                                 {menu.showTitle}
                             </div>
+                            )
                         )}
                         {menu.children.length > 0 && (
                             <div className="subMenu" key={menu.children.id}>
