@@ -365,8 +365,8 @@ function Menu( props ) {
     return (
         <>
             <div>
-                <button type='button' onClick={resetOrderBtn}>순서 초기화</button>
-                <button type='button' onClick={orderBtn}>순서 저장</button>
+                <button type='button' className='secondary' onClick={resetOrderBtn}>순서 초기화</button>
+                <button type='button' className='primary' onClick={orderBtn}>순서 저장</button>
                 {menuData && <SggTreeNode data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} alwaysOpen={true} />}
             </div>
 
