@@ -131,14 +131,6 @@ function App() {
         <Routes>
           {/* 컴포넌트 동적 생성 */}
           { components && components.map(({ component: Component, path}, idx) => {
-            let pathName = Component.name;
-            let nextPathName = "";
-            if (idx !== components.length - 1) {
-              nextPathName = components[idx + 1].component.name;
-              nextPathName = nextPathName.charAt(0).toLowerCase() + nextPathName.slice(1);
-            }
-            pathName = pathName.charAt(0).toLowerCase() + pathName.slice(1);
-            
             // pathName === "main" ? pathName = "" : null;
             let root = './menuPage';
             let pagePath = path?.substring(root.length).replace('.jsx', '')??'';
