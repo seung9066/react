@@ -89,6 +89,7 @@ function Menu( props ) {
         setSelectUpId(node.id);
 
         if (node.upId) {
+            // 하위 메뉴
             setBtnDisabled({
                 ...btnDisabled,
                 CBtn : true,
@@ -105,21 +106,40 @@ function Menu( props ) {
                 title: false,
             })
         } else {
-            setBtnDisabled({
-                ...btnDisabled,
-                CBtn : true,
-                UBtn : false,
-                DBtn : false,
-                etcBtn: false,
-            })
+            // 최상위 메뉴 자식 유무에 따라 다른 최상위로 들어가기 여부
+            if (node.children.length > 0) {
+                setBtnDisabled({
+                    ...btnDisabled,
+                    CBtn : true,
+                    UBtn : false,
+                    DBtn : false,
+                    etcBtn: false,
+                })
 
-            setInputDisabled({
-                ...inputDisabled,
-                id: true,
-                upId: true,
-                path: true,
-                title: false,
-            })
+                setInputDisabled({
+                    ...inputDisabled,
+                    id: true,
+                    upId: true,
+                    path: true,
+                    title: false,
+                })
+            } else {
+                setBtnDisabled({
+                    ...btnDisabled,
+                    CBtn : true,
+                    UBtn : false,
+                    DBtn : false,
+                    etcBtn: false,
+                })
+                
+                setInputDisabled({
+                    ...inputDisabled,
+                    id: true,
+                    upId: false,
+                    path: true,
+                    title: false,
+                })
+            }
         }
 
         if (node.path === '/') {
