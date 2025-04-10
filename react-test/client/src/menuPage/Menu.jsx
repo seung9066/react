@@ -92,7 +92,7 @@ function Menu( props ) {
             // 하위 메뉴
             selectTreeChildrenDisabled();
         } else {
-            if (node.children.length > 0) {
+            if (node.children?.length > 0) {
                 // 자식 있는 부모 메뉴 클릭
                 selectTreeParentHasChildrenDisabled();
             } else {
