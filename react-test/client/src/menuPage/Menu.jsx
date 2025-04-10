@@ -90,75 +90,97 @@ function Menu( props ) {
 
         if (node.upId) {
             // 하위 메뉴
-            setBtnDisabled({
-                ...btnDisabled,
-                CBtn : true,
-                UBtn : false,
-                DBtn : false,
-                etcBtn : true,
-            })
-            
-            setInputDisabled({
-                ...inputDisabled,
-                id: true,
-                upId: false,
-                path: false,
-                title: false,
-            })
+            selectTreeChildrenDisabled();
         } else {
-            // 최상위 메뉴 자식 유무에 따라 다른 최상위로 들어가기 여부
             if (node.children.length > 0) {
-                setBtnDisabled({
-                    ...btnDisabled,
-                    CBtn : true,
-                    UBtn : false,
-                    DBtn : false,
-                    etcBtn: false,
-                })
-
-                setInputDisabled({
-                    ...inputDisabled,
-                    id: true,
-                    upId: true,
-                    path: true,
-                    title: false,
-                })
+                // 자식 있는 부모 메뉴 클릭
+                selectTreeParentHasChildrenDisabled();
             } else {
-                setBtnDisabled({
-                    ...btnDisabled,
-                    CBtn : true,
-                    UBtn : false,
-                    DBtn : false,
-                    etcBtn: false,
-                })
-                
-                setInputDisabled({
-                    ...inputDisabled,
-                    id: true,
-                    upId: false,
-                    path: true,
-                    title: false,
-                })
+                // 자식 없는 부모 메뉴 클릭
+                selectTreeParentNoChildrenDisabled();
             }
         }
 
         if (node.path === '/') {
-            setBtnDisabled({
-                ...btnDisabled,
-                CBtn : true,
-                UBtn : true,
-                DBtn : true,
-                etcBtn: true,
-            })
-
-            setInputDisabled({
-                ...inputDisabled,
-                id: true,
-                upId: true,
-                path: true,
-                title: true,
-            })
+            // 메인 메뉴 클릭
+            selectTreeHomeDisabled();
         }
+    }
+
+    // 메인 메뉴 클릭
+    const selectTreeHomeDisabled = () => {
+        setBtnDisabled({
+            ...btnDisabled,
+            CBtn : true,
+            UBtn : true,
+            DBtn : true,
+            etcBtn: true,
+        })
+
+        setInputDisabled({
+            ...inputDisabled,
+            id: true,
+            upId: true,
+            path: true,
+            title: true,
+        })
+    }
+
+    // 하위 메뉴 클릭
+    const selectTreeChildrenDisabled = () => {
+        setBtnDisabled({
+            ...btnDisabled,
+            CBtn : true,
+            UBtn : false,
+            DBtn : false,
+            etcBtn : true,
+        })
+        
+        setInputDisabled({
+            ...inputDisabled,
+            id: true,
+            upId: false,
+            path: false,
+            title: false,
+        })
+    }
+
+    // 자식 있는 부모 메뉴 클릭
+    const selectTreeParentHasChildrenDisabled = () => {
+        setBtnDisabled({
+            ...btnDisabled,
+            CBtn : true,
+            UBtn : false,
+            DBtn : false,
+            etcBtn: false,
+        })
+
+        setInputDisabled({
+            ...inputDisabled,
+            id: true,
+            upId: true,
+            path: true,
+            title: false,
+        })
+    }
+
+    // 자식 없는 부모 메뉴 클릭
+    const selectTreeParentNoChildrenDisabled = () => {
+        setBtnDisabled({
+            ...btnDisabled,
+            CBtn : true,
+            UBtn : false,
+            DBtn : false,
+            etcBtn: false,
+        })
+        
+        setInputDisabled({
+            ...inputDisabled,
+            id: true,
+            upId: false,
+            path: true,
+            title: false,
+        })
     }
 
     // input 값 입력
