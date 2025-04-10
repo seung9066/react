@@ -25,18 +25,20 @@ function Menu({ getMenuNm, menuData }) {
     const findTitle = (data, path) => {
         if (Array.isArray(data)) {
             for (const item of data) {
-                if (item.path === path) {
+                let itemPath = item.path;
+                if (itemPath === path.substring(path.indexOf('/', 1))) {
                     return item.title;
                 }
                 if (item.children) {
-                    const title = findTitle(item.children, path);
-                    if (title) {
-                        return title;
+                    const getTitle = findTitle(item.children, path);
+                    if (getTitle) {
+                        return getTitle;
                     }
                 }
             }
         } else {
-            if (data.path === path) {
+            let dataPath = data.path;
+            if (dataPath === path.substring(path.indexOf('/', 1))) {
                 return data.title;
             }
             if (data.children) {
