@@ -180,28 +180,40 @@ function Menu( props ) {
 
     // input 값 입력
     const changeValue = (e) => {
-        let id = e.target.id;
         let name = e.target.name;
         let value = e.target.value;
 
-        if (name !== 'title' && name !== 'upId') {
-            // 깊은 복사
-            let newMenuData = structuredClone(menuData);
-            let chk = 0;
-            for (const item of newMenuData) {
-                (item[name] === value && value !== "") ? chk++ : null;
-            }
+        setSelectedData({ ...selectedData, [name] : value });
+    }
 
-            // 연결된 label
-            let label = document.querySelector(`label[for="${id}"]`);
-            let labelText = label?.textContent
-            if (chk > 0) {
-                showToast(labelText + "는 중복 불가능합니다.")
-                name === 'id' ? value = selectId??'' : value = '';
+    const beforeChkDuple = () => {
+        let newSelectedData = {...selectedData};
+        let newMenuData = structuredClone(menuData);
+        let chkDupleKey = '';
+
+        for (const item of newMenuData) {
+            for (const key in item) {
+                if (key !== 'upId') {
+                    if (item['id'] !== selectId) {
+                        item[key] === newSelectedData[key] ? chkDupleKey = key : null;
+                    }
+                    if (chkDupleKey) {
+                        break;
+                    }
+                }
             }
         }
-        
-        setSelectedData({ ...selectedData, [name] : value });
+
+        // 연결된 label
+        let label = document.querySelector(`label[for="${chkDupleKey}"]`);
+        let labelText = label?.textContent
+
+        if (chkDupleKey) {
+            showToast(labelText + '는 중복 불가능합니다.');
+            return false;
+        }
+
+        return true;
     }
 
     const showToast = (msg) => {
@@ -286,10 +298,10 @@ function Menu( props ) {
 
         await getMenu();
         RBtn();
-
+        
         props.setMenu(treeMenuData);
     }
-
+    
     // 초기화
     const RBtn = () => {
         // 메뉴 아이디
@@ -298,18 +310,22 @@ function Menu( props ) {
         setSelectUpId();
         // 선택 트리 데이터
         setSelectedData({});
-
+        
         // 트리 선택 행 표시 off
         setDiSelect(true);
-
+        
         // CRUD 버튼
         setBtnDisabled(defaultBtn);
         // input
         setInputDisabled(defaultInput);
     }
-
+    
     // 등록
     const CBtn = async () => {
+        if (!beforeChkDuple()) {
+            return false;
+        }
+        
         let newMenuData = concatMenu();
         newMenuData.map((item) => item.children ? delete item.children : item);
         
@@ -322,6 +338,10 @@ function Menu( props ) {
     
     // 수정
     const UBtn = async () => {
+        if (!beforeChkDuple()) {
+            return false;
+        }
+        
         let newMenuData = concatMenu();
         newMenuData.map((item) => item.children ? delete item.children : item);
         
