@@ -207,9 +207,11 @@ function Menu( props ) {
         // 연결된 label
         let label = document.querySelector(`label[for="${chkDupleKey}"]`);
         let labelText = label?.textContent
+        let input = document.querySelector(`input[id="${chkDupleKey}"]`);
 
         if (chkDupleKey) {
             showToast(labelText + '는 중복 불가능합니다.');
+            input.focus();
             return false;
         }
 
