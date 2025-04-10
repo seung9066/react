@@ -235,6 +235,8 @@ function Menu( props ) {
     // 순서 초기화
     const resetOrderBtn = async() => {
         await getMenu();
+
+        RBtn();
     }
     
     // 순서 저장

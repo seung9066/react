@@ -11,7 +11,7 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
 
     useEffect(() => {
         if (title) {
-            getMenuNm(title)
+            getMenuNm(title);
         } else {
             let url = new URL(window.parent.location.href);
             let path = url.pathname.replace("/", "");
