@@ -1,125 +1,62 @@
 [
     {
-        "showTitle": "React",
         "title": "React",
         "path": "/",
         "id": "A001",
-        "upId": null,
-        "children": []
+        "upId": null
     },
     {
-        "showTitle": "Study",
         "title": "Study",
-        "path": "study",
+        "path": "",
         "id": "A002",
-        "upId": null,
-        "children": []
+        "upId": null
     },
     {
-        "showTitle": "Play",
-        "title": "TicTacToe",
+        "title": "Play",
         "path": "",
         "id": "A003",
-        "upId": null,
-        "children": [
-            {
-                "showTitle": "TicTacToe",
-                "title": "TicTacToe",
-                "path": "/ticTacToe",
-                "id": "B001",
-                "upId": "A003",
-                "children": []
-            }
-        ]
+        "upId": null
     },
     {
-        "showTitle": "Program",
-        "title": "UrlDataNotice",
+        "title": "Program",
         "path": "",
         "id": "A004",
-        "upId": null,
-        "children": [
-            {
-                "showTitle": "UrlDataNotice",
-                "title": "UrlDataNotice",
-                "path": "/urlDataNotice",
-                "id": "B002",
-                "upId": "A004",
-                "children": []
-            },
-            {
-                "showTitle": "ProgramDesign",
-                "title": "ProgramDesign",
-                "path": "programDesign",
-                "id": "B003",
-                "upId": "A004",
-                "children": []
-            },
-            {
-                "showTitle": "Lotto",
-                "title": "Lotto",
-                "path": "lotto",
-                "id": "B004",
-                "upId": "A004",
-                "children": []
-            }
-        ]
+        "upId": null
     },
     {
-        "showTitle": "UrlDataNotice",
         "title": "UrlDataNotice",
         "path": "urlDataNotice",
         "id": "B002",
-        "upId": "A004",
-        "children": []
+        "upId": "A004"
     },
     {
-        "showTitle": "ProgramDesign",
         "title": "ProgramDesign",
         "path": "programDesign",
         "id": "B003",
-        "upId": "A004",
-        "children": []
+        "upId": "A004"
     },
     {
-        "showTitle": "TicTacToe",
         "title": "TicTacToe",
         "path": "ticTacToe",
         "id": "B001",
-        "upId": "A003",
-        "children": []
+        "upId": "A003"
     },
     {
-        "showTitle": "Lotto",
         "title": "Lotto",
         "path": "lotto",
         "id": "B004",
-        "upId": "A004",
-        "children": []
+        "upId": "A004"
     },
     {
-        "showTitle": "Admin",
-        "title": "Menu",
+        "title": "Admin",
         "path": "",
         "id": "A005",
-        "upId": null,
-        "children": [
-            {
-                "showTitle": "Menu",
-                "title": "Menu",
-                "path": "/menu",
-                "id": "B005",
-                "upId": "A005",
-                "children": []
-            }
-        ]
+        "upId": null
     },
     {
-        "showTitle": "Menu",
         "title": "Menu",
         "path": "menu",
         "id": "B005",
-        "upId": "A005",
-        "children": []
+        "upId": "A005"
     }
 ]

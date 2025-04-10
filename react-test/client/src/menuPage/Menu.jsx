@@ -20,7 +20,6 @@ function Menu( props ) {
 
     // input disable
     let defaultInput = {
-        showTitle: true,
         title: true,
         path: true,
         id: true,
@@ -44,8 +43,23 @@ function Menu( props ) {
 
     // 트리 선택
     useEffect(() => {
+        if (selectedData.upId) {
+            setInputDisabled({
+                ...inputDisabled,
+                path: false,
+            })
+        } else {
+            setInputDisabled({
+                ...inputDisabled,
+                path: true,
+            })
 
-    }, [selectedData])
+            setSelectedData({
+                ...selectedData,
+                path: '',
+            })
+        }
+    }, [selectedData.upId])
 
     useEffect(() => {
         // 메뉴 데이터 => 트리구조 obj
@@ -67,10 +81,6 @@ function Menu( props ) {
 
     // 트리 선택
     const selectedTree = (node) => {
-        if (node.path === '/') {
-            RBtn();
-            return false;
-        }
         // 트리 선택 행 표시 on
         setDiSelect(false);
 
@@ -91,7 +101,6 @@ function Menu( props ) {
                 ...inputDisabled,
                 id: true,
                 upId: false,
-                showTitle: false,
                 path: false,
                 title: false,
             })
@@ -108,12 +117,28 @@ function Menu( props ) {
                 ...inputDisabled,
                 id: true,
                 upId: true,
-                showTitle: false,
-                path: false,
+                path: true,
                 title: false,
             })
         }
 
+        if (node.path === '/') {
+            setBtnDisabled({
+                ...btnDisabled,
+                CBtn : true,
+                UBtn : true,
+                DBtn : true,
+                etcBtn: true,
+            })
+
+            setInputDisabled({
+                ...inputDisabled,
+                id: true,
+                upId: true,
+                path: true,
+                title: true,
+            })
+        }
     }
 
     // input 값 입력
@@ -215,6 +240,7 @@ function Menu( props ) {
     // 순서 저장
     const orderBtn = async () => {
         let newMenuData = menuData.map((item) => item);
+        newMenuData.map((item) => delete item.children);
         
         let msg = await saveMenu(newMenuData);
         showToast(msg);
@@ -296,7 +322,6 @@ function Menu( props ) {
                 ...inputDisabled,
                 id: false,
                 upId: true,
-                showTitle: false,
                 path: false,
                 title: false,
             })
@@ -305,8 +330,7 @@ function Menu( props ) {
                 ...inputDisabled,
                 id: false,
                 upId: false,
-                showTitle: false,
-                path: false,
+                path: true,
                 title: false,
             })
         }
@@ -346,8 +370,7 @@ function Menu( props ) {
 
             <div className="input-wrapper">
                 {[
-                    { id: 'showTitle', label: '메뉴명' },
-                    { id: 'title', label: '화면명' },
+                    { id: 'title', label: '메뉴명' },
                     { id: 'path', label: '경로' },
                     { id: 'id', label: 'ID' },
                 ].map((field) => (
@@ -361,7 +384,7 @@ function Menu( props ) {
                     <select id='upId' name='upId' disabled={inputDisabled['upId']} onChange={changeValue} value={selectedData['upId'] ?? ''}>
                         <option value=''></option>
                         {treeMenuData && treeMenuData.map((item) => 
-                            <option value={item.id} key={item.id}>{item.showTitle}</option>
+                            <option value={item.id} key={item.id}>{item.title}</option>
                         )}
                     </select>
                 </div>

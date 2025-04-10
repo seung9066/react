@@ -3,10 +3,23 @@ import { useState, useEffect } from 'react'
 import '@css/Menu.css';
 
 function Menu({ getMenuNm, menuData, setMenuData }) {
+    const [title, setTitle] = useState();
+
     const clickMenu = (e, title) => {
-        let newMenuNm = title;
-        getMenuNm(newMenuNm);
+        setTitle(title);
     };
+
+    useEffect(() => {
+        if (title) {
+            getMenuNm(title)
+        } else {
+            let url = new URL(window.parent.location.href);
+            let path = url.pathname.replace("/", "");
+            path = path.charAt(0).toUpperCase() + path.slice(1);
+            path ? getMenuNm(path) : null;
+        }
+    }, [title])
+
     useEffect(() => {
         getMenu();
     }, []);
@@ -60,16 +73,16 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
                     <div className="navbarMenuWrapper" key={index}>
                         {menu.path ? (
                             <Link to={menu.path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
-                                {menu.showTitle}
+                                {menu.title}
                             </Link>
                         ) : (
                             menu.children.length > 0 ? (
-                            <Link to={menu.children[0].path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
-                                {menu.showTitle}
+                            <Link to={menu.children[0].path} className="navbarMenu" onClick={(e) => clickMenu(e, menu.children[0].title)} key={menu.id}>
+                                {menu.title}
                             </Link> ) : (
-                            <div className="navbarMenu" key={index}>
-                                {menu.showTitle}
-                            </div>
+                            <Link to={menu.title.charAt(0).toLowerCase() + menu.title.slice(1)} className="navbarMenu" onClick={(e) => clickMenu(e, menu.title)} key={menu.id}>
+                                {menu.title}
+                            </Link> 
                             )
                         )}
                         {menu.children.length > 0 && (
@@ -81,7 +94,7 @@ function Menu({ getMenuNm, menuData, setMenuData }) {
                                         key={subIndex}
                                         onClick={(e) => clickMenu(e, sub.title)}
                                     >
-                                        {sub.showTitle}
+                                        {sub.title}
                                     </Link>
                                 ))}
                             </div>

@@ -64,7 +64,7 @@ const SggTree = ({
                     {children && children.length > 0 ? '📂' : node.upId ? '📄' : '📁'}
                 </span>
                 {/* 노드 제목과 경로 */}
-                <span className={styles.nodeTitle}>{node.showTitle}</span>
+                <span className={styles.nodeTitle}>{node.title}</span>
                 <span className={styles.nodePath}>{node.path}</span>
             </div>
 
