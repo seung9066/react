@@ -182,8 +182,27 @@ function Menu( props ) {
     const changeValue = (e) => {
         let name = e.target.name;
         let value = e.target.value;
+        let newSelectedData = {...selectedData};
 
-        setSelectedData({ ...selectedData, [name] : value });
+        newSelectedData[name] = value;
+
+        setSelectedData(newSelectedData);
+    }
+
+    // 타이틀 입력 후 focus out + path 없을 시 path를 title로 자동 입력
+    const onBlur = (e) => {
+        setTimeout(() => {
+            let id = e.target.id;
+            
+            if (id === 'title') {
+                let title = selectedData.title;
+                title = title.charAt(0).toLowerCase() + title.slice(1);
+                let path = selectedData.path;
+                path ? null 
+                    : title ? setSelectedData({...selectedData, path: '/' + title}) 
+                            : null;
+            }
+        })
     }
 
     const beforeChkDuple = () => {
@@ -330,6 +349,7 @@ function Menu( props ) {
         
         let newMenuData = concatMenu();
         newMenuData.map((item) => item.children ? delete item.children : item);
+        newMenuData.map((item) => item.path.charAt(0) === '/' ? item : item.path = '/' + item.path);
         
         let msg = await saveMenu(newMenuData);
         showToast(msg);
@@ -346,7 +366,8 @@ function Menu( props ) {
         
         let newMenuData = concatMenu();
         newMenuData.map((item) => item.children ? delete item.children : item);
-        
+        newMenuData.map((item) => item.path.charAt(0) === '/' ? item : item.path = '/' + item.path);
+
         let msg = await saveMenu(newMenuData);
         showToast(msg);
         
@@ -440,7 +461,7 @@ function Menu( props ) {
                 ].map((field) => (
                     <div className="form-row" key={field.id}>
                         <label htmlFor={field.id}>{field.label}</label>
-                        <input type="text" id={field.id} name={field.id} value={selectedData[field.id] ?? ''} disabled={inputDisabled[field.id]} onChange={changeValue} />
+                        <input type="text" id={field.id} name={field.id} value={selectedData[field.id] ?? ''} disabled={inputDisabled[field.id]} onChange={changeValue} onBlur={onBlur}/>
                     </div>
                 ))}
                 <div className='form-row'>
