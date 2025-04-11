@@ -45,6 +45,21 @@ function Menu( props ) {
         getMenu();
     }, []);
 
+    // 트리 선택
+    useEffect(() => {
+        if (selectedData.id !== 'A001' && selectedData.id) {
+            setInputDisabled({
+                ...inputDisabled,
+                path: false,
+            })
+        } else if (!selectUpId) {
+            setInputDisabled({
+                ...inputDisabled,
+                path: true,
+            })
+        }
+    }, [selectedData.id])
+
     useEffect(() => {
         // 메뉴 데이터 => 트리구조 obj
         setTreeMenuData(transformDataToTree(menuData));
@@ -103,6 +118,8 @@ function Menu( props ) {
 
         setInputDisabled({
             ...inputDisabled,
+            id: true,
+            upId: true,
             path: true,
             title: true,
         })
@@ -120,6 +137,8 @@ function Menu( props ) {
         
         setInputDisabled({
             ...inputDisabled,
+            id: true,
+            upId: false,
             path: false,
             title: false,
         })
@@ -137,7 +156,9 @@ function Menu( props ) {
 
         setInputDisabled({
             ...inputDisabled,
-            path: true,
+            id: true,
+            upId: true,
+            path: false,
             title: false,
         })
     }
@@ -154,6 +175,8 @@ function Menu( props ) {
         
         setInputDisabled({
             ...inputDisabled,
+            id: true,
+            upId: false,
             path: true,
             title: false,
         })
@@ -172,18 +195,18 @@ function Menu( props ) {
 
     // 타이틀 입력 후 focus out + path 없을 시 path를 title로 자동 입력
     const onBlur = (e) => {
-        let id = e.target.id;
-        
-        if (id === 'title') {
-            let title = selectedData.title;
-            if (title) {
+        setTimeout(() => {
+            let id = e.target.id;
+            
+            if (id === 'title') {
+                let title = selectedData.title;
                 title = title.charAt(0).toLowerCase() + title.slice(1);
                 let path = selectedData.path;
                 path ? null 
                     : title ? setSelectedData({...selectedData, path: '/' + title}) 
                             : null;
             }
-        }
+        })
     }
 
     const beforeChkDuple = () => {
@@ -320,9 +343,6 @@ function Menu( props ) {
         setBtnDisabled(defaultBtn);
         // input
         setInputDisabled(defaultInput);
-
-        // 그리드
-        onGridReset();
     }
     
     // 등록
@@ -379,11 +399,7 @@ function Menu( props ) {
             return false;
         }
         setSelectId();
-        let id = makeId();
-        setSelectedData({
-            upId : selectUpId,
-            id : id,
-        });
+        setSelectedData({upId : selectUpId});
 
         setBtnDisabled({
             ...btnDisabled,
@@ -393,33 +409,20 @@ function Menu( props ) {
         if (selectUpId) {
             setInputDisabled({
                 ...inputDisabled,
+                id: false,
+                upId: true,
                 path: false,
                 title: false,
             })
         } else {
             setInputDisabled({
                 ...inputDisabled,
+                id: false,
+                upId: false,
                 path: false,
                 title: false,
             })
         }
-    }
-
-    // 메뉴 id 생성
-    const makeId = (upId) => {
-        let newMenuData = structuredClone(menuData);
-        let depth = upId ? upId.charAt(0) === 'A' ? 'B' : 'A' : selectUpId?.charAt(0) === 'A' ? 'B' : 'A';
-        let maxId = '';
-        for (const item of newMenuData) {
-            let itemDepth = item.id.substring(0, 1);
-            
-            if (depth === itemDepth) {
-                let itemId = item.id.substring(1);
-                maxId < itemId ? maxId = Number(itemId) + 1: maxId = maxId;
-            }
-        }
-        let id = depth + ('00' + maxId).slice(-3);
-        return id;
     }
 
     // 메뉴 데이터 합치기
@@ -509,50 +512,13 @@ function Menu( props ) {
             chk === 0 ? concatMenu.push(item) : null;
         }
 
-        let pathArr = [];
-        for (const item of concatMenu) {
-            pathArr.push(splitPath(item));
-        }
-
-        setGridData(pathArr);
+        setGridData(concatMenu);
     }
 
-    // 새 파일 경로 목록
-    const [filePath, setFilePath] = useState({});
-
-    const splitPath = (item) => {
-        let slashArr = [];
-        let path = item.path;
-        let pathArr = {};
-        for (let i = 0; i < path.length; i++) {
-            path[i] === '/' ? slashArr.push(i) : null;
-        }
-
-        for (let i = 0; i < slashArr.length; i++) {
-            if (i !== slashArr.length - 1) {
-                pathArr.upPath = path.substring(slashArr[i], slashArr[i + 1]);
-            } else {
-                let camelPath = path.substring(slashArr[i]);
-                camelPath = '/' + camelPath.charAt(1).toLowerCase() + camelPath.slice(2);
-                pathArr.path = camelPath;
-            }
-        }
-
-        return pathArr;
-    }
-    
-    // 그리드 행 클릭
-    const gridTrClick = (e, item) => {
-        // 선택 그리드 행 데이터
-        setFilePath(item);
-
-        // 그리드 행 선택 표시 유지
-        setResetBtn(true);
-        // 그리드 등록 버튼 disable
-        setGridDisableAdd(false);
+    const gridTrClick = (e) => {
+        console.log(e)
     }
 
-    // 파일, 메뉴 조회 시 메뉴로 등록되어있는 파일 제거
     useEffect(() => {
         let newMenuData = structuredClone(menuData);
         let newComponents = structuredClone(components);
@@ -563,134 +529,56 @@ function Menu( props ) {
 
     }, [components, menuData])
 
-    // 그리드 행클릭 초기화
-    const [resetBtn, setResetBtn] = useState(true);
-
-    // 그리드 버튼
-    const [gridDisableAdd, setGridDisableAdd] = useState(true);
-    
-    // 그리드 초기화
-    const onGridReset = () => {
-        setGridDisableAdd(true);
-        setResetBtn(false);
-        setFilePath({});
-    }
-
-    // 그리드 파일 메뉴 등록
-    const addGridToMenu = () => {
-        let newFilePath = structuredClone(filePath);
-        if (Object.keys(newFilePath).length > 0) {
-            let newMenuData = structuredClone(menuData);
-            for (const item of newMenuData) {
-                if (newFilePath.upPath) {
-                    newFilePath.upPath === item.path ? newFilePath.upId = item.id : null;
-                }
-            }
-    
-            newFilePath.id = makeId(newFilePath.upId);
-    
-            // 트리 선택 행 표시 off
-            setDiSelect(true);
-            // 그리드 파일 메뉴 등록 데이터 세팅
-            setGridAddData(newFilePath);
-            // 그리드 파일 메뉴 등록 인풋, 버튼 disable
-            setGridAddDisable();
-        }
-    }
-
-    // 그리드 파일 메뉴 등록 데이터 세팅
-    const setGridAddData = (data) => {
-        // 메뉴 아이디
-        setSelectId();
-        // 메뉴 부모 아이디
-        setSelectUpId(data.upId);
-        // 선택 트리 데이터
-        setSelectedData(data);
-    }
-
-    // 그리드 파일 메뉴 등록 인풋, 버튼 disable
-    const setGridAddDisable = () => {
-        setInputDisabled({
-            ...inputDisabled,
-            title: false,
-            path: true,
-            id: true,
-            upId: true,
-        })
-
-        setBtnDisabled({
-            ...btnDisabled,
-            CBtn : false,
-            UBtn : true,
-            DBtn : true,
-            etcBtn: true,
-        })
-    }
-
     return (
         <>
-            <div className='flexLeftRight'>
-                <div>
-                    <div>
-                        <button type='button' className='secondary' onClick={resetOrderBtn}>순서 초기화</button>
-                        <button type='button' className='primary' onClick={orderBtn}>순서 저장</button>
-                    </div>
-                    <div>
-                        {menuData && <SggTreeNode showCol={['title', 'path', 'id']} data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} alwaysOpen={true} />}
-                    </div>
+            <div>
+                <button type='button' className='secondary' onClick={resetOrderBtn}>순서 초기화</button>
+                <button type='button' className='primary' onClick={orderBtn}>순서 저장</button>
+                {menuData && <SggTreeNode showCol={['title', 'path', 'id']} data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} alwaysOpen={true} />}
+            </div>
 
-                    <div className="input-wrapper">
-                        {[
-                            { id: 'title', label: '메뉴명' },
-                            { id: 'path', label: '경로' },
-                            { id: 'id', label: 'ID' },
-                        ].map((field) => (
-                            <div className="form-row" key={field.id}>
-                                <label htmlFor={field.id}>{field.label}</label>
-                                <input type="text" id={field.id} name={field.id} value={selectedData[field.id] ?? ''} disabled={inputDisabled[field.id]} onChange={changeValue} onBlur={onBlur}/>
-                            </div>
-                        ))}
-                        <div className='form-row'>
-                            <label htmlFor='upId'>상위 ID</label>
-                            <select id='upId' name='upId' disabled={inputDisabled['upId']} onChange={changeValue} value={selectedData['upId'] ?? ''}>
-                                {!selectedData['upId'] && (
-                                    <option value=''></option>
-                                )}
-                                {treeMenuData && treeMenuData.map((item) => 
-                                    item.id !== 'A001' && <option value={item.id} key={item.id}>{item.title}</option>
-                                )}
-                            </select>
-                        </div>
+            <div className="input-wrapper">
+                {[
+                    { id: 'title', label: '메뉴명' },
+                    { id: 'path', label: '경로' },
+                    { id: 'id', label: 'ID' },
+                ].map((field) => (
+                    <div className="form-row" key={field.id}>
+                        <label htmlFor={field.id}>{field.label}</label>
+                        <input type="text" id={field.id} name={field.id} value={selectedData[field.id] ?? ''} disabled={inputDisabled[field.id]} onChange={changeValue} onBlur={onBlur}/>
                     </div>
-
-                    <div>
-                        <CRUDButton
-                            CBtn={ {fnc: CBtn, disabled: btnDisabled.CBtn} }
-                            RBtn={ {fnc: RBtn, disabled: btnDisabled.RBtn} }
-                            UBtn={ {fnc: UBtn, disabled: btnDisabled.UBtn} }
-                            DBtn={ {fnc: DBtn, disabled: btnDisabled.DBtn} }
-                            etcBtn={{name:"추가", fnc: AddBtn, disabled: btnDisabled.etcBtn}}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <h3>메뉴에 없는 파일</h3>
-                    <div>
-                        <SggGridReact 
-                            columns={[{key:'upPath', name:'상위경로'}, {key:'path', name:'경로'}]}
-                            data={{gridData:gridData}}
-                            onClick={gridTrClick}
-                            resetBtn={resetBtn}
-                            />
-                    </div>
-                    <div>
-                        <CRUDButton
-                            CBtn={ {fnc: addGridToMenu, disabled: gridDisableAdd} }
-                            RBtn={ {fnc: onGridReset} }
-                        />
-                    </div>
+                ))}
+                <div className='form-row'>
+                    <label htmlFor='upId'>상위 ID</label>
+                    <select id='upId' name='upId' disabled={inputDisabled['upId']} onChange={changeValue} value={selectedData['upId'] ?? ''}>
+                        {!selectedData['upId'] && (
+                            <option value=''></option>
+                        )}
+                        {treeMenuData && treeMenuData.map((item) => 
+                            item.id !== 'A001' && <option value={item.id} key={item.id}>{item.title}</option>
+                        )}
+                    </select>
                 </div>
             </div>
+
+            <div>
+                <CRUDButton
+                    CBtn={ {fnc: CBtn, disabled: btnDisabled.CBtn} }
+                    RBtn={ {fnc: RBtn, disabled: btnDisabled.RBtn} }
+                    UBtn={ {fnc: UBtn, disabled: btnDisabled.UBtn} }
+                    DBtn={ {fnc: DBtn, disabled: btnDisabled.DBtn} }
+                    etcBtn={{name:"추가", fnc: AddBtn, disabled: btnDisabled.etcBtn}}
+                 />
+            </div>
+
+            <div>
+                <SggGridReact 
+                    columns={[{key:'path', name:'경로'}]}
+                    data={{gridData:gridData}}
+                    onClick={gridTrClick}
+                    />
+            </div>
+
         </>
     );
 }

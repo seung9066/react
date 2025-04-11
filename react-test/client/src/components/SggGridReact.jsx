@@ -4,17 +4,42 @@ import styles from '@css/SggGridReact.module.css';
 const PER_PAGE = 10;
 const PAGE_BTN_COUNT = 10;
 
-export default function SggGridReact({ data, columns = [] }) {
+export default function SggGridReact({ data, columns = [], resetBtn, onClick }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [currentList, setCurrentList] = useState([]);
     const [selectedRow, setSelectedRow] = useState(null);
 
+    const trClick = (e, item) => {
+        setSelectedRow(item);
+        if (onClick) {
+            onClick(e, item);
+        }
+    }
+
+    useEffect(() => {
+        resetBtn ? null : setSelectedRow(null);
+    }, [resetBtn])
+
     useEffect(() => {
         if (data?.gridData) {
-            const startIdx = (currentPage - 1) * PER_PAGE;
-            const endIdx = startIdx + PER_PAGE;
-            const reversed = [...data.gridData].reverse();
-            setCurrentList(reversed.slice(startIdx, endIdx));
+            let chkNo = 0;
+            let gridData = data.gridData;
+            if (gridData.length > 0) {
+                for (const item of gridData) {
+                    item.no ? chkNo++ : chkNo--;
+                }
+                if (chkNo !== data.gridData.length) {
+                    let gridData = structuredClone(data.gridData);
+                    for (let i = 0; i < gridData.length; i++) {
+                        gridData[i].no ? null : gridData[i].no = i + 1;
+                    }
+                    data.gridData = gridData;
+                }
+                const startIdx = (currentPage - 1) * PER_PAGE;
+                const endIdx = startIdx + PER_PAGE;
+                const reversed = [...data.gridData].reverse();
+                setCurrentList(reversed.slice(startIdx, endIdx));
+            }
         }
     }, [data, currentPage]);
 
@@ -84,7 +109,7 @@ export default function SggGridReact({ data, columns = [] }) {
                             <tr
                                 key={item.no}
                                 className={styles.tbodyRow}
-                                onClick={() => setSelectedRow(item)}
+                                onClick={(e) => trClick(e, item)}
                                 style={{
                                     backgroundColor: selectedRow?.no === item.no ? 'lightblue' : '',
                                     cursor: 'pointer'
