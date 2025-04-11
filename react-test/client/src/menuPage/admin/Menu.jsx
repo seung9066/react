@@ -137,7 +137,7 @@ function Menu( props ) {
 
         setInputDisabled({
             ...inputDisabled,
-            path: true,
+            path: false,
             title: false,
         })
     }
@@ -154,7 +154,7 @@ function Menu( props ) {
         
         setInputDisabled({
             ...inputDisabled,
-            path: true,
+            path: false,
             title: false,
         })
     }
