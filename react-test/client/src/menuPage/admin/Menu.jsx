@@ -42,10 +42,6 @@ function Menu( props ) {
     const [btnDisabled, setBtnDisabled] = useState(defaultBtn)
 
     useEffect(() => {
-        getMenu();
-    }, []);
-
-    useEffect(() => {
         // 메뉴 데이터 => 트리구조 obj
         setTreeMenuData(transformDataToTree(menuData));
         
@@ -467,7 +463,55 @@ function Menu( props ) {
         };
 
         loadComponents();
+
+        getMenu();
     }, []);
+
+    useEffect(() => {
+        if (menuData.length > 0 && components.length > 0) {
+            let newMenuData = structuredClone(menuData);
+            let newComponents = structuredClone(components);
+
+            // 파일
+            for (const item of newComponents) {
+                let src = '/src/menuPage';
+                item.path = item.path.replace('.jsx', '');
+                item.path = item.path.substring(src.length);
+            }
+            
+            // 메뉴
+            for (const item of newMenuData) {
+                if (!item.upId) {
+                    item.totalPath = item.path;
+                }
+
+                for (const item2 of newMenuData) {
+                    if (item2.upId === item.id) {
+                        item2.totalPath = item.path + item2.path;
+                    }
+                }
+            }
+
+            // 등록되어 있지 않은 파일
+            for (const item of newMenuData) {
+                let chk = 0;
+                if (!item.upId) {
+                    chk++;
+                }
+                for (const item2 of newComponents) {
+                    if (item2.path.toLowerCase() === item.totalPath.toLowerCase()) {
+                        chk++;
+                    }
+                }
+
+                if (chk > 0) {
+                    item.delNode = true;
+                }
+            }
+
+            // X 표시할거 찾기
+        }
+    }, [menuData, components])
 
     // 등록되어 있지 않는 파일 찾기
     const chkDupleMenuComponents = (menu = [], component = []) => {

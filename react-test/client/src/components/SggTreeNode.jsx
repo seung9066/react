@@ -62,7 +62,7 @@ const SggTree = ({
             >
                 {/* 아이콘 표시 */}
                 <span className={styles.nodeIcon}>
-                    {children && children.length > 0 ? '📂' : node.upId ? '📄' : '📁'}
+                    {node.delNode ? '❌' : children && children.length > 0 ? '📂' : node.upId ? '📄' : '📁'}
                 </span>
                 {/* 노드 제목과 경로 */}
                 {showCol && showCol.map((item, idx) => <span className={idx === 0 ? styles.nodeTitle : styles.nodePath} key={'tree' + item}>{node[item]}</span>)}
