@@ -256,6 +256,7 @@ function Menu( props ) {
     
             const data = await res.json();
             setMenuData(data);
+            props.setMenu(transformDataToTree(data));
         } catch (err) {
             showToast("메뉴 데이터 로드 실패 ", err);
         }
@@ -300,8 +301,6 @@ function Menu( props ) {
 
         await getMenu();
         RBtn();
-        
-        props.setMenu(treeMenuData);
     }
     
     // 초기화
