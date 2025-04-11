@@ -580,14 +580,21 @@ function Menu( props ) {
         let newFilePath = structuredClone(filePath);
         if (Object.keys(newFilePath).length > 0) {
             let newMenuData = structuredClone(menuData);
+            let chkUpId = 0;
             for (const item of newMenuData) {
                 if (newFilePath.upPath) {
+                    chkUpId++;
                     newFilePath.upPath === item.path ? newFilePath.upId = item.id : null;
                 }
             }
-    
+
+            if (newFilePath.upPath && !newFilePath.upId) {
+                showToast('상단 메뉴 생성 후 다시 진행해주세요.');
+                newFilePath.path = newFilePath.upPath;
+            }
+            
             newFilePath.id = makeId(newFilePath.upId);
-    
+            
             // 트리 선택 행 표시 off
             setDiSelect(true);
             // 그리드 파일 메뉴 등록 데이터 세팅
