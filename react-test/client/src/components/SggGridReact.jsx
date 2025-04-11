@@ -105,7 +105,8 @@ export default function SggGridReact({ data, columns = [], resetBtn, onClick }) 
                 </thead>
                 <tbody className={styles.tbody}>
                     {currentList.length > 0 ? (
-                        currentList.map((item) => (
+                    <>
+                        {currentList.map((item) => (
                             <tr
                                 key={item.no}
                                 className={styles.tbodyRow}
@@ -114,18 +115,33 @@ export default function SggGridReact({ data, columns = [], resetBtn, onClick }) 
                                     backgroundColor: selectedRow?.no === item.no ? 'lightblue' : '',
                                     cursor: 'pointer'
                                 }}
-                            >
+                                >
                                 {computedColumns.map(col => (
                                     <td key={col.key} className={styles.td}>
                                         {item[col.key]}
                                     </td>
                                 ))}
                             </tr>
-                        ))
+                        ))}
+                        {(
+                            Array.from({ length: PER_PAGE - currentList.length }).map((_, i) =>
+                                <tr key={'emptyTr' + i}>
+                                    <td colSpan={columns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                </tr>
+                            ) 
+                        )}
+                    </>
                     ) : (
+                        <>
                         <tr>
                             <td colSpan={columns.length || 1} className={styles.td}>데이터가 없습니다.</td>
                         </tr>
+                        {Array.from({ length: PER_PAGE - 1}).map((_, i) => 
+                            <tr key={'emptyTr' + i}>
+                                <td colSpan={columns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                            </tr>
+                        )}
+                        </>
                     )}
                 </tbody>
             </table>
