@@ -48,31 +48,33 @@ const SggTree = ({
     const isSelected = selectedNode?.id === node.id;
 
     return (
-        <div
-            style={{ paddingLeft: depth * 32 }} // 깊이에 따라 들여쓰기
-            className={styles.treeNode}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-        >
+        <>
+        {!node.hideNode && 
             <div
-                className={`${styles.nodeLabel} ${isSelected ? styles.selected : ''}`}
-                onClick={handleClick}
-                draggable
-                onDragStart={handleDragStart}
-            >
-                {/* 아이콘 표시 */}
-                <span className={styles.nodeIcon}>
-                    {node.delNode ? '❌' : children && children.length > 0 ? '📂' : node.upId ? '📄' : '📁'}
-                </span>
-                {/* 노드 제목과 경로 */}
-                {showCol && showCol.map((item, idx) => <span className={idx === 0 ? styles.nodeTitle : styles.nodePath} key={'tree' + item}>{node[item]}</span>)}
-            </div>
+                style={{ paddingLeft: depth * 16 }} // 깊이에 따라 들여쓰기
+                className={styles.treeNode}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                >
+                <div
+                    className={`${styles.nodeLabel} ${isSelected ? styles.selected : ''}`}
+                    onClick={handleClick}
+                    draggable
+                    onDragStart={handleDragStart}
+                    >
+                    {/* 아이콘 표시 */}
+                    <span className={styles.nodeIcon}>
+                        {node.delNode ? '❌' : children && children.length > 0 ? '📂' : node.upId ? '📄' : '📁'}
+                    </span>
+                    {/* 노드 제목과 경로 */}
+                    {showCol && showCol.map((item, idx) => <span className={idx === 0 ? styles.nodeTitle : styles.nodePath} key={'tree' + item}>{node[item]}</span>)}
+                </div>
 
-            {/* 자식 노드 재귀 렌더링 */}
-            {children && children.length > 0 && expanded && (
-                <div>
-                    {children.map((child) => (
-                        <SggTree
+                {/* 자식 노드 재귀 렌더링 */}
+                {children && children.length > 0 && expanded && (
+                    <div>
+                        {children.map((child) => (
+                            <SggTree
                             key={child.id}
                             node={child}
                             showCol={showCol}
@@ -83,11 +85,13 @@ const SggTree = ({
                             onNodeSelect={onNodeSelect}
                             alwaysOpen={alwaysOpen}
                             onDropNode={onDropNode}
-                        />
-                    ))}
-                </div>
-            )}
-        </div>
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        }
+        </>
     );
 };
 

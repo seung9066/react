@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import SggTreeNode from '@components/SggTreeNode'
 import CRUDButton from "@components/CRUDButton";
 import SggGridReact from '@components/SggGridReact';
+import Modal from '@components/Modal';
 
 const modules = import.meta.glob('/src/menuPage/*.jsx');
 const modules2 = import.meta.glob('/src/menuPage/*/*.jsx');
@@ -59,6 +60,14 @@ function Menu( props ) {
     // 그리드 버튼
     const [gridDisableAdd, setGridDisableAdd] = useState(true);
 
+    // 추천 경로
+    const [recommendArr, setRecommendArr] = useState([]);
+    // 추천 경로
+    const [recommendPath, setRecommendPath] = useState({});
+
+    // 모달
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     // 트리 선택
     const selectedTree = (node) => {
         // 트리 선택 행 표시 on
@@ -85,6 +94,8 @@ function Menu( props ) {
             // 메인 메뉴 클릭
             selectTreeHomeDisabled();
         }
+
+        getRecommendPath(node);
     }
 
     // 메인 메뉴 클릭
@@ -253,7 +264,6 @@ function Menu( props ) {
             const data = await res.json();
             setMenuData(data);
             props.setMenu(transformDataToTree(data));
-            return data;
         } catch (err) {
             showToast("메뉴 데이터 로드 실패 ", err);
         }
@@ -471,10 +481,13 @@ function Menu( props ) {
         chkPathMenuComponents(newMenuData, newComponents);
         // 등록되어 있지 않는 파일 찾기
         chkDupleMenuComponents(newMenuData, newComponents);
+        // 유사도 비교
+        getLevenShtein(newMenuData, newComponents);
     }
 
     // 실제 파일 경로와 메뉴 경로 다른거 찾기
     const chkPathMenuComponents = (newMenuData = [], newComponents = []) => {
+        let chkDifferent = 0;
         // 등록되어 있지 않은 파일
         for (const [idx, item] of newMenuData.entries()) {
             let chk = 0;
@@ -490,13 +503,16 @@ function Menu( props ) {
             }
 
             if (chk === 0) {
+                chkDifferent++;
                 item.delNode = true;
             } else {
-                delete item.delNode
+                item.delNode ? (chkDifferent++, delete item.delNode) : null;
             }
         }
         
-        setMenuData(newMenuData);
+        if (chkDifferent > 0) {
+            setMenuData(newMenuData);
+        }
     }
 
     // 등록되어 있지 않는 파일 찾기
@@ -521,6 +537,62 @@ function Menu( props ) {
         }
 
         setGridData(pathArr);
+    }
+
+    // 문자열 유사도 비교
+    const getLevenShtein = (newMenuData, newComponents) => {
+        let levenArr = [];
+        for (const item of newMenuData) {
+            for (const item2 of newComponents) {
+                let levenObj = levenshtein(item, item2);
+                if (levenObj) {
+                    levenArr.push(levenObj);
+                }
+            }
+        }
+        setRecommendArr(levenArr);
+    }
+
+    // 문자열 유사도
+    const levenshtein = (aWord, bWord) => {
+        let a = aWord.totalPath;
+        let b = bWord.path;
+        const matrix = [];
+    
+        const lenA = a.length;
+        const lenB = b.length;
+    
+        for (let i = 0; i <= lenB; i++) {
+            matrix[i] = [i];
+        }
+        for (let j = 0; j <= lenA; j++) {
+            matrix[0][j] = j;
+        }
+    
+        for (let i = 1; i <= lenB; i++) {
+            for (let j = 1; j <= lenA; j++) {
+                if (b.toLowerCase().charAt(i - 1) === a.toLowerCase().charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j] + 1,     // 삭제
+                        matrix[i][j - 1] + 1,     // 삽입
+                        matrix[i - 1][j - 1] + 1  // 교체
+                    );
+                }
+            }
+        }
+
+        const distance = matrix[lenB][lenA];
+        const maxLen = Math.max(a.length, b.length);
+
+        const similarity = (1 - distance / maxLen) * 100;
+        const returnValue = similarity.toFixed(2);
+        if (maxLen !== 0) {
+            if (90 < returnValue && returnValue < 100) {
+                return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
+            }
+        }
     }
 
     const splitPath = (item) => {
@@ -620,6 +692,57 @@ function Menu( props ) {
         })
     }
 
+    // 유사한 경로 추천
+    const getRecommendPath = (node) => {
+        const newRecommend = structuredClone(recommendArr);
+        let recommendFile = '';
+        let arr = [];
+        for (const item of newRecommend) {
+            if (item.menuTotalPath === node.totalPath) {
+                arr.push(item);
+            }
+        }
+
+        let max = {};
+        for (const item of arr) {
+            if (Object.keys(max).length > 0) {
+                if (max.leven < item.leven) {
+                    max = item;
+                }
+            } else {
+                max = item;
+            }
+        }
+
+        if (max.componentTotalPath) {
+            recommendFile = splitPath({path: max.componentTotalPath});
+        }
+
+        if (recommendFile) {
+            setIsModalOpen(true);
+        }
+
+        setRecommendPath(recommendFile);
+    }
+
+    // 모달 유사 경로 사용 확인
+    const onConfirmModal = () => {
+        setIsModalOpen(false);
+        const upPath = recommendPath.upPath;
+        const path = recommendPath.path;
+        let upId = '';
+        const newMenuData = structuredClone(menuData);
+        for (const item of newMenuData) {
+            item.path === upPath ? upId = item.id : null;
+        }
+        let newSelectedData = structuredClone(selectedData);
+        delete newSelectedData.delNode;
+        newSelectedData.path = path;
+        newSelectedData.upId = upId;
+
+        setSelectedData(newSelectedData);
+    }
+
     useEffect(() => {
         // 메뉴 데이터 => 트리구조 obj
         setTreeMenuData(transformDataToTree(menuData));
@@ -684,6 +807,11 @@ function Menu( props ) {
 
     return (
         <>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={onConfirmModal}>
+                <h2>추천 경로</h2>
+                <p>상위 경로 : {recommendPath.upPath}</p>
+                <p>경로 : {recommendPath.path}</p>
+            </Modal>
             <div className='flexLeftRight'>
                 <div>
                     <div>

@@ -45,7 +45,8 @@
         "title": "Lotto",
         "path": "/lotto",
         "id": "B004",
-        "upId": "A004"
+        "upId": "A004",
+        "upPath": "/program"
     },
     {
         "title": "Admin",
