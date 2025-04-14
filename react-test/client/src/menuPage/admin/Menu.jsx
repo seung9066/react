@@ -31,7 +31,7 @@ function Menu( props ) {
         id: true,
         upId: true,
     }
-    const [inputDisabled, setInputDisabled] = useState(defaultInput)
+    const [inputDisabled, setInputDisabled] = useState(defaultInput);
 
     // btn disable
     let defaultBtn = {
@@ -41,25 +41,23 @@ function Menu( props ) {
         RBtn : false,
         etcBtn : false,
     }
-    const [btnDisabled, setBtnDisabled] = useState(defaultBtn)
+    const [btnDisabled, setBtnDisabled] = useState(defaultBtn);
 
-    useEffect(() => {
-        // 메뉴 데이터 => 트리구조 obj
-        setTreeMenuData(transformDataToTree(menuData));
-        
-        // 항상 메인페이지는 젤 처음에
-        if (menuData.length > 0 && menuData[0].path !== '/main') {
-            // 깊은 복사
-            let newMenuData = structuredClone(menuData);
-            // 인덱스 찾기
-            let idx = newMenuData.findIndex(item => item.path === '/main');
-            let [item] = newMenuData.splice(idx, 1);
-            newMenuData.unshift(item);
-            setMenuData(newMenuData);
+    // 동적으로 불러온 컴포넌트들을 저장할 state
+    const [components, setComponents] = useState([]);
+    const [gridData, setGridData] = useState([]);
 
-            showToast('메인 페이지는 항상 처음에 와야합니다.');
-        }
-    }, [menuData])
+    // 새 파일 경로 목록
+    const [filePath, setFilePath] = useState({});
+    
+    // delNode 추가용 체크
+    const [menuComponents, setMenuComponents] = useState(0);
+    
+    // 그리드 행클릭 초기화
+    const [resetBtn, setResetBtn] = useState(true);
+
+    // 그리드 버튼
+    const [gridDisableAdd, setGridDisableAdd] = useState(true);
 
     // 트리 선택
     const selectedTree = (node) => {
@@ -444,32 +442,6 @@ function Menu( props ) {
         return newMenuData;
     }
 
-    // 동적으로 불러온 컴포넌트들을 저장할 state
-    const [components, setComponents] = useState([]);
-    const [gridData, setGridData] = useState([]);
-
-    useEffect(() => {
-        // 컴포넌트 동적 로딩 함수
-        const loadComponents = async () => {
-            const totalModules = Object.assign({}, modules, modules2);
-            // modules 객체의 각 파일을 import() 해서 default export만 추출
-            const loaded = await Promise.all(
-                Object.entries(totalModules).map(async ([path]) => {
-                    return {
-                        path
-                    };
-                })
-            );
-            
-            // 추출한 컴포넌트 배열로 상태 설정
-            setComponents(loaded);
-        };
-
-        loadComponents();
-
-        getMenu();
-    }, []);
-
     // 메뉴, 파일 비교
     const chkMenuComponents = (menu = [], component = []) => {
         let newMenuData = structuredClone(menu);
@@ -551,9 +523,6 @@ function Menu( props ) {
         setGridData(pathArr);
     }
 
-    // 새 파일 경로 목록
-    const [filePath, setFilePath] = useState({});
-
     const splitPath = (item) => {
         let slashArr = [];
         let path = item.path;
@@ -586,36 +555,6 @@ function Menu( props ) {
         setGridDisableAdd(false);
     }
 
-    // 파일, 메뉴 조회 시 메뉴로 등록되어있는 파일 제거
-    useEffect(() => {
-        let newMenuData = structuredClone(menuData);
-        let newComponents = structuredClone(components);
-
-        if (newMenuData.length > 0 && newComponents.length > 0 && menuComponents === 0) {
-            setMenuComponents(1);
-        } else {
-            setMenuComponents(0);
-        }
-        
-    }, [components, menuData])
-    
-    const [menuComponents, setMenuComponents] = useState(0);
-    
-    useEffect(() => {
-        if (menuComponents === 1) {
-            let newMenuData = structuredClone(menuData);
-            let newComponents = structuredClone(components);
-    
-            chkMenuComponents(newMenuData, newComponents);
-        }
-    }, [menuComponents]);
-
-    // 그리드 행클릭 초기화
-    const [resetBtn, setResetBtn] = useState(true);
-
-    // 그리드 버튼
-    const [gridDisableAdd, setGridDisableAdd] = useState(true);
-    
     // 그리드 초기화
     const onGridReset = () => {
         setGridDisableAdd(true);
@@ -680,6 +619,68 @@ function Menu( props ) {
             etcBtn: true,
         })
     }
+
+    useEffect(() => {
+        // 메뉴 데이터 => 트리구조 obj
+        setTreeMenuData(transformDataToTree(menuData));
+        
+        // 항상 메인페이지는 젤 처음에
+        if (menuData.length > 0 && menuData[0].path !== '/main') {
+            // 깊은 복사
+            let newMenuData = structuredClone(menuData);
+            // 인덱스 찾기
+            let idx = newMenuData.findIndex(item => item.path === '/main');
+            let [item] = newMenuData.splice(idx, 1);
+            newMenuData.unshift(item);
+            setMenuData(newMenuData);
+
+            showToast('메인 페이지는 항상 처음에 와야합니다.');
+        }
+    }, [menuData])
+    
+    useEffect(() => {
+        // 컴포넌트 동적 로딩 함수
+        const loadComponents = async () => {
+            const totalModules = Object.assign({}, modules, modules2);
+            // modules 객체의 각 파일을 import() 해서 default export만 추출
+            const loaded = await Promise.all(
+                Object.entries(totalModules).map(async ([path]) => {
+                    return {
+                        path
+                    };
+                })
+            );
+            
+            // 추출한 컴포넌트 배열로 상태 설정
+            setComponents(loaded);
+        };
+
+        loadComponents();
+
+        getMenu();
+    }, []);
+
+    // 파일, 메뉴 조회 시 메뉴로 등록되어있는 파일 제거
+    useEffect(() => {
+        let newMenuData = structuredClone(menuData);
+        let newComponents = structuredClone(components);
+
+        if (newMenuData.length > 0 && newComponents.length > 0 && menuComponents === 0) {
+            setMenuComponents(1);
+        } else {
+            setMenuComponents(0);
+        }
+        
+    }, [components, menuData])
+
+    useEffect(() => {
+        if (menuComponents === 1) {
+            let newMenuData = structuredClone(menuData);
+            let newComponents = structuredClone(components);
+    
+            chkMenuComponents(newMenuData, newComponents);
+        }
+    }, [menuComponents]);
 
     return (
         <>
