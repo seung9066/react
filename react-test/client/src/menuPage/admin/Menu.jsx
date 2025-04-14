@@ -544,24 +544,22 @@ function Menu( props ) {
     const getLevenShtein = (newMenuData, newComponents) => {
         let gridArr = chkDupleMenuComponents(newMenuData, newComponents);
         let levenArr = [];
-        for (const item of newMenuData) {
-            for (const item2 of gridArr) {
-                let levenObj = levenshtein(item.totalPath, (item2.upPath + item2.path));
-                if (levenObj) {
-                    levenArr.push(levenObj);
-                }
-            }
-        }
+        // for (const item of newMenuData) {
+        //     for (const item2 of gridArr) {
+        //         let levenObj = levenshtein(item.totalPath, (item2.upPath + item2.path));
+        //         if (levenObj) {
+        //             levenArr.push(levenObj);
+        //         }
+        //     }
+        // }
 
-        if (levenArr.length === 0) {
-            levenArr = includePath(newMenuData, gridArr);
-        }
-        
+        levenArr = includePath(newMenuData, gridArr);
+
         setRecommendArr(levenArr);
     }
 
     // 문자열 유사도
-    const levenshtein = (a, b, getHigh) => {
+    const levenshtein = (a, b) => {
         const matrix = [];
     
         const lenA = a.length;
@@ -594,13 +592,7 @@ function Menu( props ) {
         const similarity = (1 - distance / maxLen) * 100;
         const returnValue = similarity.toFixed(2);
         if (maxLen !== 0) {
-            if (90 < returnValue && returnValue < 100) {
-                return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
-            }
-            
-            if (getHigh) {
-                return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
-            }
+            return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
         }
     }
 
@@ -761,7 +753,7 @@ function Menu( props ) {
         let max = {};
         for (const item of arr) {
             if (Object.keys(max).length > 0) {
-                if (max.leven < item.leven) {
+                if (Number(max.leven) < Number(item.leven)) {
                     max = item;
                 }
             } else {
@@ -771,6 +763,7 @@ function Menu( props ) {
 
         if (max.componentTotalPath) {
             recommendFile = splitPath({path: max.componentTotalPath});
+            recommendFile.leven = max.leven;
         }
 
         if (recommendFile) {
@@ -868,6 +861,7 @@ function Menu( props ) {
                 <h2>추천 경로</h2>
                 <p>상위 경로 : {recommendPath.upPath}</p>
                 <p>경로 : {recommendPath.path}</p>
+                <p>유사율 : {recommendPath.leven}%</p>
             </Modal>
             <div className='flexLeftRight'>
                 <div>
