@@ -7,6 +7,8 @@ import SggGridReact from '@components/SggGridReact';
 const modules = import.meta.glob('/src/menuPage/*.jsx');
 const modules2 = import.meta.glob('/src/menuPage/*/*.jsx');
 
+const thisPage = '/admin/menu';
+
 function Menu( props ) {
     // 메뉴 데이터
     const [menuData, setMenuData] = useState([]);
@@ -253,6 +255,7 @@ function Menu( props ) {
             const data = await res.json();
             setMenuData(data);
             props.setMenu(transformDataToTree(data));
+            return data;
         } catch (err) {
             showToast("메뉴 데이터 로드 실패 ", err);
         }
@@ -327,8 +330,6 @@ function Menu( props ) {
         }
         
         let newMenuData = concatMenu();
-        newMenuData.map((item) => item.children ? delete item.children : item);
-        newMenuData.map((item) => item.path.charAt(0) === '/' ? item : item.path = '/' + item.path);
         
         let msg = await saveMenu(newMenuData);
         showToast(msg);
@@ -344,8 +345,6 @@ function Menu( props ) {
         }
         
         let newMenuData = concatMenu();
-        newMenuData.map((item) => item.children ? delete item.children : item);
-        newMenuData.map((item) => item.path.charAt(0) === '/' ? item : item.path = '/' + item.path);
 
         let msg = await saveMenu(newMenuData);
         showToast(msg);
@@ -357,7 +356,6 @@ function Menu( props ) {
     // 삭제
     const DBtn = async () => {
         let newMenuData = concatMenu("d");
-        newMenuData.map((item) => item.children ? delete item.children : item);
         
         let msg = await saveMenu(newMenuData);
         showToast(msg);
@@ -438,6 +436,10 @@ function Menu( props ) {
             newMenuData.push(newSelectedData);
         }
 
+        newMenuData.map((item) => item.children ? delete item.children : item);
+        newMenuData.map((item) => item.totalPath ? delete item.totalPath : item);
+        newMenuData.map((item) => item.path.charAt(0) === '/' ? item : item.path = '/' + item.path);
+
         return newMenuData;
     }
 
@@ -467,57 +469,11 @@ function Menu( props ) {
         getMenu();
     }, []);
 
-    useEffect(() => {
-        if (menuData.length > 0 && components.length > 0) {
-            let newMenuData = structuredClone(menuData);
-            let newComponents = structuredClone(components);
-
-            // 파일
-            for (const item of newComponents) {
-                let src = '/src/menuPage';
-                item.path = item.path.replace('.jsx', '');
-                item.path = item.path.substring(src.length);
-            }
-            
-            // 메뉴
-            for (const item of newMenuData) {
-                if (!item.upId) {
-                    item.totalPath = item.path;
-                }
-
-                for (const item2 of newMenuData) {
-                    if (item2.upId === item.id) {
-                        item2.totalPath = item.path + item2.path;
-                    }
-                }
-            }
-
-            // 등록되어 있지 않은 파일
-            for (const item of newMenuData) {
-                let chk = 0;
-                if (!item.upId) {
-                    chk++;
-                }
-                for (const item2 of newComponents) {
-                    if (item2.path.toLowerCase() === item.totalPath.toLowerCase()) {
-                        chk++;
-                    }
-                }
-
-                if (chk > 0) {
-                    item.delNode = true;
-                }
-            }
-
-            // X 표시할거 찾기
-        }
-    }, [menuData, components])
-
-    // 등록되어 있지 않는 파일 찾기
-    const chkDupleMenuComponents = (menu = [], component = []) => {
+    // 메뉴, 파일 비교
+    const chkMenuComponents = (menu = [], component = []) => {
         let newMenuData = structuredClone(menu);
         let newComponents = structuredClone(component);
-
+        
         // 파일
         for (const item of newComponents) {
             let src = '/src/menuPage';
@@ -530,14 +486,48 @@ function Menu( props ) {
             if (!item.upId) {
                 item.totalPath = item.path;
             }
-
+            
             for (const item2 of newMenuData) {
                 if (item2.upId === item.id) {
                     item2.totalPath = item.path + item2.path;
                 }
             }
         }
+        
+        // 실제 파일 경로와 메뉴 경로 다른거 찾기
+        chkPathMenuComponents(newMenuData, newComponents);
+        // 등록되어 있지 않는 파일 찾기
+        chkDupleMenuComponents(newMenuData, newComponents);
+    }
 
+    // 실제 파일 경로와 메뉴 경로 다른거 찾기
+    const chkPathMenuComponents = (newMenuData = [], newComponents = []) => {
+        // 등록되어 있지 않은 파일
+        for (const [idx, item] of newMenuData.entries()) {
+            let chk = 0;
+            
+            if (!item.upId || item.delNode || item.totalPath === thisPage) {
+                chk++;
+            }
+
+            for (const item2 of newComponents) {
+                if (item2.path.toLowerCase() === item.totalPath.toLowerCase()) {
+                    chk++;
+                }
+            }
+
+            if (chk === 0) {
+                item.delNode = true;
+            } else {
+                delete item.delNode
+            }
+        }
+        
+        setMenuData(newMenuData);
+    }
+
+    // 등록되어 있지 않는 파일 찾기
+    const chkDupleMenuComponents = (newMenuData = [], newComponents = []) => {
         // 등록되어 있지 않은 파일
         let concatMenu = [];
         for (const item of newComponents) {
@@ -600,11 +590,24 @@ function Menu( props ) {
         let newMenuData = structuredClone(menuData);
         let newComponents = structuredClone(components);
 
-        if (newMenuData.length > 0 && newComponents.length > 0) {
-            chkDupleMenuComponents(newMenuData, newComponents);
+        if (newMenuData.length > 0 && newComponents.length > 0 && menuComponents === 0) {
+            setMenuComponents(1);
+        } else {
+            setMenuComponents(0);
         }
-
+        
     }, [components, menuData])
+    
+    const [menuComponents, setMenuComponents] = useState(0);
+    
+    useEffect(() => {
+        if (menuComponents === 1) {
+            let newMenuData = structuredClone(menuData);
+            let newComponents = structuredClone(components);
+    
+            chkMenuComponents(newMenuData, newComponents);
+        }
+    }, [menuComponents]);
 
     // 그리드 행클릭 초기화
     const [resetBtn, setResetBtn] = useState(true);

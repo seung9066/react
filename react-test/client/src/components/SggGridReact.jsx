@@ -39,6 +39,8 @@ export default function SggGridReact({ data, columns = [], resetBtn, onClick }) 
                 const endIdx = startIdx + PER_PAGE;
                 const reversed = [...data.gridData].reverse();
                 setCurrentList(reversed.slice(startIdx, endIdx));
+            } else {
+                setCurrentList([]);
             }
         }
     }, [data, currentPage]);
