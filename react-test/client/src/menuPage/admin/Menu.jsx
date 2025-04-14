@@ -436,6 +436,7 @@ function Menu( props ) {
             newMenuData.push(newSelectedData);
         }
 
+        newMenuData.map((item) => item.delNode ? delete item.delNode : item);
         newMenuData.map((item) => item.children ? delete item.children : item);
         newMenuData.map((item) => item.totalPath ? delete item.totalPath : item);
         newMenuData.map((item) => item.path.charAt(0) === '/' ? item : item.path = '/' + item.path);
