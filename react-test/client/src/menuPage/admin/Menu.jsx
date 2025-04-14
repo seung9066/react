@@ -264,6 +264,7 @@ function Menu( props ) {
             const data = await res.json();
             setMenuData(data);
             props.setMenu(transformDataToTree(data));
+            setMenuComponents(0);
         } catch (err) {
             showToast("메뉴 데이터 로드 실패 ", err);
         }
@@ -480,7 +481,7 @@ function Menu( props ) {
         // 실제 파일 경로와 메뉴 경로 다른거 찾기
         chkPathMenuComponents(newMenuData, newComponents);
         // 등록되어 있지 않는 파일 찾기
-        chkDupleMenuComponents(newMenuData, newComponents);
+        setGridData(chkDupleMenuComponents(newMenuData, newComponents));
         // 유사도 비교
         getLevenShtein(newMenuData, newComponents);
     }
@@ -536,7 +537,7 @@ function Menu( props ) {
             pathArr.push(splitPath(item));
         }
 
-        setGridData(pathArr);
+        return pathArr;
     }
 
     // 문자열 유사도 비교
@@ -550,13 +551,17 @@ function Menu( props ) {
                 }
             }
         }
+
+        if (levenArr.length === 0) {
+            levenArr = includePath(newMenuData, newComponents);
+        }
         setRecommendArr(levenArr);
     }
 
     // 문자열 유사도
-    const levenshtein = (aWord, bWord) => {
-        let a = aWord.totalPath;
-        let b = bWord.path;
+    const levenshtein = (obj1, obj2) => {
+        let a = obj1.totalPath;
+        let b = obj2.path;
         const matrix = [];
     
         const lenA = a.length;
@@ -593,6 +598,31 @@ function Menu( props ) {
                 return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
             }
         }
+    }
+
+    // 문자열 유사도에 걸리는게 없을 때 포함값으로 체크
+    const includePath = (newMenuData, newComponents) => {
+        let gridArr = chkDupleMenuComponents(newMenuData, newComponents);
+        let arr = [];
+        for (const item of newMenuData) {
+            let menuPath = item.totalPath;
+            for (const item2 of gridArr) {
+                let gridPath = item2.upPath + item2.path;
+                menuPath.toLowerCase().indexOf(item2.path.toLowerCase()) > -1 ? arr.push({menuTotalPath: menuPath, componentTotalPath: gridPath, leven: 100}) : null;
+            }
+        }
+
+        if (arr.length === 0) {
+            for (const item of gridArr) {
+                let gridPath = item.path;
+                for (const item2 of newMenuData) {
+                    let menuPath = item2.totalPath;
+                    gridPath.toLowerCase().indexOf(menuPath.toLowerCase()) > -1 ? arr.push({menuTotalPath: menuPath, componentTotalPath: gridPath, leven: 100}) : null;
+                }
+            }   
+        }
+
+        return arr;
     }
 
     const splitPath = (item) => {
@@ -791,7 +821,9 @@ function Menu( props ) {
         if (newMenuData.length > 0 && newComponents.length > 0 && menuComponents === 0) {
             setMenuComponents(1);
         } else {
-            setMenuComponents(0);
+            setTimeout(() => {
+                setMenuComponents(0);
+            }, 0)
         }
         
     }, [components, menuData])
