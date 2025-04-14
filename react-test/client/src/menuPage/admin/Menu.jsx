@@ -546,7 +546,7 @@ function Menu( props ) {
         let levenArr = [];
         for (const item of newMenuData) {
             for (const item2 of gridArr) {
-                let levenObj = levenshtein(item, item2);
+                let levenObj = levenshtein(item.totalPath, (item2.upPath + item2.path));
                 if (levenObj) {
                     levenArr.push(levenObj);
                 }
@@ -556,13 +556,12 @@ function Menu( props ) {
         if (levenArr.length === 0) {
             levenArr = includePath(newMenuData, gridArr);
         }
+        
         setRecommendArr(levenArr);
     }
 
     // 문자열 유사도
-    const levenshtein = (menuDataObj, gridDataObj) => {
-        let a = menuDataObj.totalPath;
-        let b = gridDataObj.upPath + gridDataObj.path;
+    const levenshtein = (a, b, getHigh) => {
         const matrix = [];
     
         const lenA = a.length;
@@ -598,31 +597,57 @@ function Menu( props ) {
             if (90 < returnValue && returnValue < 100) {
                 return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
             }
+            
+            if (getHigh) {
+                return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
+            }
         }
     }
 
     // 문자열 유사도에 걸리는게 없을 때 포함값으로 체크
     const includePath = (newMenuData, gridArr) => {
         let arr = [];
-        for (const item of newMenuData) {
-            let menuPath = item.totalPath;
-            for (const item2 of gridArr) {
-                let gridPath = item2.upPath + item2.path;
-                menuPath.toLowerCase().indexOf(item2.path.toLowerCase()) > -1 ? arr.push({menuTotalPath: menuPath, componentTotalPath: gridPath, leven: 100}) : null;
+        
+        let gridArr2 = [];
+        for (const item of gridArr) {
+            let gridPath = item.upPath + item.path;
+            for (const item2 of newMenuData) {
+                let menuPath = item2.totalPath;
+                // 유사도 넣기 (gridArr 수 만큼 넣기 위해서 순서 바꿈)
+                gridArr2.push(levenshtein(gridPath, menuPath, true));
             }
         }
-
-        if (arr.length === 0) {
-            for (const item of gridArr) {
-                let gridPath = item.upPath + item.path;
-                for (const item2 of newMenuData) {
-                    let menuPath = item2.totalPath;
-                    gridPath.toLowerCase().indexOf(item2.path.toLowerCase()) > -1 ? arr.push({menuTotalPath: menuPath, componentTotalPath: gridPath, leven: 100}) : null;
+        
+        let maxArr = [];
+        let max = {};
+        for (const item of gridArr2) {
+            if (max.menuTotalPath === item.menuTotalPath) {
+                if (Number(max.leven) < Number(item.leven)) {
+                    max = {...item};
+                    for (let [idx, item2] of maxArr.entries()) {
+                        if (max.menuTotalPath === item2.menuTotalPath) {
+                            maxArr[idx] = max;
+                        }
+                    }
                 }
-            }   
+            } else {
+                max = {...item};
+                maxArr.push(max);
+            }
+        }
+        
+        // 유사도 넣기 (gridArr 수 만큼 넣기 위해서 순서 바꾼거 풀어주기)
+        for (const [idx, item] of maxArr.entries()) {
+            let newItem = {
+                menuTotalPath: item.componentTotalPath,
+                componentTotalPath: item.menuTotalPath,
+                leven: item.leven,
+            }
+
+            maxArr[idx] = newItem;
         }
 
-        return arr;
+        return maxArr;
     }
 
     const splitPath = (item) => {
