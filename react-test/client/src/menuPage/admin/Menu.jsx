@@ -591,7 +591,7 @@ function Menu( props ) {
 
         const distance = matrix[lenB][lenA];
         const maxLen = Math.max(a.length, b.length);
-
+        
         const similarity = (1 - distance / maxLen) * 100;
         const returnValue = similarity.toFixed(2);
         if (maxLen !== 0) {
