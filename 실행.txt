@@ -8,3 +8,10 @@ npx nodemon index.js
 npm install concurrently --save-dev
 >
 npm run dev
+
+
+// 코드 작성 순서
+useState
+통신
+function
+useEffect
