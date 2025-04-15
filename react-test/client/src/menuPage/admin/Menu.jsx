@@ -592,8 +592,80 @@ function Menu( props ) {
         const similarity = (1 - distance / maxLen) * 100;
         const returnValue = similarity.toFixed(2);
         if (maxLen !== 0) {
-            return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
+            let splitLeven = levenshteinSplit(a, b);
+
+            if (splitLeven) {
+                return splitLeven;
+            } else {
+                return {menuTotalPath: a, componentTotalPath: b, leven: returnValue};
+            }
         }
+    }
+
+    const levenshteinSplit = (a, b) => {
+        let slashA = 0;
+        for (let i = 0; i < a.length; i++) {
+            a[i] === '/' ? slashA = i : null;
+        }
+        let pathA = a.substring(slashA);
+        let slashB = 0;
+        for (let i = 0; i < b.length; i++) {
+            b[i] === '/' ? slashB = i : null;
+        }
+        let pathB = b.substring(slashB);
+
+        let slicePath = {};
+        if (slashA > 0 || slashB > 0) {
+            slicePath = levenshtein(pathA, pathB);
+        }
+
+        if (Object.keys(slicePath).length > 0) {
+            if (90 <= slicePath.leven && slicePath.leven <= 100) {
+                return {menuTotalPath: a, componentTotalPath: b, leven: 99}
+            }
+        }
+    }
+
+    // 메뉴로 상위메뉴까지 찾기
+    const getMenuUpPath = (path) => {
+        const newMenuData = structuredClone(menuData);
+        let returnValue = '';
+        for (const item of newMenuData) {
+            if (item.path === path) {
+                returnValue = item.upPath;
+            }
+        }
+        return returnValue;
+    }
+
+    // 컴포넌트 상위 경로 찾기
+    const getComponentUpPath = (path) => {
+        const newComponents = structuredClone(components);
+        let returnValue = '';
+        for (const item of newComponents) {
+            let slash = 0;
+            let itemPath = item.path;
+            for (let i = 0; i < itemPath.length; i++) {
+                itemPath[i] === '/' ? slash = i : null;
+            }
+
+            let splitPath = itemPath.substring(slash);
+            splitPath = splitPath.replace('.jsx', '');
+
+            if (splitPath.toLowerCase() === path.toLowerCase()) {
+                let returnPath = item.path;
+                returnPath = returnPath.replace('/src/menuPage', '');
+                returnPath = returnPath.replace('.jsx', '');
+                
+                let slash2 = 0;
+                for (let i = 0; i < returnPath.length; i++) {
+                    returnPath[i] === '/' ? slash2 = i : null;
+                }
+                slash2 !== 0 ? returnPath = returnPath.substring(0, slash2) : null;
+                returnValue = returnPath
+            }
+        }
+        return returnValue;
     }
 
     // 문자열 유사도에 걸리는게 없을 때 포함값으로 체크
@@ -606,10 +678,10 @@ function Menu( props ) {
             for (const item2 of newMenuData) {
                 let menuPath = item2.totalPath;
                 // 유사도 넣기 (gridArr 수 만큼 넣기 위해서 순서 바꿈)
-                gridArr2.push(levenshtein(gridPath, menuPath, true));
+                gridArr2.push(levenshtein(gridPath, menuPath));
             }
         }
-        
+
         let maxArr = [];
         let max = {};
         for (const item of gridArr2) {
@@ -629,14 +701,14 @@ function Menu( props ) {
         }
         
         // 유사도 넣기 (gridArr 수 만큼 넣기 위해서 순서 바꾼거 풀어주기)
-        for (const [idx, item] of maxArr.entries()) {
+        for (let i = 0; i < maxArr.length; i++) {
             let newItem = {
-                menuTotalPath: item.componentTotalPath,
-                componentTotalPath: item.menuTotalPath,
-                leven: item.leven,
+                menuTotalPath: maxArr[i].componentTotalPath,
+                componentTotalPath: maxArr[i].menuTotalPath,
+                leven: maxArr[i].leven,
             }
-
-            maxArr[idx] = newItem;
+    
+            maxArr[i] = newItem;
         }
 
         return maxArr;
