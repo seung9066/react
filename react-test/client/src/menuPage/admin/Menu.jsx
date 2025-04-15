@@ -560,21 +560,26 @@ function Menu( props ) {
 
     // 문자열 유사도
     const levenshtein = (a, b) => {
-        const matrix = [];
-    
-        const lenA = a.length;
-        const lenB = b.length;
-    
+        if (!a || !b) return 0.0;
+
+        const lowerA = a.toLowerCase();
+        const lowerB = b.toLowerCase();
+
+        const lenA = lowerA.length;
+        const lenB = lowerB.length;
+
+        const matrix = Array.from({ length: lenB + 1 }, () => Array(lenA + 1).fill(0));
+
         for (let i = 0; i <= lenB; i++) {
-            matrix[i] = [i];
+            matrix[i][0] = i;
         }
         for (let j = 0; j <= lenA; j++) {
             matrix[0][j] = j;
         }
-    
+
         for (let i = 1; i <= lenB; i++) {
             for (let j = 1; j <= lenA; j++) {
-                if (b.toLowerCase().charAt(i - 1) === a.toLowerCase().charAt(j - 1)) {
+                if (lowerB[i - 1] === lowerA[j - 1]) {
                     matrix[i][j] = matrix[i - 1][j - 1];
                 } else {
                     matrix[i][j] = Math.min(
@@ -587,13 +592,13 @@ function Menu( props ) {
         }
 
         const distance = matrix[lenB][lenA];
-        const maxLen = Math.max(a.length, b.length);
-        
-        const similarity = (1 - distance / maxLen) * 100;
+        const maxLen = Math.max(lenA, lenB);
+
+        const similarity = maxLen === 0 ? 100 : (1 - distance / maxLen) * 100;
         const returnValue = similarity.toFixed(2);
         if (maxLen !== 0) {
             let splitLeven = levenshteinSplit(a, b);
-
+            
             if (splitLeven) {
                 return splitLeven;
             } else {
@@ -620,9 +625,7 @@ function Menu( props ) {
         }
 
         if (Object.keys(slicePath).length > 0) {
-            if (90 <= slicePath.leven && slicePath.leven <= 100) {
-                return {menuTotalPath: a, componentTotalPath: b, leven: 99}
-            }
+            return {menuTotalPath: a, componentTotalPath: b, leven: slicePath.leven}
         }
     }
 
