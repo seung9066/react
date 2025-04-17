@@ -22,8 +22,8 @@ const RunawayButton = ({ toastRef, msg }) => {
 
       if (distance < 150) {
         if (!moving) setMoving(true);
-        const moveX = (dx / distance) * 100;
-        const moveY = (dy / distance) * 100;
+        const moveX = (dx / distance) * 120;
+        const moveY = (dy / distance) * 120;
         button.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
       } else {
         if (moving) setMoving(false);
