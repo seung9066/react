@@ -6,10 +6,12 @@ function Modal({ isOpen, onClose, children, onConfirm, title }) {
     return (
         <div style={backdropStyle}>
             <div style={modalStyle}>
-                <h2>{title}</h2>
-                {children}
-                {onConfirm && <button onClick={onConfirm} style={closeBtnStyle}>확인</button>}
-                <button onClick={onClose} style={closeBtnStyle}>닫기</button>
+                <div style={contentStyle}>
+                    <h2>{title}</h2>
+                    {children}
+                    {onConfirm && <button onClick={onConfirm} style={closeBtnStyle}>확인</button>}
+                    <button onClick={onClose} style={closeBtnStyle}>닫기</button>
+                </div>
             </div>
         </div>
     );
@@ -29,9 +31,19 @@ const modalStyle = {
     background: 'white',
     padding: '20px',
     borderRadius: '8px',
+    maxWidth: '80vw',         // 최대 너비
+    maxHeight: '80vh',        // 최대 높이
+    overflow: 'hidden',       // 전체 모달 바깥으로는 안 넘치게
     minWidth: '500px',
     minHeight: '200px',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
+    boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+    display: 'flex',
+    flexDirection: 'column',
+};
+
+const contentStyle = {
+    overflow: 'auto',         // ✅ 내용이 넘칠 경우 스크롤
+    flex: 1,                  // 남은 공간 꽉 채움
 };
 
 const closeBtnStyle = {
