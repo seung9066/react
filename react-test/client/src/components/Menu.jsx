@@ -7,7 +7,7 @@ import Modal from '@components/Modal';
 const modules = import.meta.glob('/src/menuPage/*.jsx');
 const modules2 = import.meta.glob('/src/menuPage/*/*.jsx');
 
-function Menu({ getMenuNm, menuData, props }) {
+function Menu({ getMenuNm, menuData, setMenuData, props }) {
     const [title, setTitle] = useState();
 
     const clickMenu = (e, path) => {
@@ -110,7 +110,7 @@ function Menu({ getMenuNm, menuData, props }) {
                     let path = item.path;
                     if (path === filePath) {
                         const Component = item.component;
-                        return <Component key={item.path + 'modal'} props={props} />;
+                        return <Component key={item.path + 'modal'} props={props} setMenu={setMenuData} />;
                     }
                 })}
             </Modal>
