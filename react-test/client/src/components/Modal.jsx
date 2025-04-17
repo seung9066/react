@@ -4,8 +4,8 @@ function Modal({ isOpen, onClose, children, onConfirm, title }) {
     if (!isOpen) return null;
 
     return (
-        <div style={backdropStyle}>
-            <div style={modalStyle}>
+        <div style={backdropStyle} onClick={onClose}>
+            <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
                 <div style={contentStyle}>
                     <h2>{title}</h2>
                     {children}
