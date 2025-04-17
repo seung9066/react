@@ -1,7 +1,7 @@
 // express 모듈을 불러옴
 import express from 'express';
 
-import axios from 'axios';
+import api from '../setting/axios.js';
 
 // express의 라우터 인스턴스 생성
 const router = express.Router();
@@ -11,7 +11,7 @@ const app = express();
 
 app.get('api/getUser', async (req, res) => {
     try {
-        const response = await axios.get('https://localhost:8080/api/getUser');
+        const response = await api.get('/getUser');
         res.json(response.data);
     } catch (error) {
         console.error('Error fetching user data:', error);
