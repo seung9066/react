@@ -105,7 +105,7 @@ function Menu({ getMenuNm, menuData, props }) {
 
     return (
         <>
-            <Modal isOpen={isViewModalOpen} onClose={() => setIsViewModalOpen(false)} title={filePath}>
+            <Modal isOpen={isViewModalOpen} onClose={() => setIsViewModalOpen(false)} title={filePath.replace('/src/menuPage', '')}>
                 {components.map((item) => {
                     let path = item.path;
                     if (path === filePath) {
