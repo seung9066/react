@@ -20,4 +20,6 @@
   border: none;
   border-radius: 5px;
   position: absolute;
+  width: 100px; /* 원하는 너비로 지정 */
+  text-align: center;
 }

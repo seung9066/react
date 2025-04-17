@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@css/RunawayButton.css';
 
-const RunawayButton = ({ toastRef }) => {
+const RunawayButton = ({ toastRef, msg }) => {
   const buttonRef = useRef(null);
   const [moving, setMoving] = useState(false);
 
@@ -37,15 +37,15 @@ const RunawayButton = ({ toastRef }) => {
     };
   }, [moving]);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
     if (moving) {
-      toastRef.current.showToast("ㅋㅋ 오소이. (느리다는 뜻)");
+      toastRef.current.showToast(msg);
     }
   };
 
   return (
     <div className="runaway-container" onClick={handleClick}>
-      <button ref={buttonRef} className="runaway-btn" onClick={function() {alert("이걸 잡네 ㅋㅋ")}}>
+      <button ref={buttonRef} className={"runaway-btn"} onClick={function() {alert("이걸 잡네 ㅋㅋ")}}>
         클릭
       </button>
     </div>
