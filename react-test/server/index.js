@@ -37,38 +37,37 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // "routes" 디렉토리 내 라우터 파일 자동 로딩
 const loadRoutes = async () => {
     // "routes" 디렉토리 경로 설정
-const routesDir = path.join(__dirname, 'routes');
+    const routesDir = path.join(__dirname, 'routes');
 
-// routes 폴더 내 파일들을 비동기적으로 읽어옴
-const files = await readdir(routesDir);
+    // routes 폴더 내 파일들을 비동기적으로 읽어옴
+    const files = await readdir(routesDir);
 
-for (const file of files) {
-    // .js로 끝나는 파일만 처리 (라우터 파일로 간주)
-    if (file.endsWith('.js')) {
-        try {
-            // ESM 환경에서는 파일 경로를 file:// URL로 변환해야 import 가능
-            const modulePath = pathToFileURL(path.join(routesDir, file)).href;
+    for (const file of files) {
+        // .js로 끝나는 파일만 처리 (라우터 파일로 간주)
+        if (file.endsWith('.js')) {
+            try {
+                // ESM 환경에서는 파일 경로를 file:// URL로 변환해야 import 가능
+                const modulePath = pathToFileURL(path.join(routesDir, file)).href;
 
-            // 모듈을 동적으로 import
-            const module = await import(modulePath);
+                // 모듈을 동적으로 import
+                const module = await import(modulePath);
 
-            // 모듈의 default export를 라우터로 사용
-            const route = module.default;
+                // 모듈의 default export를 라우터로 사용
+                const route = module.default;
 
-            // 파일 이름에서 'Router.js' 제거 → 라우트 경로 설정
-            const routePath = `/api/${file.replace('Router.js', '')}`;
+                // 파일 이름에서 'Router.js' 제거 → 라우트 경로 설정
+                const routePath = `/api/${file.replace('Router.js', '')}`;
 
-            // 해당 라우트를 Express 앱에 등록
-            app.use(routePath, route);
+                // 해당 라우트를 Express 앱에 등록
+                app.use(routePath, route);
 
-            console.log(`라우터 등록됨: ${routePath}`);
-        } catch (err) {
-            // 모듈 로딩에 실패한 경우 에러 출력
-            console.error(`라우터 로딩 실패: ${file}`, err);
+                console.log(`라우터 등록됨: ${routePath}`);
+            } catch (err) {
+                // 모듈 로딩에 실패한 경우 에러 출력
+                console.error(`라우터 로딩 실패: ${file}`, err);
+            }
         }
     }
-}
-
 };
 
 // 라우터 로딩 후 서버 시작
