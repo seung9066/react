@@ -944,7 +944,7 @@ function Menu( props ) {
         } else {
             setTimeout(() => {
                 setMenuComponents(0);
-            }, 0)
+            }, 100)
         }
         
     }, [components, menuData])
