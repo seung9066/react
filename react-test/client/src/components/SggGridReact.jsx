@@ -4,7 +4,7 @@ import styles from '@css/SggGridReact.module.css';
 const PER_PAGE = 10;
 const PAGE_BTN_COUNT = 10;
 
-export default function SggGridReact({ data, columns = [], resetBtn, onClick }) {
+export default function SggGridReact({ data, columns = [], resetBtn, onClick, onDoubleClick }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [currentList, setCurrentList] = useState([]);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -13,6 +13,12 @@ export default function SggGridReact({ data, columns = [], resetBtn, onClick }) 
         setSelectedRow(item);
         if (onClick) {
             onClick(e, item);
+        }
+    }
+
+    const trDoubleClick = (e, item) => {
+        if (onDoubleClick) {
+            onDoubleClick(e, item);
         }
     }
 
@@ -113,6 +119,7 @@ export default function SggGridReact({ data, columns = [], resetBtn, onClick }) 
                                 key={item.no}
                                 className={styles.tbodyRow}
                                 onClick={(e) => trClick(e, item)}
+                                onDoubleClick={(e) => trDoubleClick(e, item)}
                                 style={{
                                     backgroundColor: selectedRow?.no === item.no ? 'lightblue' : '',
                                     cursor: 'pointer'

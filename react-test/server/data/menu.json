@@ -12,10 +12,28 @@
         "upId": null
     },
     {
+        "upId": "A002",
+        "title": "LifeCycleHook",
+        "path": "/lifeCycleHook",
+        "id": "B006"
+    },
+    {
+        "title": "TicTacToe",
+        "path": "/ticTacToe",
+        "id": "B001",
+        "upId": "A003"
+    },
+    {
         "title": "Play",
         "path": "/play",
         "id": "A003",
         "upId": null
+    },
+    {
+        "upId": "A002",
+        "title": "Props",
+        "path": "/props",
+        "id": "B007"
     },
     {
         "title": "Program",
@@ -43,12 +61,6 @@
         "upPath": "/program"
     },
     {
-        "title": "TicTacToe",
-        "path": "/ticTacToe",
-        "id": "B001",
-        "upId": "A003"
-    },
-    {
         "title": "Admin",
         "path": "/admin",
         "id": "A005",
@@ -59,18 +71,6 @@
         "path": "/menu",
         "id": "B005",
         "upId": "A005"
-    },
-    {
-        "upId": "A002",
-        "title": "LifeCycleHook",
-        "path": "/lifeCycleHook",
-        "id": "B006"
-    },
-    {
-        "upId": "A002",
-        "title": "Props",
-        "path": "/props",
-        "id": "B007"
     },
     {
         "upId": "A002",

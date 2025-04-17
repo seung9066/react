@@ -47,6 +47,7 @@ function Menu( props ) {
     // 동적으로 불러온 컴포넌트들을 저장할 state
     const [components, setComponents] = useState([]);
     const [gridData, setGridData] = useState([]);
+    const [components2, setComponents2] = useState([]);
 
     // 새 파일 경로 목록
     const [filePath, setFilePath] = useState({});
@@ -67,6 +68,9 @@ function Menu( props ) {
 
     // 모달
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // iframe 모달
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
     // 트리 선택
     const selectedTree = (node) => {
@@ -734,6 +738,7 @@ function Menu( props ) {
                 pathArr.path = camelPath;
             }
         }
+        pathArr.totalPath = item.path;
 
         return pathArr;
     }
@@ -747,6 +752,20 @@ function Menu( props ) {
         setResetBtn(true);
         // 그리드 등록 버튼 disable
         setGridDisableAdd(false);
+    }
+    
+    const gridTrDoubleClick = (e, item) => {
+        // 선택 그리드 행 데이터
+        setFilePath(item);
+        
+        // 모달 오픈
+        setIsViewModalOpen(true);
+    }
+
+    // 그리드 목록 클릭 모달 확인
+    const onConfirmViewModal = () => {
+        addGridToMenu();
+        setIsViewModalOpen(false);
     }
 
     // 그리드 초기화
@@ -896,9 +915,18 @@ function Menu( props ) {
                     };
                 })
             );
-            
+            const loaded2 = await Promise.all(
+                Object.entries(totalModules).map(async ([path, importer]) => {
+                    const mod = await importer();
+                    return {
+                        component : mod.default,
+                        path
+                    };
+                })
+            );
             // 추출한 컴포넌트 배열로 상태 설정
             setComponents(loaded);
+            setComponents2(loaded2);
         };
 
         loadComponents();
@@ -937,6 +965,17 @@ function Menu( props ) {
                 <p>상위 경로 : {recommendPath.upPath}</p>
                 <p>경로 : {recommendPath.path}</p>
                 <p>유사율 : {recommendPath.leven}%</p>
+            </Modal>
+            <Modal isOpen={isViewModalOpen} onClose={() => setIsViewModalOpen(false)} onConfirm={onConfirmViewModal} title={'파일 화면'}>
+                {components2.map((item) => {
+                    let path = item.path;
+                    path = path.replace('.jsx', '');
+                    path = path.replace('/src/menuPage', '');
+                    if (path === filePath.totalPath) {
+                        const Component = item.component;
+                        return <Component key={item.path} />;
+                    }
+                })}
             </Modal>
             <div className='flexLeftRight'>
                 <div>
@@ -989,6 +1028,7 @@ function Menu( props ) {
                             columns={[{key:'upPath', name:'상위경로'}, {key:'path', name:'경로'}]}
                             data={{gridData:gridData}}
                             onClick={gridTrClick}
+                            onDoubleClick={gridTrDoubleClick}
                             resetBtn={resetBtn}
                             />
                     </div>

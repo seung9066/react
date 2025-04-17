@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-function Modal({ isOpen, onClose, children, onConfirm }) {
+function Modal({ isOpen, onClose, children, onConfirm, title }) {
     if (!isOpen) return null;
 
     return (
         <div style={backdropStyle}>
             <div style={modalStyle}>
+                <h2>{title}</h2>
                 {children}
                 {onConfirm && <button onClick={onConfirm} style={closeBtnStyle}>확인</button>}
                 <button onClick={onClose} style={closeBtnStyle}>닫기</button>
@@ -28,7 +29,8 @@ const modalStyle = {
     background: 'white',
     padding: '20px',
     borderRadius: '8px',
-    minWidth: '300px',
+    minWidth: '500px',
+    minHeight: '200px',
     boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
 };
 
