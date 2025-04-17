@@ -34,24 +34,32 @@ export default function SggGridReact({ data, columns = [], resetBtn, onClick, on
                 for (const item of gridData) {
                     item.no ? chkNo++ : chkNo--;
                 }
-                if (chkNo !== data.gridData.length) {
+                if (chkNo !== (data?.totalCount || data.gridData.length)) {
                     let gridData = structuredClone(data.gridData);
-                    for (let i = 0; i < gridData.length; i++) {
-                        gridData[i].no ? null : gridData[i].no = i + 1;
+                    if (data.totalCount) {
+                        for (let i = 0; i < gridData.length; i++) {
+                            gridData[i].no ? null : gridData[i].no = (gridData.length - i) + (currentPage - 1) * PER_PAGE;
+                        }
+                        data.gridData = gridData;
+                        setCurrentList([...data.gridData]);
+                    } else {
+                        for (let i = 0; i < gridData.length; i++) {
+                            gridData[i].no ? null : gridData[i].no = i + 1;
+                        }
+                        data.gridData = gridData;
+                        const startIdx = (currentPage - 1) * PER_PAGE;
+                        const endIdx = startIdx + PER_PAGE;
+                        const reversed = [...data.gridData].reverse();
+                        setCurrentList(reversed.slice(startIdx, endIdx));
                     }
-                    data.gridData = gridData;
                 }
-                const startIdx = (currentPage - 1) * PER_PAGE;
-                const endIdx = startIdx + PER_PAGE;
-                const reversed = [...data.gridData].reverse();
-                setCurrentList(reversed.slice(startIdx, endIdx));
             } else {
                 setCurrentList([]);
             }
         }
     }, [data, currentPage]);
 
-    const totalPage = Math.ceil((data?.gridData?.length || 0) / PER_PAGE);
+    const totalPage = Math.ceil((data?.totalCount || data?.gridData?.length || 0) / PER_PAGE);
 
     const clickPagingBtn = (num) => {
         setCurrentPage(num);
@@ -97,6 +105,7 @@ export default function SggGridReact({ data, columns = [], resetBtn, onClick, on
 
     return (
         <div className={styles.tableContainer}>
+            <p style={{ textAlign: 'left', margin: '0 0 8px 0' }}>총 {data?.totalCount || data?.gridData?.length}건</p>
             <table className={styles.table} id="noticeGrid">
                 <thead className={styles.thead}>
                     <tr>

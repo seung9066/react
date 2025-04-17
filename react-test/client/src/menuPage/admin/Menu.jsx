@@ -1026,7 +1026,7 @@ function Menu( props ) {
                     <div>
                         <SggGridReact 
                             columns={[{key:'upPath', name:'상위경로'}, {key:'path', name:'경로'}]}
-                            data={{gridData:gridData}}
+                            data={{gridData: gridData, }}
                             onClick={gridTrClick}
                             onDoubleClick={gridTrDoubleClick}
                             resetBtn={resetBtn}

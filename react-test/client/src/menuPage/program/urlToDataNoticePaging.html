@@ -301,6 +301,7 @@
         <button class="fileUpload" onclick="copyUrl()">url 복사</button>
     </div>
     <div id="noticeList">
+        <p style="text-align: left; margin: 0 0 8px 0" id="gridCount"></p>
         <table style="width: 99%;" id="noticeGrid" class="table-container">
             <thead>
                 <tr>
@@ -514,8 +515,11 @@
             const formPaging = document.getElementById('formPaging');
 
             const data = getParamData();
-
+            
             if (data && data.grid) {
+                let gridCount = document.getElementById('gridCount');
+                gridCount.innerText = "총 " + data.grid.length + "건";
+
                 if (data.page) {
                     currentPage = data.page;
                 } else {
