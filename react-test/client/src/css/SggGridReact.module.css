@@ -19,6 +19,7 @@
   .th, .td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
+    user-select: none;
   }
   
   .tbody {
