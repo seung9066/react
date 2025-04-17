@@ -120,7 +120,7 @@ function App() {
       <ToastAlert ref={toastRef} />
       <div className="App">
         <div>
-          {menuData.length > 0 && <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} />}
+          {menuData.length > 0 && <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} props={props} />}
         </div>
         <div style={{ marginTop: "60px", textAlign: "center" }}>
           <GetTime />
