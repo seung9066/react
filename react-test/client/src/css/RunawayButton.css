@@ -12,7 +12,7 @@
   transition: transform 0.1s ease;
   cursor: pointer;
   margin-right: 100px;
-  padding: 15px 30px;
+  padding: 13px 25px;
   font-size: 15px;
   cursor: pointer;
   background-color: #ff1919;
@@ -20,6 +20,6 @@
   border: none;
   border-radius: 5px;
   position: absolute;
-  width: 100px; /* 원하는 너비로 지정 */
+  width: 90px; /* 원하는 너비로 지정 */
   text-align: center;
 }
