@@ -983,7 +983,7 @@ function Menu( props ) {
                     </div>
                 </div>
                 <div>
-                    <h3>메뉴에 없는 파일</h3>
+                    <h3>메뉴에 등록 되어 있지 않은 파일</h3>
                     <div>
                         <SggGridReact 
                             columns={[{key:'upPath', name:'상위경로'}, {key:'path', name:'경로'}]}
