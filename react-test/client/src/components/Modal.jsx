@@ -1,6 +1,18 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Modal({ isOpen, onClose, children, onConfirm, title }) {
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden'; // 스크롤 막기
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        return () => {
+            document.body.style.overflow = ''; // 모달 unmount 시 원복
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
