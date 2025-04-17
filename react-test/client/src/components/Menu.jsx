@@ -105,7 +105,7 @@ function Menu({ getMenuNm, menuData, props }) {
 
     return (
         <>
-            <Modal isOpen={isViewModalOpen} onClose={() => setIsViewModalOpen(false)} title={'파일 화면'}>
+            <Modal isOpen={isViewModalOpen} onClose={() => setIsViewModalOpen(false)} title={filePath}>
                 {components.map((item) => {
                     let path = item.path;
                     if (path === filePath) {

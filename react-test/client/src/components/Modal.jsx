@@ -46,7 +46,7 @@ const modalStyle = {
     maxWidth: '80vw',         // 최대 너비
     maxHeight: '80vh',        // 최대 높이
     overflow: 'hidden',       // 전체 모달 바깥으로는 안 넘치게
-    minWidth: '500px',
+    minWidth: '600px',
     minHeight: '200px',
     boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
     display: 'flex',
