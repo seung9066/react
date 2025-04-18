@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// server에서 사용자 정보 가져오기
+// axios get
 export const getAxios = async (url, data) => {
     try {
         const res = await axios.get('/api' + url, {
@@ -16,6 +16,7 @@ export const getAxios = async (url, data) => {
     }
 };
 
+// axios post
 export const postAxios = async (url, data) => {
     try {
         const res = await axios.post('/api' + url, data, {
@@ -23,6 +24,41 @@ export const postAxios = async (url, data) => {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify(data),
+        });
+        if (res.status === 200) {
+            return {msg: 'success', data: res.data};
+        } else {
+            return {msg : 'error', res};
+        }
+    } catch (error) {
+        return {msg : 'error', error};
+    }
+}
+
+// axios patch
+export const patchAxios = async (url, data) => {
+    try {
+        const res = await axios.patch('/api' + url, data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify(data),
+        });
+        if (res.status === 200) {
+            return {msg: 'success', data: res.data};
+        } else {
+            return {msg : 'error', res};
+        }
+    } catch (error) {
+        return {msg : 'error', error};
+    }
+}
+
+// axios delete
+export const deleteAxios = async (url, data) => {
+    try {
+        const res = await axios.delete('/api' + url, {
+            params: data,
         });
         if (res.status === 200) {
             return {msg: 'success', data: res.data};

@@ -19,6 +19,7 @@ function Menu( props ) {
             if (res.msg === 'success') {
                 setUserList(res.data);
             } else {
+                console.log(res.error);
                 showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.');
             }
         });
