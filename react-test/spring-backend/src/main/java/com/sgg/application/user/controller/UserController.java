@@ -18,7 +18,6 @@ public class UserController {
 
     @GetMapping("/api/user/userList")
     public List<Map<String, Object>> userList(@RequestParam Map<String, String> map) throws Exception {
-        System.out.println("userList||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
         return userService.userList(map);
     }
 }
