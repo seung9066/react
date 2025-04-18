@@ -7,7 +7,11 @@ import api from '../setting/axios.js';
 const router = express.Router();
 
 api.interceptors.request.use((config) => {
-    config.url = '/spring' + config.url;
+    if (config.url.includes('/spring')) {
+        config.url = config.url.replace('/spring', ''); // URL에서 '/spring' 제거
+    } else {
+        config.url = '/spring' + config.url;
+    }
 
     return config;
 }), (error) => {
