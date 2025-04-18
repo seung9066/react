@@ -22,16 +22,8 @@ function Menu( props ) {
         getAxios('/user/userList', searchParam).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
-                setUserList(data);
-            } else {
-                showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.', res.error);
-            }
-        });
-
-        getAxios('/user/userListCount', searchParam).then((res) => {
-            if (res.msg === 'success') {
-                let data = res.data;
-                setTotalCount(data);
+                setUserList(data.list);
+                setTotalCount(data.totalCount);
             } else {
                 showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.', res.error);
             }

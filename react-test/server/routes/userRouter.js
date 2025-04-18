@@ -18,18 +18,5 @@ router.get('/userList', async (req, res) => {
     }
 });
 
-router.get('/userListCount', async (req, res) => {
-    try {
-        const response = await api.get('/spring/user/userListCount', {
-            params: req.query // 요청 쿼리 파라미터를 전달
-        });
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        res.status(500).send('Error fetching user data');
-    }
-});
-
-
 // 라우터 모듈 외부로 내보냄 (다른 곳에서 import 가능)
 export default router;
