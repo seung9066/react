@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/userList', async (req, res) => {
     try {
-        const response = await api.get('/user/userList', {
+        const response = await api.get('/spring/user/userList', {
             params: req.query // 요청 쿼리 파라미터를 전달
         });
         res.json(response.data);
@@ -20,7 +20,7 @@ router.get('/userList', async (req, res) => {
 
 router.get('/userListCount', async (req, res) => {
     try {
-        const response = await api.get('/user/userListCount', {
+        const response = await api.get('/spring/user/userListCount', {
             params: req.query // 요청 쿼리 파라미터를 전달
         });
         res.json(response.data);
