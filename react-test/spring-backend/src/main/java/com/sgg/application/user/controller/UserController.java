@@ -20,4 +20,9 @@ public class UserController {
     public List<Map<String, Object>> userList(@RequestParam Map<String, String> map) throws Exception {
         return userService.userList(map);
     }
+
+    @GetMapping("/api/user/userListCount")
+    public int userListCount(@RequestParam Map<String, String> map) throws Exception {
+        return userService.userListCount(map);
+    }
 }

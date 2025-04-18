@@ -19,4 +19,9 @@ public class UserServiceImpl implements UserService {
         System.out.println(userMapper.userList(map));
         return userMapper.userList(map);
     }
+
+    @Override
+    public int userListCount(Map<String, String> map) throws Exception {
+        return userMapper.userListCount(map);
+    }
 }

@@ -230,7 +230,7 @@ function Menu( props ) {
         return true;
     }
 
-    const showToast = (msg) => {
+    const showToast = (msg, consoleMsg) => {
         props.props.toastRef.current.showToast(msg, consoleMsg);
     }
 
@@ -531,14 +531,6 @@ function Menu( props ) {
     const getLevenShtein = (newMenuData, newComponents) => {
         let gridArr = chkDupleMenuComponents(newMenuData, newComponents);
         let levenArr = [];
-        // for (const item of newMenuData) {
-        //     for (const item2 of gridArr) {
-        //         let levenObj = levenshtein(item.totalPath, (item2.upPath + item2.path));
-        //         if (levenObj) {
-        //             levenArr.push(levenObj);
-        //         }
-        //     }
-        // }
 
         levenArr = includePath(newMenuData, gridArr);
 

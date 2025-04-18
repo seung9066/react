@@ -67,7 +67,7 @@ function UrlDataNotice ( props ) {
         return () => window.removeEventListener("message", handleMessage);
     }, []);
 
-    const showToast = (msg) => {
+    const showToast = (msg, consoleMsg) => {
         props.props.toastRef.current.showToast(msg, consoleMsg);
     }
     

@@ -9,10 +9,10 @@ export const getAxios = async (url, data) => {
         if (res.status === 200) {
             return {msg : 'success', data : res.data};
         } else {
-            return {msg : 'error', res};
+            return {msg : 'error :: ' + url, res};
         }
     } catch (error) {
-        return {msg : 'error', error};
+        return {msg : 'error :: ' + url, error};
     }
 };
 
@@ -28,10 +28,10 @@ export const postAxios = async (url, data) => {
         if (res.status === 200) {
             return {msg: 'success', data: res.data};
         } else {
-            return {msg : 'error', res};
+            return {msg : 'error :: ' + url, res};
         }
     } catch (error) {
-        return {msg : 'error', error};
+        return {msg : 'error :: ' + url, error};
     }
 }
 
@@ -47,10 +47,10 @@ export const patchAxios = async (url, data) => {
         if (res.status === 200) {
             return {msg: 'success', data: res.data};
         } else {
-            return {msg : 'error', res};
+            return {msg : 'error :: ' + url, res};
         }
     } catch (error) {
-        return {msg : 'error', error};
+        return {msg : 'error :: ' + url, error};
     }
 }
 
@@ -63,9 +63,9 @@ export const deleteAxios = async (url, data) => {
         if (res.status === 200) {
             return {msg: 'success', data: res.data};
         } else {
-            return {msg : 'error', res};
+            return {msg : 'error :: ' + url, res};
         }
     } catch (error) {
-        return {msg : 'error', error};
+        return {msg : 'error :: ' + url, error};
     }
 }

@@ -39,8 +39,52 @@
             <if test="userNmSearch != null and userNmSearch != ''">
                 AND A1.USER_NM LIKE '%' || #{userNmSearch} || '%'
             </if>
+            <if test="notM != null and notM == 'Y'.toString()">
+                AND A1.USER_ID != 'minsun1234'
+            </if>
         )
-        <!-- WHERE RNUM BETWEEN ((#{page} - 1) * #{row}) + 1 AND #{page} * #{row} -->
+        WHERE RNUM BETWEEN ((#{page} - 1) * #{row}) + 1 AND #{page} * #{row}
+    </select>
+
+    <!-- 목록조회수 -->
+    <select id="userListCount" parameterType="map" resultType="int">
+        /* com.sgg.application.user.mapper.UserMapper.userListCount */
+        SELECT COUNT(*)
+        FROM (
+            SELECT ROW_NUMBER() OVER(ORDER BY USER_NM DESC) AS RNUM
+                , A1.USER_ID
+                , A1.USER_NM
+                , (SELECT CD_DTL_NAME
+                    FROM SGG_CD_DTL
+                    WHERE 1 = 1
+                    AND DEL_YN = 'N'
+                    AND CD_ID = 'USER_AUTH'
+                    AND CD_DTL = A1.USER_AUTH) AS USER_AUTH_NM
+                , A1.USER_AUTH
+                , A2.TEL_NO
+                , A2.EMAIL
+                , A2.ZIP
+                , A2.CITY
+                , A2.ADDR
+                , A2.ADDR_DTL
+                , A2.GEN
+            FROM SGG_USER A1
+                , SGG_USER_INFO A2
+            WHERE 1 = 1
+            AND A1.USER_ID = A2.USER_ID(+)
+            <if test="type != null and type != ''">
+                AND A1.USER_AUTH = #{type}
+            </if>
+            <if test="userIdSearch != null and userIdSearch != ''">
+                AND A1.USER_ID LIKE '%' || #{userIdSearch} || '%'
+            </if>
+            <if test="userNmSearch != null and userNmSearch != ''">
+                AND A1.USER_NM LIKE '%' || #{userNmSearch} || '%'
+            </if>
+            <if test="notM != null and notM == 'Y'.toString()">
+                AND A1.USER_ID != 'minsun1234'
+            </if>
+        )
     </select>
 
 </mapper>
