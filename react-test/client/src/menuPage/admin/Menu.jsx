@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios';
 
 import SggTreeNode from '@components/SggTreeNode'
 import CRUDButton from "@components/CRUDButton";
@@ -259,41 +260,33 @@ function Menu( props ) {
 
     // server에서 메뉴 정보 가져오기
     const getMenu = async () => {
-        try {
-            const res = await fetch('/api/menu/getMenu');
-            if (!res.ok) {
-                throw new Error('서버 응답 오류');
+        axios.get('/api/menu/getMenu')
+        .then((res) => {
+            if (res.status === 200) {
+                const data = res.data;
+                setMenuData(data);
+                props.setMenu(transformDataToTree(data));
+                setMenuComponents(0);
             }
-    
-            const data = await res.json();
-            setMenuData(data);
-            props.setMenu(transformDataToTree(data));
-            setMenuComponents(0);
-        } catch (err) {
+        }).catch((err) => {
             showToast("메뉴 데이터 로드 실패 ", err);
-        }
+        });
     };
 
     // server에서 메뉴 정보 저장
     const saveMenu = async (menuData) => {
-        try {
-            const res = await fetch('/api/menu/updateMenu', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(menuData),
-            });
-    
-            if (!res.ok) {
-                throw new Error('서버 응답 오류');
+        axios.post('/api/menu/updateMenu', menuData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(menuData),
+        }).then((res) => {
+            if (res.status === 200) {
+                showToast("메뉴 정보 저장 성공");
             }
-    
-            const data = await res.json();
-            return data.message;
-        } catch (err) {
+        }).catch((err) => {
             showToast("메뉴 정보 저장 실패 ", err);
-        }
+        });
     };
 
     // 순서 초기화
@@ -308,8 +301,7 @@ function Menu( props ) {
         let newMenuData = menuData.map((item) => item);
         newMenuData.map((item) => delete item.children);
         
-        let msg = await saveMenu(newMenuData);
-        showToast(msg);
+        await saveMenu(newMenuData);
 
         await getMenu();
         RBtn();
@@ -344,8 +336,7 @@ function Menu( props ) {
         
         let newMenuData = concatMenu();
         
-        let msg = await saveMenu(newMenuData);
-        showToast(msg);
+        await saveMenu(newMenuData);
         
         await getMenu();
         RBtn();
@@ -359,8 +350,7 @@ function Menu( props ) {
         
         let newMenuData = concatMenu();
 
-        let msg = await saveMenu(newMenuData);
-        showToast(msg);
+        await saveMenu(newMenuData);
         
         await getMenu();
         RBtn();
@@ -370,8 +360,7 @@ function Menu( props ) {
     const DBtn = async () => {
         let newMenuData = concatMenu("d");
         
-        let msg = await saveMenu(newMenuData);
-        showToast(msg);
+        await saveMenu(newMenuData);
         
         await getMenu();
         RBtn();

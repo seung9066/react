@@ -1,22 +1,27 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios';
 
 import SggGridReact from '@components/SggGridReact';
 
 function Menu( props ) {
     const [userList, setUserList] = useState([]);
+
+    const [searchParam, setSearchParam] = useState({
+        userNmSearch: '최승현',
+    })
     // server에서 사용자 정보 가져오기
     const getUserList = async () => {
-        try {
-            const res = await fetch('/api/user/userList');
-            if (!res.ok) {
-                throw new Error('서버 응답 오류');
+        axios.get('/api/user/userList', {
+            params: searchParam,
+        }).then((res) => {
+            if (res.status === 200) {
+                setUserList(res.data);
+            } else {
+                console.error('Error : ', res.statusText);
             }
-    
-            const data = await res.json();
-            setUserList(data);
-        } catch (err) {
-            console.log(err)
-        }
+        }).catch((err) => {
+            console.error('Error : ', err);
+        });
     };
 
     useEffect(() => {

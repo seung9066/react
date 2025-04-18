@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 function UrlDataNotice ( props ) {
     const [iframeHeight, setIframeHeight] = useState("100px"); // 기본 높이
@@ -66,48 +67,46 @@ function UrlDataNotice ( props ) {
     
     // server에서 정보 가져오기
     const getUrlDataNotice = async () => {
-        try {
-            const res = await fetch('/api/urlDataNotice/getData');
-            if (!res.ok) {
-                throw new Error('서버 응답 오류');
+        axios.get('/api/urlDataNotice/getData')
+        .then((res) => {
+            if (res.status === 200) {
+                const data = res.data;
+                let param = new URLSearchParams(location.search);
+                param.set('data', data.data);
+                props.props.setUrlDataNoticeData(param.get('data'));
+                history.pushState(null, null, '?' + param.toString());
+
+                // 자식에게 해당 메시지 보내면 그리드랑 이미지 그림
+                const message = { data: data };
+                iframeRef.current.contentWindow.postMessage(message, "*");
+
+                showToast('데이터 로드 완료');
+            } else {
+                console.error('Error : ', res.statusText);
             }
-    
-            const data = await res.json();
-            let param = new URLSearchParams(location.search);
-            param.set('data', data.data);
-            props.props.setUrlDataNoticeData(param.get('data'));
-            history.pushState(null, null, '?' + param.toString());
-
-            // 자식에게 해당 메시지 보내면 그리드랑 이미지 그림
-            const message = { data: data };
-            iframeRef.current.contentWindow.postMessage(message, "*");
-
-            showToast('데이터 로드 완료');
-        } catch (err) {
+        }).catch((err) => {
             showToast("데이터 로드 실패 ", err);
-        }
+        });
     };
 
     // server에 정보 저장
     const saveData = async (urlData) => {
-        try {
-            const res = await fetch('/api/urlDataNotice/updateData', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({data: urlData}),
-            });
-    
-            if (!res.ok) {
-                throw new Error('서버 응답 오류');
+        axios.post('/api/urlDataNotice/updateData', {data: urlData}, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({data: urlData}),
+        })
+        .then((res) => {
+            if (res.status === 200) {
+                const data = res.data;
+                showToast(data.message);
+            } else {
+                console.error('Error : ', res.statusText);
             }
-    
-            const data = await res.json();
-            showToast(data.message);
-        } catch (err) {
+        }).catch((err) => {
             showToast("저장 실패 ", err);
-        }
+        });
     };
 
     return (
