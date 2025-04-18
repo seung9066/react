@@ -53,7 +53,13 @@ function UrlDataNotice ( props ) {
             }
 
             if (event.data.saveData) {
-                saveData(param.get('data'));
+                if (param.get('data')) {
+                    saveData(param.get('data'));
+                } else if (event.data.saveData){
+                    saveData(event.data.saveData);
+                } else {
+                    showToast("저장할 데이터가 없습니다.");
+                }
             }
         };
 
