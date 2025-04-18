@@ -6,8 +6,12 @@ const ToastAlert = forwardRef((props, ref) => {
 
     // 부모 컴포넌트에서 showToast 호출 가능하도록 설정
     useImperativeHandle(ref, () => ({
-        showToast(message) {
+        showToast(message, consoleMessage) {
             setToasts(prev => [...prev, { id: Date.now(), message }]);
+
+            if (consoleMessage) {
+                console.log(consoleMessage); // 콘솔에 메시지 출력
+            }
         }
     }));
 

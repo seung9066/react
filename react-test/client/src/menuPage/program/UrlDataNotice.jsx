@@ -68,7 +68,7 @@ function UrlDataNotice ( props ) {
     }, []);
 
     const showToast = (msg) => {
-        props.props.toastRef.current.showToast(msg);
+        props.props.toastRef.current.showToast(msg, consoleMsg);
     }
     
     // server에서 정보 가져오기
@@ -87,8 +87,7 @@ function UrlDataNotice ( props ) {
 
                 showToast('데이터 로드 완료');
             } else {
-                console.log(res.error);
-                showToast('데이터 로드 실패');
+                showToast('데이터 로드 실패', res.error);
             }
         });
     };
@@ -100,8 +99,7 @@ function UrlDataNotice ( props ) {
                 const data = res.data;
                 showToast(data.message);
             } else {
-                console.error(res.error);
-                showToast('저장 실패');
+                showToast('저장 실패', res.error);
             }
         });
     };

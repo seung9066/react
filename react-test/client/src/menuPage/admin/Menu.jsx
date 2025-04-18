@@ -231,7 +231,7 @@ function Menu( props ) {
     }
 
     const showToast = (msg) => {
-        props.props.toastRef.current.showToast(msg);
+        props.props.toastRef.current.showToast(msg, consoleMsg);
     }
 
     const transformDataToTree = (data) => {
@@ -267,8 +267,7 @@ function Menu( props ) {
                 props.setMenu(transformDataToTree(data));
                 setMenuComponents(0);
             } else {
-                console.log(res.error)
-                showToast("메뉴 데이터 로드 실패");
+                showToast("메뉴 데이터 로드 실패", res.error);
             }
         });
     };
@@ -279,8 +278,7 @@ function Menu( props ) {
             if (res.msg === 'success') {
                 showToast("메뉴 정보 저장 성공");
             } else {
-                console.log(res.error)
-                showToast("메뉴 정보 저장 실패");
+                showToast("메뉴 정보 저장 실패", res.error);
             }
         });
     };

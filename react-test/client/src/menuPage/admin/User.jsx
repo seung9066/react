@@ -10,8 +10,8 @@ function Menu( props ) {
         userNmSearch: '최승현',
     })
 
-    const showToast = (msg) => {
-        props.props.toastRef.current.showToast(msg);
+    const showToast = (msg, consoleMsg) => {
+        props.props.toastRef.current.showToast(msg, consoleMsg);
     }
 
     useEffect(() => {
@@ -19,8 +19,7 @@ function Menu( props ) {
             if (res.msg === 'success') {
                 setUserList(res.data);
             } else {
-                console.log(res.error);
-                showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.');
+                showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.', res.error);
             }
         });
     }, []);
