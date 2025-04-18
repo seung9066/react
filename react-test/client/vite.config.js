@@ -13,6 +13,7 @@ export default defineConfig({
       '@css': path.resolve(__dirname, 'src/css/'),
       '@img': path.resolve(__dirname, 'src/img/'),
       '@data': path.resolve(__dirname, 'src/data/'),
+      '@utils': path.resolve(__dirname, 'src/commonJs/utils.js'),
     },
   },
   server: {

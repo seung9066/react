@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { getAxios, postAxios } from '@utils';
 
 function UrlDataNotice ( props ) {
     const [iframeHeight, setIframeHeight] = useState("100px"); // 기본 높이
@@ -73,9 +73,8 @@ function UrlDataNotice ( props ) {
     
     // server에서 정보 가져오기
     const getUrlDataNotice = async () => {
-        axios.get('/api/urlDataNotice/getData')
-        .then((res) => {
-            if (res.status === 200) {
+        getAxios('/urlDataNotice/getData').then((res) => {
+            if (res.msg === 'success') {
                 const data = res.data;
                 let param = new URLSearchParams(location.search);
                 param.set('data', data.data);
@@ -88,30 +87,22 @@ function UrlDataNotice ( props ) {
 
                 showToast('데이터 로드 완료');
             } else {
-                console.error('Error : ', res.statusText);
+                console.log(res.error);
+                showToast('데이터 로드 실패');
             }
-        }).catch((err) => {
-            showToast("데이터 로드 실패 ", err);
         });
     };
 
     // server에 정보 저장
     const saveData = async (urlData) => {
-        axios.post('/api/urlDataNotice/updateData', {data: urlData}, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({data: urlData}),
-        })
-        .then((res) => {
-            if (res.status === 200) {
+        postAxios('/urlDataNotice/updateData', {data: urlData}).then((res) => {
+            if (res.msg === 'success') {
                 const data = res.data;
                 showToast(data.message);
             } else {
-                console.error('Error : ', res.statusText);
+                console.error(res.error);
+                showToast('저장 실패');
             }
-        }).catch((err) => {
-            showToast("저장 실패 ", err);
         });
     };
 

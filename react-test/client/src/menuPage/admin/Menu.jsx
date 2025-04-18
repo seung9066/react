@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios';
+import { getAxios, postAxios } from '@utils';
 
 import SggTreeNode from '@components/SggTreeNode'
 import CRUDButton from "@components/CRUDButton";
@@ -260,32 +260,28 @@ function Menu( props ) {
 
     // server에서 메뉴 정보 가져오기
     const getMenu = async () => {
-        axios.get('/api/menu/getMenu')
-        .then((res) => {
-            if (res.status === 200) {
+        getAxios('/menu/getMenu', {}).then((res) => {
+            if (res.msg === 'success') {
                 const data = res.data;
                 setMenuData(data);
                 props.setMenu(transformDataToTree(data));
                 setMenuComponents(0);
+            } else {
+                console.log(res.error)
+                showToast("메뉴 데이터 로드 실패");
             }
-        }).catch((err) => {
-            showToast("메뉴 데이터 로드 실패 ", err);
         });
     };
 
     // server에서 메뉴 정보 저장
     const saveMenu = async (menuData) => {
-        axios.post('/api/menu/updateMenu', menuData, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(menuData),
-        }).then((res) => {
-            if (res.status === 200) {
+        postAxios('/menu/updateMenu', menuData).then((res) => {
+            if (res.msg === 'success') {
                 showToast("메뉴 정보 저장 성공");
+            } else {
+                console.log(res.error)
+                showToast("메뉴 정보 저장 실패");
             }
-        }).catch((err) => {
-            showToast("메뉴 정보 저장 실패 ", err);
         });
     };
 
