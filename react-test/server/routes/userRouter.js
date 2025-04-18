@@ -6,9 +6,17 @@ import api from '../setting/axios.js';
 // express의 라우터 인스턴스 생성
 const router = express.Router();
 
+api.interceptors.request.use((config) => {
+    config.url = '/spring' + config.url;
+
+    return config;
+}), (error) => {
+    return Promise.reject(error);
+}
+
 router.get('/userList', async (req, res) => {
     try {
-        const response = await api.get('/spring/user/userList', {
+        const response = await api.get('/user/userList', {
             params: req.query // 요청 쿼리 파라미터를 전달
         });
         res.json(response.data);
