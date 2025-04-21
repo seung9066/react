@@ -39,13 +39,13 @@ function Menu( props ) {
             <div>
                 <SggGridReact 
                     columns={[
-                        {key:'rnum', name:'번호'},
-                        {key:'userId', name:'아이디'},
-                        {key:'userNm', name:'이름'},
+                        {key:'rnum', name:'번호', type:'number'},
+                        {key:'userId', name:'아이디', type:'text'},
+                        {key:'userNm', name:'이름', type:'checkbox', trueValue:'Y', falseValue:'N'},
                         {key:'userAuthNm', name:'권한명'},
                     ]}
+                    btn={{'c': true, 'r': true, 'u': true, 'd': true}}
                     data={{gridData: userList, totalCount: totalCount}}
-                    param={searchParam}
                     setParam={setSearchParam}
                     // onClick={gridTrClick}
                     // onDoubleClick={gridTrDoubleClick}

@@ -54,4 +54,32 @@
       font-size: 14px;
     }
   }
+
+  /* 기본 버튼 스타일 */
+  .state {
+    background-color: #e0e0e0; /* 배경색 */
+    padding: 4px 8px;         /* 안쪽 여백 */
+    border-radius: 4px;        /* 모서리 둥글기 */
+    display: inline-block;     /* 인라인 요소를 블록처럼 */
+    color: white;
+  }
+    
+  .state.accept {
+    background-color: #007bff;
+  }
   
+  .state.etc {
+    background-color: #429cfd;
+  }
+  
+  .state.primary {
+    background-color: #28a745;
+  }
+  
+  .state.secondary {
+    background-color: #6c757d;
+  }
+  
+  .state.danger {
+    background-color: #dc3545;
+  }
