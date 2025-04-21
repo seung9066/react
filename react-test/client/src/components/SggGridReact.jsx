@@ -23,9 +23,12 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     const [computedColumns, setComputedColumns] = useState();
 
     const gridRef = useRef(null);
+
+    let selectedRowNotState = {};
     
     // 행 클릭 시
     const trClick = (e, item) => {
+        selectedRowNotState = item;
         setSelectedRow(item);
         if (onClick) {
             onClick(e, item);
@@ -101,11 +104,16 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     const inputChange = (e) => {
         let { name, value, type } = e.target;
         
-        if (type === 'checkbox') {
-            value = getCehckValue(name, e.target.checked);
+        let no = '';
+        if (selectedRow) {
+            no = selectedRow.no;
         }
 
-        let no = selectedRow.no;
+        if (type === 'checkbox') {
+            value = getCehckValue(name, e.target.checked);
+            no = Number(e.target.dataset.checkbox);
+        }
+
         let state = '';
         for (const item of currentList) {
             if (item.no === no) {
@@ -113,7 +121,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                 break;
             }
         }
-
+        
         if (state === 'INSERT') {
             state = 'INSERT';
         } else {
@@ -121,8 +129,8 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         }
 
         setCurrentList((prevList) =>
-            prevList.map((item) =>
-                item.no === selectedRow.no ? { ...item, [name]: value, rowState: state } : item
+                prevList.map((item) =>
+                    item.no === no ? { ...item, [name]: value, rowState: state } : item
             )
         );
     }
@@ -137,7 +145,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         }
         if (col.type === 'checkbox') {
             let value = setCheckValue(col.key, item[col.key]);
-            return <input type="checkbox" name={col.key} disabled={!selectedRow || selectedRow.no !== item.no || !item.rowState} checked={value} style={{ border: 'none', backgroundColor: 'transparent' }} onChange={inputChange} />;
+            return <input type="checkbox" name={col.key} data-checkbox={item.no} checked={value} style={{ width: '20px', height: '20px', border: 'none', backgroundColor: 'transparent' }} onChange={inputChange} />;
         }
         if (!col.type) {
             return item[col.key];
@@ -422,7 +430,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                                 className={styles.th}
                                 style={{ width: col.width }}
                                 >
-                                    {col.type === 'checkbox' ? <input type="checkbox" name={col.key} checked={checkChecked(col.key)} onChange={allCheckBox}/> : null}
+                                    {col.type === 'checkbox' ? <input type="checkbox" name={col.key} style={{width: '20px', height: '20px'}} checked={checkChecked(col.key)} onChange={allCheckBox}/> : null}
                                     {col.name}
                                 </th>
                             ))}
