@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import styles from '@css/SggGridReact.module.css';
 
 import ToastAlert from '@components/ToastAlert';
 
 export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick }) {
+    // 상태컬럼
+    const stateTd = '48px';
     const toastRef = React.useRef(null);
     // 현재 페이지
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,11 +19,30 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     // 페이지 버튼 개수
     const [pageBtnCount, setPageBtnCount] = useState(10);
     const [allCheck, setAllCheck] = useState(columns.filter(col => col.type === 'checkbox'));
+    // 컬럼
+    const [computedColumns, setComputedColumns] = useState();
 
+    const gridRef = useRef(null);
+    
+    // 행 클릭 시
     const trClick = (e, item) => {
         setSelectedRow(item);
         if (onClick) {
             onClick(e, item);
+        }
+    }
+
+    // 행 더블 클릭 시
+    const trDoubleClick = (e, item) => {
+        if (onDoubleClick) {
+            if (!onClick) {
+                setSelectedRow(item);
+            }
+            onDoubleClick(e, item);
+        } else {
+            if (btn && btn.u) {
+                updateRow();
+            }
         }
     }
 
@@ -76,16 +97,6 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         return false;
     }
     
-    // 행 더블 클릭 시
-    const trDoubleClick = (e, item) => {
-        if (onDoubleClick) {
-            if (!onClick) {
-                setSelectedRow(item);
-            }
-            onDoubleClick(e, item);
-        }
-    }
-
     // 그리드에서 input 값 변경 시
     const inputChange = (e) => {
         let { name, value, type } = e.target;
@@ -230,6 +241,28 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         }
     }
 
+    // 그리드 창 크기
+    const handleResize = () => {
+        if (gridRef.current) {
+            const gridWidth = gridRef.current.offsetWidth;
+            return gridWidth;
+        }
+    }
+
+    // 열의 width가 지정되지 않았다면 균등하게 분할
+    const getColLength = () => {
+        const size = handleResize();
+        const totalCols = columns.length;
+        const usableSize = btn ? size - stateTd : size; // 여유 공간 반영
+        const colLengthRatio = (usableSize / size) * 100 / totalCols;
+    
+        return colLengthRatio; // 퍼센트 비율 반환
+    };
+
+    const setColumn = () => {
+        setComputedColumns(columns.length ? columns.map(col => ({ ...col, width: col.width || `${getColLength()}%` })) : []);
+    }
+
     useEffect(() => {
         resetBtn ? null : setSelectedRow(null);
     }, [resetBtn])
@@ -323,11 +356,6 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         return <div className={styles.pagination}>{pagination}</div>;
     };
 
-    // 열의 width가 지정되지 않았다면 균등하게 분할
-    const computedColumns = columns.length
-        ? columns.map(col => ({ ...col, width: col.width || `${100 / columns.length + 1}%` }))
-        : [];
-
     useEffect(() => {
         if (currentList.length > 0 && allCheck.length > 0) {
             setAllCheck(allCheck.map(col => {
@@ -346,10 +374,15 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         }
     }, [currentList]);
 
+    useEffect(() => {
+        setColumn();
+        handleResize();
+    }, []);
+
     return (
         <>
             <ToastAlert ref={toastRef} />
-            <div className={styles.tableContainer}>
+            <div className={styles.tableContainer} ref={gridRef}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                     <p style={{ margin: 0 }}>
                         총 {data?.totalCount || data?.gridData?.length}건
@@ -378,10 +411,12 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                 <table className={styles.table} id="noticeGrid">
                     <thead className={styles.thead}>
                         <tr>
-                            <th className={styles.th} style={{  width: '5%' }}>
-                                상태
-                            </th>
-                            {computedColumns.map(col => (
+                            {btn && 
+                                <th className={styles.th} style={{  width: stateTd }}>
+                                    상태
+                                </th>
+                            }
+                            {computedColumns && computedColumns.map(col => (
                                 <th
                                 key={col.key}
                                 className={styles.th}
@@ -407,13 +442,15 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                                     cursor: 'pointer'
                                 }}
                                 data-no={item.no}
-                                >
-                                    <td className={styles.td} style={{ width : '100px'}}>
-                                        {item.rowState === 'INSERT' ? <span className={`${styles.state} ${styles.accept}`}>등록</span> : null}
-                                        {item.rowState === 'UPDATE' ? <span className={`${styles.state} ${styles.primary}`}>수정</span> : null}
-                                        {item.rowState === 'DELETE' ? <span className={`${styles.state} ${styles.danger}`}>삭제</span> : null}
-                                    </td>
-                                    {computedColumns.map(col => (
+                                >   
+                                    {btn &&
+                                        <td className={styles.td}>
+                                            {item.rowState === 'INSERT' ? <span className={`${styles.state} ${styles.accept}`}>등록</span> : null}
+                                            {item.rowState === 'UPDATE' ? <span className={`${styles.state} ${styles.primary}`}>수정</span> : null}
+                                            {item.rowState === 'DELETE' ? <span className={`${styles.state} ${styles.danger}`}>삭제</span> : null}
+                                        </td>
+                                    }
+                                    {computedColumns && computedColumns.map(col => (
                                         <td key={col.key} className={styles.td}>
                                             {getType(item, col)}
                                         </td>
@@ -423,7 +460,12 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                             {(
                                 Array.from({ length: perPage - currentList.length }).map((_, i) =>
                                     <tr key={'emptyTr' + i}>
-                                        <td colSpan={columns.length + 1 || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                        {btn &&
+                                            <td colSpan={columns.length + 1 || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                        }
+                                        {!btn &&
+                                            <td colSpan={columns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                        }
                                     </tr>
                                 ) 
                             )}
@@ -435,7 +477,12 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                             </tr>
                             {Array.from({ length: perPage - 1}).map((_, i) => 
                                 <tr key={'emptyTr' + i}>
-                                    <td colSpan={columns.length + 1 || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                    {btn &&
+                                        <td colSpan={columns.length + 1 || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                    }
+                                    {!btn &&
+                                        <td colSpan={columns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                    }
                                 </tr>
                             )}
                             </>
