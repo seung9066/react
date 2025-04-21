@@ -6,6 +6,7 @@ import SggGridReact from '@components/SggGridReact';
 function Menu( props ) {
     const [userList, setUserList] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
+    const [gridChecekd, setGridChecked] = useState([]);
 
     const [searchParam, setSearchParam] = useState({
         userNmSearch: '',
@@ -34,6 +35,10 @@ function Menu( props ) {
         getUserList();
     }, [searchParam.page, searchParam.row])
 
+    useEffect(() => {
+        console.log(gridChecekd)
+    }, [gridChecekd])
+
     return (
         <>
             <div>
@@ -47,6 +52,7 @@ function Menu( props ) {
                     btn={{'c': true, 'r': true, 'u': true, 'd': true}}
                     data={{gridData: userList, totalCount: totalCount}}
                     setParam={setSearchParam}
+                    checked={setGridChecked}
                     // onClick={gridTrClick}
                     // onDoubleClick={gridTrDoubleClick}
                     // resetBtn={resetBtn}
