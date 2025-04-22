@@ -7,6 +7,7 @@ import ToastAlert from '@components/ToastAlert';
 /**
  * @param {columns={[{key:'', name:'', type:'', width: 10},]}}
  * Array [{key:'데이터와 매칭할 실컬럼명', name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10}]
+ * type, width 생략가능
  * @param {data={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
  * useState gridData(그리드에 담을 데이터)
  * setUseState setGridData(그리드 데이터 set)
@@ -755,10 +756,10 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                         {data.setGridData && 
                             <div style={{ display: 'flex', gap: '8px' }}>
                                 {btn?.c && <button type="button" className="accept" onClick={() => {addRow()}} >행 추가</button>}
-                                {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >행 수정</button>}
-                                {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >행 삭제</button>}
-                                {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >초기화</button>}
-                                {(btn?.c || btn?.r || btn?.u || btn?.d ) && <button type="button" className="etc" onClick={() => {setRow()}} >{saveBtn ? '저장' : '적용'}</button>}
+                                {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크된 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
+                                {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크된 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
+                                {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크된 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
+                                {(btn?.c || btn?.r || btn?.u || btn?.d) && <button type="button" className="etc" onClick={() => {setRow()}} >{'전체 ' + (saveBtn ? '저장' : '적용')}</button>}
                             </div>
                         }
                         <select value={perPage}
