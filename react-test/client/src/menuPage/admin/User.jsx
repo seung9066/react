@@ -45,7 +45,7 @@ function Menu( props ) {
             <div>
                 <SggGridReact 
                     columns={[
-                        {key:'rnum', name:'번호', type:'number'},
+                        {key:'rnum', name:'번호', type:'number', width: 10},
                         {key:'userId', name:'아이디', type:'text'},
                         {key:'userNm', name:'이름', type:'text'},
                         {key:'userAuthNm', name:'권한명'},

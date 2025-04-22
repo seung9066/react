@@ -23,7 +23,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     // 가장 앞에 오는 순수 선택용 체크박스
     const [totalCheck, setTotalCheck] = useState(false);
     // 컬럼
-    const [computedColumns, setComputedColumns] = useState();
+    const [computedColumns, setComputedColumns] = useState([]);
     // 선택행들
     const [checkedRows, setCheckedRows] = useState([]);
 
@@ -429,25 +429,48 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     }
 
     // 열의 width가 지정되지 않았다면 균등하게 분할
-    const getColLength = () => {
+    const getColLength = (totalWidth, widthCnt) => {
+        // 그리드 총 width
         const size = handleResize();
         const totalCols = columns.length;
+        // btn이 있어야 상태 컬럼 생김
         let usableSize = btn ? size - stateTd : size; // 여유 공간 반영
+        // 선택 체크박스 여부
         usableSize = gridChecked ? usableSize - 25 : usableSize;
-        const colLengthRatio = (usableSize / size) * 100 / totalCols;
+        // 지정된 width가 있는 경우 그 총 지정 width값 빼기
+        if (totalWidth) {
+            usableSize = usableSize - totalWidth;
+        }
+        // 지정된 애들 제외한 나머지 균등 분할
+        const colLengthRatio = (usableSize / size) * 100 / (totalCols - widthCnt);
 
         return Math.floor(colLengthRatio); // 퍼센트 비율 반환
     };
 
     const setColumn = () => {
+        const newColumns = structuredClone(columns);
+        // 지정된 width 총 길이, 수 찾기
+        let totalWidth = 0;
+        let widthCnt = 0;
+        for (const item of newColumns) {
+            if (item.width) {
+                let width = item.width;
+                if (width.toString().includes('%')) {
+                    width = Number(width.replace('%', ''));
+                }
+                totalWidth += width;
+                widthCnt++;
+            }
+        }
+        
         setComputedColumns(
             columns.length
                 ? columns.map(col => ({
-                    ...col,
-                    width: col.width ? col.width.toString().includes('%') ? col.width
-                                                                        : `${col.width}%`
-                                    : `${getColLength()}%`
-                }))
+                        ...col,
+                        width: col.width ? col.width.toString().includes('%') ? col.width
+                                                                            : `${col.width}%`
+                                        : `${getColLength(totalWidth, widthCnt)}%`
+                    }))
                 : []
         );
     }
@@ -729,14 +752,14 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                             }
                             {computedColumns && computedColumns.map((col, idx) => (
                                 <th
-                                key={col.key}
-                                data-key={col.key}
-                                className={styles.th}
-                                style={{ width: col.width, position: 'relative', overflow: 'visible' }}  
-                                draggable
-                                onDragStart={handleDragStart}
-                                onDragOver={handleDragOver}
-                                onDrop={handleDrop}
+                                    key={col.key}
+                                    data-key={col.key}
+                                    className={styles.th}
+                                    style={{ width: col.width, position: 'relative', overflow: 'visible' }}  
+                                    draggable
+                                    onDragStart={handleDragStart}
+                                    onDragOver={handleDragOver}
+                                    onDrop={handleDrop}
                                 >
                                     {col.type === 'checkbox' &&
                                         <input type="checkbox" name={col.key} style={{width: '20px', height: '20px'}} checked={checkChecked(col.key)} onChange={allCheckBox}/>
