@@ -5,7 +5,6 @@ import styles from '@css/SggGridReact.module.css';
 import ToastAlert from '@components/ToastAlert';
 
 /**
- * gridData: userList, setGridData: setUserList, totalCount: totalCount
  * @param {columns={[{key:'', name:'', type:'', width: 10},]}}
  * [{key:'데이터와 매칭할 실컬럼명', name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10}]
  * @param {data={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
@@ -17,7 +16,7 @@ import ToastAlert from '@components/ToastAlert';
  * @param {gridChecked={true}}
  * true (그리드 첫 컬럼 체크박스)
  * @param {saveBtn={doSave}}
- * doSave (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 doSave = (data) => {} 필수))
+ * doSave (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 처리 doSave = (data) => {} 필수))
  * @returns 
  */
 export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked, saveBtn }) {
