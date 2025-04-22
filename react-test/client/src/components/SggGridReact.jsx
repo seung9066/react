@@ -6,12 +6,18 @@ import ToastAlert from '@components/ToastAlert';
 
 /**
  * gridData: userList, setGridData: setUserList, totalCount: totalCount
- * @param {columns={[{key:'데이터와 매칭할 실컬럼명', name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10},]}}
- * @param {data={gridData(그리드에 담을 데이터), setGridData(그리드 데이터 set), totalCount(데이터 총 수)}}
- * @param {btn={{'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}}}
- * @param {setParam={setSearchParam}(검색조건 searchParam = {page:1, row:10} 필수)}
- * @param {gridChecked={true}(젤앞 선택 체크박스 여부)}
- * @param {saveBtn={doSave}(적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 doSave = (data) => {} 필수))}
+ * @param {columns={[{key:'', name:'', type:'', width: 10},]}}
+ * [{key:'데이터와 매칭할 실컬럼명', name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10}]
+ * @param {data={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
+ * gridData(그리드에 담을 데이터), setGridData(그리드 데이터 set), totalCount(데이터 총 수)
+ * @param {btn={{'c': true, 'r': true, 'u': true, 'd': true}}}
+ * {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
+ * @param {setParam={setSearchParam}}
+ * searchParam={page: 1, row: 10} (검색조건)
+ * @param {gridChecked={true}}
+ * true (그리드 첫 컬럼 체크박스)
+ * @param {saveBtn={doSave}}
+ * doSave (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 doSave = (data) => {} 필수))
  * @returns 
  */
 export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked, saveBtn }) {
