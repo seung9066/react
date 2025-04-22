@@ -47,7 +47,7 @@ function Menu( props ) {
                     columns={[
                         {key:'rnum', name:'번호', type:'number'},
                         {key:'userId', name:'아이디', type:'text'},
-                        {key:'userNm', name:'이름',},
+                        {key:'userNm', name:'이름', type:'text'},
                         {key:'userAuthNm', name:'권한명'},
                     ]}
                     btn={{'c': true, 'r': true, 'u': true, 'd': true}}

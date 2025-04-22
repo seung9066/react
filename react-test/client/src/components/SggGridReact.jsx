@@ -6,7 +6,7 @@ import ToastAlert from '@components/ToastAlert';
 
 export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked }) {
     // 상태컬럼
-    const stateTd = '48px';
+    const stateTd = '48';
     const toastRef = React.useRef(null);
     // 현재 페이지
     const [currentPage, setCurrentPage] = useState(1);
@@ -372,6 +372,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         } else {
             showToast('전체 행을 초기화 합니다.');
             drawGrid('totalChecked');
+            setColumn();
         }
 
         setSelectedRow(null);
@@ -434,13 +435,100 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         let usableSize = btn ? size - stateTd : size; // 여유 공간 반영
         usableSize = gridChecked ? usableSize - 25 : usableSize;
         const colLengthRatio = (usableSize / size) * 100 / totalCols;
-    
-        return colLengthRatio; // 퍼센트 비율 반환
+
+        return Math.floor(colLengthRatio); // 퍼센트 비율 반환
     };
 
     const setColumn = () => {
-        setComputedColumns(columns.length ? columns.map(col => ({ ...col, width: col.width || `${getColLength()}%` })) : []);
+        setComputedColumns(
+            columns.length
+                ? columns.map(col => ({
+                    ...col,
+                    width: col.width ? col.width.toString().includes('%') ? col.width
+                                                                        : `${col.width}%`
+                                    : `${getColLength()}%`
+                }))
+                : []
+        );
     }
+
+    // 드래그 시작 시 노드 ID 저장
+    const handleDragStart = (e) => {
+        let key = e.target.dataset.key;
+        e.dataTransfer.setData("application/th-key", key);
+    };
+    
+    // 드래그 오버 시 기본 동작 막기 (drop 허용)
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+    
+    // 노드 위에 드롭했을 때 처리
+    const handleDrop = (e) => {
+        e.preventDefault();
+        let key = e.target.dataset.key;
+        const draggedThKey = e.dataTransfer.getData("application/th-key");
+        if (draggedThKey && draggedThKey !== key) {
+            let from = -1;
+            let to = -1;
+            for (let i = 0; i < computedColumns.length; i++) {
+                computedColumns[i].key === draggedThKey ? from = i : null;
+                computedColumns[i].key === key ? to = i : null;
+            }
+
+            if (from !== -1 && to !== -1) {
+                handleSwap(from, to);
+            }
+        }
+    };
+
+    // th 재정렬
+    const handleSwap = (from, to) => {
+        let newComputedColumns = structuredClone(computedColumns);
+        let [fromObj] = newComputedColumns.splice(from, 1);
+        newComputedColumns.splice(to, 0, fromObj);
+        setComputedColumns(newComputedColumns);
+    };
+
+    // 컬럼 너비 변경 핸들러
+    const handleMouseDown = (e, idx) => {
+        e.preventDefault();
+        const startX = e.clientX;
+        let nextIdx = idx + 1;
+        const startWidth = computedColumns[idx].width;
+        const totalWidth = handleResize();
+
+        let nextWidth = 0;
+        if (nextIdx !== computedColumns.length) {
+            nextWidth = computedColumns[idx + 1].width;
+        }
+
+        const handleMouseMove = (moveEvent) => {
+            if (idx === computedColumns.length - 1) {
+                return
+            }
+            const moveWidth = moveEvent.clientX - startX;
+            const newWidthPer = Math.floor((moveWidth / totalWidth) * 100);
+            const newWidth = (Number(startWidth.replace('%', '')) + newWidthPer) + '%';
+
+            const nextNewWidth = (Number(nextWidth.replace('%', '')) - newWidthPer) + '%';
+
+            setComputedColumns((prev) => {
+                const newComputedColumns = [...prev];
+                newComputedColumns[idx].width = newWidth;
+                newComputedColumns[idx + 1].width = nextNewWidth;
+                return newComputedColumns
+            })
+        };
+
+        const handleMouseUp = () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+    };
 
     useEffect(() => {
         resetBtn ? null : setSelectedRow(null);
@@ -593,7 +681,6 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
 
     useEffect(() => {
         setColumn();
-        handleResize();
     }, []);
 
     return (
@@ -630,20 +717,58 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                 <table className={styles.table} id="noticeGrid">
                     <thead className={styles.thead}>
                         <tr>
-                            {gridChecked && <th className={styles.th} style={{ width: '25px'}}> <input type="checkbox" name={'totalChecked'} style={{width: '20px', height: '20px'}} checked={totalCheck} onChange={allCheckBoxFirst}/> </th>}
+                            {gridChecked && 
+                                <th className={styles.th} style={{ width: '25px'}}>
+                                    <input type="checkbox" name={'totalChecked'} style={{width: '20px', height: '20px'}} checked={totalCheck} onChange={allCheckBoxFirst} />
+                                </th>
+                            }
                             {btn && 
-                                <th className={styles.th} style={{  width: stateTd }}>
+                                <th className={styles.th} style={{  width: stateTd + 'px' }}>
                                     상태
                                 </th>
                             }
-                            {computedColumns && computedColumns.map(col => (
+                            {computedColumns && computedColumns.map((col, idx) => (
                                 <th
                                 key={col.key}
+                                data-key={col.key}
                                 className={styles.th}
-                                style={{ width: col.width }}
+                                style={{ width: col.width, position: 'relative', overflow: 'visible' }}  
+                                draggable
+                                onDragStart={handleDragStart}
+                                onDragOver={handleDragOver}
+                                onDrop={handleDrop}
                                 >
-                                    {col.type === 'checkbox' ? <input type="checkbox" name={col.key} style={{width: '20px', height: '20px'}} checked={checkChecked(col.key)} onChange={allCheckBox}/> : null}
+                                    {col.type === 'checkbox' &&
+                                        <input type="checkbox" name={col.key} style={{width: '20px', height: '20px'}} checked={checkChecked(col.key)} onChange={allCheckBox}/>
+                                    }
                                     {col.name}
+                                    {idx !== computedColumns.length - 1 && 
+                                        <span
+                                            onMouseDown={(e) => handleMouseDown(e, idx)}
+                                            style={{
+                                                position: 'absolute',
+                                                right: 0,
+                                                top: 0,
+                                                bottom: 0,
+                                                width: '10px',               // 넓이 증가
+                                                cursor: 'col-resize',        // 드래그 커서
+                                                backgroundColor: 'transparent',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                zIndex: 1,
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    width: '2.2px',
+                                                    height: '70%',           // 세로 길이 강조
+                                                    backgroundColor: 'white', // 눈에 띄는 색상
+                                                    opacity: 0.8,
+                                                }}
+                                            />
+                                        </span>
+                                    }
                                 </th>
                             ))}
                         </tr>
