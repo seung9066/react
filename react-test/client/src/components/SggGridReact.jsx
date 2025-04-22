@@ -756,9 +756,9 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                         {data.setGridData && 
                             <div style={{ display: 'flex', gap: '8px' }}>
                                 {btn?.c && <button type="button" className="accept" onClick={() => {addRow()}} >행 추가</button>}
-                                {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크된 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
-                                {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크된 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
-                                {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크된 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
+                                {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
+                                {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
+                                {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
                                 {(btn?.c || btn?.r || btn?.u || btn?.d) && <button type="button" className="etc" onClick={() => {setRow()}} >{'전체 ' + (saveBtn ? '저장' : '적용')}</button>}
                             </div>
                         }
