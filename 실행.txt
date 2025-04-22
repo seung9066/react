@@ -15,3 +15,54 @@ useState
 통신
 function
 useEffect
+
+// 젠킨스 파이프라인
+
+pipeline {
+    agent any
+
+    environment {
+        COMPOSE_PROJECT_NAME = "react_test_project"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/your-org/react-test.git', branch: 'main'
+            }
+        }
+
+        stage('Stop & Remove Old Containers and Images') {
+            steps {
+                script {
+                    // 컨테이너 중지 및 삭제
+                    sh 'docker-compose down --remove-orphans'
+
+                    // 이전 빌드 이미지 삭제 (선택)
+                    sh """
+                    docker image prune -f
+                    docker rmi $(docker images --filter=reference="${COMPOSE_PROJECT_NAME}_*" -q) || true
+                    """
+                }
+            }
+        }
+
+        stage('Build New Images') {
+            steps {
+                sh 'docker-compose build'
+            }
+        }
+
+        stage('Start New Containers') {
+            steps {
+                sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Check Container Status') {
+            steps {
+                sh 'docker ps'
+            }
+        }
+    }
+}
