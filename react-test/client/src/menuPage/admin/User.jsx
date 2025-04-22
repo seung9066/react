@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { getAxios } from '@utils';
 
 import SggGridReact from '@components/SggGridReact';
-import { use } from 'react';
 
 function Menu( props ) {
     const [userList, setUserList] = useState([]);
@@ -48,7 +47,7 @@ function Menu( props ) {
                     columns={[
                         {key:'rnum', name:'번호', type:'number'},
                         {key:'userId', name:'아이디', type:'text'},
-                        {key:'userNm', name:'이름', type:'checkbox', trueValue:'Y', falseValue:'N'},
+                        {key:'userNm', name:'이름',},
                         {key:'userAuthNm', name:'권한명'},
                     ]}
                     btn={{'c': true, 'r': true, 'u': true, 'd': true}}
