@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import { getAxios } from '@utils';
 
 import SggGridReact from '@components/SggGridReact';
+import { use } from 'react';
 
 function Menu( props ) {
     const [userList, setUserList] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
-    const [gridChecekd, setGridChecked] = useState([]);
+    const [gridChecked, setGridChecked] = useState([]);
 
     const [searchParam, setSearchParam] = useState({
         userNmSearch: '',
@@ -33,11 +34,16 @@ function Menu( props ) {
 
     useEffect(() => {
         getUserList();
-    }, [searchParam.page, searchParam.row])
+    }, [searchParam.page, searchParam.row]);
+
 
     useEffect(() => {
-        console.log(gridChecekd)
-    }, [gridChecekd])
+        setGridChecked(userList.filter((item) => item.totalChecked));
+    }, [userList])
+
+    useEffect(() => {
+        console.log(gridChecked);
+    }, [gridChecked])
 
     return (
         <>
@@ -50,9 +56,10 @@ function Menu( props ) {
                         {key:'userAuthNm', name:'권한명'},
                     ]}
                     btn={{'c': true, 'r': true, 'u': true, 'd': true}}
-                    data={{gridData: userList, totalCount: totalCount}}
+                    data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}}
                     setParam={setSearchParam}
-                    checked={setGridChecked}
+                    gridChecked={true}
+                    // setGridChecked={setGridChecked}
                     // onClick={gridTrClick}
                     // onDoubleClick={gridTrDoubleClick}
                     // resetBtn={resetBtn}

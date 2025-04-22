@@ -56,7 +56,7 @@
     }
   }
 
-  /* 기본 버튼 스타일 */
+  /* CRUD 상태 */
   .state {
     background-color: #e0e0e0; /* 배경색 */
     padding: 4px 8px;         /* 안쪽 여백 */
@@ -64,7 +64,7 @@
     display: inline-block;     /* 인라인 요소를 블록처럼 */
     color: white;
   }
-    
+
   .state.accept {
     background-color: #007bff;
   }
@@ -83,4 +83,18 @@
   
   .state.danger {
     background-color: #dc3545;
+  }
+
+  button {
+    padding: 6px 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    background-color: #5994d4;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    margin: 1px;
   }
