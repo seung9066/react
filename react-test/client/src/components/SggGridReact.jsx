@@ -411,9 +411,19 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     const setRow = () => {
         if (data?.setGridData) {
             let newCurrentList = structuredClone(currentList);
-            for (const item of newCurrentList) {
-                item.rowState ? delete item.rowState : null;
+
+            for (let i = 0; i < newCurrentList.length; i++) {
+                console.log(newCurrentList[i].rowState)
+                if (newCurrentList[i].rowState) {
+                    if (newCurrentList[i].rowState === 'DELETE') {
+                        newCurrentList.splice(i, 1);
+                        i--;
+                    } else {
+                        delete newCurrentList[i].rowState
+                    }
+                }
             }
+
             setSelectedRow(null);
             data.setGridData(newCurrentList);
             showToast('적용되었습니다.');
@@ -462,7 +472,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                 widthCnt++;
             }
         }
-        
+
         setComputedColumns(
             columns.length
                 ? columns.map(col => ({
@@ -508,7 +518,9 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     // th 재정렬
     const handleSwap = (from, to) => {
         let newComputedColumns = structuredClone(computedColumns);
+        // 뽑아내기
         let [fromObj] = newComputedColumns.splice(from, 1);
+        // 넣기
         newComputedColumns.splice(to, 0, fromObj);
         setComputedColumns(newComputedColumns);
     };
