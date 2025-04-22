@@ -50,7 +50,10 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
             onDoubleClick(e, item);
         } else {
             if (btn && btn.u) {
-                updateRow();
+                let state = item.rowState;
+                if (state !== 'INSERT') {
+                    updateRow();
+                }
             }
         }
     }
@@ -603,13 +606,15 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                     </p>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                            {btn?.c && <button type="button" className="accept" onClick={() => {addRow()}} >행 추가</button>}
-                            {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >행 수정</button>}
-                            {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >행 삭제</button>}
-                            {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >초기화</button>}
-                            {(btn?.c || btn?.r || btn?.u || btn?.d ) && <button type="button" className="etc" onClick={() => {setRow()}} >적용</button>}
-                        </div>
+                        {data.setGridData && 
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                                {btn?.c && <button type="button" className="accept" onClick={() => {addRow()}} >행 추가</button>}
+                                {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >행 수정</button>}
+                                {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >행 삭제</button>}
+                                {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >초기화</button>}
+                                {(btn?.c || btn?.r || btn?.u || btn?.d ) && <button type="button" className="etc" onClick={() => {setRow()}} >적용</button>}
+                            </div>
+                        }
                         <select value={perPage}
                             onChange={(e) => {
                                 setPerPage(Number(e.target.value));
