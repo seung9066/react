@@ -430,12 +430,16 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
             let newCurrentList = structuredClone(currentList);
 
             for (let i = 0; i < newCurrentList.length; i++) {
+                if (newCurrentList[i].totalChecked) {
+                    delete newCurrentList[i].totalChecked;
+                }
+
                 if (newCurrentList[i].rowState) {
                     if (newCurrentList[i].rowState === 'DELETE') {
                         newCurrentList.splice(i, 1);
                         i--;
                     } else {
-                        delete newCurrentList[i].rowState
+                        delete newCurrentList[i].rowState;
                     }
                 }
             }
@@ -754,7 +758,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                                 {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >행 수정</button>}
                                 {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >행 삭제</button>}
                                 {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >초기화</button>}
-                                {(btn?.c || btn?.r || btn?.u || btn?.d ) && <button type="button" className="etc" onClick={() => {setRow()}} >적용</button>}
+                                {(btn?.c || btn?.r || btn?.u || btn?.d ) && <button type="button" className="etc" onClick={() => {setRow()}} >{saveBtn ? '저장' : '적용'}</button>}
                             </div>
                         }
                         <select value={perPage}
