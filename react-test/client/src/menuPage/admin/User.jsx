@@ -39,11 +39,7 @@ function Menu( props ) {
 
     useEffect(() => {
         setGridChecked(userList.filter((item) => item.totalChecked));
-    }, [userList])
-
-    useEffect(() => {
-        console.log(gridChecked);
-    }, [gridChecked])
+    }, [userList]);
 
     return (
         <>
@@ -59,7 +55,6 @@ function Menu( props ) {
                     data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}}
                     setParam={setSearchParam}
                     gridChecked={true}
-                    // setGridChecked={setGridChecked}
                     // onClick={gridTrClick}
                     // onDoubleClick={gridTrDoubleClick}
                     // resetBtn={resetBtn}

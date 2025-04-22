@@ -253,33 +253,65 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
 
     // 그리드 행수정
     const updateRow = () => {
-        if (selectedRow) {
-            let no = selectedRow.no;
-            let state = '';
-            for (const item of currentList) {
-                if (item.no === no) {
-                    state = item.rowState;
-                    break;
+        if (checkedRows.length > 0) {
+            let newCurrentList = structuredClone(currentList);
+            for (const item of newCurrentList) {
+                let state = item.rowState;
+                if (item.totalChecked) {
+                    if (state !== 'INSERT') {
+                        item.rowState = 'UPDATE';
+                    }
                 }
             }
 
-            if (state === 'INSERT') {
-                showToast('신규 등록된 행은 수정할 수 없습니다.');
-            } else {
-                setCurrentList((prevList) =>
-                    prevList.map((item) =>
-                        item.no === selectedRow.no ? { ...item, rowState: 'UPDATE' } : item
-                    )
-                );
-            }
+            setCurrentList(newCurrentList);
+        } else if (selectedRow) {
+            let no = selectedRow.no;
+            doUpdate(no);
         } else {
             showToast('수정할 행을 선택하세요.');
         }
     }
 
+    const doUpdate = (no) => {
+        let state = '';
+        for (const item of currentList) {
+            if (item.no === no) {
+                state = item.rowState;
+                break;
+            }
+        }
+
+        if (state === 'INSERT') {
+            showToast('신규 등록된 행은 수정할 수 없습니다.');
+        } else {
+            setCurrentList((prevList) =>
+                prevList.map((item) =>
+                    item.no === selectedRow.no ? { ...item, rowState: 'UPDATE' } : item
+                )
+            );
+        }
+    }
+
     // 그리드 행삭제
     const deleteRow = () => {
-        if (selectedRow) {
+        if (checkedRows.length > 0) {
+            showToast('체크된 행을 삭제합니다.');
+
+            let newCurrentList = structuredClone(currentList);
+            for (const item of newCurrentList) {
+                let state = item.rowState;
+                if (item.totalChecked) {
+                    if (state !== 'INSERT') {
+                        item.rowState = 'DELETE';
+                    } else {
+                        item.rowState = 'INSERTDELETE';
+                    }
+                }
+            }
+
+            setCurrentList(newCurrentList.filter((item) => item.rowState !== 'INSERTDELETE'));
+        } else if (selectedRow) {
             let no = selectedRow.no;
             let state = '';
             for (const item of currentList) {
@@ -306,38 +338,69 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
 
     // 그리드 행 초기화
     const resetRow = () => {
-        if (selectedRow) {
-            showToast('행을 초기화 합니다.');
-            let resetRowData = {};
-            for (const item of data.gridData) {
-                if (item.no === selectedRow.no) {
-                    resetRowData = item;
-                    break;
+        if (checkedRows.length > 0) {
+            showToast('체크된 행을 초기화 합니다.');
+            let resetRowData = [];
+            let newCurrentList = structuredClone(currentList);
+            let newGridData = structuredClone(data.gridData);
+            for (const item of newCurrentList) {
+                for (const item2 of newGridData) {
+                    if (item.no === item2.no) {
+                        let state = item.rowState;
+                        if (item.totalChecked) {
+                            if (state !== 'INSERT') {
+                                delete item2.totalChecked;
+                                resetRowData.push(item2);
+                            }
+                        } else {
+                            delete item2.totalChecked;
+                            resetRowData.push(item2);
+                        }
+                    }
                 }
             }
 
+            setCurrentList(resetRowData);
+        } else if (selectedRow) {
+            showToast('행을 초기화 합니다.');
+
             let no = selectedRow.no;
-            let state = '';
-            for (const item of currentList) {
-                if (item.no === no) {
-                    state = item.rowState;
-                    break;
-                }
-            }
-            if (state === 'INSERT') {
-                setCurrentList((prevList) => prevList.filter((item) => item.no !== no));
-            } else {
-                setCurrentList((prevList) =>
-                    prevList.map((item) =>
-                        item.no === selectedRow.no ? resetRowData : item
-                    )
-                );
-            }
-            setSelectedRow(null);
+            doReset(no);
         } else {
             showToast('전체 행을 초기화 합니다.');
-            drawGrid();
+            drawGrid('totalChecked');
         }
+
+        setSelectedRow(null);
+    }
+
+    const doReset = (no) => {
+        let resetRowData = {};
+        for (const item of data.gridData) {
+            if (item.no === no) {
+                resetRowData = item;
+                delete resetRowData.totalChecked;
+                break;
+            }
+        }
+        
+        let state = '';
+        for (const item of currentList) {
+            if (item.no === no) {
+                state = item.rowState;
+                break;
+            }
+        }
+        if (state === 'INSERT') {
+            setCurrentList((prevList) => prevList.filter((item) => item.no !== no));
+        } else {
+            setCurrentList((prevList) =>
+                prevList.map((item) =>
+                    item.no === no ? resetRowData : item
+                )
+            );
+        }
+        setSelectedRow(null);
     }
 
     // 그리드 데이터 적용
@@ -380,7 +443,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         resetBtn ? null : setSelectedRow(null);
     }, [resetBtn])
 
-    const drawGrid = () => {
+    const drawGrid = (deleteCol) => {
         if (data?.gridData) {
             let chkNo = 0;
             let gridData = structuredClone(data.gridData);
@@ -397,6 +460,11 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                                             : null;
                         }
                     }
+                    if (deleteCol) {
+                        for (let i = 0; i < gridData.length; i++) {
+                            delete gridData[i][deleteCol]
+                        }
+                    }
                     data.gridData = gridData;
                     setCurrentList([...data.gridData]);
                 } else {
@@ -406,6 +474,11 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                             gridChecked ? gridData[i].totalChecked ? null 
                                                                     : gridData[i].totalChecked = false 
                                             : null;
+                        }
+                    }
+                    if (deleteCol) {
+                        for (let i = 0; i < gridData.length; i++) {
+                            delete gridData[i][deleteCol]
                         }
                     }
                     data.gridData = gridData;
@@ -476,7 +549,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     };
 
     useEffect(() => {
-        if (currentList.length > 0 && allCheck.length > 0) {
+        if (currentList.length > 0) {
             // 컬럼별 체크박스 헤드
             setAllCheck(allCheck.map(col => {
                 let chkCount = 0;
@@ -512,28 +585,8 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                     chkArr.push(item);
                 }
             }
-
         }
     }, [data]);
-
-    useEffect(() => {
-        if (checkedRows.length > 0) {
-            let chkDifferent = 0;
-            for (const item of data.gridData) {
-                for (const item2 of checkedRows) {
-                    if (item.no === item2.no) {
-                        if (item.totalChecked !== item2.totalChecked) {
-                            chkDifferent++;
-                        }
-                    }
-                }
-            }
-
-            if (chkDifferent > 0 && gridChecked) {
-                
-            }
-        }
-    }, [checkedRows]);
 
     useEffect(() => {
         setColumn();
