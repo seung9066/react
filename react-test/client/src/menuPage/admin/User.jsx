@@ -31,6 +31,10 @@ function Menu( props ) {
         });
     }
 
+    const doSave = (data) => {
+        console.log(data);
+    }
+
     useEffect(() => {
         getUserList();
     }, [searchParam.page, searchParam.row]);
@@ -54,6 +58,7 @@ function Menu( props ) {
                     data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}}
                     setParam={setSearchParam}
                     gridChecked={true}
+                    saveBtn={doSave}
                     // onClick={gridTrClick}
                     // onDoubleClick={gridTrDoubleClick}
                     // resetBtn={resetBtn}
