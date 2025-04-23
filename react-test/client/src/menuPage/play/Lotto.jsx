@@ -157,7 +157,7 @@ function Lotto () {
     return (
         <>
             <div>
-                <button onClick={runAvg}>십만번 돌리기</button>
+                <button type='button' onClick={runAvg}>십만번 돌리기</button>
                 <div dangerouslySetInnerHTML={{ __html: avgNumDiv }} style={{ marginTop: "10%" }}></div>
             </div>
         </>

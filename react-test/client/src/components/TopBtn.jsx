@@ -22,7 +22,7 @@ export default function ScrollToTopButton() {
 
     return (
         isVisible && (
-            <button className="scroll-to-top" onClick={scrollToTop} title="맨 위로">
+            <button type='button' className="button scroll-to-top" onClick={scrollToTop} title="맨 위로">
                 ⬆
             </button>
         )

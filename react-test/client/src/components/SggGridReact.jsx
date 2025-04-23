@@ -864,7 +864,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                         </div>
                     
                         {/* 오른쪽: 검색 버튼 */}
-                        <button className={styles.searchFormSearchBtn} onClick={onBtnSearchClick}>
+                        <button type='button' className={styles.searchFormSearchBtn} onClick={onBtnSearchClick}>
                             검색
                         </button>
                     </div>
@@ -878,11 +878,11 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         {data.setGridData && 
                             <div style={{ display: 'flex', gap: '8px' }}>
-                                {btn?.c && <button type="button" className="accept" onClick={() => {addRow()}} >행 추가</button>}
-                                {btn?.u && <button type="button" className="primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
-                                {btn?.d && <button type="button" className="danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
-                                {btn?.r && <button type="button" className="secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
-                                {(btn?.c || btn?.r || btn?.u || btn?.d) && <button type="button" className="etc" onClick={() => {setRow()}} >{'전체 ' + (saveBtn ? '저장' : '적용')}</button>}
+                                {btn?.c && <button type="button" className="button accept" onClick={() => {addRow()}} >행 추가</button>}
+                                {btn?.u && <button type="button" className="button primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
+                                {btn?.d && <button type="button" className="button danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
+                                {btn?.r && <button type="button" className="button secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
+                                {(btn?.c || btn?.r || btn?.u || btn?.d) && <button type="button" className="button etc" onClick={() => {setRow()}} >{'전체 ' + (saveBtn ? '저장' : '적용')}</button>}
                             </div>
                         }
                         <select value={perPage}

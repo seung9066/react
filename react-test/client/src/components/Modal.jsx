@@ -21,8 +21,8 @@ function Modal({ isOpen, onClose, children, onConfirm, title }) {
                 <div style={contentStyle}>
                     <h2>{title}</h2>
                     {children}
-                    {onConfirm && <button onClick={onConfirm} style={closeBtnStyle}>확인</button>}
-                    <button onClick={onClose} style={closeBtnStyle}>닫기</button>
+                    {onConfirm && <button type='button' className='button' onClick={onConfirm} style={closeBtnStyle}>확인</button>}
+                    <button type='button' className='button' onClick={onClose} style={closeBtnStyle}>닫기</button>
                 </div>
             </div>
         </div>

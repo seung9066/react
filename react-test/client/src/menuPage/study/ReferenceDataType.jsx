@@ -42,7 +42,7 @@ function ReferenceDataType() {
               <p>직접 데이터를 바꾸는 것이 불가능하여 {'['}...arr{']'} ...으로 배열을 초기화하여 다시 배열로 감싸는 작업 필요</p>
               <CodeTextArea code={code} />
               <br />
-              <button
+              <button type='button' className='button'
                 onClick={() => {
                   clkBtn()
                 }}>console.log(arrData === newArrData)</button>

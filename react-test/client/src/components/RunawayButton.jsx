@@ -45,7 +45,7 @@ const RunawayButton = ({ toastRef, msg }) => {
 
   return (
     <div className="runaway-container" onClick={handleClick}>
-      <button ref={buttonRef} className={"runaway-btn"} onClick={function() {alert("이걸 잡네 ㅋㅋ")}}>
+      <button type='button' ref={buttonRef} className={"button runaway-btn"} onClick={function() {alert("이걸 잡네 ㅋㅋ")}}>
         클릭
       </button>
     </div>

@@ -48,7 +48,7 @@ function Props(props) {
                 <h2>Props</h2>
                 <p>하나의 객체로 보낼 때</p>
                 <CodeTextArea code={returnCode(1)} />
-                <button 
+                <button type='button' className='button'
                     onClick={clkBtn1}>console.log(props)</button>
                 {showProps1 && <PropsTest1 props={props} />}
             </div>
@@ -57,7 +57,7 @@ function Props(props) {
                 <p>각각의 객체 명으로 보낼 때 자식 컴포넌트에 명칭을 같게 하면 각각 받을 수 있다.</p>
                 <p>이 때 꼭 중괄호로 씌워줘야 한다.</p>
                 <CodeTextArea code={returnCode(2)} />
-                <button 
+                <button type='button' className='button'
                     onClick={clkBtn2}>console.log(name, age)</button>
                 {showProps2 && <PropsTest2 name={props.props.propsData.name} age={props.props.propsData.age} />}
             </div>
@@ -109,7 +109,7 @@ function ChgIptNm({ setIptNm }) {
     };
 
     return (
-        <button onClick={clickBtn} readOnly={true}>after</button>
+        <button type='button' className='button' onClick={clickBtn} readOnly={true}>after</button>
     )
 }
 
@@ -169,7 +169,7 @@ function returnCode(codeNm) {
             };
 
             return (
-                <button onClick={clickBtn}>after</button>
+                <button type='button' onClick={clickBtn}>after</button>
             )
         }
         `;

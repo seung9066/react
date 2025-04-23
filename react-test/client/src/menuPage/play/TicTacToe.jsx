@@ -84,7 +84,7 @@ function TicTacToe ( props ) {
     return (
         <>
             <div>
-                <button className="danger" onClick={resetGame}>초기화</button>
+                <button type='button' className="button danger" onClick={resetGame}>초기화</button>
                 <select className='custom-select' onChange={(e) => setSize(e.target.value)} value={size}>
                     <option value="3">3</option>
                     <option value="4">4</option>

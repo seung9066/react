@@ -955,8 +955,8 @@ function Menu( props ) {
             <div className='flexLeftRight'>
                 <div>
                     <div>
-                        <button type='button' className='secondary' onClick={resetOrderBtn}>순서 초기화</button>
-                        <button type='button' className='primary' onClick={orderBtn}>순서 저장</button>
+                        <button type='button' className='button secondary' onClick={resetOrderBtn}>순서 초기화</button>
+                        <button type='button' className='button primary' onClick={orderBtn}>순서 저장</button>
                     </div>
                     <div>
                         {menuData && <SggTreeNode showCol={['title', 'path', 'id']} data={menuData} setData={setMenuData} onSelect={selectedTree} diSelect={diSelect} alwaysOpen={true} />}
