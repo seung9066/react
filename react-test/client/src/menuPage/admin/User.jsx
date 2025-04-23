@@ -61,6 +61,7 @@ function Menu( props ) {
                     saveBtn={doSave}
                     resize={true}
                     headerMove={true}
+                    rowMove={true}
                     // onClick={gridTrClick}
                     // onDoubleClick={gridTrDoubleClick}
                     // resetBtn={resetBtn}

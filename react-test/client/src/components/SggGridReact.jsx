@@ -23,10 +23,12 @@ import ToastAlert from '@components/ToastAlert';
  * @param {resize={true}}
  * boolean 헤더 컬럼 사이즈 변경
  * @param {headerMove={true}}
- * boolean 헤더 컬럼 순서 이동
+ * boolean 헤더 컬럼 드래그드롭 순서 이동
+ * @param {rowMove={true}}
+ * boolean 행 드래그드롭 순서 이동
  * @returns 
  */
-export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove }) {
+export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove, rowMove }) {
     // 상태컬럼
     const stateTd = '48';
     const toastRef = React.useRef(null);
@@ -554,6 +556,53 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         setComputedColumns(newComputedColumns);
     };
 
+    // 드래그 시작 시 노드 ID 저장
+    const handleDragStartRow = (e) => {
+        let key = e.target.dataset.no;
+        e.dataTransfer.setData("application/tr-no", key);
+    };
+    
+    // 노드 위에 드롭했을 때 처리
+    const handleDropRow = (e) => {
+        e.preventDefault();
+        let key = e.target.dataset.no;
+        const draggedThKey = e.dataTransfer.getData("application/tr-no");
+        if (draggedThKey && draggedThKey !== key && key !== '-1') {
+            findRowFromTo(draggedThKey, key);
+        } else {
+            if (key === '-1') {
+                findRowFromTo(draggedThKey, key, (currentList.length - 1))
+            }
+        }
+    };
+
+    const findRowFromTo = (draggedThKey, key, toIdx) => {
+        let from = -1;
+        let to = toIdx || -1;
+        for (let i = 0; i < currentList.length; i++) {
+            let no = currentList[i].no.toString();
+            no === draggedThKey ? from = i : null;
+            if (!toIdx) {
+                no === key ? to = i : null;
+            }
+        }
+
+        if (from !== -1 && to !== -1) {
+            handleSwapRow(from, to);
+        }
+    }
+
+    // tr 재정렬
+    const handleSwapRow = (from, to) => {
+        let newCurrentList = structuredClone(currentList);
+        // 뽑아내기
+        let [fromObj] = newCurrentList.splice(from, 1);
+        // 넣기
+        newCurrentList.splice(to, 0, fromObj);
+
+        setCurrentList(newCurrentList);
+    };
+
     // 컬럼 너비 변경 핸들러
     const handleMouseDown = (e, idx) => {
         e.preventDefault();
@@ -846,26 +895,30 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                             <>
                             {currentList.map((item) => (
                                 <tr
-                                key={item.no}
-                                className={styles.tbodyRow}
-                                onClick={(e) => trClick(e, item)}
-                                onDoubleClick={(e) => trDoubleClick(e, item)}
-                                style={{
-                                    backgroundColor: selectedRow?.no === item.no ? 'lightblue' : '',
-                                    cursor: 'pointer'
-                                }}
-                                data-no={item.no}
+                                    key={item.no}
+                                    className={styles.tbodyRow}
+                                    onClick={(e) => trClick(e, item)}
+                                    onDoubleClick={(e) => trDoubleClick(e, item)}
+                                    style={{
+                                        backgroundColor: selectedRow?.no === item.no ? 'lightblue' : '',
+                                        cursor: 'pointer'
+                                    }}
+                                    data-no={item.no}
+                                    draggable={rowMove}
+                                    onDragStart={handleDragStartRow}
+                                    onDragOver={handleDragOver}
+                                    onDrop={handleDropRow}
                                 >   
-                                    {gridChecked && <td className={styles.td}> <input type="checkbox" name={'totalChecked'} data-checkbox={item.no} style={{width: '20px', height: '20px'}} checked={setCheckValueFirst(item.no, item['totalChecked'])} onChange={setFirstCheck} /> </td>}
+                                    {gridChecked && <td className={styles.td} data-no={item.no}> <input type="checkbox" name={'totalChecked'} data-checkbox={item.no} style={{width: '20px', height: '20px'}} checked={setCheckValueFirst(item.no, item['totalChecked'])} onChange={setFirstCheck} /> </td>}
                                     {btn &&
-                                        <td className={styles.td}>
+                                        <td className={styles.td} data-no={item.no}>
                                             {item.rowState === 'INSERT' ? <span className={`${styles.state} ${styles.accept}`}>등록</span> : null}
                                             {item.rowState === 'UPDATE' ? <span className={`${styles.state} ${styles.primary}`}>수정</span> : null}
                                             {item.rowState === 'DELETE' ? <span className={`${styles.state} ${styles.danger}`}>삭제</span> : null}
                                         </td>
                                     }
                                     {computedColumns && computedColumns.map(col => (
-                                        <td key={col.key} className={styles.td}>
+                                        <td key={col.key} className={styles.td} data-no={item.no}>
                                             {getType(item, col)}
                                         </td>
                                     ))}
@@ -873,10 +926,10 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                             ))}
                             {(
                                 Array.from({ length: perPage - currentList.length }).map((_, i) =>
-                                    <tr key={'emptyTr' + i}>
+                                    <tr key={'emptyTr' + i} draggable={rowMove} onDragStart={handleDragStartRow} onDragOver={handleDragOver} onDrop={handleDropRow}>
                                         <td colSpan={(gridChecked && btn) ? columns.length + 2 
                                                                     : ((gridChecked && !btn) || !gridChecked && btn) ? columns.length + 1 
-                                                                                                            : columns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                                                                                            : columns.length || 1} className={styles.td} key={'emptyTd' + i} data-no={-1}>&nbsp;</td>
                                     </tr>
                                 ) 
                             )}
