@@ -69,3 +69,7 @@ export const deleteAxios = async (url, data) => {
         return {msg : 'error :: ' + url, error};
     }
 }
+
+export const checkRequired = (ref) => {
+    console.log(ref)
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getAxios } from '@utils';
+import * as utils from '@utils';
 
 import SggGridReact from '@components/SggGridReact';
 
@@ -26,7 +26,7 @@ function Menu( props ) {
     }
 
     const getUserList = async () => {
-        getAxios('/user/userList', searchParam).then((res) => {
+        utils.getAxios('/user/userList', searchParam).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
                 setUserList(data.list);

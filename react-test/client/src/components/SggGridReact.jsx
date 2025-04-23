@@ -4,6 +4,8 @@ import styles from '@css/SggGridReact.module.css';
 
 import ToastAlert from '@components/ToastAlert';
 
+import * as utils from '@utils';
+
 /**
  * @param {columns={[{key:'', name:'', type:'', width: 10},]}}
  * Array [{*key:'데이터와 매칭할 실컬럼명', *name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10}]
@@ -197,6 +199,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
 
     // 검색조건 필수값 체크
     const onBtnSearchClick = (e) => {
+        utils.utilsCheckRequired(searchFormInputRef)
         const inputTags = searchFormInputRef.current.querySelectorAll('input');
         let requiredChk = null;
         for (const item of inputTags) {

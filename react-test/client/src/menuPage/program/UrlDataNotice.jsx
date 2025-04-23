@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getAxios, postAxios } from '@utils';
+import * as utils from '@utils';
 
 function UrlDataNotice ( props ) {
     const [iframeHeight, setIframeHeight] = useState("100px"); // 기본 높이
@@ -73,7 +73,7 @@ function UrlDataNotice ( props ) {
     
     // server에서 정보 가져오기
     const getUrlDataNotice = async () => {
-        getAxios('/urlDataNotice/getData').then((res) => {
+        utils.getAxios('/urlDataNotice/getData').then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
                 let param = new URLSearchParams(location.search);

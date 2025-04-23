@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getAxios, postAxios } from '@utils';
+import * as utils from '@utils';
 
 import SggTreeNode from '@components/SggTreeNode'
 import CRUDButton from "@components/CRUDButton";
@@ -260,7 +260,7 @@ function Menu( props ) {
 
     // server에서 메뉴 정보 가져오기
     const getMenu = async () => {
-        getAxios('/menu/getMenu', {}).then((res) => {
+        utils.getAxios('/menu/getMenu', {}).then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
                 setMenuData(data);
