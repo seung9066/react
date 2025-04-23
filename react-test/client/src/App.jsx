@@ -40,7 +40,6 @@ function App() {
                   }
 
   let props = {
-    toastRef: toastRef,
     urlDataNotice: urlDataNotice,
     setUrlDataNoticeData: setUrlDataNoticeData,
     propsData: propsData,

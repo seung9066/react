@@ -1,5 +1,4 @@
 import axios from 'axios';
-import toast from '@components/ToastAlert'
 
 // axios get
 export const getAxios = async (url, data) => {
@@ -78,7 +77,13 @@ export const checkRequired = (ref) => {
         const tagValue = item.value;
         if (!tagValue.trim() || tagValue.trim() === '') {
             item.focus();
-            showToast('a');
+            let msg = ' 은(는) 필수값 입니다.';
+            if (item.placeholder) {
+                showToast(item.placeholder + msg);
+            } else if (item.id && ref.current.querySelector('label[' + item.id + ']')) {
+                let innerText = ref.current.querySelector('label[' + item.id + ']').innerText;
+                showToast(innerText + msg);
+            }
             break;
         }
     }
