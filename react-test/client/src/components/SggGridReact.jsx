@@ -193,6 +193,13 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
         }));
     }
 
+    // 검색조건 엔터키
+    const searchInputKeyDown = (e) => {
+        if (e.key === 'Enter') {
+        
+        }
+    }
+
     // 검색조건 필수값 체크
     const onBtnSearchClick = (e) => {
         if (!utils.checkRequired(searchFormInputRef)) {
@@ -841,6 +848,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                 const commonProps = {
                                     name: item.key,
                                     onChange: searchInputChange,
+                                    onKeyDown: searchInputKeyDown,
                                     ...rest,
                                 };
                     
