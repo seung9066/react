@@ -25,7 +25,7 @@ function Menu( props ) {
         props.props.toastRef.current.showToast(msg, consoleMsg);
     }
 
-    const getUserList = () => {
+    const getUserList = async () => {
         getAxios('/user/userList', searchParam).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
@@ -37,8 +37,8 @@ function Menu( props ) {
         });
     }
 
-    const doSearch = () => {
-        console.log(searchParam)
+    const doSearch = async () => {
+        await getUserList();
     }
 
     const doSave = (data) => {
