@@ -37,6 +37,10 @@ function Menu( props ) {
         });
     }
 
+    const doSearch = () => {
+        console.log(searchParam)
+    }
+
     const doSave = (data) => {
         console.log(data);
     }
@@ -64,6 +68,7 @@ function Menu( props ) {
                     data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}}
                     searchForm={searchForm}
                     setParam={setSearchParam}
+                    doSearch={doSearch}
                     gridChecked={true}
                     saveBtn={doSave}
                     resize={true}
