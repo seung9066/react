@@ -573,14 +573,18 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
             }
             const moveWidth = moveEvent.clientX - startX;
             const newWidthPer = Math.floor((moveWidth / totalWidth) * 100);
-            const newWidth = (Number(startWidth.replace('%', '')) + newWidthPer) + '%';
+            const newWidth = (Number(startWidth.replace('%', '')) + newWidthPer);
 
-            const nextNewWidth = (Number(nextWidth.replace('%', '')) - newWidthPer) + '%';
+            const nextNewWidth = (Number(nextWidth.replace('%', '')) - newWidthPer);
+
+            if (nextNewWidth < 5) {
+                return
+            }
 
             setComputedColumns((prev) => {
                 const newComputedColumns = [...prev];
-                newComputedColumns[idx].width = newWidth;
-                newComputedColumns[idx + 1].width = nextNewWidth;
+                newComputedColumns[idx].width = newWidth + '%';
+                newComputedColumns[idx + 1].width = nextNewWidth + '%';
                 return newComputedColumns
             })
         };
