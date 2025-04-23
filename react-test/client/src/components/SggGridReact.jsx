@@ -199,7 +199,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
 
     // 검색조건 필수값 체크
     const onBtnSearchClick = (e) => {
-        utils.utilsCheckRequired(searchFormInputRef)
+        utils.checkRequired(searchFormInputRef)
         const inputTags = searchFormInputRef.current.querySelectorAll('input');
         let requiredChk = null;
         for (const item of inputTags) {
