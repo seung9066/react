@@ -67,7 +67,7 @@ function Menu( props ) {
                     btn={{'c': true, 'r': true, 'u': true, 'd': true}}
                     data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}}
                     searchForm={searchForm}
-                    setParam={setSearchParam}
+                    setSearchParam={setSearchParam}
                     doSearch={doSearch}
                     gridChecked={true}
                     saveBtn={doSave}
