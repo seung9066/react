@@ -877,7 +877,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         {data.setGridData && 
-                            <div style={{ display: 'flex', gap: '8px' }}>
+                            <div style={{ display: 'flex' }}>
                                 {btn?.c && <button type="button" className="button accept" onClick={() => {addRow()}} >행 추가</button>}
                                 {btn?.u && <button type="button" className="button primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
                                 {btn?.d && <button type="button" className="button danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
