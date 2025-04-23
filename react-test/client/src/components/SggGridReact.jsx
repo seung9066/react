@@ -6,12 +6,11 @@ import ToastAlert from '@components/ToastAlert';
 
 /**
  * @param {columns={[{key:'', name:'', type:'', width: 10},]}}
- * Array [{key:'데이터와 매칭할 실컬럼명', name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10}]
- * type, width 생략가능
+ * Array [{*key:'데이터와 매칭할 실컬럼명', *name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10}]
  * @param {data={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
- * useState gridData(그리드에 담을 데이터)
- * setUseState setGridData(그리드 데이터 set)
- * useState totalCount(데이터 총 수)
+ * useState *gridData(그리드에 담을 데이터)
+ * setUseState *setGridData(그리드 데이터 set)
+ * useState totalCount(데이터 총 수 - 없으면 앞단 페이징 처리)
  * @param {btn={{'c': true, 'r': true, 'u': true, 'd': true}}}
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
  * @param {setParam={setSearchParam}}
