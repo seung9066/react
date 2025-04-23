@@ -78,7 +78,7 @@ export const checkRequired = (ref) => {
         if (!tagValue.trim() || tagValue.trim() === '') {
             item.focus();
             let msg = ' 은(는) 필수값 입니다.';
-            if (item.id && ref.current.querySelector('label[' + item.id + ']')) {
+            if (item.id && ref.current.querySelector('label[' + item.id + ']')?.innerText) {
                 let innerText = ref.current.querySelector('label[' + item.id + ']').innerText;
                 showToast(innerText + msg);
             } else if (item.placeholder) {
