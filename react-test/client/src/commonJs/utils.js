@@ -84,9 +84,10 @@ export const checkRequired = (ref) => {
             } else if (item.placeholder) {
                 showToast(item.placeholder + msg);
             }
-            break;
+            return false;
         }
     }
+    return true;
 }
 
 // 토스트
