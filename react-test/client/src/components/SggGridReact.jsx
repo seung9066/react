@@ -13,6 +13,9 @@ import ToastAlert from '@components/ToastAlert';
  * useState totalCount(데이터 총 수 - 없으면 앞단 페이징 처리)
  * @param {btn={{'c': true, 'r': true, 'u': true, 'd': true}}}
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
+ * @param {searchForm={[{key: 'userNmSearch', type: 'text', placeholder:'사용자명', ...}]}}
+ * Array 검색조건 입력 폼에 들어갈 태그 (검색조건)
+ * key: 컬럼명, type: input type, placeholder: placeholder, ...: 기타 속성들 (readonly:true, disabled: true 등)
  * @param {setParam={setSearchParam}}
  * useState searchParam={page: 1, row: 10} (검색조건)
  * @param {gridChecked={true}}
@@ -25,9 +28,13 @@ import ToastAlert from '@components/ToastAlert';
  * boolean 헤더 컬럼 드래그드롭 순서 이동
  * @param {rowMove={true}}
  * boolean 행 드래그드롭 순서 이동
+ * @param {onClick={(e, item) => {}}}
+ * function onClick (행 클릭 추가 로직 (e, item) 매개변수 처리 필수)
+ * @param {onDoubleClick={(e, item) => {}}}
+ * function onDoubleClick (행 더블클릭 추가 로직 (e, item) 매개변수 처리 필수)
  * @returns 
  */
-export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove, rowMove }) {
+export default function SggGridReact({ data, columns = [], btn, setParam, searchForm, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove, rowMove }) {
     // 상태컬럼
     const stateTd = '48';
     const toastRef = React.useRef(null);
@@ -67,9 +74,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
     // 행 더블 클릭 시
     const trDoubleClick = (e, item) => {
         if (onDoubleClick) {
-            if (!onClick) {
-                setSelectedRow(item);
-            }
+            setSelectedRow(item);
             onDoubleClick(e, item);
         } else {
             if (btn && btn.u) {
@@ -169,6 +174,16 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
             }
         }
         return false;
+    }
+
+    // 검색조건 값 변경시
+    const searchInputChange = (e) => {
+        let { name, value } = e.target;
+
+        setParam((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     }
     
     // 그리드에서 input 값 변경 시
@@ -646,10 +661,6 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         window.addEventListener('mouseup', handleMouseUp);
     };
 
-    useEffect(() => {
-        resetBtn ? null : setSelectedRow(null);
-    }, [resetBtn])
-
     const drawGrid = (deleteCol) => {
         if (data?.gridData) {
             let chkNo = 0;
@@ -704,6 +715,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         drawGrid();
     }, [data]);
 
+    // 페이징 처리
     useEffect(() => {
         if (setParam) {
             setParam((prev) => ({
@@ -803,6 +815,44 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         <>
             <ToastAlert ref={toastRef} />
             <div className={styles.tableContainer} ref={gridRef}>
+                {searchForm && setParam &&
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '12px',
+                            padding: '16px',
+                            marginBottom: '16px',
+                            borderRadius: '10px',
+                            backgroundColor: '#f2f2f2',
+                            alignItems: 'center',
+                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                        }}
+                    >
+                        {searchForm.map((item) => {
+                            // JSX에 직접 넣을 key 외 나머지 props만 객체에 저장
+                            const { key, ...rest } = item;
+
+                            const commonProps = {
+                                name: item.key,
+                                onChange: searchInputChange,
+                                style: {
+                                    flex: '1 1 200px',
+                                    padding: '8px 12px',
+                                    borderRadius: '6px',
+                                    border: '1px solid #ccc',
+                                    fontSize: '14px',
+                                },
+                                ...rest, // 나머지 속성도 반영
+                            };
+
+                            return <input key={item.key} {...commonProps} />;
+                        })}
+
+
+                    </div>
+                }
+
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                     <p style={{ margin: 0 }}>
                         총 {data?.totalCount || data?.gridData?.length}건

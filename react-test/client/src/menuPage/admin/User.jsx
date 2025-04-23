@@ -10,10 +10,16 @@ function Menu( props ) {
 
     const [searchParam, setSearchParam] = useState({
         userNmSearch: '',
+        inptDt:'',
         page: 1,
         row: 10,
         notM: 'Y',
     });
+
+    const [searchForm, setSearchForm] = useState([
+        {key: 'userNmSearch', type: 'text', placeholder:'사용자명', required: true, disabled: false, readOnly: false},
+        {key: 'inptDt', type: 'date', placeholder:'날짜', required: true, disabled: false, readOnly: false},
+    ]);
 
     const showToast = (msg, consoleMsg) => {
         props.props.toastRef.current.showToast(msg, consoleMsg);
@@ -56,15 +62,15 @@ function Menu( props ) {
                     ]}
                     btn={{'c': true, 'r': true, 'u': true, 'd': true}}
                     data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}}
+                    searchForm={searchForm}
                     setParam={setSearchParam}
                     gridChecked={true}
                     saveBtn={doSave}
                     resize={true}
                     headerMove={true}
                     rowMove={true}
-                    // onClick={gridTrClick}
-                    // onDoubleClick={gridTrDoubleClick}
-                    // resetBtn={resetBtn}
+                    // onClick={(e, item) => {}}
+                    // onDoubleClick={(e, item) => {}}
                     />
             </div>
         </>
