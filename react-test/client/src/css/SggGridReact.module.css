@@ -102,3 +102,45 @@
     transition: all 0.3s ease;
     margin: 1px;
   }
+  
+  .searchForm {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    gap: 16px;
+    flex-wrap: nowrap;
+  }
+
+  .searchFormInput {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .searchFormInput input {
+    flex: 1 1 200px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    min-width: 120px;
+    max-width: 400px;
+  }
+
+  .searchFormSearchBtn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    height: 40px;
+    white-space: nowrap;
+  }

@@ -815,43 +815,29 @@ export default function SggGridReact({ data, columns = [], btn, setParam, search
         <>
             <ToastAlert ref={toastRef} />
             <div className={styles.tableContainer} ref={gridRef}>
-                {searchForm && setParam &&
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: '12px',
-                            padding: '16px',
-                            marginBottom: '16px',
-                            borderRadius: '10px',
-                            backgroundColor: '#f2f2f2',
-                            alignItems: 'center',
-                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                        }}
-                    >
-                        {searchForm.map((item) => {
-                            // JSX에 직접 넣을 key 외 나머지 props만 객체에 저장
-                            const { key, ...rest } = item;
-
-                            const commonProps = {
-                                name: item.key,
-                                onChange: searchInputChange,
-                                style: {
-                                    flex: '1 1 200px',
-                                    padding: '8px 12px',
-                                    borderRadius: '6px',
-                                    border: '1px solid #ccc',
-                                    fontSize: '14px',
-                                },
-                                ...rest, // 나머지 속성도 반영
-                            };
-
-                            return <input key={item.key} {...commonProps} />;
-                        })}
-
-
+                {searchForm && setParam && (
+                    <div className={styles.searchForm}>
+                        {/* 왼쪽: 입력 필드들 */}
+                        <div className={styles.searchFormInput}>
+                            {searchForm.map((item) => {
+                                const { key, ...rest } = item;
+                    
+                                const commonProps = {
+                                    name: item.key,
+                                    onChange: searchInputChange,
+                                    ...rest,
+                                };
+                    
+                                return <input key={item.key} {...commonProps} />;
+                            })}
+                        </div>
+                    
+                        {/* 오른쪽: 검색 버튼 */}
+                        <button className={styles.searchFormSearchBtn}>
+                            검색
+                        </button>
                     </div>
-                }
+                )}
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                     <p style={{ margin: 0 }}>
