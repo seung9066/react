@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from '@components/ToastAlert'
 
 // axios get
 export const getAxios = async (url, data) => {
@@ -70,6 +71,20 @@ export const deleteAxios = async (url, data) => {
     }
 }
 
+// 필수값 체크
 export const checkRequired = (ref) => {
-    console.log(ref)
+    const requiredTag = ref.current.querySelectorAll('[required]');
+    for (const item of requiredTag) {
+        const tagValue = item.value;
+        if (!tagValue.trim() || tagValue.trim() === '') {
+            item.focus();
+            showToast('a');
+            break;
+        }
+    }
+}
+
+// 토스트
+export const showToast = (msg) => {
+    window.toastRef?.current?.showToast(msg);
 }

@@ -70,10 +70,6 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     // input required 체크용
     const searchFormInputRef = useRef(null);
 
-    const showToast = (msg, consoleMsg) => {
-        toastRef.current.showToast(msg, consoleMsg);
-    }
-
     // 행 클릭 시
     const trClick = (e, item) => {
         setSelectedRow(item);
@@ -200,22 +196,6 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     // 검색조건 필수값 체크
     const onBtnSearchClick = (e) => {
         utils.checkRequired(searchFormInputRef)
-        const inputTags = searchFormInputRef.current.querySelectorAll('input');
-        let requiredChk = null;
-        for (const item of inputTags) {
-            if (item.required) {
-                if (!item.value) {
-                    requiredChk = item;
-                    break;
-                }
-            }
-        }
-
-        if (requiredChk) {
-            showToast(requiredChk.placeholder + ' 은(는) 필수값 입니다.');
-            requiredChk.focus();
-            return false;
-        }
 
         doSearch();
     }
@@ -344,7 +324,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             let no = selectedRow.no;
             doUpdate(no);
         } else {
-            showToast('수정할 행을 선택하세요.');
+            utils.showToast();
         }
     }
 
@@ -358,7 +338,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
         }
 
         if (state === 'INSERT') {
-            showToast('신규 등록된 행은 수정할 수 없습니다.');
+            utils.showToast('신규 등록된 행은 수정할 수 없습니다.');
         } else {
             setCurrentList((prevList) =>
                 prevList.map((item) =>
@@ -371,7 +351,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     // 그리드 행삭제
     const deleteRow = () => {
         if (checkedRows.length > 0) {
-            showToast('체크된 행을 삭제합니다.');
+            utils.showToast('체크된 행을 삭제합니다.');
 
             let newCurrentList = structuredClone(currentList);
             for (const item of newCurrentList) {
@@ -407,14 +387,14 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             }
             setSelectedRow(null);
         } else {
-            showToast('삭제할 행을 선택하세요.');
+            utils.showToast('삭제할 행을 선택하세요.');
         }
     }
 
     // 그리드 행 초기화
     const resetRow = () => {
         if (checkedRows.length > 0) {
-            showToast('체크된 행을 초기화 합니다.');
+            utils.showToast('체크된 행을 초기화 합니다.');
             let resetRowData = [];
             let newCurrentList = structuredClone(currentList);
             let newGridData = structuredClone(data.gridData);
@@ -437,12 +417,12 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
 
             setCurrentList(resetRowData);
         } else if (selectedRow) {
-            showToast('행을 초기화 합니다.');
+            utils.showToast('행을 초기화 합니다.');
 
             let no = selectedRow.no;
             doReset(no);
         } else {
-            showToast('전체 행을 초기화 합니다.');
+            utils.showToast('전체 행을 초기화 합니다.');
             drawGrid('totalChecked');
             setColumn();
         }
@@ -504,7 +484,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             if (saveBtn) {
                 saveBtn(newCurrentList);
             } else {
-                showToast('적용되었습니다.');
+                utils.showToast('적용되었습니다.');
             }
         }
     }

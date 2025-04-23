@@ -28,7 +28,7 @@ function UrlDataNotice ( props ) {
 
             // iframe에서 보낸 toast
             if (event.data.toast) {
-                showToast(event.data.toast);
+                utils.showToast(event.data.toast);
             }
 
             // iframe에서 보낸 data
@@ -58,7 +58,7 @@ function UrlDataNotice ( props ) {
                 } else if (event.data.saveData){
                     saveData(event.data.saveData);
                 } else {
-                    showToast("저장할 데이터가 없습니다.");
+                    utils.showToast("저장할 데이터가 없습니다.");
                 }
             }
         };
@@ -67,10 +67,6 @@ function UrlDataNotice ( props ) {
         return () => window.removeEventListener("message", handleMessage);
     }, []);
 
-    const showToast = (msg, consoleMsg) => {
-        props.props.toastRef.current.showToast(msg, consoleMsg);
-    }
-    
     // server에서 정보 가져오기
     const getUrlDataNotice = async () => {
         utils.getAxios('/urlDataNotice/getData').then((res) => {
@@ -85,9 +81,9 @@ function UrlDataNotice ( props ) {
                 const message = { data: data };
                 iframeRef.current.contentWindow.postMessage(message, "*");
 
-                showToast('데이터 로드 완료');
+                utils.showToast('데이터 로드 완료');
             } else {
-                showToast('데이터 로드 실패', res.error);
+                utils.showToast('데이터 로드 실패', res.error);
             }
         });
     };
@@ -97,9 +93,9 @@ function UrlDataNotice ( props ) {
         postAxios('/urlDataNotice/updateData', {data: urlData}).then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
-                showToast(data.message);
+                utils.showToast(data.message);
             } else {
-                showToast('저장 실패', res.error);
+                utils.showToast('저장 실패', res.error);
             }
         });
     };

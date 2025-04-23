@@ -21,10 +21,6 @@ function Menu( props ) {
         {key: 'inptDt', type: 'date', placeholder:'날짜', required: true, disabled: false, readOnly: false},
     ]);
 
-    const showToast = (msg, consoleMsg) => {
-        props.props.toastRef.current.showToast(msg, consoleMsg);
-    }
-
     const getUserList = async () => {
         utils.getAxios('/user/userList', searchParam).then((res) => {
             if (res.msg === 'success') {
@@ -32,7 +28,7 @@ function Menu( props ) {
                 setUserList(data.list);
                 setTotalCount(data.totalCount);
             } else {
-                showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.', res.error);
+                utils.showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.', res.error);
             }
         });
     }

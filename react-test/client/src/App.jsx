@@ -71,6 +71,9 @@ function App() {
       loadComponents();
 
       getMenu();
+
+      // 토스트 전역등록
+      window.toastRef = toastRef;
   }, []);
 
   // server에서 메뉴 정보 가져오기

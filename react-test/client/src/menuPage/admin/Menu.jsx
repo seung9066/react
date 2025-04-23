@@ -222,16 +222,12 @@ function Menu( props ) {
         let input = document.querySelector(`input[id="${chkDupleKey}"]`);
 
         if (chkDupleKey) {
-            showToast(labelText + '는 중복 불가능합니다.');
+            utils.showToast(labelText + '는 중복 불가능합니다.');
             input.focus();
             return false;
         }
 
         return true;
-    }
-
-    const showToast = (msg, consoleMsg) => {
-        props.props.toastRef.current.showToast(msg, consoleMsg);
     }
 
     const transformDataToTree = (data) => {
@@ -267,18 +263,18 @@ function Menu( props ) {
                 props.setMenu(transformDataToTree(data));
                 setMenuComponents(0);
             } else {
-                showToast("메뉴 데이터 로드 실패", res.error);
+                utils.showToast("메뉴 데이터 로드 실패", res.error);
             }
         });
     };
 
     // server에서 메뉴 정보 저장
     const saveMenu = async (menuData) => {
-        postAxios('/menu/updateMenu', menuData).then((res) => {
+        utils.postAxios('/menu/updateMenu', menuData).then((res) => {
             if (res.msg === 'success') {
-                showToast("메뉴 정보 저장 성공");
+                utils.showToast("메뉴 정보 저장 성공");
             } else {
-                showToast("메뉴 정보 저장 실패", res.error);
+                utils.showToast("메뉴 정보 저장 실패", res.error);
             }
         });
     };
@@ -364,7 +360,7 @@ function Menu( props ) {
     const AddBtn = () => {
         let newSelectedData = {...selectedData};
         if (newSelectedData.upId && !selectUpId) {
-            showToast("최상위 메뉴에만 하위메뉴를 추가할 수 있습니다.");
+            utils.showToast("최상위 메뉴에만 하위메뉴를 추가할 수 있습니다.");
             return false;
         }
         setSelectId();
@@ -764,7 +760,7 @@ function Menu( props ) {
             }
 
             if (newFilePath.upPath && !newFilePath.upId) {
-                showToast('상단 메뉴 생성 후 다시 진행해주세요.');
+                utils.showToast('상단 메뉴 생성 후 다시 진행해주세요.');
                 newFilePath.path = newFilePath.upPath;
             }
             
@@ -874,7 +870,7 @@ function Menu( props ) {
             newMenuData.unshift(item);
             setMenuData(newMenuData);
 
-            showToast('메인 페이지는 항상 처음에 와야합니다.');
+            utils.showToast('메인 페이지는 항상 처음에 와야합니다.');
         }
     }, [menuData])
     

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@css/RunawayButton.css';
 
-const RunawayButton = ({ toastRef, msg }) => {
+import * as utils from '@utils';
+
+const RunawayButton = ({ msg }) => {
   const buttonRef = useRef(null);
   const [moving, setMoving] = useState(false);
 
@@ -39,7 +41,7 @@ const RunawayButton = ({ toastRef, msg }) => {
 
   const handleClick = (e) => {
     if (moving) {
-      toastRef.current.showToast(msg);
+      utils.showToast(msg);
     }
   };
 
