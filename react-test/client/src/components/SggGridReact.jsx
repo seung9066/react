@@ -15,11 +15,14 @@ import ToastAlert from '@components/ToastAlert';
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
  * @param {searchForm={[{key: 'userNmSearch', type: 'text', placeholder:'사용자명', ...}]}}
  * Array 검색조건 입력 폼에 들어갈 태그 (검색조건)
- * key: 컬럼명, type: input type, placeholder: placeholder, ...: 기타 속성들 (readonly:true, disabled: true 등)
+ * *key: 컬럼명, *type: input type, *placeholder: placeholder, ...: 기타 속성들 (readonly:true, disabled: true 등)
+ * searchForm, doSearch, setSearchParam 이 3개는 세트
  * @param {doSearch={doSearch}}
  * function 검색조건 조회 함수
+ * searchForm, doSearch, setSearchParam 이 3개는 세트
  * @param {setSearchParam={setSearchParam}}
  * useState searchParam={page: 1, row: 10} (검색조건)
+ * searchForm, doSearch, setSearchParam 이 3개는 세트
  * @param {gridChecked={true}}
  * boolean true (그리드 첫 컬럼 체크박스)
  * @param {saveBtn={doSave}}
@@ -59,7 +62,11 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     // 선택행들
     const [checkedRows, setCheckedRows] = useState([]);
 
+    // 총 가로 화면 뽑아오기용
     const gridRef = useRef(null);
+
+    // input required 체크용
+    const searchFormInputRef = useRef(null);
 
     const showToast = (msg, consoleMsg) => {
         toastRef.current.showToast(msg, consoleMsg);
@@ -186,6 +193,28 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             ...prev,
             [name]: value,
         }));
+    }
+
+    // 검색조건 필수값 체크
+    const onBtnSearchClick = (e) => {
+        const inputTags = searchFormInputRef.current.querySelectorAll('input');
+        let requiredChk = null;
+        for (const item of inputTags) {
+            if (item.required) {
+                if (!item.value) {
+                    requiredChk = item;
+                    break;
+                }
+            }
+        }
+
+        if (requiredChk) {
+            showToast(requiredChk.placeholder + ' 은(는) 필수값 입니다.');
+            requiredChk.focus();
+            return false;
+        }
+
+        doSearch();
     }
     
     // 그리드에서 input 값 변경 시
@@ -820,7 +849,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                 {searchForm && setSearchParam && doSearch && (
                     <div className={styles.searchForm}>
                         {/* 왼쪽: 입력 필드들 */}
-                        <div className={styles.searchFormInput}>
+                        <div className={styles.searchFormInput} ref={searchFormInputRef}>
                             {searchForm.map((item) => {
                                 const { key, ...rest } = item;
                     
@@ -835,7 +864,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                         </div>
                     
                         {/* 오른쪽: 검색 버튼 */}
-                        <button className={styles.searchFormSearchBtn} onClick={doSearch}>
+                        <button className={styles.searchFormSearchBtn} onClick={onBtnSearchClick}>
                             검색
                         </button>
                     </div>
