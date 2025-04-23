@@ -577,7 +577,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
 
             const nextNewWidth = (Number(nextWidth.replace('%', '')) - newWidthPer);
 
-            if (nextNewWidth < 5) {
+            if (newWidth < 5 || nextNewWidth < 5) {
                 return
             }
 
