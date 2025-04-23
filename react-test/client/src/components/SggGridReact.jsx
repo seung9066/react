@@ -864,7 +864,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                         </div>
                     
                         {/* 오른쪽: 검색 버튼 */}
-                        <button type='button' className={styles.searchFormSearchBtn} onClick={onBtnSearchClick}>
+                        <button type='button' className={`button ${styles.searchFormSearchBtn}`} onClick={onBtnSearchClick}>
                             검색
                         </button>
                     </div>

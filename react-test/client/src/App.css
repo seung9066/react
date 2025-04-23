@@ -192,7 +192,7 @@ select:disabled {
     line-height: 1.6;
 }
 
-.textdiv:not(.resizer) .button {
+.textdiv {
     margin-top: 10px;
 }
 
