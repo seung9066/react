@@ -731,13 +731,13 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         const lastBtn = Math.min(startBtn + pageBtnCount - 1, totalPage);
 
         if (startBtn > 1) {
-            pagination.push(<a key="first" onClick={() => clickPagingBtn(1)}>{'<<'}</a>);
-            pagination.push(<a key="prev" onClick={() => clickPagingBtn(startBtn - 1)}>{'<'}</a>);
+            pagination.push(<a className={styles.a} key="first" onClick={() => clickPagingBtn(1)}>{'<<'}</a>);
+            pagination.push(<a className={styles.a} key="prev" onClick={() => clickPagingBtn(startBtn - 1)}>{'<'}</a>);
         }
 
         for (let i = startBtn; i <= lastBtn; i++) {
             pagination.push(
-                <a
+                <a className={styles.a}
                     key={i}
                     onClick={() => clickPagingBtn(i)}
                     style={{ color: i === currentPage ? 'lightgray' : 'inherit' }}
@@ -748,8 +748,8 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
         }
 
         if (lastBtn < totalPage) {
-            pagination.push(<a key="next" onClick={() => clickPagingBtn(lastBtn + 1)}>{'>'}</a>);
-            pagination.push(<a key="last" onClick={() => clickPagingBtn(totalPage)}>{'>>'}</a>);
+            pagination.push(<a className={styles.a} key="next" onClick={() => clickPagingBtn(lastBtn + 1)}>{'>'}</a>);
+            pagination.push(<a className={styles.a} key="last" onClick={() => clickPagingBtn(totalPage)}>{'>>'}</a>);
         }
 
         return <div className={styles.pagination}>{pagination}</div>;

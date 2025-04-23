@@ -22,6 +22,10 @@
     border-bottom: 1px solid #ddd;
     user-select: none;
   }
+
+  .a {
+    user-select: none;
+  }
   
   .tbody {
     text-align: center;
