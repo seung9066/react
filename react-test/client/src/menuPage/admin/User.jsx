@@ -59,6 +59,8 @@ function Menu( props ) {
                     setParam={setSearchParam}
                     gridChecked={true}
                     saveBtn={doSave}
+                    resize={true}
+                    headerMove={true}
                     // onClick={gridTrClick}
                     // onDoubleClick={gridTrDoubleClick}
                     // resetBtn={resetBtn}

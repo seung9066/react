@@ -20,9 +20,13 @@ import ToastAlert from '@components/ToastAlert';
  * boolean true (그리드 첫 컬럼 체크박스)
  * @param {saveBtn={doSave}}
  * function doSave (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 처리 doSave = (data) => {} 필수))
+ * @param {resize={true}}
+ * boolean 헤더 컬럼 사이즈 변경
+ * @param {headerMove={true}}
+ * boolean 헤더 컬럼 순서 이동
  * @returns 
  */
-export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked, saveBtn }) {
+export default function SggGridReact({ data, columns = [], btn, setParam, resetBtn, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove }) {
     // 상태컬럼
     const stateTd = '48';
     const toastRef = React.useRef(null);
@@ -793,7 +797,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                                     data-key={col.key}
                                     className={styles.th}
                                     style={{ width: col.width, position: 'relative', overflow: 'visible' }}  
-                                    draggable
+                                    draggable={headerMove}
                                     onDragStart={handleDragStart}
                                     onDragOver={handleDragOver}
                                     onDrop={handleDrop}
@@ -802,7 +806,7 @@ export default function SggGridReact({ data, columns = [], btn, setParam, resetB
                                         <input type="checkbox" name={col.key} style={{width: '20px', height: '20px'}} checked={checkChecked(col.key)} onChange={allCheckBox}/>
                                     }
                                     {col.name}
-                                    {idx !== computedColumns.length - 1 && 
+                                    {resize && idx !== computedColumns.length - 1 && 
                                         <span
                                             onMouseDown={(e) => handleMouseDown(e, idx)}
                                             style={{
