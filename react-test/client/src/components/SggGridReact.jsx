@@ -6,7 +6,7 @@ import * as utils from '@utils';
 
 /**
  * @param {columns={[{key:'', name:'', type:'', width: 10},]}}
- * Array [{*key:'데이터와 매칭할 실컬럼명', *name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), width: 10}]
+ * Array [{*key:'데이터와 매칭할 실컬럼명', *name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), option: select의 options (useState) width: 10}] state로 받으면 option state 상태 변경 시 리랜더링 안됨
  * @param {data={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
  * useState *gridData(그리드에 담을 데이터)
  * setUseState *setGridData(그리드 데이터 set)
