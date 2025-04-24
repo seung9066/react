@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import styles from '@css/SggGridReact.module.css';
 
-import ToastAlert from '@components/ToastAlert';
-
 import * as utils from '@utils';
 
 /**
@@ -15,9 +13,9 @@ import * as utils from '@utils';
  * useState totalCount(데이터 총 수 - 없으면 앞단 페이징 처리)
  * @param {btn={{'c': true, 'r': true, 'u': true, 'd': true}}}
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
- * @param {searchForm={[{key: 'userNmSearch', type: 'text', placeholder:'사용자명', ...}]}}
- * Array 검색조건 입력 폼에 들어갈 태그 (검색조건)
- * *key: 컬럼명, *type: input type, *placeholder: placeholder, ...: 기타 속성들 (readonly:true, disabled: true 등)
+ * @param {searchForm={[{key: 'userNmSearch', type: 'text', placeholder:'사용자명', ...},{key: 'type', type: 'select', placeholder:'권한명', option: typeOption ...}]}}
+ * Array searchForm 검색조건 입력 폼에 들어갈 태그 (검색조건) - state로 하면 option state 상태 변경 시 리랜더링 안됨
+ * *key: 컬럼명, *type: input type || select, *placeholder: placeholder, *option: select의 options (useState) ...: 기타 속성들 (readonly:true, disabled: true 등)
  * searchForm, doSearch, setSearchParam 이 3개는 세트
  * @param {doSearch={doSearch}}
  * function 검색조건 조회 함수
@@ -196,12 +194,50 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     // 검색조건 엔터키
     const searchInputKeyDown = (e) => {
         if (e.key === 'Enter') {
-        
+            const current = searchFormInputRef.current;
+            const inputTags = current.querySelectorAll('input');
+            for (let i = 0; i < inputTags.length; i++) {
+                if (inputTags[i] === e.target) {
+                    if (i === inputTags.length - 1) {
+                        doSearch();
+                    } else {
+                        inputTags[i + 1].focus();
+                    }
+                }
+            }
         }
     }
 
-    // 검색조건 필수값 체크
+    // 검색조건 초기화
+    const onBtnSearchReset = (e) => {
+        const current = searchFormInputRef.current;
+        const inputTags = current.querySelectorAll('input');
+        let newSearchParam = {};
+        for (const item of inputTags) {
+            item.value = '';
+            newSearchParam[item.name] = '';
+        }
+
+        const selectTags = current.querySelectorAll('select');
+        for (const item of selectTags) {
+            if (item.options.length > 0) {
+                item.value = item.options[0].value; // 첫 번째 option 선택
+                newSearchParam[item.name] = item.options[0].value;
+            }
+        }
+
+        setSearchParam((prev) => {
+            const updated = {
+                ...prev,             // 기존 값 유지
+                ...newSearchParam,   // 동일한 키는 덮어씀
+            };
+            return updated;
+        });
+    }
+
+    // 검색조건 조회
     const onBtnSearchClick = (e) => {
+        // 검색조건 필수값 체크
         if (!utils.checkRequired(searchFormInputRef)) {
             return false;
         }
@@ -278,14 +314,33 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     // 그리드 랜더링 시 타입에 맞는 값 리턴
     const getType = (item, col) => {
         if (col.type === 'number') {
-            return selectedRow && selectedRow.no === item.no && item.rowState ? <input type="number" name={col.key} value={item[col.key]} style={{ width: '99%', border: 'none', backgroundColor: 'transparent' }} onChange={inputChange} /> : item[col.key];
+            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+                                                                                    <input type="number" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
+                                                                                </div>
+                                                                            : item[col.key];
         }
         if (col.type === 'text') {
-            return selectedRow && selectedRow.no === item.no && item.rowState ? <input type="text" name={col.key} value={item[col.key]} style={{ width: '99%', border: 'none', backgroundColor: 'transparent' }} onChange={inputChange} /> : item[col.key];
+            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+                                                                                    <input type="text" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
+                                                                                </div>
+                                                                            : item[col.key];
         }
         if (col.type === 'checkbox') {
             let value = setCheckValue(col.key, item[col.key]);
             return <input type="checkbox" name={col.key} data-checkbox={item.no} checked={value} style={{ width: '20px', height: '20px', border: 'none', backgroundColor: 'transparent' }} onChange={inputChange} />;
+        }
+        if (col.type === 'select') {
+            const className = selectedRow && selectedRow.no === item.no && item.rowState ? styles.selected : styles.diSelected;
+            const disabled = !(selectedRow && selectedRow.no === item.no && item.rowState);
+
+            const option = col.option;
+            return <select name={col.key} value={item[col.key]} onChange={inputChange} className={className} disabled={disabled}>
+                        {option?.map((opt) => (
+                            <option key={item.no + '-' + item.key + '-' + opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
         }
         if (!col.type) {
             return item[col.key];
@@ -832,33 +887,53 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
 
     useEffect(() => {
         setColumn();
-    }, []);
+    }, [columns]);
 
     return (
         <>
-            <ToastAlert ref={toastRef} />
             <div className={styles.tableContainer} ref={gridRef}>
                 {searchForm && setSearchParam && doSearch && (
                     <div className={styles.searchForm}>
                         {/* 왼쪽: 입력 필드들 */}
                         <div className={styles.searchFormInput} ref={searchFormInputRef}>
                             {searchForm.map((item) => {
-                                const { key, ...rest } = item;
-                    
-                                const commonProps = {
-                                    name: item.key,
-                                    onChange: searchInputChange,
-                                    onKeyDown: searchInputKeyDown,
-                                    ...rest,
-                                };
-                    
-                                return <input key={item.key} className={styles.searchInput} {...commonProps} />;
+                                const { key, option, ...rest } = item;
+
+                                if (rest.type !== 'select') {
+                                    const commonProps = {
+                                        name: item.key,
+                                        onChange: searchInputChange,
+                                        onKeyDown: searchInputKeyDown,
+                                        ...rest,
+                                    };
+                                    
+                                    return <input key={item.key} className={styles.searchInput} {...commonProps} />;
+                                } else {
+                                    const commonProps = {
+                                        name: item.key,
+                                        onChange: searchInputChange,
+                                        ...rest,
+                                    };
+                                    
+                                    return (
+                                        <select key={item.key} className={styles.searchInput} {...commonProps}>
+                                            {option?.map((opt) => (
+                                                <option key={item.key + '-' + opt.value} value={opt.value}>
+                                                    {opt.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    );
+                                }
                             })}
                         </div>
                     
                         {/* 오른쪽: 검색 버튼 */}
                         <button type='button' className={`button ${styles.searchFormSearchBtn}`} onClick={onBtnSearchClick}>
                             검색
+                        </button>
+                        <button type='button' className={`button secondary ${styles.searchFormSearchBtn}`} onClick={onBtnSearchReset}>
+                            초기화
                         </button>
                     </div>
                 )}
@@ -921,28 +996,9 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                     {resize && idx !== computedColumns.length - 1 && 
                                         <span
                                             onMouseDown={(e) => handleMouseDown(e, idx)}
-                                            style={{
-                                                position: 'absolute',
-                                                right: 0,
-                                                top: 0,
-                                                bottom: 0,
-                                                width: '10px',               // 넓이 증가
-                                                cursor: 'col-resize',        // 드래그 커서
-                                                backgroundColor: 'transparent',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                zIndex: 1,
-                                            }}
+                                            className={styles.resize}
                                         >
-                                            <div
-                                                style={{
-                                                    width: '2.2px',
-                                                    height: '70%',           // 세로 길이 강조
-                                                    backgroundColor: 'white', // 눈에 띄는 색상
-                                                    opacity: 0.8,
-                                                }}
-                                            />
+                                            <div className={styles.resize}/>
                                         </span>
                                     }
                                 </th>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sgg.application.sggCd.mapper.SggCdMapper">
+    <!-- 목록조회 -->
+    <select id="sggCdList" parameterType="map" resultType="resultMap">
+        /* com.sgg.application.sggCd.mapper.SggCdMapper.sggCdList */
+        SELECT A1.CD_ID
+            , A1.CD_DTL
+            , A1.CD_DTL_NAME
+            , A1.UP_CD_ID
+            , A1.UP_CD_DTL
+            , A1.DEL_YN
+        FROM SGG_CD_DTL A1
+        WHERE 1=1
+        <if test="cdId != null and cdId != ''">
+            AND A1.CD_ID = #{cdId}
+        </if>
+        <if test="cdDtl != null and cdDtl != ''">
+            AND A1.CD_DTL = #{cdDtl}
+        </if>
+        <if test="cdDtlName != null and cdDtlName != ''">
+            AND A1.CD_DTL_NAME = #{cdDtlName}
+        </if>
+        <if test="upCdId != null and upCdId != ''">
+            AND A1.UP_CD_ID = #{upCdId}
+        </if>
+        <if test="upCdDtl != null and upCdDtl != ''">
+            AND A1.UP_CD_DTL = #{upCdDtl}
+        </if>
+        <if test="delYn != null and delYn != ''">
+            AND A1.DEL_YN = #{delYn}
+        </if>
+    </select>
+
+</mapper>

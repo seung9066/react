@@ -118,7 +118,7 @@ function App() {
     <>
     <BrowserRouter>
       <ToastAlert ref={toastRef} />
-      <div className="App">
+      <div>
         <div>
           {menuData.length > 0 && <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} props={props} />}
         </div>

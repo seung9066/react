@@ -3,9 +3,6 @@
 }
 
 select {
-  appearance: none; /* 기본 스타일 제거 */
-  -webkit-appearance: none;
-  -moz-appearance: none;
   background-color: white;
   border: 2px solid #3498db;
   border-radius: 8px;
@@ -16,17 +13,19 @@ select {
   width: 200px;
   outline: none;
   transition: all 0.3s ease;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center; /* 🔽 여기서 화살표 위치 조절 가능 */
+  background-size: 14px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 /* select에 focus 되었을 때 */
 select:focus {
   border-color: #2980b9;
   box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
-}
-
-/* select의 화살표 없애기 */
-select::-ms-expand {
-  display: none;
 }
 
 /* 옵션 스타일 */

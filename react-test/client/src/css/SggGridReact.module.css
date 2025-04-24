@@ -18,7 +18,7 @@
   }
   
   .th, .td {
-    padding: 8px;
+    padding: 8px 0px;
     border-bottom: 1px solid #ddd;
     user-select: none;
   }
@@ -128,4 +128,63 @@
     font-size: 15px;
     cursor: pointer;
     white-space: nowrap;
+  }
+
+  span.resize {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px;               
+    cursor: col-resize;        
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  div.resize {
+    width: 2.2px;
+    height: 70%;
+    background-color: white;
+    opacity: 0.8;
+  }
+
+  select.diSelected {
+    border: 0px none #3498db;
+    background-color: transparent;
+    color: #333;
+    opacity: 1; /* 일부 브라우저는 opacity로 흐리게 처리함 */
+    width: 90%;
+    padding: 8px 0px;
+    background-image: none;
+  }
+  
+  select.selected {
+    border: 2px solid #ccc;
+    background-color: transparent;
+    color: #333;
+    opacity: 1; /* 일부 브라우저는 opacity로 흐리게 처리함 */
+    width: 90%;
+    transition: border-color 0.3s ease-in-out;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  input.tdInput {
+    width: 90%;
+    border: none;
+    background-color: transparent;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input.tdInput[type="number"]::-webkit-outer-spin-button,
+  input.tdInput[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+  /* Firefox */
+  input.tdInput[type="number"] {
+      -moz-appearance: textfield;
   }
