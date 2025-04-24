@@ -13,6 +13,7 @@ import * as utils from '@utils';
  * useState totalCount(데이터 총 수 - 없으면 앞단 페이징 처리)
  * @param {sggBtn={{'c': true, 'r': true, 'u': true, 'd': true}}}
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
+ * function saveBtn (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 처리 doSave = (data) => {} 필수))
  * @param {sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}}}
  * sggSearchParam의 3개는 세트
  * Array searchForm 
@@ -24,29 +25,26 @@ import * as utils from '@utils';
  * - 조회 함수
  * @param {sggGridChecked={true}}
  * boolean true (그리드 첫 컬럼 체크박스)
- * @param {sggSaveBtn={doSave}}
- * function doSave (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 처리 doSave = (data) => {} 필수))
  * @param {sggGridFormChange={{resize: true, headerMove: true, rowMove: true}}}
  * boolean
  * resize : 헤더 컬럼 사이즈 변경
  * headerMove : 헤더 컬럼 드래그드롭 순서 이동
  * rowMove : 행 드래그드롭 순서 이동
- * @param {sggOnClick={(e, item) => {}}}
- * function sggOnClick (행 클릭 추가 로직 (e, item) 매개변수 처리 필수)
- * @param {sggOnDoubleClick={(e, item) => {}}}
- * function sggOnDoubleClick (행 더블클릭 추가 로직 (e, item) 매개변수 처리 필수)
+ * @param {sggTrOnClick={(e, item) => {}}}
+ * function sggTrOnClick (행 클릭 추가 로직 (e, item) 매개변수 처리 필수)
+ * @param {sggTrOnDoubleClick={(e, item) => {}}}
+ * function sggTrOnDoubleClick (행 더블클릭 추가 로직 (e, item) 매개변수 처리 필수)
  * @param {sggPaging={true}}
  * boolean 페이징 여부
  * @returns 
  */
 export default function SggGridReact({ sggData, 
-                                        sggColumns = [{key: '', name: ''}], 
+                                        sggColumns = [], 
                                         sggBtn, 
                                         sggSearchParam, 
-                                        sggOnClick, 
-                                        sggOnDoubleClick, 
-                                        sggGridChecked, 
-                                        sggSaveBtn, 
+                                        sggTrOnClick, 
+                                        sggTrOnDoubleClick, 
+                                        sggGridChecked = false, 
                                         sggGridFormChange = {resize: false, headerMove: false, rowMove: false}, 
                                         sggPaging = true }) {
     // 상태컬럼
@@ -80,16 +78,16 @@ export default function SggGridReact({ sggData,
     // 행 클릭 시
     const trClick = (e, item) => {
         setSelectedRow(item);
-        if (sggOnClick) {
-            sggOnClick(e, item);
+        if (sggTrOnClick) {
+            sggTrOnClick(e, item);
         }
     }
 
     // 행 더블 클릭 시
     const trDoubleClick = (e, item) => {
-        if (sggOnDoubleClick) {
+        if (sggTrOnDoubleClick) {
             setSelectedRow(item);
-            sggOnDoubleClick(e, item);
+            sggTrOnDoubleClick(e, item);
         } else {
             if (sggBtn && sggBtn.u) {
                 let state = item.rowState;
@@ -563,8 +561,8 @@ export default function SggGridReact({ sggData,
 
             setSelectedRow(null);
             sggData.setGridData(newCurrentList);
-            if (sggSaveBtn) {
-                sggSaveBtn(newCurrentList);
+            if (sggBtn.saveBtn) {
+                sggBtn.saveBtn(newCurrentList);
             } else {
                 utils.showToast('적용되었습니다.');
             }
@@ -583,7 +581,7 @@ export default function SggGridReact({ sggData,
     const getColLength = (totalWidth, widthCnt) => {
         // 그리드 총 width
         const size = handleResize();
-        const totalCols = sggColumns.length;
+        const totalCols = sggColumns.length || 0;
         // sggBtn이 있어야 상태 컬럼 생김
         let usableSize = sggBtn ? size - stateTd : size; // 여유 공간 반영
         // 선택 체크박스 여부
@@ -614,16 +612,18 @@ export default function SggGridReact({ sggData,
             }
         }
 
-        setComputedColumns(
-            sggColumns.length
-                ? sggColumns.map(col => ({
-                        ...col,
-                        width: col.width ? col.width.toString().includes('%') ? col.width
-                                                                            : `${col.width}%`
-                                        : `${getColLength(totalWidth, widthCnt)}%`
-                    }))
-                : []
-        );
+        if (sggColumns.length > 0) {
+            setComputedColumns(
+                sggColumns.length > 0
+                    ? sggColumns.map(col => ({
+                            ...col,
+                            width: col.width ? col.width.toString().includes('%') ? col.width
+                                                                                : `${col.width}%`
+                                            : `${getColLength(totalWidth, widthCnt)}%`
+                        }))
+                    : []
+            );
+        }
     }
 
     // 드래그 시작 시 노드 ID 저장
@@ -970,13 +970,13 @@ export default function SggGridReact({ sggData,
                     </p>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        {sggData && sggData.setGridData && 
+                        {(sggData && sggData.setGridData) && 
                             <div style={{ display: 'flex' }}>
                                 {sggBtn?.c && <button type="button" className="button accept" onClick={() => {addRow()}} >행 추가</button>}
                                 {sggBtn?.u && <button type="button" className="button primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
                                 {sggBtn?.d && <button type="button" className="button danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
                                 {sggBtn?.r && <button type="button" className="button secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
-                                {(sggBtn?.c || sggBtn?.r || sggBtn?.u || sggBtn?.d) && <button type="button" className="button etc" onClick={() => {setRow()}} >{'전체 ' + (sggSaveBtn ? '저장' : '적용')}</button>}
+                                {(sggBtn?.c || sggBtn?.r || sggBtn?.u || sggBtn?.d) && <button type="button" className="button etc" onClick={() => {setRow()}} >{'전체 ' + (sggBtn.saveBtn ? '저장' : '적용')}</button>}
                             </div>
                         }
                         {sggPaging !== false &&
@@ -1031,6 +1031,15 @@ export default function SggGridReact({ sggData,
                                     }
                                 </th>
                             ))}
+                            {(!computedColumns || computedColumns.length === 0) && (
+                                <th
+                                    key={'none'}
+                                    className={styles.th}
+                                    style={{ position: 'relative', overflow: 'visible' }}  
+                                >
+                                    -
+                                </th>
+                            )}
                         </tr>
                     </thead>
                     <tbody className={styles.tbody}>
@@ -1070,29 +1079,29 @@ export default function SggGridReact({ sggData,
                             {sggPaging !== false && (
                                 Array.from({ length: perPage - currentList.length }).map((_, i) =>
                                     <tr key={'emptyTr' + i} draggable={sggGridFormChange.rowMove} onDragStart={handleDragStartRow} onDragOver={handleDragOver} onDrop={handleDropRow}>
-                                        <td colSpan={(sggGridChecked && sggBtn) ? sggColumns.length + 2 
-                                                                    : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? sggColumns.length + 1 
-                                                                                                            : sggColumns.length || 1} className={styles.td} key={'emptyTd' + i} data-no={-1}>&nbsp;</td>
+                                        <td colSpan={(sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 2 
+                                                                    : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 1 
+                                                                                                            : (sggColumns.length || 1) || 1} className={styles.td} key={'emptyTd' + i} data-no={-1}>&nbsp;</td>
                                     </tr>
-                                ))
-                            }
+                                )
+                            )}
                         </>
                         ) : (
                             <>
-                            <tr>
-                                <td colSpan={(sggGridChecked && sggBtn) ? sggColumns.length + 2 
-                                                            : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? sggColumns.length + 1 
-                                                                                                    : sggColumns.length || 1} className={styles.td}>데이터가 없습니다.</td>
-                            </tr>
-                            {sggPaging !== false && 
-                                Array.from({ length: perPage - 1}).map((_, i) => 
-                                    <tr key={'emptyTr' + i}>
-                                        <td colSpan={(sggGridChecked && sggBtn) ? sggColumns.length + 2 
-                                                                    : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? sggColumns.length + 1 
-                                                                                                            : sggColumns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
-                                    </tr>
-                                )
-                            }
+                                <tr>
+                                    <td colSpan={(sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 2 
+                                                                : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 1
+                                                                                                        : (sggColumns.length || 1) || 1} className={styles.td}>데이터가 없습니다.</td>
+                                </tr>
+                                {sggPaging !== false && 
+                                    Array.from({ length: perPage - 1}).map((_, i) => 
+                                        <tr key={'emptyTr' + i}>
+                                            <td colSpan={(sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 2 
+                                                                        : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 1 
+                                                                                                                : (sggColumns.length || 1) || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                        </tr>
+                                    )
+                                }
                             </>
                         )}
                     </tbody>

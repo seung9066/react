@@ -85,16 +85,15 @@ function Menu( props ) {
             <div>
                 <SggGridReact 
                     sggColumns={columns} // 그리드 컬럼 Array
-                    sggBtn={{'c': true, 'r': true, 'u': true, 'd': true}} // 그리드 위 행 CRUD 버튼 
+                    sggBtn={{'c': true, 'r': true, 'u': true, 'd': true, saveBtn : doSave}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                     sggData={{gridData: userList, setGridData: setUserList, totalCount: totalCount}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
                     sggGridChecked={true} // 그리드 좌측 체크박스 boolean
-                    sggSaveBtn={doSave} // 그리드 CRUD 버튼 옆 저장 fnc
                     sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                     sggPaging={true} // 페이징 여부 boolean
-                    // sggOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
-                    // sggOnDoubleClick={(e, item) => {console.log(e)}} // 행 더블 클릭 시 fnc
-                    />
+                    sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
+                    sggTrOnDoubleClick={(e, item) => {console.log(e)}} // 행 더블 클릭 시 fnc
+                />
             </div>
         </>
     );
