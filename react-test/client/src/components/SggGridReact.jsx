@@ -91,7 +91,7 @@ export default function SggGridReact({ sggData,
         } else {
             if (sggBtn && sggBtn.u) {
                 let state = item.rowState;
-                if (state !== 'INSERT') {
+                if (state !== 'INSERT' && state !== 'DELETE') {
                     updateRow();
                 }
             }
@@ -382,6 +382,7 @@ export default function SggGridReact({ sggData,
             arrIdx = 0;
         }
         newCurrentList.splice(arrIdx, 0, newRow);
+        sggData.gridData.splice(arrIdx, 0, newRow);
         setCurrentList(newCurrentList);
         setSelectedRow(newRow);
     }
@@ -393,8 +394,14 @@ export default function SggGridReact({ sggData,
             for (const item of newCurrentList) {
                 let state = item.rowState;
                 if (item.totalChecked) {
-                    if (state !== 'INSERT') {
+                    if (state !== 'INSERT' && state !== 'DELETE') {
                         item.rowState = 'UPDATE';
+                        for (const item2 of sggData.gridData) {
+                            if (item.no === item2.no) {
+                                item2.rowState = 'UPDATE';
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -425,6 +432,12 @@ export default function SggGridReact({ sggData,
                     item.no === selectedRow.no ? { ...item, rowState: 'UPDATE' } : item
                 )
             );
+
+            for (const item of sggData.gridData) {
+                if (item.no === no) {
+                    item.rowState = 'UPDATE';
+                }
+            }
         }
     }
 
@@ -437,14 +450,25 @@ export default function SggGridReact({ sggData,
             for (const item of newCurrentList) {
                 let state = item.rowState;
                 if (item.totalChecked) {
-                    if (state !== 'INSERT') {
-                        item.rowState = 'DELETE';
-                    } else {
+                    if (state === 'INSERT') {
                         item.rowState = 'INSERTDELETE';
+                    } else {
+                        item.rowState = 'DELETE';
+                    }
+
+                    for (const item2 of sggData.gridData) {
+                        if (item2.no === item.no) {
+                            if (state === 'INSERT') {
+                                item2.rowState = 'INSERTDELETE';
+                            } else {
+                                item2.rowState = 'DELETE';
+                            }
+                        }
                     }
                 }
             }
 
+            sggData.gridData = sggData.gridData.filter((item) => item.rowState !== 'INSERTDELETE');
             setCurrentList(newCurrentList.filter((item) => item.rowState !== 'INSERTDELETE'));
         } else if (selectedRow) {
             let no = selectedRow.no;
@@ -457,8 +481,15 @@ export default function SggGridReact({ sggData,
             }
 
             if (state === 'INSERT') {
+                sggData.gridData = sggData.gridData.filter((item) => item.no !== no);
                 setCurrentList((prevList) => prevList.filter((item) => item.no !== no));
             } else {
+                for (const item of sggData.gridData) {
+                    if (item.no === selectedRow.no) {
+                        item.rowState = 'DELETE';
+                    }
+                }
+                
                 setCurrentList((prevList) =>
                     prevList.map((item) =>
                         item.no === selectedRow.no ? { ...item, rowState: 'DELETE' } : item
@@ -477,20 +508,31 @@ export default function SggGridReact({ sggData,
             utils.showToast('체크된 행을 초기화 합니다.');
             let resetRowData = [];
             let newCurrentList = structuredClone(currentList);
-            let newGridData = structuredClone(sggData.gridData);
+            let noArr = [];
             for (const item of newCurrentList) {
-                for (const item2 of newGridData) {
-                    if (item.no === item2.no) {
-                        let state = item.rowState;
-                        if (item.totalChecked) {
-                            if (state !== 'INSERT') {
-                                delete item2.totalChecked;
-                                resetRowData.push(item2);
+                let state = item.rowState;
+                if (item.totalChecked) {
+                    if (state === 'INSERT') {
+                        noArr.push(item.no);
+                    } else {
+                        for (let i = 0; i < sggData.gridData.length; i++) {
+                            if (item.no === sggData.gridData[i].no) {
+                                delete sggData.gridData[i].rowState;
+                                delete sggData.gridData[i].totalChecked;
+                                resetRowData.push(sggData.gridData[i]);
                             }
-                        } else {
-                            delete item2.totalChecked;
-                            resetRowData.push(item2);
                         }
+                    }
+                } else {
+                    resetRowData.push(item);
+                }
+            }
+
+            for (let i = 0; i < sggData.gridData.length; i++) {
+                for (const item of noArr) {
+                    if (item === sggData.gridData[i].no) {
+                        sggData.gridData.splice(i, 1);
+                        i--;
                     }
                 }
             }
@@ -503,7 +545,20 @@ export default function SggGridReact({ sggData,
             doReset(no);
         } else {
             utils.showToast('전체 행을 초기화 합니다.');
-            drawGrid('totalChecked');
+
+            for (let i = 0; i < sggData.gridData.length; i++) {
+                let state = sggData.gridData[i].rowState;
+
+                if (state === 'INSERT') {
+                    sggData.gridData.splice(i, 1);
+                    i--;
+                } else {
+                    delete sggData.gridData[i].rowState;
+                    delete sggData.gridData[i].totalChecked;
+                }
+            }
+
+            drawGrid(['totalChecked', 'rowState']);
             setColumn();
         }
 
@@ -528,8 +583,14 @@ export default function SggGridReact({ sggData,
             }
         }
         if (state === 'INSERT') {
+            sggData.gridData.filter((item) => item.no !== no);
             setCurrentList((prevList) => prevList.filter((item) => item.no !== no));
         } else {
+            for (const item of sggData.gridData) {
+                if (item.no === no) {
+                    delete item.rowState;
+                }
+            }
             setCurrentList((prevList) =>
                 prevList.map((item) =>
                     item.no === no ? resetRowData : item
@@ -782,7 +843,9 @@ export default function SggGridReact({ sggData,
                     }
                     if (deleteCol) {
                         for (let i = 0; i < pageLength; i++) {
-                            delete dataList[i][deleteCol];
+                            for (const item of deleteCol) {
+                                delete dataList[i][item];
+                            }
                         }
                     }
                     sggData.gridData = dataList;
@@ -796,7 +859,9 @@ export default function SggGridReact({ sggData,
                     }
                     if (deleteCol) {
                         for (let i = 0; i < gridData; i++) {
-                            delete gridData[i][deleteCol]
+                            for (const item of deleteCol) {
+                                delete dataList[i][item];
+                            }
                         }
                     }
                     if (sggPaging !== false) {
@@ -1061,7 +1126,11 @@ export default function SggGridReact({ sggData,
                                     onDragOver={handleDragOver}
                                     onDrop={handleDropRow}
                                 >   
-                                    {sggGridChecked && <td className={styles.td} data-no={item.no}> <input type="checkbox" name={'totalChecked'} data-checkbox={item.no} style={{width: '20px', height: '20px'}} checked={setCheckValueFirst(item.no, item['totalChecked'])} onChange={setFirstCheck} /> </td>}
+                                    {sggGridChecked && 
+                                        <td className={styles.td} data-no={item.no}>
+                                            <input type="checkbox" name={'totalChecked'} data-checkbox={item.no} style={{width: '20px', height: '20px'}} checked={setCheckValueFirst(item.no, item['totalChecked'])} onChange={setFirstCheck} />
+                                        </td>
+                                    }
                                     {sggBtn &&
                                         <td className={styles.td} data-no={item.no}>
                                             {item.rowState === 'INSERT' ? <span className={`${styles.state} ${styles.accept}`}>등록</span> : null}

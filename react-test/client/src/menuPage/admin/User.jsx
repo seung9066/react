@@ -91,8 +91,8 @@ function Menu( props ) {
                     sggGridChecked={true} // 그리드 좌측 체크박스 boolean
                     sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                     sggPaging={true} // 페이징 여부 boolean
-                    sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
-                    sggTrOnDoubleClick={(e, item) => {console.log(e)}} // 행 더블 클릭 시 fnc
+                    // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
+                    // sggTrOnDoubleClick={(e, item) => {console.log(e)}} // 행 더블 클릭 시 fnc
                 />
             </div>
         </>
