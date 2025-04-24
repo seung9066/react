@@ -159,6 +159,7 @@
     width: 90%;
     padding: 8px 0px;
     background-image: none;
+    text-align: center;
   }
   
   select.selected {

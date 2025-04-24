@@ -37,9 +37,11 @@ import * as utils from '@utils';
  * function onClick (행 클릭 추가 로직 (e, item) 매개변수 처리 필수)
  * @param {onDoubleClick={(e, item) => {}}}
  * function onDoubleClick (행 더블클릭 추가 로직 (e, item) 매개변수 처리 필수)
+ * @param {paging={true}}
+ * boolean 페이징 여부
  * @returns 
  */
-export default function SggGridReact({ data, columns = [], btn, setSearchParam, searchForm, doSearch, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove, rowMove }) {
+export default function SggGridReact({ data, columns = [], btn, setSearchParam, searchForm, doSearch, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove, rowMove, paging }) {
     // 상태컬럼
     const stateTd = '48';
     const toastRef = React.useRef(null);
@@ -88,6 +90,13 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                     updateRow();
                 }
             }
+        }
+    }
+
+    // 그리드 td select 클릭
+    const clickSelectTr = (e, disabledNow) => {
+        if (!disabledNow) {
+            e.preventDefault();
         }
     }
 
@@ -331,10 +340,10 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
         }
         if (col.type === 'select') {
             const className = selectedRow && selectedRow.no === item.no && item.rowState ? styles.selected : styles.diSelected;
-            const disabled = !(selectedRow && selectedRow.no === item.no && item.rowState);
+            const disabledNow = !!(selectedRow && selectedRow.no === item.no && item.rowState);
 
             const option = col.option;
-            return <select name={col.key} value={item[col.key]} onChange={inputChange} className={className} disabled={disabled}>
+            return <select name={col.key} value={item[col.key]} onChange={inputChange} className={className} onMouseDown={(e) => clickSelectTr(e, disabledNow)}>
                         {option?.map((opt) => (
                             <option key={item.no + '-' + item.key + '-' + opt.value} value={opt.value}>
                                 {opt.label}
@@ -747,25 +756,32 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                 for (const item of gridData) {
                     item.no ? chkNo++ : chkNo--;
                 }
+
+                // 데이터가 보여줄 수 보다 많은지 체크
+                const pageLength = paging !== false ? perPage < gridData.length ? perPage
+                                                                                : gridData.length 
+                                                    : gridData.length;
+
                 if (data.totalCount) {
+                    const dataList = [];
                     if (chkNo !== data.totalCount) {
-                        for (let i = 0; i < gridData.length; i++) {
+                        for (let i = 0; i < pageLength; i++) {
                             gridData[i].no ? null : gridData[i].no = (gridData.length - i) + (currentPage - 1) * perPage;
                             gridChecked ? gridData[i].totalChecked ? null 
                                                                     : gridData[i].totalChecked = false 
                                             : null;
+                            dataList.push(gridData[i]);
                         }
                     }
                     if (deleteCol) {
-                        for (let i = 0; i < gridData.length; i++) {
-                            delete gridData[i][deleteCol]
+                        for (let i = 0; i < pageLength; i++) {
+                            delete dataList[i][deleteCol]
                         }
                     }
-                    data.gridData = gridData;
-                    setCurrentList([...data.gridData]);
+                    setCurrentList(dataList);
                 } else {
                     if (chkNo !== gridData.length) {
-                        for (let i = 0; i < gridData.length; i++) {
+                        for (let i = 0; i < pageLength; i++) {
                             gridData[i].no ? null : gridData[i].no = i + 1;
                             gridChecked ? gridData[i].totalChecked ? null 
                                                                     : gridData[i].totalChecked = false 
@@ -773,15 +789,17 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                         }
                     }
                     if (deleteCol) {
-                        for (let i = 0; i < gridData.length; i++) {
+                        for (let i = 0; i < pageLength; i++) {
                             delete gridData[i][deleteCol]
                         }
                     }
-                    data.gridData = gridData;
-                    const startIdx = (currentPage - 1) * perPage;
-                    const endIdx = startIdx + perPage;
-                    const reversed = [...data.gridData].reverse();
-                    setCurrentList(reversed.slice(startIdx, endIdx));
+                    if (paging !== false) {
+                        data.gridData = gridData;
+                        const startIdx = (currentPage - 1) * perPage;
+                        const endIdx = startIdx + perPage;
+                        const reversed = [...data.gridData].reverse();
+                        setCurrentList(reversed.slice(startIdx, endIdx));
+                    }
                 }
             } else {
                 setCurrentList([]);
@@ -953,15 +971,17 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                 {(btn?.c || btn?.r || btn?.u || btn?.d) && <button type="button" className="button etc" onClick={() => {setRow()}} >{'전체 ' + (saveBtn ? '저장' : '적용')}</button>}
                             </div>
                         }
-                        <select value={perPage}
-                            onChange={(e) => {
-                                setPerPage(Number(e.target.value));
-                                setCurrentPage(1);
-                            }}
-                            >
-                            <option value="10">10개씩</option>
-                            <option value="5">5개씩</option>
-                        </select>
+                        {paging !== false &&
+                            <select value={perPage}
+                                onChange={(e) => {
+                                    setPerPage(Number(e.target.value));
+                                    setCurrentPage(1);
+                                }}
+                                >
+                                <option value="10">10개씩</option>
+                                <option value="5">5개씩</option>
+                            </select>
+                        }
                     </div>
                 </div>
 
@@ -1039,15 +1059,15 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                     ))}
                                 </tr>
                             ))}
-                            {(
+                            {paging !== false && (
                                 Array.from({ length: perPage - currentList.length }).map((_, i) =>
                                     <tr key={'emptyTr' + i} draggable={rowMove} onDragStart={handleDragStartRow} onDragOver={handleDragOver} onDrop={handleDropRow}>
                                         <td colSpan={(gridChecked && btn) ? columns.length + 2 
                                                                     : ((gridChecked && !btn) || !gridChecked && btn) ? columns.length + 1 
                                                                                                             : columns.length || 1} className={styles.td} key={'emptyTd' + i} data-no={-1}>&nbsp;</td>
                                     </tr>
-                                ) 
-                            )}
+                                ))
+                            }
                         </>
                         ) : (
                             <>
@@ -1056,18 +1076,20 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                                             : ((gridChecked && !btn) || !gridChecked && btn) ? columns.length + 1 
                                                                                                     : columns.length || 1} className={styles.td}>데이터가 없습니다.</td>
                             </tr>
-                            {Array.from({ length: perPage - 1}).map((_, i) => 
-                                <tr key={'emptyTr' + i}>
-                                    <td colSpan={(gridChecked && btn) ? columns.length + 2 
-                                                                : ((gridChecked && !btn) || !gridChecked && btn) ? columns.length + 1 
-                                                                                                        : columns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
-                                </tr>
-                            )}
+                            {paging !== false && 
+                                Array.from({ length: perPage - 1}).map((_, i) => 
+                                    <tr key={'emptyTr' + i}>
+                                        <td colSpan={(gridChecked && btn) ? columns.length + 2 
+                                                                    : ((gridChecked && !btn) || !gridChecked && btn) ? columns.length + 1 
+                                                                                                            : columns.length || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                    </tr>
+                                )
+                            }
                             </>
                         )}
                     </tbody>
                 </table>
-                {renderPagination()}
+                {paging !== false && renderPagination()}
             </div>
         </>
     );

@@ -95,6 +95,7 @@ function Menu( props ) {
                     resize={true}
                     headerMove={true}
                     rowMove={true}
+                    paging={true}
                     // onClick={(e, item) => {}}
                     // onDoubleClick={(e, item) => {}}
                     />
