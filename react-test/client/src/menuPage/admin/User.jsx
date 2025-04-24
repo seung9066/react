@@ -96,8 +96,8 @@ function Menu( props ) {
                     headerMove={true} // 컬럼 이동
                     rowMove={true} // 행 이동
                     paging={true} // 페이징 여부
-                    // onClick={(e, item) => {}} // 행 클릭 시 fnc
-                    // onDoubleClick={(e, item) => {}} // 행 더블 클릭 시 fnc
+                    // onClickFnc={(e, item) => {}} // 행 클릭 시 fnc
+                    // onDoubleClickFnc={(e, item) => {}} // 행 더블 클릭 시 fnc
                     />
             </div>
         </>

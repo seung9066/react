@@ -33,15 +33,15 @@ import * as utils from '@utils';
  * boolean 헤더 컬럼 드래그드롭 순서 이동
  * @param {rowMove={true}}
  * boolean 행 드래그드롭 순서 이동
- * @param {onClick={(e, item) => {}}}
- * function onClick (행 클릭 추가 로직 (e, item) 매개변수 처리 필수)
- * @param {onDoubleClick={(e, item) => {}}}
- * function onDoubleClick (행 더블클릭 추가 로직 (e, item) 매개변수 처리 필수)
+ * @param {onClickFnc={(e, item) => {}}}
+ * function onClickFnc (행 클릭 추가 로직 (e, item) 매개변수 처리 필수)
+ * @param {onDoubleClickFnc={(e, item) => {}}}
+ * function onDoubleClickFnc (행 더블클릭 추가 로직 (e, item) 매개변수 처리 필수)
  * @param {paging={true}}
  * boolean 페이징 여부
  * @returns 
  */
-export default function SggGridReact({ data, columns = [], btn, setSearchParam, searchForm, doSearch, onClick, onDoubleClick, gridChecked, saveBtn, resize, headerMove, rowMove, paging }) {
+export default function SggGridReact({ data, columns = [], btn, setSearchParam, searchForm, doSearch, onClickFnc, onDoubleClickFnc, gridChecked, saveBtn, resize, headerMove, rowMove, paging }) {
     // 상태컬럼
     const stateTd = '48';
     const toastRef = React.useRef(null);
@@ -73,16 +73,16 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     // 행 클릭 시
     const trClick = (e, item) => {
         setSelectedRow(item);
-        if (onClick) {
-            onClick(e, item);
+        if (onClickFnc) {
+            onClickFnc(e, item);
         }
     }
 
     // 행 더블 클릭 시
     const trDoubleClick = (e, item) => {
-        if (onDoubleClick) {
+        if (onDoubleClickFnc) {
             setSelectedRow(item);
-            onDoubleClick(e, item);
+            onDoubleClickFnc(e, item);
         } else {
             if (btn && btn.u) {
                 let state = item.rowState;
