@@ -73,6 +73,12 @@ function Menu( props ) {
     // iframe 모달
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
+    // 그리드 컬럼
+    const columns = [
+        {key:'upPath', name:'상위경로'},
+        {key:'path', name:'경로'}
+    ];
+
     // 트리 선택
     const selectedTree = (node) => {
         // 트리 선택 행 표시 on
@@ -205,7 +211,7 @@ function Menu( props ) {
 
         for (const item of newMenuData) {
             for (const key in item) {
-                if (key !== 'upId') {
+                if (key !== 'upId' && key !== 'upPath') {
                     if (item['id'] !== selectId) {
                         item[key] === newSelectedData[key] ? chkDupleKey = key : null;
                     }
@@ -400,7 +406,8 @@ function Menu( props ) {
             
             if (depth === itemDepth) {
                 let itemId = item.id.substring(1);
-                maxId < itemId ? maxId = Number(itemId) + 1: maxId = maxId;
+                maxId <= itemId ? maxId = (Number(itemId) + 1) : maxId = maxId;
+                console.log(maxId)
             }
         }
         let id = depth + ('00' + maxId).slice(-3);
@@ -996,12 +1003,12 @@ function Menu( props ) {
                     <h3>메뉴에 등록 되어 있지 않은 파일</h3>
                     <div>
                         <SggGridReact 
-                            columns={[{key:'upPath', name:'상위경로'}, {key:'path', name:'경로'}]}
-                            data={{gridData: gridData, }}
-                            onClick={gridTrClick}
-                            onDoubleClick={gridTrDoubleClick}
+                            sggColumns={columns}
+                            sggData={{gridData: gridData, }}
+                            sggTrOnClick={gridTrClick}
+                            sggTrOnDoubleClick={gridTrDoubleClick}
                             resetBtn={resetBtn}
-                            />
+                        />
                     </div>
                     <div>
                         <CRUDButton

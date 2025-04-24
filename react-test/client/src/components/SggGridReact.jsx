@@ -851,19 +851,21 @@ export default function SggGridReact({ sggData,
                     sggData.gridData = dataList;
                     setCurrentList(dataList);
                 } else {
-                    for (let i = 0; i < gridData; i++) {
+                    for (let i = 0; i < gridData.length; i++) {
                         gridData[i].no ? null : gridData[i].no = i + 1;
                         sggGridChecked ? gridData[i].totalChecked ? null 
                                                                 : gridData[i].totalChecked = false 
                                         : null;
                     }
+
                     if (deleteCol) {
-                        for (let i = 0; i < gridData; i++) {
+                        for (let i = 0; i < gridData.length; i++) {
                             for (const item of deleteCol) {
                                 delete dataList[i][item];
                             }
                         }
                     }
+                    
                     if (sggPaging !== false) {
                         sggData.gridData = gridData;
                         const startIdx = (currentPage - 1) * perPage;
