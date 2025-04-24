@@ -271,6 +271,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             }
         }
 
+        // 상태값 체크
         let state = '';
         for (const item of currentList) {
             if (item.no === no) {
@@ -279,6 +280,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             }
         }
         
+        // insert는 그대로 insert
         if (state === 'INSERT') {
             state = 'INSERT';
         } else {
@@ -764,32 +766,29 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
 
                 if (data.totalCount) {
                     const dataList = [];
-                    if (chkNo !== data.totalCount) {
-                        for (let i = 0; i < pageLength; i++) {
-                            gridData[i].no ? null : gridData[i].no = (gridData.length - i) + (currentPage - 1) * perPage;
-                            gridChecked ? gridData[i].totalChecked ? null 
-                                                                    : gridData[i].totalChecked = false 
-                                            : null;
-                            dataList.push(gridData[i]);
-                        }
+                    for (let i = 0; i < pageLength; i++) {
+                        gridData[i].no ? null : gridData[i].no = (gridData.length - i) + (currentPage - 1) * perPage;
+                        gridChecked ? gridData[i].totalChecked ? null 
+                                                                : gridData[i].totalChecked = false 
+                                        : null;
+                        dataList.push(gridData[i]);
                     }
                     if (deleteCol) {
                         for (let i = 0; i < pageLength; i++) {
-                            delete dataList[i][deleteCol]
+                            delete dataList[i][deleteCol];
                         }
                     }
+                    data.gridData = dataList;
                     setCurrentList(dataList);
                 } else {
-                    if (chkNo !== gridData.length) {
-                        for (let i = 0; i < pageLength; i++) {
-                            gridData[i].no ? null : gridData[i].no = i + 1;
-                            gridChecked ? gridData[i].totalChecked ? null 
-                                                                    : gridData[i].totalChecked = false 
-                                            : null;
-                        }
+                    for (let i = 0; i < gridData; i++) {
+                        gridData[i].no ? null : gridData[i].no = i + 1;
+                        gridChecked ? gridData[i].totalChecked ? null 
+                                                                : gridData[i].totalChecked = false 
+                                        : null;
                     }
                     if (deleteCol) {
-                        for (let i = 0; i < pageLength; i++) {
+                        for (let i = 0; i < gridData; i++) {
                             delete gridData[i][deleteCol]
                         }
                     }
