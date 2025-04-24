@@ -13,26 +13,24 @@ import * as utils from '@utils';
  * useState totalCount(데이터 총 수 - 없으면 앞단 페이징 처리)
  * @param {btn={{'c': true, 'r': true, 'u': true, 'd': true}}}
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
- * @param {searchForm={[{key: 'userNmSearch', type: 'text', placeholder:'사용자명', ...},{key: 'type', type: 'select', placeholder:'권한명', option: typeOption ...}]}}
- * Array searchForm 검색조건 입력 폼에 들어갈 태그 (검색조건) - state로 하면 option state 상태 변경 시 리랜더링 안됨
- * *key: 컬럼명, *type: input type || select, *placeholder: placeholder, *option: select의 options (useState) ...: 기타 속성들 (readonly:true, disabled: true 등)
- * searchForm, doSearch, setSearchParam 이 3개는 세트
- * @param {doSearch={doSearch}}
- * function 검색조건 조회 함수
- * searchForm, doSearch, setSearchParam 이 3개는 세트
- * @param {setSearchParam={setSearchParam}}
- * useState searchParam={page: 1, row: 10} (검색조건)
- * searchForm, doSearch, setSearchParam 이 3개는 세트
+ * @param {searchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}}}
+ * searchParam의 3개는 세트
+ * Array searchForm 
+ * - 검색조건 입력 폼에 들어갈 태그 (검색조건) - state로 하면 option state 상태 변경 시 리랜더링 안됨
+ * - *key: 컬럼명, *type: input type || select, *placeholder: placeholder, *option: select의 options (useState) ...: 기타 속성들 (readonly:true, disabled: true 등)
+ * setState setSearchParam
+ * - *page: 1, *row: 10, (검색조건) 서버 페이징 시 page, row 필수
+ * function doSearch
+ * - 조회 함수
  * @param {gridChecked={true}}
  * boolean true (그리드 첫 컬럼 체크박스)
  * @param {saveBtn={doSave}}
  * function doSave (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 처리 doSave = (data) => {} 필수))
- * @param {resize={true}}
- * boolean 헤더 컬럼 사이즈 변경
- * @param {headerMove={true}}
- * boolean 헤더 컬럼 드래그드롭 순서 이동
- * @param {rowMove={true}}
- * boolean 행 드래그드롭 순서 이동
+ * @param {gridFormChange={{resize: true, headerMove: true, rowMove: true}}}
+ * boolean
+ * resize : 헤더 컬럼 사이즈 변경
+ * headerMove : 헤더 컬럼 드래그드롭 순서 이동
+ * rowMove : 행 드래그드롭 순서 이동
  * @param {onClickFnc={(e, item) => {}}}
  * function onClickFnc (행 클릭 추가 로직 (e, item) 매개변수 처리 필수)
  * @param {onDoubleClickFnc={(e, item) => {}}}
@@ -41,7 +39,7 @@ import * as utils from '@utils';
  * boolean 페이징 여부
  * @returns 
  */
-export default function SggGridReact({ data, columns = [], btn, setSearchParam, searchForm, doSearch, onClickFnc, onDoubleClickFnc, gridChecked, saveBtn, resize, headerMove, rowMove, paging }) {
+export default function SggGridReact({ data, columns = [], btn, searchParam, onClickFnc, onDoubleClickFnc, gridChecked, saveBtn, gridFormChange, paging }) {
     // 상태컬럼
     const stateTd = '48';
     const toastRef = React.useRef(null);
@@ -194,7 +192,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     const searchInputChange = (e) => {
         let { name, value } = e.target;
 
-        setSearchParam((prev) => ({
+        searchParam.setSearchParam((prev) => ({
             ...prev,
             [name]: value,
         }));
@@ -208,7 +206,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             for (let i = 0; i < inputTags.length; i++) {
                 if (inputTags[i] === e.target) {
                     if (i === inputTags.length - 1) {
-                        doSearch();
+                        searchParam.doSearch();
                     } else {
                         inputTags[i + 1].focus();
                     }
@@ -235,7 +233,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             }
         }
 
-        setSearchParam((prev) => {
+        searchParam.setSearchParam((prev) => {
             const updated = {
                 ...prev,             // 기존 값 유지
                 ...newSearchParam,   // 동일한 키는 덮어씀
@@ -251,7 +249,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
             return false;
         }
 
-        doSearch();
+        searchParam.doSearch();
     }
     
     // 그리드에서 input 값 변경 시
@@ -812,8 +810,8 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
 
     // 페이징 처리
     useEffect(() => {
-        if (setSearchParam) {
-            setSearchParam((prev) => ({
+        if (searchParam.setSearchParam) {
+            searchParam.setSearchParam((prev) => ({
                 ...prev,
                 page: currentPage,
                 row: perPage,
@@ -909,11 +907,11 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
     return (
         <>
             <div className={styles.tableContainer} ref={gridRef}>
-                {searchForm && setSearchParam && doSearch && (
+                {searchParam.searchForm && searchParam.setSearchParam && searchParam.doSearch && (
                     <div className={styles.searchForm}>
                         {/* 왼쪽: 입력 필드들 */}
                         <div className={styles.searchFormInput} ref={searchFormInputRef}>
-                            {searchForm.map((item) => {
+                            {searchParam.searchForm.map((item) => {
                                 const { key, option, ...rest } = item;
 
                                 if (rest.type !== 'select') {
@@ -1003,7 +1001,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                     data-key={col.key}
                                     className={styles.th}
                                     style={{ width: col.width, position: 'relative', overflow: 'visible' }}  
-                                    draggable={headerMove}
+                                    draggable={gridFormChange.headerMove}
                                     onDragStart={handleDragStart}
                                     onDragOver={handleDragOver}
                                     onDrop={handleDrop}
@@ -1012,7 +1010,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                         <input type="checkbox" name={col.key} style={{width: '20px', height: '20px'}} checked={checkChecked(col.key)} onChange={allCheckBox}/>
                                     }
                                     {col.name}
-                                    {resize && idx !== computedColumns.length - 1 && 
+                                    {gridFormChange.resize && idx !== computedColumns.length - 1 && 
                                         <span
                                             onMouseDown={(e) => handleMouseDown(e, idx)}
                                             className={styles.resize}
@@ -1038,7 +1036,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                                         cursor: 'pointer'
                                     }}
                                     data-no={item.no}
-                                    draggable={rowMove}
+                                    draggable={gridFormChange.rowMove}
                                     onDragStart={handleDragStartRow}
                                     onDragOver={handleDragOver}
                                     onDrop={handleDropRow}
@@ -1060,7 +1058,7 @@ export default function SggGridReact({ data, columns = [], btn, setSearchParam, 
                             ))}
                             {paging !== false && (
                                 Array.from({ length: perPage - currentList.length }).map((_, i) =>
-                                    <tr key={'emptyTr' + i} draggable={rowMove} onDragStart={handleDragStartRow} onDragOver={handleDragOver} onDrop={handleDropRow}>
+                                    <tr key={'emptyTr' + i} draggable={gridFormChange.rowMove} onDragStart={handleDragStartRow} onDragOver={handleDragOver} onDrop={handleDropRow}>
                                         <td colSpan={(gridChecked && btn) ? columns.length + 2 
                                                                     : ((gridChecked && !btn) || !gridChecked && btn) ? columns.length + 1 
                                                                                                             : columns.length || 1} className={styles.td} key={'emptyTd' + i} data-no={-1}>&nbsp;</td>

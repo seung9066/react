@@ -84,18 +84,14 @@ function Menu( props ) {
         <>
             <div>
                 <SggGridReact 
-                    columns={columns} // 그리드 컬럼
+                    columns={columns} // 그리드 컬럼 Array
                     btn={{'c': true, 'r': true, 'u': true, 'd': true}} // 그리드 위 행 CRUD 버튼 
-                    data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}} // 데이터, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X)
-                    searchForm={searchForm} // 검색 조건 입력 폼
-                    setSearchParam={setSearchParam} // 검색 조건 set
-                    doSearch={doSearch} // 검색 조회 버튼
-                    gridChecked={true} // 그리드 좌측 체크박스
+                    data={{gridData: userList, setGridData: setUserList, totalCount: totalCount}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                    searchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc
+                    gridChecked={true} // 그리드 좌측 체크박스 boolean
                     saveBtn={doSave} // 그리드 CRUD 버튼 옆 저장 fnc
-                    resize={true} // 컬럼 리사이징
-                    headerMove={true} // 컬럼 이동
-                    rowMove={true} // 행 이동
-                    paging={true} // 페이징 여부
+                    gridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
+                    paging={true} // 페이징 여부 boolean
                     // onClickFnc={(e, item) => {}} // 행 클릭 시 fnc
                     // onDoubleClickFnc={(e, item) => {}} // 행 더블 클릭 시 fnc
                     />
