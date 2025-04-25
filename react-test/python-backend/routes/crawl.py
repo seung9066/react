@@ -44,16 +44,6 @@ def crawl():
         # div 내부에서 ul 요소들 찾기
         ul_elements = div.find_elements(By.TAG_NAME, "ul")
 
-        ul_li_contents = []
-        # # 각 ul 요소에서 li 요소들을 찾아 그 내용 저장
-        # for ul in ul_elements:
-        #     li_elements = ul.find_elements(By.TAG_NAME, "li")  # 각 ul 안의 li 요소들 찾기
-        #     li_contents = [li.get_attribute('outerHTML') for li in li_elements]  # li의 outerHTML 가져오기
-        #     ul_li_contents.append({
-        #         'ul': ul.get_attribute('outerHTML'),
-        #         'li': li_contents
-        #     })
-
         # 가져온 ul 태그들의 내용을 출력하거나 처리
         ul_contents = [ul.get_attribute('outerHTML') for ul in ul_elements]
 
