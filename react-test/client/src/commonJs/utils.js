@@ -135,6 +135,23 @@ export const downExcel = (ref, excelName) => {
     XLSX.writeFile(wb, excelName + '.xlsx');
 }
 
+// 이미지 파일을 base64로 변환
+export const imageToBase64 = async (imgSrc) => {
+    try {
+        const res = await fetch(`http://localhost:5000/api/proxy/proxy-image?url=${encodeURIComponent(imgSrc)}`);
+        const data = await res.json();
+        
+        if (data.base64) {
+            return data.base64; // base64 이미지 반환
+        } else {
+            throw new Error('Base64 conversion failed');
+        }
+    } catch (e) {
+        console.error('Image fetch or conversion failed', e);
+        return null; // 에러 발생 시 null 반환
+    }
+}
+
 export const excelJSDown = async (tableRef, excelName, imgArr) => {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet('Products');
@@ -221,7 +238,7 @@ export const excelJSDown = async (tableRef, excelName, imgArr) => {
 };
 
 // base64 데이터를 이미지 파일로 변환
-export const base64ToFile = (base64Data, filename) => {
+export const base64ToImage = (base64Data, filename) => {
     // base64 데이터를 Blob 객체로 변환
     const byteCharacters = atob(base64Data.split(',')[1]); // base64 문자열에서 'data:image/jpeg;base64,'를 제거
     const byteArrays = [];

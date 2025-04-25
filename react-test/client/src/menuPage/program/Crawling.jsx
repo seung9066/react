@@ -114,7 +114,22 @@ function Crawling( props ) {
 
     const downloadImg = (e) => {
         for (let i = 0; i < imgArr.length; i++) {
-            utils.base64ToFile(imgArr[i], crawlingArr[i].name);
+            utils.base64ToImage(imgArr[i], crawlingArr[i].name);
+        }
+    }
+
+    const imageToBase64 = async () => {
+        if (crawlingArr.length > 0) {
+            const arr = [];
+            for (const item of crawlingArr) {
+                if (item.imgSrc) {
+                    arr.push(await utils.imageToBase64(item.imgSrc));
+                }
+            }
+            
+            if (arr.length > 0) {
+                setImgArr(arr);
+            }
         }
     }
 
@@ -125,10 +140,10 @@ function Crawling( props ) {
     }, [ul]);
 
     useEffect(() => {
-        if (imgArr.length > 0) {
-            // downloadImg();
+        if (crawlingArr.length > 0) {
+            imageToBase64();
         }
-    }, [imgArr])
+    }, [crawlingArr])
 
     return (
         <>
