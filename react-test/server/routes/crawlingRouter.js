@@ -117,9 +117,9 @@ router.post('/crawlPuppeteerControl', async (req, res) => {
     }
 });
 
-router.post('/crawlPython', async (req, res) => {
+router.post('/crawlPythonSmartStore', async (req, res) => {
     try {
-        const response = await api.post('/python/crawl', req.body);
+        const response = await api.post('/python/crawlSmartStore', req.body);
         res.json(response.data);
     } catch (error) {
         console.error('Error fetching user data:', error);

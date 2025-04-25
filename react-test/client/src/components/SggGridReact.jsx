@@ -5,6 +5,8 @@ import styles from '@css/SggGridReact.module.css';
 import * as utils from '@utils';
 
 /**
+ * @param {sggRef={sggRef}}
+ * useRef
  * @param {sggColumns={[{key:'', name:'', type:'', width: 10},]}}
  * Array [{*key:'데이터와 매칭할 실컬럼명', *name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), option: select의 options (useState) width: 10}] state로 받으면 option state 상태 변경 시 리랜더링 안됨
  * @param {sggData={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
@@ -38,7 +40,8 @@ import * as utils from '@utils';
  * boolean 페이징 여부
  * @returns 
  */
-export default function SggGridReact({ sggData, 
+export default function SggGridReact({ sggRef,
+                                        sggData, 
                                         sggColumns = [], 
                                         sggBtn, 
                                         sggSearchParam, 
@@ -357,6 +360,9 @@ export default function SggGridReact({ sggData,
                             </option>
                         ))}
                     </select>
+        }
+        if (col.type === 'image') {
+            return <img src={item[col.key]} name={col.key} value={item[col.key]} className={styles.tdImg} />
         }
         if (!col.type) {
             return item[col.key];
@@ -872,6 +878,10 @@ export default function SggGridReact({ sggData,
                         const endIdx = startIdx + perPage;
                         const reversed = [...sggData.gridData].reverse();
                         setCurrentList(reversed.slice(startIdx, endIdx));
+                    } else {
+                        sggData.gridData = gridData;
+                        const reversed = [...sggData.gridData].reverse();
+                        setCurrentList(reversed)
                     }
                 }
             } else {
@@ -1060,7 +1070,7 @@ export default function SggGridReact({ sggData,
                     </div>
                 </div>
 
-                <table className={styles.table} id="noticeGrid">
+                <table className={styles.table} id="noticeGrid" ref={sggRef}>
                     <thead className={styles.thead}>
                         <tr>
                             {sggGridChecked && 
