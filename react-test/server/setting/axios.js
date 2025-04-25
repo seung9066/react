@@ -12,8 +12,15 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   // 요청 URL이 특정 패턴에 해당하면 다른 baseURL로 변경
   if (config.url.includes('/spring')) {
+    console.log('spring')
     config.baseURL = "http://localhost:8080/api"; // 다른 서버로 보낼 URL
     config.url = config.url.replace('/spring', ''); // URL에서 '/spring' 제거
+  }
+  
+  if (config.url.includes('/python')) {
+    config.baseURL = "http://192.168.10.95:5001/api"; // 다른 서버로 보낼 URL
+    config.url = config.url.replace('/python', ''); // URL에서 '/spring' 제거
+    console.log(config.baseURL + config.url)
   }
 
   return config;
