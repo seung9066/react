@@ -211,7 +211,7 @@ function Menu( props ) {
 
         for (const item of newMenuData) {
             for (const key in item) {
-                if (key !== 'upId' && key !== 'upPath') {
+                if (key !== 'upId' && key !== 'upPath' && key !== 'no') {
                     if (item['id'] !== selectId) {
                         item[key] === newSelectedData[key] ? chkDupleKey = key : null;
                     }
@@ -407,7 +407,6 @@ function Menu( props ) {
             if (depth === itemDepth) {
                 let itemId = item.id.substring(1);
                 maxId <= itemId ? maxId = (Number(itemId) + 1) : maxId = maxId;
-                console.log(maxId)
             }
         }
         let id = depth + ('00' + maxId).slice(-3);
@@ -937,7 +936,7 @@ function Menu( props ) {
     }, [menuComponents]);
 
     return (
-        <>
+        <>  
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={onConfirmModal}>
                 <h2>추천 경로</h2>
                 <p>상위 경로 : {recommendPath.upPath}</p>

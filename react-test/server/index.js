@@ -70,6 +70,11 @@ const loadRoutes = async () => {
     }
 };
 
+app.use((req, res, next) => {
+    console.log(req.method, req.url); // 요청 정보 출력
+    next();
+});
+
 // 라우터 로딩 후 서버 시작
 loadRoutes().then(() => {
     app.listen(PORT, () => {
