@@ -136,7 +136,7 @@ export const downExcel = (ref, excelName) => {
 }
 
 // 이미지 파일을 base64로 변환
-export const imageToBase64 = async (imgSrc) => {
+export const imageSrcToBase64 = async (imgSrc) => {
     try {
         const res = await fetch(`http://localhost:5000/api/proxy/proxy-image?url=${encodeURIComponent(imgSrc)}`);
         const data = await res.json();
@@ -152,7 +152,8 @@ export const imageToBase64 = async (imgSrc) => {
     }
 }
 
-export const excelJSDown = async (tableRef, excelName, imgArr) => {
+// exeljs 엑셀 다운
+export const excelJSDown = async (tableRef, excelName) => {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet('Products');
 
@@ -231,10 +232,6 @@ export const excelJSDown = async (tableRef, excelName, imgArr) => {
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });  // Excel MIME 타입 지정
     saveAs(blob, `${excelName}.xlsx`);
-
-    if (imgArr) {
-        imgArr(imgData);
-    }
 };
 
 // base64 데이터를 이미지 파일로 변환
@@ -266,3 +263,39 @@ export const base64ToImage = (base64Data, filename) => {
     URL.revokeObjectURL(url); // URL 해제
 }
 
+// 파이썬 서버에 이미지 저장
+export const base64ToImageAndSend = async (base64Data, filename) => {
+    // base64 데이터를 서버로 전송할 JSON 형식으로 준비
+    const requestBody = JSON.stringify({
+        image_data: base64Data,
+        filename: filename
+    });
+    
+    return await postAxios('/imgFilePython/pythonSaveImg', requestBody).then((res) => {
+        if (res.msg === 'success') {
+            showToast("이미지 저장 성공");
+            return true
+        } else {
+            showToast("이미지 저장 실패", res.error);
+            return false
+        }
+    });
+}
+
+// 파이썬 서버 이미지 삭제
+export const deleteImage = async (filename) => {
+    // base64 데이터를 서버로 전송할 JSON 형식으로 준비
+    const requestBody = JSON.stringify({
+        filename: filename
+    });
+    
+    return await postAxios('/imgFilePython/pythonDeleteImg', requestBody).then((res) => {
+        if (res.msg === 'success') {
+            showToast("이미지 삭제 성공");
+            return true
+        } else {
+            showToast("이미지 삭제 실패", res.error);
+            return false
+        }
+    });
+}

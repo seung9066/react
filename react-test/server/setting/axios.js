@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/api",
-  timeout: 10000, // 요청 타임아웃 설정 (10초)
+  timeout: 20000, // 요청 타임아웃 설정 (10초)
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,15 +11,15 @@ const api = axios.create({
 // 요청 인터셉터를 추가
 api.interceptors.request.use((config) => {
   // 요청 URL이 특정 패턴에 해당하면 다른 baseURL로 변경
-  if (config.url.includes('/spring')) {
+  if (config.url.includes('/spring/')) {
     console.log('spring')
     config.baseURL = "http://localhost:8080/api"; // 다른 서버로 보낼 URL
-    config.url = config.url.replace('/spring', ''); // URL에서 '/spring' 제거
+    config.url = config.url.replace('/spring/', '/'); // URL에서 '/spring' 제거
   }
   
-  if (config.url.includes('/python')) {
+  if (config.url.includes('/python/')) {
     config.baseURL = "http://192.168.10.95:5001/api"; // 다른 서버로 보낼 URL
-    config.url = config.url.replace('/python', ''); // URL에서 '/spring' 제거
+    config.url = config.url.replace('/python/', '/'); // URL에서 '/spring' 제거
     console.log(config.baseURL + config.url)
   }
 

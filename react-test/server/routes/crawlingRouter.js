@@ -127,6 +127,16 @@ router.post('/crawlPythonSmartStore', async (req, res) => {
     }
 });
 
+router.post('/crawlPythonTaobao', async (req, res) => {
+    try {
+        const response = await api.post('/python/crawlTaobao');
+        console.log(response.data)
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).send('Error fetching user data');
+    }
+});
 
 // 라우터 모듈 외부로 내보냄 (다른 곳에서 import 가능)
 export default router;

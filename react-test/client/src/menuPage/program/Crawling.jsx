@@ -10,6 +10,7 @@ function Crawling( props ) {
     const [crawlingArr, setCrawlingArr] = useState([]);
     const excelGrid = useRef(null);
     const [imgArr, setImgArr] = useState([]);
+    const [startCrawling, setStartCrawling] = useState(0);
 
     // 그리드 컬럼
     const columns = [
@@ -70,7 +71,21 @@ function Crawling( props ) {
                 let data = res.data;
                 setUl(data.ul);
                 setCrawlingData(data.content);
-                utils.showToast('정보를 크롤링 했습니다.');
+                setStartCrawling(1);
+                utils.showToast('스마트스토어 정보를 크롤링 했습니다.');
+            } else {
+                utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
+            }
+        });
+    }
+    
+    const getCrawlingPythonTaobao = async() => {
+        const urlPath = 'https://www.taobao.com/';
+        await utils.postAxios('/crawling/crawlPythonTaobao').then((res) => {
+            if (res.msg === 'success') {
+                let data = res.data;
+                console.log(data)
+                utils.showToast('타오바오 정보를 크롤링 했습니다.');
             } else {
                 utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
             }
@@ -79,9 +94,9 @@ function Crawling( props ) {
 
     const findLi = (data) => {
         const imgClass = '_25CKxIKjAk';
-        const imgArr = data.split('<img class="' + imgClass + '" ');
+        const imgArrData = data.split('<img class="' + imgClass + '" ');
         const dataArr = [];
-        for (const item of imgArr) {
+        for (const item of imgArrData) {
             if (item.indexOf('src="') > -1) {
                 const wonStartStr = '<span class="_2DywKu0J_8">';
                 const wonEndStr = '</span>원</strong>';
@@ -113,23 +128,43 @@ function Crawling( props ) {
         setCrawlingArr(dataArr);
     }
 
+    // 엑셀 저장
     const downloadExcel = (e) => {
         const excelName = url.replace('https://', '') || 'smartstore.naver.com/dwantae';
-        utils.excelJSDown(excelGrid, url || excelName, setImgArr);
+        utils.excelJSDown(excelGrid, url || excelName);
     }
 
-    const downloadImg = (e) => {
-        for (let i = 0; i < imgArr.length; i++) {
-            utils.base64ToImage(imgArr[i], crawlingArr[i].name);
+    // 파이썬 서버 이미지 저장
+    const downloadImg = async (e) => {
+        const crawlingNameArr = [];
+        for (const item of crawlingArr) {
+            crawlingNameArr.push(item.name);
+        }
+
+        if (await utils.base64ToImageAndSend(imgArr, crawlingNameArr)) {
+            getCrawlingPythonTaobao();
+        };
+    }
+
+    // 파이썬 서버 이미지 삭제
+    const deleteImg = async (e) => {
+        const crawlingNameArr = [];
+        for (const item of crawlingArr) {
+            crawlingNameArr.push(item.name);
+        }
+
+        if (await utils.deleteImage(crawlingNameArr)) {
+
         }
     }
 
-    const imageToBase64 = async () => {
+    // 이미지 경로 > base64 데이터로
+    const imageSrcToBase64 = async () => {
         if (crawlingArr.length > 0) {
             const arr = [];
             for (const item of crawlingArr) {
                 if (item.imgSrc) {
-                    arr.push(await utils.imageToBase64(item.imgSrc));
+                    arr.push(await utils.imageSrcToBase64(item.imgSrc));
                 }
             }
             
@@ -137,10 +172,6 @@ function Crawling( props ) {
                 setImgArr(arr);
             }
         }
-    }
-
-    const doSave = (e) => {
-        
     }
 
     useEffect(() => {
@@ -155,7 +186,7 @@ function Crawling( props ) {
                 ...prev,
                 excelBtn: false,
             }))
-            imageToBase64();
+            imageSrcToBase64();
         } else {
             setBtnDisabled((prev) => ({
                 ...prev,
@@ -170,11 +201,16 @@ function Crawling( props ) {
                 ...prev,
                 imageBtn: false,
             }));
+            if (startCrawling > 0) {
+                downloadImg();
+                setStartCrawling(0);
+            }
         } else {
             setBtnDisabled((prev) => ({
                 ...prev,
                 imageBtn: true,
             }));
+            setStartCrawling(0);
         }
     }, [imgArr]);
 
@@ -191,13 +227,15 @@ function Crawling( props ) {
                 {/* <button className='button' onClick={getCrawlingPython}>python(chromedriver) 스마트스토어</button> */}
             </div>
             <div>
-                <button className='button' onClick={getCrawlingPython}>python(chromedriver) 스마트스토어</button>
-                <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
+                <button className='button' onClick={getCrawlingPython}>스마트스토어</button>
                 <button type="button" className='button secondary' onClick={(e) => downloadImg(e)} disabled={btnDisabled.imageBtn}>이미지</button>
+                <button type="button" className='button secondary' onClick={(e) => deleteImg(e)} disabled={btnDisabled.imageBtn}>이미지삭제</button>
+                <button className='button' onClick={getCrawlingPythonTaobao}>타오바오</button>
+                <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
                 <SggGridReact 
                     sggRef={excelGrid}
                     sggColumns={columns} // 그리드 컬럼 Array
-                    sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : doSave}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                    sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : null}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                     sggData={{gridData: crawlingArr}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
                     // sggGridChecked={true} // 그리드 좌측 체크박스 boolean
