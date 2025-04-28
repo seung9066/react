@@ -17,6 +17,7 @@ function Crawling( props ) {
         {key:'name', name:'상품명'},
         {key:'price', name:'가격', width: 20},
         {key:'imgSrc', name:'이미지', type:'image', width: 20},
+        {key:'taobaoLink', name:'타오바오 링크', type: 'a'},
     ];
 
     const [btnDisabled, setBtnDisabled] = useState({
@@ -85,6 +86,11 @@ function Crawling( props ) {
             if (res.msg === 'success') {
                 let data = res.data;
                 console.log(data)
+                const newCrawlingArr = structuredClone(crawlingArr);
+                for (let i = 0; i < newCrawlingArr.length; i++) {
+                    newCrawlingArr[i].taobaoLink = 'http://www.naver.com'
+                }
+                setCrawlingArr(newCrawlingArr);
                 utils.showToast('타오바오 정보를 크롤링 했습니다.');
             } else {
                 utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
@@ -132,6 +138,16 @@ function Crawling( props ) {
     const downloadExcel = (e) => {
         const excelName = url.replace('https://', '') || 'smartstore.naver.com/dwantae';
         utils.excelJSDown(excelGrid, url || excelName);
+    }
+
+    // 이미지 파일 저장
+    const downloadImgBtn = (e) => {
+        const crawlingNameArr = [];
+        for (const item of crawlingArr) {
+            crawlingNameArr.push(item.name);
+        }
+
+        utils.base64ToImage(imgArr, crawlingNameArr);
     }
 
     // 파이썬 서버 이미지 저장
@@ -221,16 +237,8 @@ function Crawling( props ) {
                 <input type="text" id='smartId' style={{width: '20%'}} value={url} onChange={(e) => {setUrl(e.target.value)}} placeholder='https://smartstore.naver.com/dwantae'></input>
             </div>
             <div>
-                {/* <button className='button' onClick={getCrawlingPuppeteerControl}>node(Puppeteer)</button>
-                <button className='button' onClick={getCrawlingPuppeteer}>node(Puppeteer)</button>
-                <button className='button' onClick={getCrawlingCheerio}>node(Cheerio)</button> */}
-                {/* <button className='button' onClick={getCrawlingPython}>python(chromedriver) 스마트스토어</button> */}
-            </div>
-            <div>
                 <button className='button' onClick={getCrawlingPython}>스마트스토어</button>
-                <button type="button" className='button secondary' onClick={(e) => downloadImg(e)} disabled={btnDisabled.imageBtn}>이미지</button>
-                <button type="button" className='button secondary' onClick={(e) => deleteImg(e)} disabled={btnDisabled.imageBtn}>이미지삭제</button>
-                <button className='button' onClick={getCrawlingPythonTaobao}>타오바오</button>
+                <button type="button" className='button secondary' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
                 <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
                 <SggGridReact 
                     sggRef={excelGrid}

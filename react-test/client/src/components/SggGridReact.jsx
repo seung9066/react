@@ -364,6 +364,12 @@ export default function SggGridReact({ sggRef,
         if (col.type === 'image') {
             return <img src={item[col.key]} name={col.key} value={item[col.key]} className={styles.tdImg} />
         }
+        if (col.type === 'a') {
+            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+                                                                                    <input type="text" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
+                                                                                </div>
+                                                                            : <a href={item[col.key]} target="_blank" >{item[col.key]}</a>;
+        }
         if (!col.type) {
             return item[col.key];
         }

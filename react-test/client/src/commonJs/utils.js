@@ -236,6 +236,16 @@ export const excelJSDown = async (tableRef, excelName) => {
 
 // base64 데이터를 이미지 파일로 변환
 export const base64ToImage = (base64Data, filename) => {
+    if (Array.isArray(base64Data)) {
+        base64Data.forEach((data, index) => {
+            base64ToImageDownload(data, `${filename[index]}`);
+        });
+    } else {
+        base64ToImageDownload(base64Data, filename);
+    }
+}
+
+const base64ToImageDownload = (base64Data, filename) => {
     // base64 데이터를 Blob 객체로 변환
     const byteCharacters = atob(base64Data.split(',')[1]); // base64 문자열에서 'data:image/jpeg;base64,'를 제거
     const byteArrays = [];
