@@ -867,7 +867,7 @@ export default function SggGridReact({ sggRef,
                     if (deleteCol) {
                         for (let i = 0; i < gridData.length; i++) {
                             for (const item of deleteCol) {
-                                delete dataList[i][item];
+                                delete gridData[i][item];
                             }
                         }
                     }
@@ -1047,15 +1047,13 @@ export default function SggGridReact({ sggRef,
                     </p>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        {(sggData && sggData.setGridData) && 
-                            <div style={{ display: 'flex' }}>
-                                {sggBtn?.c && <button type="button" className="button accept" onClick={() => {addRow()}} >행 추가</button>}
-                                {sggBtn?.u && <button type="button" className="button primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
-                                {sggBtn?.d && <button type="button" className="button danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
-                                {sggBtn?.r && <button type="button" className="button secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
-                                {(sggBtn?.c || sggBtn?.r || sggBtn?.u || sggBtn?.d) && <button type="button" className="button etc" onClick={() => {setRow()}} >{'전체 ' + (sggBtn.saveBtn ? '저장' : '적용')}</button>}
-                            </div>
-                        }
+                        <div style={{ display: 'flex' }}>
+                            {sggBtn?.c && <button type="button" className="button accept" onClick={() => {addRow()}} >행 추가</button>}
+                            {sggBtn?.u && <button type="button" className="button primary" onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
+                            {sggBtn?.d && <button type="button" className="button danger" onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
+                            {sggBtn?.r && <button type="button" className="button secondary" onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
+                            {(sggBtn?.c || sggBtn?.u || sggBtn?.d) && sggData.setGridData && <button type="button" className="button etc" onClick={() => {setRow()}} >{'전체 ' + (sggBtn.saveBtn ? '저장' : '적용')}</button>}
+                        </div>
                         {sggPaging !== false &&
                             <select value={perPage}
                                 onChange={(e) => {
@@ -1073,7 +1071,7 @@ export default function SggGridReact({ sggRef,
                 <table className={styles.table} id="noticeGrid" ref={sggRef}>
                     <thead className={styles.thead}>
                         <tr>
-                            {sggGridChecked && 
+                            {sggGridChecked && sggData.setGridData &&
                                 <th className={styles.th} style={{ width: '25px'}}>
                                     <input type="checkbox" name={'totalChecked'} style={{width: '20px', height: '20px'}} checked={totalCheck} onChange={allCheckBoxFirst} />
                                 </th>
@@ -1138,7 +1136,7 @@ export default function SggGridReact({ sggRef,
                                     onDragOver={handleDragOver}
                                     onDrop={handleDropRow}
                                 >   
-                                    {sggGridChecked && 
+                                    {sggGridChecked && sggData.setGridData &&
                                         <td className={styles.td} data-no={item.no}>
                                             <input type="checkbox" name={'totalChecked'} data-checkbox={item.no} style={{width: '20px', height: '20px'}} checked={setCheckValueFirst(item.no, item['totalChecked'])} onChange={setFirstCheck} />
                                         </td>

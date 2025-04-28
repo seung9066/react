@@ -23,6 +23,10 @@
     user-select: none;
   }
 
+  .th {
+    font-size: 15px;
+  }
+
   .a {
     user-select: none;
   }
