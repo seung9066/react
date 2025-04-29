@@ -3,6 +3,7 @@ import * as utils from '@utils';
 
 import SggGridReact from '@components/SggGridReact';
 import AdminPage from '@components/AdminPage';
+import { showToast } from '../../commonJs/utils';
 
 function Menu( props ) {
     const [userList, setUserList] = useState([]);
@@ -27,7 +28,7 @@ function Menu( props ) {
         {key:'userNm', name:'이름', type:'text'},
         {key:'userPw', name:'비밀번호', type:'password'},
         {key:'userAuth', name:'권한명', type:'select', option: typeOption},
-        {key:'loginCnt', name:'비밀번호 오류횟수', },
+        {key:'loginCnt', name:'비밀번호 오류', width: 10 },
     ];
 
     // 검색조건 폼
@@ -73,8 +74,26 @@ function Menu( props ) {
         await getUserList();
     }
 
+    // 저장 전 체크
+    const checkBeforeSave = (data) => {
+        for (const item of data) {
+            for (const col of columns) {
+                if (!item[col.key] && col.key !== 'rnum' && !(item.setRowState === 'INSERT' && col.key === 'userPW')) {
+                    item.rowState = item.setRowState;
+                    utils.showToast(col.name + ' 은(는) 필수값 입니다.');
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     // 그리드 전체 저장 버튼 콜백 함수
-    const doSave = async (data) => {
+    const doSave = (data) => {
+        if (!checkBeforeSave(data)) {
+            return false;
+        }
         const newData = [];
         for (const item of data) {
             if (item.userAuth === '') {
@@ -89,7 +108,7 @@ function Menu( props ) {
         }
 
         if (newData.length > 0) {
-            await utils.postAxios('/user/updateUser', newData).then((res) => {
+            utils.postAxios('/user/updateUser', newData).then((res) => {
                 if (res.msg === 'success') {
                     let data = res.data;
 

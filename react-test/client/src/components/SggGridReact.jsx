@@ -658,11 +658,14 @@ export default function SggGridReact({ sggRef,
                 }
             }
 
-            setSelectedRow(null);
-            sggData.setGridData(newCurrentList);
             if (sggBtn.saveBtn) {
-                sggBtn.saveBtn(newCurrentList);
+                if (sggBtn.saveBtn(newCurrentList) !== false) {
+                    setSelectedRow(null);
+                    sggData.setGridData(newCurrentList);
+                }
             } else {
+                setSelectedRow(null);
+                sggData.setGridData(newCurrentList);
                 utils.showToast('적용되었습니다.');
             }
         }
