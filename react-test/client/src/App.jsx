@@ -17,6 +17,7 @@ import * as utils from '@utils';
 import Menu from '@components/Menu';
 import ScrollToTopButton from '@components/TopBtn';
 import ToastAlert from "@components/ToastAlert";
+import AdminPage from '@components/AdminPage';
 
 import NotFound from "@components/NotFound";
 
@@ -29,6 +30,19 @@ function App() {
   const [menuData, setMenuData] = useState([]);
   const [menuNm, setMenuNm] = useState('React');
   const [urlDataNotice, setUrlDataNoticeData] = useState('');
+  const [userData, setUserData] = useState({
+    userId: '',
+    userNm: '',
+    userAuth: '',
+    telNo: '',
+    city: '',
+    email: '',
+    gen: '',
+    country: '',
+    zip: '',
+    addr: '',
+    addrDtl: '',
+  });
 
   const getMenuNm = (value) => {
     setMenuNm(value);
@@ -43,6 +57,8 @@ function App() {
     urlDataNotice: urlDataNotice,
     setUrlDataNoticeData: setUrlDataNoticeData,
     propsData: propsData,
+    userData: userData,
+    setUserData: setUserData,
   }
   
   // 동적으로 불러온 컴포넌트들을 저장할 state
@@ -138,7 +154,12 @@ function App() {
 
             pagePath === '' ? pagePath = nextPagePath : null;
 
-            return <Route path={pagePath} element={ <Component props={props} key={Component.name} setMenu={setMenuData} /> } key={Component.name + 'route'} />
+            let pageAuth = '000';
+            if (pagePath?.indexOf('/admin/') > -1) {
+              pageAuth = '999';
+            }
+
+            return <Route path={pagePath} element={ <AdminPage auth={pageAuth} userData={userData} setUserData={setUserData}><Component props={props} key={Component.name} setMenu={setMenuData} /></AdminPage> } key={Component.name + 'route'} />
           })}
           <Route path="*" element={<NotFound props={props} />} />
         </Routes>

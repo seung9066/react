@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import * as utils from '@utils';
 
 import SggGridReact from '@components/SggGridReact';
+import AdminPage from '@components/AdminPage';
 
 function Menu( props ) {
     const [userList, setUserList] = useState([]);
@@ -21,9 +22,10 @@ function Menu( props ) {
 
     // 그리드 컬럼
     const columns = [
-        {key:'rnum', name:'번호', type:'number', width: 10},
+        {key:'rnum', name:'번호', width: 10},
         {key:'userId', name:'아이디', type:'text'},
         {key:'userNm', name:'이름', type:'text'},
+        {key:'userPw', name:'비밀번호', type:'password'},
         {key:'userAuth', name:'권한명', type:'select', option:typeOption},
     ];
 
@@ -68,8 +70,36 @@ function Menu( props ) {
         await getUserList();
     }
 
-    const doSave = (data) => {
-        console.log(data);
+    const doSave = async (data) => {
+        const newData = [];
+        for (const item of data) {
+            if (item.userAuth === '') {
+                item.userAuth = '001';
+            }
+            if (item.setRowState) {
+                if (item.setRowState === 'DELETE') {
+                    item.userAuth = '000';
+                }
+                newData.push(item);
+            }
+        }
+
+        if (newData.length > 0) {
+            await utils.postAxios('/user/updateUser', newData).then((res) => {
+                if (res.msg === 'success') {
+                    let data = res.data;
+
+                    if (data.cnt === newData.length) {
+                        utils.showToast('사용자 정보 저장 성공');
+                        getUserList();
+                    } else {
+                        utils.showToast('사용자 정보 저장 성공 오류');
+                    }
+                } else {
+                    utils.showToast('사용자 정보 저장 중 오류가 발생했습니다.', res.error);
+                }
+            });
+        }
     }
 
     useEffect(() => {

@@ -259,7 +259,11 @@ export default function SggGridReact({ sggRef,
             return false;
         }
 
-        sggSearchParam.doSearch();
+        if (currentPage !== 1) {
+            setCurrentPage(1);
+        } else {
+            sggSearchParam.doSearch();
+        }
     }
     
     // 그리드에서 input 값 변경 시
@@ -344,6 +348,12 @@ export default function SggGridReact({ sggRef,
                                                                                 </div>
                                                                             : item[col.key];
         }
+        if (col.type === 'password') {
+            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+                                                                                    <input type="password" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
+                                                                                </div>
+                                                                            : '****';
+        }
         if (col.type === 'checkbox') {
             let value = setCheckValue(col.key, item[col.key]);
             return <input type="checkbox" name={col.key} data-checkbox={item.no} checked={value} style={{ width: '20px', height: '20px', border: 'none', backgroundColor: 'transparent' }} onChange={inputChange} />;
@@ -381,7 +391,16 @@ export default function SggGridReact({ sggRef,
             no: currentList.length + 1,
             rowState: 'INSERT',
         };
+
         let newCurrentList = structuredClone(currentList);
+        for (const item of newCurrentList) {
+            const no = item.no;
+
+            if (Number(newRow.no) <= Number(no)) {
+                newRow.no = Number(no) + 1;
+            }
+        }
+
         let arrIdx = 0;
         if (selectedRow) {
             for (let i = 0; i < newCurrentList.length; i++) {
@@ -623,12 +642,8 @@ export default function SggGridReact({ sggRef,
                 }
 
                 if (newCurrentList[i].rowState) {
-                    if (newCurrentList[i].rowState === 'DELETE') {
-                        newCurrentList.splice(i, 1);
-                        i--;
-                    } else {
-                        delete newCurrentList[i].rowState;
-                    }
+                    newCurrentList[i].setRowState = newCurrentList[i].rowState;
+                    delete newCurrentList[i].rowState;
                 }
             }
 
@@ -851,7 +866,10 @@ export default function SggGridReact({ sggRef,
                         sggGridChecked ? gridData[i].totalChecked ? null 
                                                                 : gridData[i].totalChecked = false 
                                         : null;
-                        dataList.push(gridData[i]);
+                        if (gridData[i].setRowState !== 'DELETE') {
+                            delete gridData[i].setRowState;
+                            dataList.push(gridData[i]);
+                        }
                     }
                     if (deleteCol) {
                         for (let i = 0; i < pageLength; i++) {
@@ -868,6 +886,12 @@ export default function SggGridReact({ sggRef,
                         sggGridChecked ? gridData[i].totalChecked ? null 
                                                                 : gridData[i].totalChecked = false 
                                         : null;
+                        if (gridData[i].setRowState) {
+                            if (gridData[i].setRowState !== 'DELETE') {
+                                delete gridData[i].setRowState;
+                                dataList.push(gridData[i]);
+                            }
+                        }
                     }
 
                     if (deleteCol) {

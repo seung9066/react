@@ -5,6 +5,7 @@ import SggTreeNode from '@components/SggTreeNode'
 import CRUDButton from "@components/CRUDButton";
 import SggGridReact from '@components/SggGridReact';
 import Modal from '@components/Modal';
+import AdminPage from '@components/AdminPage';
 
 const modules = import.meta.glob('/src/menuPage/*.jsx');
 const modules2 = import.meta.glob('/src/menuPage/*/*.jsx');
@@ -995,7 +996,7 @@ function Menu( props ) {
                             UBtn={ {fnc: UBtn, disabled: btnDisabled.UBtn} }
                             DBtn={ {fnc: DBtn, disabled: btnDisabled.DBtn} }
                             etcBtn={{name:"추가", fnc: AddBtn, disabled: btnDisabled.etcBtn}}
-                        />
+                            />
                     </div>
                 </div>
                 <div>
@@ -1007,13 +1008,13 @@ function Menu( props ) {
                             sggTrOnClick={gridTrClick}
                             sggTrOnDoubleClick={gridTrDoubleClick}
                             resetBtn={resetBtn}
-                        />
+                            />
                     </div>
                     <div>
                         <CRUDButton
                             CBtn={ {fnc: addGridToMenu, disabled: gridDisableAdd} }
                             RBtn={ {fnc: onGridReset} }
-                        />
+                            />
                     </div>
                 </div>
             </div>

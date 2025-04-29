@@ -1,6 +1,5 @@
 package com.sgg.application.login.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,8 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/getId")
+    @GetMapping("/login")
     public Map<String, Object> getId(@RequestParam Map<String, String> map) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-        return result;
+        return loginService.login(map);
     }
 }

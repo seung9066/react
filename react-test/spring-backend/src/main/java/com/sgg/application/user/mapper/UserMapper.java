@@ -10,4 +10,6 @@ public interface UserMapper {
     List<Map<String, Object>> userList(Map<String, String> map) throws Exception;
 
     int userListCount(Map<String, String> map) throws Exception;
+
+    int updateUser(Map<String, Object> list) throws Exception;
 }

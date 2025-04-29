@@ -90,7 +90,7 @@ function UrlDataNotice ( props ) {
 
     // server에 정보 저장
     const saveData = async (urlData) => {
-        postAxios('/urlDataNotice/updateData', {data: urlData}).then((res) => {
+        utils.postAxios('/urlDataNotice/updateData', {data: urlData}).then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
                 utils.showToast(data.message);

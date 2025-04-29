@@ -26,7 +26,7 @@ def save_image(base64_data, filename):
     user_ip = session.get('user_ip')
     if not user_ip:
         return []  # IP 없으면 빈 리스트 반환
-
+    
     # 본인 전용 폴더 경로
     user_folder = os.path.join(UPLOAD_FOLDER, user_ip)
 

@@ -87,4 +87,41 @@
         )
     </select>
 
+    <!-- 사용자 정보 업데이트 -->
+    <update id="updateUser" parameterType="list">
+        /* com.sgg.application.login.mapper.LoginMapper.updateUser */
+            MERGE INTO SGG_USER A1
+            USING (
+                <foreach collection="list" item="item" separator="UNION">
+                    SELECT #{item.userId} AS userId
+                        , #{item.userPw} AS userPw
+                        , #{item.userNm} AS userNm
+                        , #{item.userAuth} AS userAuth 
+                    FROM DUAL
+                </foreach>
+                ) A2
+            ON (A1.USER_ID = A2.userId)
+            WHEN MATCHED THEN
+                UPDATE SET 
+                    A1.USER_NM = A2.userNm
+                    , A1.USER_AUTH = A2.userAuth
+            WHEN NOT MATCHED THEN
+                INSERT (
+                        USER_ID
+                        , USER_PW
+                        , USER_NM
+                        , USER_AUTH
+                        , DEL_YN
+                        , LOGIN_CNT
+                        )
+                VALUES (
+                        A2.userId
+                        , A2.userPw
+                        , A2.userNm
+                        , A2.userAuth
+                        , 'N'
+                        , 0
+                        )
+    </update>
+
 </mapper>
