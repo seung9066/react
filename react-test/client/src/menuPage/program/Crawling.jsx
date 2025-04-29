@@ -5,7 +5,7 @@ import SggGridReact from '@components/SggGridReact';
 
 function Crawling( props ) {
     const [crawlingData, setCrawlingData] = useState([]);
-    const [url, setUrl] = useState('');
+    const [urlId, setUrlId] = useState('');
     const [ul, setUl] = useState([]);
     const [crawlingArr, setCrawlingArr] = useState([]);
     const excelGrid = useRef(null);
@@ -27,7 +27,7 @@ function Crawling( props ) {
 
     // js 기반 페이지 puppeteer
     const getCrawlingCheerio = async () => {
-        const urlPath = url || 'https://smartstore.naver.com/dwantae';
+        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
         await utils.postAxios('/crawling/crawlCheerio', {url : urlPath}).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
@@ -40,7 +40,7 @@ function Crawling( props ) {
 
     // js 기반 페이지 puppeteer
     const getCrawlingPuppeteer = async () => {
-        const urlPath = url || 'https://smartstore.naver.com/dwantae';
+        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
         await utils.postAxios('/crawling/crawlPuppeteer', {url : urlPath}).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
@@ -53,7 +53,7 @@ function Crawling( props ) {
 
     // js 기반 페이지 puppeteer
     const getCrawlingPuppeteerControl = async () => {
-        const urlPath = url || 'https://smartstore.naver.com/dwantae';
+        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
         await utils.postAxios('/crawling/crawlPuppeteerControl', {url : urlPath}).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
@@ -66,7 +66,7 @@ function Crawling( props ) {
 
     // python 크롤링
     const getCrawlingPython = async() => {
-        const urlPath = url || 'https://smartstore.naver.com/dwantae';
+        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
         await utils.postAxios('/crawling/crawlPythonSmartStore', {url : urlPath}).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
@@ -136,8 +136,8 @@ function Crawling( props ) {
 
     // 엑셀 저장
     const downloadExcel = (e) => {
-        const excelName = url.replace('https://', '') || 'smartstore.naver.com/dwantae';
-        utils.excelJSDown(excelGrid, url || excelName);
+        const excelName = 'smartstore.naver.com_' + urlId || 'dwantae';
+        utils.excelJSDown(excelGrid, urlId || excelName);
     }
 
     // 이미지 파일 저장
@@ -233,8 +233,8 @@ function Crawling( props ) {
     return (
         <>
             <div>
-                <label htmlFor='smartId'>스마트스토어</label>
-                <input type="text" id='smartId' style={{width: '20%'}} value={url} onChange={(e) => {setUrl(e.target.value)}} placeholder='https://smartstore.naver.com/dwantae'></input>
+                <label htmlFor='smartId'>https://smartstore.naver.com/</label>
+                <input type="text" id='smartId' style={{width: '20%'}} value={urlId} onChange={(e) => {setUrlId(e.target.value)}} placeholder='dwantae'></input>
             </div>
             <div>
                 <button className='button' onClick={getCrawlingPython}>스마트스토어</button>
