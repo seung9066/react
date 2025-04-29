@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react'
 import * as utils from '@utils';
+import { useEffect, useState } from 'react';
 
 import SggGridReact from '@components/SggGridReact';
-import AdminPage from '@components/AdminPage';
-import { showToast } from '../../commonJs/utils';
 
 function Menu( props ) {
     const [userList, setUserList] = useState([]);
