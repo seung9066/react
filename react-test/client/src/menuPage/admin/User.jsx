@@ -26,7 +26,7 @@ function Menu( props ) {
         {key:'userId', name:'아이디', type: 'text', auth: 'c',},
         {key:'userNm', name:'이름', type:'text'},
         {key:'userPw', name:'비밀번호', type:'password'},
-        {key:'userAuth', name:'권한명', type:'select', option:typeOption},
+        {key:'userAuth', name:'권한명', type:'select', option: typeOption},
     ];
 
     // 검색조건 폼
