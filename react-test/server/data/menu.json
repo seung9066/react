@@ -39,7 +39,16 @@
         "title": "Program",
         "path": "/program",
         "id": "A004",
-        "upId": null
+        "upId": null,
+        "menuAuth": "002"
+    },
+    {
+        "upPath": "/program",
+        "path": "/crawling",
+        "no": 2,
+        "upId": "A004",
+        "id": "B010",
+        "title": "Crawling"
     },
     {
         "title": "UrlDataNotice",
@@ -64,7 +73,8 @@
         "title": "Admin",
         "path": "/admin",
         "id": "A005",
-        "upId": null
+        "upId": null,
+        "menuAuth": "999"
     },
     {
         "title": "Menu",
@@ -85,13 +95,5 @@
         "upId": "A005",
         "id": "B009",
         "title": "User"
-    },
-    {
-        "upPath": "/program",
-        "path": "/crawling",
-        "no": 2,
-        "upId": "A004",
-        "id": "B010",
-        "title": "Crawling"
     }
 ]

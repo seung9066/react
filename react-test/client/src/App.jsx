@@ -129,7 +129,7 @@ function App() {
         }
     });
   }
-  
+
   return (
     <>
     <BrowserRouter>
@@ -154,9 +154,18 @@ function App() {
 
             pagePath === '' ? pagePath = nextPagePath : null;
 
+            // 메뉴 권한 체크
             let pageAuth = '000';
-            if (pagePath?.indexOf('/admin/') > -1) {
-              pageAuth = '999';
+
+            for (const item of menuData) {
+              if (item.menuAuth) {
+                const menuPath = (item.upPath || '') + item.path.toLowerCase() + (item.upPath ? '' : '/');
+                const programPath = pagePath.toLowerCase();
+
+                if (programPath.indexOf(menuPath) > -1) {
+                  pageAuth = item.menuAuth;
+                }
+              }
             }
 
             return <Route path={pagePath} element={ <AdminPage auth={pageAuth} userData={userData} setUserData={setUserData}><Component props={props} key={Component.name} setMenu={setMenuData} /></AdminPage> } key={Component.name + 'route'} />

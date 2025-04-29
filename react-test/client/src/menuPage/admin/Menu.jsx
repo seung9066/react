@@ -33,6 +33,7 @@ function Menu( props ) {
         path: true,
         id: true,
         upId: true,
+        menuAuth: true,
     }
     const [inputDisabled, setInputDisabled] = useState(defaultInput);
 
@@ -73,6 +74,9 @@ function Menu( props ) {
 
     // iframe 모달
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+    // 메뉴권한
+    const [typeOption, setTypeOption] = useState([]);
 
     // 그리드 컬럼
     const columns = [
@@ -124,6 +128,7 @@ function Menu( props ) {
             ...inputDisabled,
             path: true,
             title: true,
+            menuAuth: true,
         })
     }
 
@@ -141,6 +146,7 @@ function Menu( props ) {
             ...inputDisabled,
             path: false,
             title: false,
+            menuAuth: false,
         })
     }
 
@@ -158,6 +164,7 @@ function Menu( props ) {
             ...inputDisabled,
             path: false,
             title: false,
+            menuAuth: false,
         })
     }
 
@@ -175,6 +182,7 @@ function Menu( props ) {
             ...inputDisabled,
             path: false,
             title: false,
+            menuAuth: false,
         })
     }
 
@@ -212,7 +220,7 @@ function Menu( props ) {
 
         for (const item of newMenuData) {
             for (const key in item) {
-                if (key !== 'upId' && key !== 'upPath' && key !== 'no') {
+                if (key !== 'upId' && key !== 'upPath' && key !== 'no' && key !== 'menuAuth') {
                     if (item['id'] !== selectId) {
                         item[key] === newSelectedData[key] ? chkDupleKey = key : null;
                     }
@@ -387,12 +395,14 @@ function Menu( props ) {
                 ...inputDisabled,
                 path: false,
                 title: false,
+                menuAuth: false,
             })
         } else {
             setInputDisabled({
                 ...inputDisabled,
                 path: false,
                 title: false,
+                menuAuth: false,
             })
         }
     }
@@ -800,6 +810,7 @@ function Menu( props ) {
             path: true,
             id: true,
             upId: true,
+            menuAuth: false,
         })
 
         setBtnDisabled({
@@ -863,6 +874,23 @@ function Menu( props ) {
         setSelectedData(newSelectedData);
     }
 
+    // 권한 목록
+    const getAuthList = async () => {
+        utils.getAxios('/sggCd/sggCdList', {cdId : 'USER_AUTH', delYn: 'N'}).then((res) => {
+            if (res.msg === 'success') {
+                let data = res.data;
+                let newData = [{label:'전체', value:''}];
+                for (const item of data) {
+                    let newItem = {label: item.cdDtlName, value: item.cdDtl};
+                    newData.push(newItem);
+                }
+                setTypeOption(newData);
+            } else {
+                utils.showToast('권한 목록을 가져오는 중 오류가 발생했습니다.', res.error);
+            }
+        });
+    }
+
     useEffect(() => {
         // 메뉴 데이터 => 트리구조 obj
         setTreeMenuData(transformDataToTree(menuData));
@@ -910,6 +938,7 @@ function Menu( props ) {
         loadComponents();
 
         getMenu();
+        getAuthList();
     }, []);
 
     // 파일, 메뉴 조회 시 메뉴로 등록되어있는 파일 제거
@@ -984,6 +1013,14 @@ function Menu( props ) {
                                 )}
                                 {treeMenuData && treeMenuData.map((item) => 
                                     item.id !== 'A001' && <option value={item.id} key={item.id}>{item.title}</option>
+                                )}
+                            </select>
+                        </div>
+                        <div className='form-row'>
+                            <label htmlFor='menuAuth'>권한</label>
+                            <select id='menuAuth' name='menuAuth' disabled={inputDisabled['menuAuth']} onChange={changeValue} value={selectedData['menuAuth'] ?? ''}>
+                                {typeOption && typeOption.map((item) => 
+                                    <option value={item.value} key={item.value}>{item.label}</option>
                                 )}
                             </select>
                         </div>
