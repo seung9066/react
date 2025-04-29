@@ -7,8 +7,13 @@ import * as utils from '@utils';
 /**
  * @param {sggRef={sggRef}}
  * useRef
- * @param {sggColumns={[{key:'', name:'', type:'', width: 10},]}}
- * Array [{*key:'데이터와 매칭할 실컬럼명', *name:'헤더명칭', type:'number/text/checkbox'(행수정시 인풋타임), option: select의 options (useState) width: 10}] state로 받으면 option state 상태 변경 시 리랜더링 안됨
+ * @param {sggColumns={[{key:'', name:'', type:'', auth:'' width: 10},]}}
+ * Array [{*key:'데이터와 매칭할 실컬럼명'
+ *          *name:'헤더명칭'
+ *          type:'number/text/password/checkbox/select/image/a'(행수정시 인풋타임)
+ *          auth: 'cu' 특정 그리드 버튼에만 수정 작용
+ *          option: select의 options (useState) width: 10}] state로 받으면 option state 상태 변경 시 리랜더링 안됨
+ *          width: 헤더 컬럼 비율
  * @param {sggData={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
  * useState *gridData(그리드에 담을 데이터)
  * setUseState *setGridData(그리드 데이터 set)
@@ -336,20 +341,26 @@ export default function SggGridReact({ sggRef,
 
     // 그리드 랜더링 시 타입에 맞는 값 리턴
     const getType = (item, col) => {
+        const stateToCRUD = {
+            INSERT: 'c',
+            UPDATE: 'u',
+        }
+
+        const crudAuth = col.auth ? col.auth?.indexOf(stateToCRUD[item.rowState]) > -1 : true;
         if (col.type === 'number') {
-            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+            return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="number" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
                                                                             : item[col.key];
         }
         if (col.type === 'text') {
-            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+            return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="text" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
                                                                             : item[col.key];
         }
         if (col.type === 'password') {
-            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+            return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="password" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
                                                                             : '****';
@@ -375,7 +386,7 @@ export default function SggGridReact({ sggRef,
             return <img src={item[col.key]} name={col.key} value={item[col.key]} className={styles.tdImg} />
         }
         if (col.type === 'a') {
-            return selectedRow && selectedRow.no === item.no && item.rowState ? <div style={{ padding: '0px 20px' }}>
+            return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="text" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
                                                                             : <a href={item[col.key]} target="_blank" >{item[col.key]}</a>;

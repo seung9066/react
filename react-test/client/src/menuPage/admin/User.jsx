@@ -23,7 +23,7 @@ function Menu( props ) {
     // 그리드 컬럼
     const columns = [
         {key:'rnum', name:'번호', width: 10},
-        {key:'userId', name:'아이디', type:'text'},
+        {key:'userId', name:'아이디', type: 'text', auth: 'c',},
         {key:'userNm', name:'이름', type:'text'},
         {key:'userPw', name:'비밀번호', type:'password'},
         {key:'userAuth', name:'권한명', type:'select', option:typeOption},
@@ -66,10 +66,12 @@ function Menu( props ) {
         });
     }
 
+    // 그리드 검색 버튼 콜백 함수
     const doSearch = async () => {
         await getUserList();
     }
 
+    // 그리드 전체 저장 버튼 콜백 함수
     const doSave = async (data) => {
         const newData = [];
         for (const item of data) {
