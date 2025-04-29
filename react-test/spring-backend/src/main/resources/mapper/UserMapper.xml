@@ -19,6 +19,9 @@
                     AND CD_ID = 'USER_AUTH'
                     AND CD_DTL = A1.USER_AUTH) AS USER_AUTH_NM
                 , A1.USER_AUTH
+                , A1.LOGIN_CNT
+                , A1.INPT_DT
+                , A1.UPDATE_DT
                 , A2.TEL_NO
                 , A2.EMAIL
                 , A2.ZIP
@@ -42,6 +45,7 @@
             <if test="notM != null and notM == 'Y'.toString()">
                 AND A1.USER_ID != 'minsun1234'
             </if>
+            ORDER BY A1.INPT_DT DESC, A1.UPDATE_DT DESC
         )
         WHERE RNUM BETWEEN ((#{page} - 1) * #{row}) + 1 AND #{page} * #{row}
     </select>
@@ -52,22 +56,6 @@
         SELECT COUNT(*)
         FROM (
             SELECT ROW_NUMBER() OVER(ORDER BY USER_NM DESC) AS RNUM
-                , A1.USER_ID
-                , A1.USER_NM
-                , (SELECT CD_DTL_NAME
-                    FROM SGG_CD_DTL
-                    WHERE 1 = 1
-                    AND DEL_YN = 'N'
-                    AND CD_ID = 'USER_AUTH'
-                    AND CD_DTL = A1.USER_AUTH) AS USER_AUTH_NM
-                , A1.USER_AUTH
-                , A2.TEL_NO
-                , A2.EMAIL
-                , A2.ZIP
-                , A2.CITY
-                , A2.ADDR
-                , A2.ADDR_DTL
-                , A2.GEN
             FROM SGG_USER A1
                 , SGG_USER_INFO A2
             WHERE 1 = 1
@@ -105,6 +93,8 @@
                 UPDATE SET 
                     A1.USER_NM = A2.userNm
                     , A1.USER_AUTH = A2.userAuth
+                    , A1.LOGIN_CNT = 0
+                    , A1.UPDATE_DT = SYSDATE
             WHEN NOT MATCHED THEN
                 INSERT (
                         USER_ID
@@ -113,6 +103,7 @@
                         , USER_AUTH
                         , DEL_YN
                         , LOGIN_CNT
+                        , INPT_DT
                         )
                 VALUES (
                         A2.userId
@@ -121,6 +112,7 @@
                         , A2.userAuth
                         , 'N'
                         , 0
+                        , SYSDATE
                         )
     </update>
 

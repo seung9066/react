@@ -27,6 +27,7 @@ function Menu( props ) {
         {key:'userNm', name:'이름', type:'text'},
         {key:'userPw', name:'비밀번호', type:'password'},
         {key:'userAuth', name:'권한명', type:'select', option: typeOption},
+        {key:'loginCnt', name:'비밀번호 오류횟수', },
     ];
 
     // 검색조건 폼
@@ -43,6 +44,7 @@ function Menu( props ) {
                 let data = res.data;
                 setUserList(data.list);
                 setTotalCount(data.totalCount);
+                utils.showToast('사용자 목록 조회 완료');
             } else {
                 utils.showToast('사용자 목록을 가져오는 중 오류가 발생했습니다.', res.error);
             }

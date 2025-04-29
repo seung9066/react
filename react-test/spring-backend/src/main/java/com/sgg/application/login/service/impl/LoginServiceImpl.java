@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.sgg.application.cmmnUtil.cmnUtil;
 import com.sgg.application.login.mapper.LoginMapper;
 import com.sgg.application.login.service.LoginService;
-
-import com.sgg.application.cmmnUtil.cmnUtil;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -18,11 +17,22 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Map<String, Object> login(Map<String, String> map) throws Exception {
-        String result = "";
+        String encPw = "";
         if (!StringUtils.isEmpty(map.get("userPw"))) {
-            result = cmnUtil.hashEncpt(map.get("userPw"));
-            map.put("userPw", result);
+            encPw = cmnUtil.hashEncpt(map.get("userPw"));
+            map.put("userPw", encPw);
         }
-        return loginMapper.login(map);
+
+        Map<String, Object> result = loginMapper.login(map);
+        if (!StringUtils.isEmpty(result.get("passwordCheck"))) {
+            System.out.println(result.get("passwordCheck"));
+            if (result.get("passwordCheck").equals("N")) {
+                loginMapper.upLoginCount(map);
+            } else {
+                loginMapper.resetLoginCount(map);
+            }
+        }
+
+        return result;
     }
 }

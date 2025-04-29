@@ -44,15 +44,20 @@ function AdminPage (props) {
                 if (data) {
                     const auth = data.userAuth;
                     const passwordCheck = data.passwordCheck;
+                    const loginCnt = data.loginCnt;
                     
-                    if (passwordCheck === 'Y') {
-                        if (Number(auth) < Number(props.auth)) {
-                            utils.showToast('권한 부족');
-                        } else {
-                            props.setUserData(data);
-                        }
+                    if (Number(loginCnt) >= 5) {
+                        utils.showToast('비밀번호 5회 오류. 관리자 문의');
                     } else {
-                        utils.showToast('비밀번호를 확인해주세요.');
+                        if (passwordCheck === 'Y') {
+                            if (Number(auth) < Number(props.auth)) {
+                                utils.showToast('권한 부족');
+                            } else {
+                                props.setUserData(data);
+                            }
+                        } else {
+                            utils.showToast('비밀번호를 확인해주세요.');
+                        }
                     }
                 } else {
                     utils.showToast('아이디를 확인해주세요.');

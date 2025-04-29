@@ -15,7 +15,9 @@
                             ELSE 'N'
                         END
                 FROM SGG_USER
-                WHERE USER_PW = #{userPw}) AS PASSWORD_CHECK
+                WHERE USER_PW = #{userPw}
+                AND USER_ID = #{userId}) AS PASSWORD_CHECK
+            , A1.LOGIN_CNT
             , A2.TEL_NO
             , A2.CITY
             , A2.EMAIL
@@ -32,5 +34,25 @@
         AND A1.DEL_YN = 'N'
         AND A2.DEL_YN(+) = 'N'
     </select>
+
+    <update id="resetLoginCount" parameterType="map">
+        /* com.sgg.application.login.mapper.LoginMapper.resetLoginCount */
+        UPDATE SGG_USER
+        SET
+            LOGIN_CNT = 0
+        WHERE 1 = 1
+        AND USER_ID = #{userId}
+    </update>
+
+    <update id="upLoginCount" parameterType="map">
+        /* com.sgg.application.login.mapper.LoginMapper.upLoginCount */
+        UPDATE SGG_USER
+        SET
+            LOGIN_CNT = CASE WHEN LOGIN_CNT <![CDATA[ >= ]]> 5 THEN 5
+                            ELSE NVL(LOGIN_CNT, 0) + 1
+                        END
+        WHERE 1 = 1
+        AND USER_ID = #{userId}
+    </update>
 
 </mapper>
