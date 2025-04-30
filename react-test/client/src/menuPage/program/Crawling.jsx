@@ -311,6 +311,8 @@ function Crawling( props ) {
 
     useEffect(() => {
         if (pageType === 'taobao') {
+            utils.showToast('타오바오 링크 안됨');
+            
             const taobaoCol = [
                 {key:'name', name:'상품명'},
                 {key:'price', name:'가격', width: 20},
@@ -396,7 +398,7 @@ function Crawling( props ) {
                         {pageType === 'keyword' &&
                             <div style={{  }}>
                                 {keywordCrawlingArr.length > 0 && 
-                                    <h3>추천어</h3>
+                                    <h3 style={{ userSelect: 'none' }} onDoubleClick={(e) => utils.showToast('이거 말고 밑에 글자')}>추천어</h3>
                                 }
                                 {recommendKeywordArr.length > 0 &&
                                     <>
