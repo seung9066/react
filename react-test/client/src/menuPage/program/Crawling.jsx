@@ -259,6 +259,46 @@ function Crawling( props ) {
         setKeywordCrawlingArr(sortArr);
     }
 
+    // 드래그 시작 시 노드 ID 저장
+    const handleDragStart = (e) => {
+        let key = e.target.dataset.key;
+        e.dataTransfer.setData("application/keyword-key", key);
+    };
+    
+    // 드래그 오버 시 기본 동작 막기 (drop 허용)
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+    
+    // 노드 위에 드롭했을 때 처리
+    const handleDrop = (e) => {
+        e.preventDefault();
+        let key = e.target.dataset.key;
+        const draggedThKey = e.dataTransfer.getData("application/keyword-key");
+        if (draggedThKey && draggedThKey !== key) {
+            let from = -1;
+            let to = -1;
+            for (let i = 0; i < recommendKeywordArr.length; i++) {
+                recommendKeywordArr[i] === draggedThKey ? from = i : null;
+                recommendKeywordArr[i] === key ? to = i : null;
+            }
+
+            if (from !== -1 && to !== -1) {
+                handleSwap(from, to);
+            }
+        }
+    };
+
+    // th 재정렬
+    const handleSwap = (from, to) => {
+        let newRecommendKeywordArr = structuredClone(recommendKeywordArr);
+        // 뽑아내기
+        let [fromObj] = newRecommendKeywordArr.splice(from, 1);
+        // 넣기
+        newRecommendKeywordArr.splice(to, 0, fromObj);
+        setRecommendKeywordArr(newRecommendKeywordArr);
+    };
+
     // 키워드 tr doubleClick recommendKeywordArr 바꾸기
     const useRecommentKeyword = (item) => {
         const split = structuredClone(recommendKeywordArr);
@@ -312,7 +352,7 @@ function Crawling( props ) {
     useEffect(() => {
         if (pageType === 'taobao') {
             utils.showToast('타오바오 링크 안됨');
-            
+
             const taobaoCol = [
                 {key:'name', name:'상품명'},
                 {key:'price', name:'가격', width: 20},
@@ -404,7 +444,13 @@ function Crawling( props ) {
                                     <>
                                         <p>
                                             {recommendKeywordArr.map((item) => {
-                                                return <span key={item} onDoubleClick={(e) => useRecommentKeyword(item)}>{item} </span>
+                                                return <span key={item}
+                                                            data-key={item}
+                                                            draggable={true}
+                                                            onDragStart={handleDragStart}
+                                                            onDragOver={handleDragOver}
+                                                            onDrop={handleDrop} 
+                                                            onDoubleClick={(e) => useRecommentKeyword(item)}>{item} </span>
                                             })}
                                         </p>
                                     </>
@@ -412,7 +458,7 @@ function Crawling( props ) {
                                 {keywordCrawlingArr.length > 0 &&
                                     <>
                                         <p style={{ fontSize: '11px', color: 'gray'}}>
-                                            추천어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가
+                                            추천어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가, 드래그 드롭으로 순서 변경
                                             <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천어 초기화</button>
                                         </p>
                                     </>
