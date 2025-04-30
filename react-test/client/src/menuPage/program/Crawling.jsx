@@ -15,6 +15,7 @@ function Crawling( props ) {
     const [startCrawling, setStartCrawling] = useState(0);
     const [keyword, setKeyword] = useState('');
     const [recommendKeywordArr, setRecommendKeywordArr] = useState([]);
+    const [recommendKeywordDrag, setRecommendKeywordDrag] = useState(true);
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]);
@@ -446,7 +447,7 @@ function Crawling( props ) {
                                             {recommendKeywordArr.map((item) => {
                                                 return <span key={item}
                                                             data-key={item}
-                                                            draggable={true}
+                                                            draggable={recommendKeywordDrag}
                                                             onDragStart={handleDragStart}
                                                             onDragOver={handleDragOver}
                                                             onDrop={handleDrop} 
@@ -460,6 +461,7 @@ function Crawling( props ) {
                                         <p style={{ fontSize: '11px', color: 'gray'}}>
                                             추천어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가, 드래그 드롭으로 순서 변경
                                             <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천어 초기화</button>
+                                            <button type='button' className='button' onClick={(e) => setRecommendKeywordDrag(!recommendKeywordDrag)}>{recommendKeywordDrag ? '드래그 허용' : '순서 이동'}</button>
                                         </p>
                                     </>
                                 }
