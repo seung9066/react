@@ -454,7 +454,7 @@ function Crawling( props ) {
                                 opacity: '80%'
                              }}>
                                 {keywordCrawlingArr.length > 0 && 
-                                    <h3 style={{ userSelect: 'none' }} onDoubleClick={(e) => utils.showToast('이거 말고 밑에 글자')}>추천어</h3>
+                                    <h3 style={{ userSelect: 'none' }} onDoubleClick={(e) => utils.showToast('이거 말고 밑에 글자')}>추천 단어</h3>
                                 }
                                 {recommendKeywordArr.length > 0 &&
                                     <>
@@ -488,9 +488,9 @@ function Crawling( props ) {
                                 {keywordCrawlingArr.length > 0 &&
                                     <>
                                         <p style={{ fontSize: '11px', color: 'gray'}}>
-                                            추천어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가, 드래그 드롭으로 순서 변경
+                                            추천 단어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가, 드래그 드롭으로 순서 변경
                                         </p>
-                                        <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천어 초기화</button>
+                                        <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천 단어 초기화</button>
                                         <button type='button' className='button' onClick={(e) => setRecommendKeywordDrag(!recommendKeywordDrag)}>{recommendKeywordDrag ? '드래그 허용' : '순서 이동'}</button>
                                     </>
                                 }
