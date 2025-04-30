@@ -289,7 +289,7 @@ function Crawling( props ) {
         }
     };
 
-    // th 재정렬
+    // 키워드 재정렬
     const handleSwap = (from, to) => {
         let newRecommendKeywordArr = structuredClone(recommendKeywordArr);
         // 뽑아내기
