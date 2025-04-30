@@ -437,7 +437,22 @@ function Crawling( props ) {
                             </>
                         }
                         {pageType === 'keyword' &&
-                            <div style={{  }}>
+                            <div style={{ 
+                                position: 'fixed',
+                                top: '48%',
+                                left: '0',
+                                right: '0',
+                                background: 'rgba(240, 244, 255, 0.6)', // 투명한 배경
+                                width: '50%',
+                                maxWidth: '800px',
+                                margin: '0 auto',
+                                padding: '20px 30px',
+                                borderRadius: '16px',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                fontFamily: 'Arial, sans-serif',
+                                zIndex: 1000,
+                                opacity: '80%'
+                             }}>
                                 {keywordCrawlingArr.length > 0 && 
                                     <h3 style={{ userSelect: 'none' }} onDoubleClick={(e) => utils.showToast('이거 말고 밑에 글자')}>추천어</h3>
                                 }
@@ -451,7 +466,21 @@ function Crawling( props ) {
                                                             onDragStart={handleDragStart}
                                                             onDragOver={handleDragOver}
                                                             onDrop={handleDrop} 
-                                                            onDoubleClick={(e) => useRecommentKeyword(item)}>{item} </span>
+                                                            onDoubleClick={(e) => useRecommentKeyword(item)}
+                                                            style={{ 
+                                                                display: 'inline-block',
+                                                                backgroundColor: '#e0f7fa',
+                                                                color: '#006064',
+                                                                padding: '6px 12px',
+                                                                borderRadius: '12px',
+                                                                fontSize: '14px',
+                                                                fontWeight: 'bold',
+                                                                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                                                                margin: '2px'
+                                                            }}
+                                                        >
+                                                            {item}
+                                                        </span>
                                             })}
                                         </p>
                                     </>
