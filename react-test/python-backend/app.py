@@ -27,16 +27,10 @@ def before_request_func():
     # 폴더 존재 여부 확인, 없으면 생성
     if not os.path.exists(user_folder):
         os.makedirs(user_folder)
-        print(f"[인터셉터] 폴더 생성: {user_folder}")
-    else:
-        print(f"[인터셉터] 폴더 이미 존재: {user_folder}")
-        
-    print(f"[인터셉터] 클라이언트 IP 저장: {ip_address}")
 
 # 요청 처리 후 실행되는 인터셉터
 @app.after_request
 def after_request_func(response):
-    print("[인터셉터] 응답 준비 완료")
     return response
 
 if __name__ == '__main__':

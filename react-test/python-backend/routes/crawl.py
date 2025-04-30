@@ -35,7 +35,6 @@ def wait_for_page_load(driver, timeout=10):
 def crawl_smartstore():
     try:
         url = request.json.get('url')
-        print("요청 데이터:", url)
 
         driver = create_driver()
         driver.get(url)
@@ -61,7 +60,6 @@ def crawl_smartstore():
         html = driver.page_source
 
         # driver.quit()  # 필요 시 활성화
-        print("SmartStore Crawl END")
         return jsonify({'content': html, 'ul': ul_contents})
 
     except Exception as e:
@@ -145,11 +143,9 @@ def crawl_taobao():
             try:
                 if os.path.isfile(file_path):  # 파일인지 확인
                     os.remove(file_path)        # 파일 삭제
-                    print(f"Deleted {file_path}")
             except Exception as e:
                 print(f"Error deleting {file_path}: {e}")
 
-        print("✅ Taobao 크롤링 완료")
         return jsonify({'content': html})
 
     except Exception as e:
@@ -164,7 +160,6 @@ def crawl_taobao():
 def crawl_keyword():
     try:
         url = request.json.get('url')
-        print("요청 데이터:", url)
 
         driver = create_driver()
         driver.get(url)
@@ -200,13 +195,9 @@ def crawl_keyword():
 
             page_type = 'mobile'
         
-        print(page_type)
-
         wait_for_page_load(driver)
         button.click()
         
-        print('click')
-
         # 다시 로딩 대기
         wait_for_page_load(driver)
 
@@ -215,13 +206,11 @@ def crawl_keyword():
             elements = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".productCardTitle_product_card_title__eQupA.productCardTitle_view_type_grid2__4N618"))
             )
-            print('elements')
         else :
             # 모든 해당 요소 가져오기
             elements = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".productCardTitle_product_card_title__eQupA"))
             )
-            print('elements')
 
         # 각 요소에서 텍스트 추출
         tag = []
@@ -235,13 +224,11 @@ def crawl_keyword():
                 ))
                 el = elements[idx]
                 tag.append(el.text)
-                print(f"{idx+1}번 요소 텍스트:", el.text)
             except e:
                 print(f"⚠️ {idx+1}번 요소는 stale 상태입니다.")
                 continue
 
         # driver.quit()  # 필요 시 활성화
-        print("SmartStore Crawl END")
         return jsonify({'text': tag})
 
     except Exception as e:

@@ -41,7 +41,6 @@ router.post('/crawlCheerio', async (req, res) => {
 router.post('/crawlPuppeteer', async (req, res) => {
     const { url } = req.body;
     try {
-        console.log('start');
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         
@@ -76,8 +75,6 @@ router.post('/crawlPuppeteerControl', async (req, res) => {
     const { url } = req.body;
     
     try {
-        console.log('요청받은 URL:', url);
-        
         const browser = await puppeteer.launch({
             headless: true,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -101,7 +98,7 @@ router.post('/crawlPuppeteerControl', async (req, res) => {
         
         // 현재 URL 확인 (에러 페이지로 이동했는지 확인)
         const currentUrl = page.url();
-        console.log('현재 URL:', currentUrl);
+
         if (currentUrl.includes('error') || currentUrl.includes('AccessDenied')) {
             await page.screenshot({ path: 'error_page.png' });
             throw new Error('에러 페이지로 리디렉션됨');
@@ -130,7 +127,6 @@ router.post('/crawlPythonSmartStore', async (req, res) => {
 router.post('/crawlPythonTaobao', async (req, res) => {
     try {
         const response = await api.post('/python/crawlTaobao');
-        console.log(response.data)
         res.json(response.data);
     } catch (error) {
         console.error('Error fetching user data:', error);

@@ -98,7 +98,6 @@ function Crawling( props ) {
         await utils.postAxios('/crawling/crawlPythonTaobao').then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
-                console.log(data)
                 const newCrawlingArr = structuredClone(crawlingArr);
                 for (let i = 0; i < newCrawlingArr.length; i++) {
                     newCrawlingArr[i].taobaoLink = 'http://www.naver.com'
