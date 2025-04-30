@@ -8,11 +8,19 @@ import * as utils from '@utils';
  * @param {sggRef={sggRef}}
  * useRef
  * @param {sggColumns={[{key:'', name:'', type:'', auth:'' width: 10},]}}
- * Array [{*key:'데이터와 매칭할 실컬럼명'
+ * useState [{*key:'데이터와 매칭할 실컬럼명'
  *          *name:'헤더명칭'
  *          type:'number/text/password/checkbox/select/image/a'(행수정시 인풋타임)
  *          auth: 'cu' 특정 그리드 버튼에만 수정 작용
- *          option: select의 options (useState) width: 10}] state로 받으면 option state 상태 변경 시 리랜더링 안됨
+ *          option: select의 options (useState) width: 10}] state 속의 state라서 리랜더링이 안되기 때문에 useEffect로 option 리랜더링 시 setColumns 설정 필요
+ *                  ex) useEffect(() => {
+                            for (const item of columns) {
+                                if (item.key === 'userAuth') {
+                                    item.option = typeOption;
+                                }
+                            }
+                            setGridCol(columns)
+                        }, [typeOption])
  *          width: 헤더 컬럼 비율
  * @param {sggData={{gridData: gridData, setGridData: setGridData, totalCount: totalCount}}}
  * useState *gridData(그리드에 담을 데이터)
@@ -100,7 +108,7 @@ export default function SggGridReact({ sggRef,
             if (sggBtn && sggBtn.u) {
                 let state = item.rowState;
                 if (state !== 'INSERT' && state !== 'DELETE') {
-                    updateRow();
+                    updateRow('row');
                 }
             }
         }
@@ -430,8 +438,8 @@ export default function SggGridReact({ sggRef,
     }
 
     // 그리드 행수정
-    const updateRow = () => {
-        if (checkedRows.length > 0) {
+    const updateRow = (type) => {
+        if (checkedRows.length > 0 && type !== 'row') {
             let newCurrentList = structuredClone(currentList);
             for (const item of newCurrentList) {
                 let state = item.rowState;
@@ -449,7 +457,7 @@ export default function SggGridReact({ sggRef,
             }
 
             setCurrentList(newCurrentList);
-        } else if (selectedRow) {
+        } else if (selectedRow && type !== 'check') {
             let no = selectedRow.no;
             doUpdate(no);
         } else {
@@ -548,38 +556,22 @@ export default function SggGridReact({ sggRef,
     const resetRow = () => {
         if (checkedRows.length > 0) {
             utils.showToast('체크된 행을 초기화 합니다.');
-            let resetRowData = [];
-            let newCurrentList = structuredClone(currentList);
-            let noArr = [];
-            for (const item of newCurrentList) {
-                let state = item.rowState;
-                if (item.totalChecked) {
-                    if (state === 'INSERT') {
-                        noArr.push(item.no);
-                    } else {
-                        for (let i = 0; i < sggData.gridData.length; i++) {
-                            if (item.no === sggData.gridData[i].no) {
-                                delete sggData.gridData[i].rowState;
-                                delete sggData.gridData[i].totalChecked;
-                                resetRowData.push(sggData.gridData[i]);
-                            }
+
+            sggData.setGridData((prev) => 
+                prev
+                    .filter(item => !(item.totalChecked && item.rowState === 'INSERT')) // INSERT + 체크된 항목 제거
+                    .map(item => {
+                        if (item.totalChecked) {
+                            const newItem = { ...item };
+                            delete newItem.rowState;
+                            delete newItem.totalChecked;
+                            return newItem;
                         }
-                    }
-                } else {
-                    resetRowData.push(item);
-                }
-            }
-
-            for (let i = 0; i < sggData.gridData.length; i++) {
-                for (const item of noArr) {
-                    if (item === sggData.gridData[i].no) {
-                        sggData.gridData.splice(i, 1);
-                        i--;
-                    }
-                }
-            }
-
-            setCurrentList(resetRowData);
+                        return item;
+                    })
+            );
+            
+            // setCurrentList(resetRowData);
         } else if (selectedRow) {
             utils.showToast('행을 초기화 합니다.');
 
@@ -588,17 +580,16 @@ export default function SggGridReact({ sggRef,
         } else {
             utils.showToast('전체 행을 초기화 합니다.');
 
-            for (let i = 0; i < sggData.gridData.length; i++) {
-                let state = sggData.gridData[i].rowState;
-
-                if (state === 'INSERT') {
-                    sggData.gridData.splice(i, 1);
-                    i--;
-                } else {
-                    delete sggData.gridData[i].rowState;
-                    delete sggData.gridData[i].totalChecked;
-                }
-            }
+            sggData.setGridData((prev) =>
+                prev
+                    .filter(item => item.rowState !== 'INSERT') // INSERT 항목 제거
+                    .map(item => {
+                        const newItem = { ...item };
+                        delete newItem.rowState;
+                        delete newItem.totalChecked;
+                        return newItem;
+                    })
+            );
 
             drawGrid(['totalChecked', 'rowState']);
             setColumn();
@@ -1120,7 +1111,7 @@ export default function SggGridReact({ sggRef,
                                     <input type="checkbox" name={'totalChecked'} style={{width: '20px', height: '20px'}} checked={totalCheck} onChange={allCheckBoxFirst} />
                                 </th>
                             }
-                            {sggBtn && 
+                            {(sggBtn.c || sggBtn.u || sggBtn.d) && 
                                 <th className={styles.th} style={{  width: stateTd + 'px' }}>
                                     상태
                                 </th>
@@ -1185,7 +1176,7 @@ export default function SggGridReact({ sggRef,
                                             <input type="checkbox" name={'totalChecked'} data-checkbox={item.no} style={{width: '20px', height: '20px'}} checked={setCheckValueFirst(item.no, item['totalChecked'])} onChange={setFirstCheck} />
                                         </td>
                                     }
-                                    {sggBtn &&
+                                    {(sggBtn.c || sggBtn.u || sggBtn.d) &&
                                         <td className={styles.td} data-no={item.no}>
                                             {item.rowState === 'INSERT' ? <span className={`${styles.state} ${styles.accept}`}>등록</span> : null}
                                             {item.rowState === 'UPDATE' ? <span className={`${styles.state} ${styles.primary}`}>수정</span> : null}

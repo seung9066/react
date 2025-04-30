@@ -17,8 +17,8 @@ function Crawling( props ) {
         {key:'name', name:'상품명'},
         {key:'price', name:'가격', width: 20},
         {key:'imgSrc', name:'이미지', type:'image', width: 20},
-        {key:'taobaoLink', name:'타오바오 링크', type: 'a'},
     ];
+    const [gridCol, setGridCol] = useState(columns);
 
     const [btnDisabled, setBtnDisabled] = useState({
         excelBtn: true,
@@ -90,6 +90,8 @@ function Crawling( props ) {
                 for (let i = 0; i < newCrawlingArr.length; i++) {
                     newCrawlingArr[i].taobaoLink = 'http://www.naver.com'
                 }
+                columns.push({key:'taobaoLink', name:'타오바오 링크', type: 'a'});
+                setGridCol(columns);
                 setCrawlingArr(newCrawlingArr);
                 utils.showToast('타오바오 정보를 크롤링 했습니다.');
             } else {
@@ -242,7 +244,7 @@ function Crawling( props ) {
                 <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
                 <SggGridReact 
                     sggRef={excelGrid}
-                    sggColumns={columns} // 그리드 컬럼 Array
+                    sggColumns={gridCol} // 그리드 컬럼 Array
                     sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : null}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                     sggData={{gridData: crawlingArr}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}

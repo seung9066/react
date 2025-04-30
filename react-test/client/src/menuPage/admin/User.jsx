@@ -20,6 +20,7 @@ function Menu( props ) {
     const [typeOption, setTypeOption] = useState([]);
 
     // 그리드 컬럼
+    const [gridCol, setGridCol] = useState([]);
     const columns = [
         {key:'rnum', name:'번호', width: 10},
         {key:'userId', name:'아이디', type: 'text', auth: 'c',},
@@ -28,6 +29,15 @@ function Menu( props ) {
         {key:'userAuth', name:'권한명', type:'select', option: typeOption},
         {key:'loginCnt', name:'비밀번호 오류', width: 10 },
     ];
+    
+    useEffect(() => {
+        for (const item of columns) {
+            if (item.key === 'userAuth') {
+                item.option = typeOption;
+            }
+        }
+        setGridCol(columns)
+    }, [typeOption])
 
     // 검색조건 폼
     const searchForm= [
@@ -135,7 +145,7 @@ function Menu( props ) {
         <>
             <div>
                 <SggGridReact 
-                    sggColumns={columns} // 그리드 컬럼 Array
+                    sggColumns={gridCol} // 그리드 컬럼 Array
                     sggBtn={{'c': true, 'r': true, 'u': true, 'd': true, saveBtn : doSave}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                     sggData={{gridData: userList, setGridData: setUserList, totalCount: totalCount}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
