@@ -1156,7 +1156,7 @@ export default function SggGridReact({ sggRef,
                                     <input type="checkbox" name={'totalChecked'} style={{width: '20px', height: '20px'}} checked={totalCheck} onChange={allCheckBoxFirst} />
                                 </th>
                             }
-                            {(sggBtn.c || sggBtn.u || sggBtn.d) && 
+                            {(sggBtn?.c || sggBtn?.u || sggBtn?.d) && 
                                 <th className={styles.th} style={{  width: stateTd + 'px' }}>
                                     상태
                                 </th>
@@ -1224,7 +1224,7 @@ export default function SggGridReact({ sggRef,
                                             <input type="checkbox" name={'totalChecked'} data-checkbox={item.no} style={{width: '20px', height: '20px'}} checked={setCheckValueFirst(item.no, item['totalChecked'])} onChange={setFirstCheck} />
                                         </td>
                                     }
-                                    {(sggBtn.c || sggBtn.u || sggBtn.d) &&
+                                    {(sggBtn?.c || sggBtn?.u || sggBtn?.d) &&
                                         <td className={styles.td} data-no={item.no}>
                                             {item.rowState === 'INSERT' ? <span className={`${styles.state} ${styles.accept}`}>등록</span> : null}
                                             {item.rowState === 'UPDATE' ? <span className={`${styles.state} ${styles.primary}`}>수정</span> : null}
