@@ -14,6 +14,7 @@ function Crawling( props ) {
     const [imgArr, setImgArr] = useState([]);
     const [startCrawling, setStartCrawling] = useState(0);
     const [keyword, setKeyword] = useState('');
+    const [recommendKeyword, setRecommendKeyword] = useState('');
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]);
@@ -254,6 +255,7 @@ function Crawling( props ) {
         }
 
         const sortArr = [...arr].sort((a, b) => b.cnt - a.cnt);
+
         setKeywordCrawlingArr(sortArr);
     }
 
@@ -265,16 +267,7 @@ function Crawling( props ) {
 
     useEffect(() => {
         if (crawlingArr.length > 0) {
-            setBtnDisabled((prev) => ({
-                ...prev,
-                excelBtn: false,
-            }))
             imageSrcToBase64();
-        } else {
-            setBtnDisabled((prev) => ({
-                ...prev,
-                excelBtn: true,
-            }))
         }
     }, [crawlingArr]);
 
@@ -307,17 +300,52 @@ function Crawling( props ) {
                 {key:'taobaoLink', name:'타오바오 링크', type: 'a'},
             ];
             setGridCol(taobaoCol);
-        }
-        
-        if (pageType === 'keyword') {
+
+            if (crawlingArr.length > 0) {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: false,
+                }));
+            } else {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: true,
+                }));
+            }
+        } else if (pageType === 'keyword') {
             const keywordCol = [
                 {key:'productName', name:'상품명', width: 40},
                 {key:'keyword', name:'키워드'},
                 {key:'cnt', name:'횟수', width: 20},
             ];
             setGridCol(keywordCol);
+
+            if (keywordCrawlingArr.length > 0) {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: false,
+                }));
+            } else {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: true,
+                }));
+            }
         }
     }, [pageType])
+
+    useEffect(() => {
+        if (keywordCrawlingArr.length > 0) {
+            let recommendText = '';
+            for (let i = 0; i < keywordCrawlingArr.length; i++) {
+                if (i < 10) {
+                    recommendText += keywordCrawlingArr[i].keyword;
+                    recommendText += ' ';
+                }
+            }
+            setRecommendKeyword(recommendText);
+        }
+    }, [keywordCrawlingArr])
 
     return (
         <>
@@ -338,6 +366,7 @@ function Crawling( props ) {
                         <div>
                             <label htmlFor='keyword'>상품명</label>
                             <input type="text" id='keyword' style={{width: '20%'}} value={keyword} onChange={(e) => {setKeyword(e.target.value)}} placeholder='공업용 선풍기'></input>
+                            <p>{recommendKeyword}</p>
                         </div>
                     }
                     <div>
