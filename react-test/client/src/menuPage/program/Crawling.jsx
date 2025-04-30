@@ -250,7 +250,6 @@ function Crawling( props ) {
         const arr = [];
         for (const item of keywordArr) {
             if (item.cnt > 1) {
-                item.productName = keyword || '공업용 선풍기';
                 arr.push(item);
             }
         }
@@ -375,7 +374,6 @@ function Crawling( props ) {
             }
         } else if (pageType === 'keyword') {
             const keywordCol = [
-                {key:'productName', name:'상품명', width: 40},
                 {key:'keyword', name:'키워드'},
                 {key:'cnt', name:'횟수', width: 20},
             ];
@@ -423,10 +421,12 @@ function Crawling( props ) {
                         </div>
                     }
                     {pageType === 'keyword' &&
-                        <div>
-                            <label htmlFor='keyword'>상품명</label>
-                            <input type="text" id='keyword' style={{width: '20%'}} value={keyword} onChange={(e) => {setKeyword(e.target.value)}} placeholder='공업용 선풍기'></input>
-                        </div>
+                        <>
+                            <div>
+                                <label htmlFor='keyword'>상품명</label>
+                                <input type="text" id='keyword' style={{width: '20%'}} value={keyword} onChange={(e) => {setKeyword(e.target.value)}} placeholder='공업용 선풍기'></input>
+                            </div>
+                        </>
                     }
                     <div>
                         <button className='button danger' onClick={getCrawlingPython}>크롤링 시작</button>
@@ -498,6 +498,9 @@ function Crawling( props ) {
                         }
                     </div>
                 </>
+            }
+            {pageType === 'keyword' &&
+                <h2>{keyword || '공업용 선풍기'}</h2>
             }
             <div>
                 <SggGridReact 
