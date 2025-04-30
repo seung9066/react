@@ -9,6 +9,7 @@ function Crawling( props ) {
     const [urlId, setUrlId] = useState('');
     const [ul, setUl] = useState([]);
     const [crawlingArr, setCrawlingArr] = useState([]);
+    const [keywordCrawlingArr, setKeywordCrawlingArr] = useState([]);
     const excelGrid = useRef(null);
     const [imgArr, setImgArr] = useState([]);
     const [startCrawling, setStartCrawling] = useState(0);
@@ -149,7 +150,15 @@ function Crawling( props ) {
 
     // 엑셀 저장
     const downloadExcel = (e) => {
-        const excelName = 'smartstore.naver.com_' + urlId || 'dwantae';
+        let excelName = '';
+
+        if (pageType === 'taobao') {
+            excelName = 'smartstore.naver.com_' + urlId || 'dwantae';
+        }
+
+        if (pageType === 'keyword') {
+            excelName = 'keyword_' + keyword.replaceAll(' ', '_') || '공업용 선풍기';
+        }
         utils.excelJSDown(excelGrid, urlId || excelName);
     }
 
@@ -246,8 +255,7 @@ function Crawling( props ) {
         }
 
         const sortArr = [...arr].sort((a, b) => b.cnt - a.cnt);
-        console.log(sortArr)
-        setCrawlingArr(sortArr);
+        setKeywordCrawlingArr(sortArr);
     }
 
     useEffect(() => {
@@ -310,8 +318,6 @@ function Crawling( props ) {
             ];
             setGridCol(keywordCol);
         }
-
-        setCrawlingArr([]);
     }, [pageType])
 
     return (
@@ -355,7 +361,7 @@ function Crawling( props ) {
                     sggRef={excelGrid}
                     sggColumns={gridCol} // 그리드 컬럼 Array
                     sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : null}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
-                    sggData={{gridData: crawlingArr}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                    sggData={{gridData: (pageType === 'keyword' ? keywordCrawlingArr : crawlingArr)}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
                     // sggGridChecked={true} // 그리드 좌측 체크박스 boolean
                     sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
