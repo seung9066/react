@@ -555,44 +555,90 @@ export default function SggGridReact({ sggRef,
     // 그리드 행 초기화
     const resetRow = () => {
         if (checkedRows.length > 0) {
-            utils.showToast('체크된 행을 초기화 합니다.');
+            if (sggData?.setGridData) {
+                sggData.setGridData((prev) => 
+                    prev
+                        .filter(item => !(item.totalChecked && item.rowState === 'INSERT')) // INSERT + 체크된 항목 제거
+                        .map(item => {
+                            if (item.totalChecked) {
+                                const newItem = { ...item };
+                                delete newItem.rowState;
+                                delete newItem.totalChecked;
+                                return newItem;
+                            }
+                            return item;
+                        })
+                );
+            } else {
+                let resetRowData = [];
+                let newCurrentList = structuredClone(currentList);
+                let noArr = [];
+                for (const item of newCurrentList) {
+                    let state = item.rowState;
+                    if (item.totalChecked) {
+                        if (state === 'INSERT') {
+                            noArr.push(item.no);
+                        } else {
+                            for (let i = 0; i < sggData.gridData.length; i++) {
+                                if (item.no === sggData.gridData[i].no) {
+                                    delete sggData.gridData[i].rowState;
+                                    delete sggData.gridData[i].totalChecked;
+                                    resetRowData.push(sggData.gridData[i]);
+                                }
+                            }
+                        }
+                    } else {
+                        resetRowData.push(item);
+                    }
+                }
 
-            sggData.setGridData((prev) => 
-                prev
-                    .filter(item => !(item.totalChecked && item.rowState === 'INSERT')) // INSERT + 체크된 항목 제거
-                    .map(item => {
-                        if (item.totalChecked) {
+                for (let i = 0; i < sggData.gridData.length; i++) {
+                    for (const item of noArr) {
+                        if (item === sggData.gridData[i].no) {
+                            sggData.gridData.splice(i, 1);
+                            i--;
+                        }
+                    }
+                }
+
+                setCurrentList(resetRowData);
+            }
+
+            utils.showToast('체크된 행을 초기화 합니다.');
+        } else if (selectedRow) {
+            let no = selectedRow.no;
+            doReset(no);
+            
+            utils.showToast('행을 초기화 합니다.');
+        } else {
+            if (sggData?.setGridData) {
+                sggData.setGridData((prev) =>
+                    prev
+                        .filter(item => item.rowState !== 'INSERT') // INSERT 항목 제거
+                        .map(item => {
                             const newItem = { ...item };
                             delete newItem.rowState;
                             delete newItem.totalChecked;
                             return newItem;
-                        }
-                        return item;
-                    })
-            );
-            
-            // setCurrentList(resetRowData);
-        } else if (selectedRow) {
-            utils.showToast('행을 초기화 합니다.');
-
-            let no = selectedRow.no;
-            doReset(no);
-        } else {
-            utils.showToast('전체 행을 초기화 합니다.');
-
-            sggData.setGridData((prev) =>
-                prev
-                    .filter(item => item.rowState !== 'INSERT') // INSERT 항목 제거
-                    .map(item => {
-                        const newItem = { ...item };
-                        delete newItem.rowState;
-                        delete newItem.totalChecked;
-                        return newItem;
-                    })
-            );
+                        })
+                );
+            } else {
+                for (let i = 0; i < sggData.gridData.length; i++) {
+                    let state = sggData.gridData[i].rowState;
+    
+                    if (state === 'INSERT') {
+                        sggData.gridData.splice(i, 1);
+                        i--;
+                    } else {
+                        delete sggData.gridData[i].rowState;
+                        delete sggData.gridData[i].totalChecked;
+                    }
+                }
+            }
 
             drawGrid(['totalChecked', 'rowState']);
             setColumn();
+            utils.showToast('전체 행을 초기화 합니다.');
         }
 
         setSelectedRow(null);
