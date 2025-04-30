@@ -4,6 +4,7 @@ import * as utils from '@utils';
 import SggGridReact from '@components/SggGridReact';
 
 function Crawling( props ) {
+    const [pageType, setPageType] = useState('');
     const [crawlingData, setCrawlingData] = useState([]);
     const [urlId, setUrlId] = useState('');
     const [ul, setUl] = useState([]);
@@ -11,14 +12,10 @@ function Crawling( props ) {
     const excelGrid = useRef(null);
     const [imgArr, setImgArr] = useState([]);
     const [startCrawling, setStartCrawling] = useState(0);
+    const [keyword, setKeyword] = useState('');
 
     // 그리드 컬럼
-    const columns = [
-        {key:'name', name:'상품명'},
-        {key:'price', name:'가격', width: 20},
-        {key:'imgSrc', name:'이미지', type:'image', width: 20},
-    ];
-    const [gridCol, setGridCol] = useState(columns);
+    const [gridCol, setGridCol] = useState([]);
 
     const [btnDisabled, setBtnDisabled] = useState({
         excelBtn: true,
@@ -66,18 +63,33 @@ function Crawling( props ) {
 
     // python 크롤링
     const getCrawlingPython = async() => {
-        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
-        await utils.postAxios('/crawling/crawlPythonSmartStore', {url : urlPath}).then((res) => {
-            if (res.msg === 'success') {
-                let data = res.data;
-                setUl(data.ul);
-                setCrawlingData(data.content);
-                setStartCrawling(1);
-                utils.showToast('스마트스토어 정보를 크롤링 했습니다.');
-            } else {
-                utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
-            }
-        });
+        if (pageType === 'taobao') {
+            const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
+            await utils.postAxios('/crawling/crawlPythonSmartStore', {url : urlPath}).then((res) => {
+                if (res.msg === 'success') {
+                    let data = res.data;
+                    setUl(data.ul);
+                    setCrawlingData(data.content);
+                    setStartCrawling(1);
+                    utils.showToast('스마트스토어 정보를 크롤링 했습니다.');
+                } else {
+                    utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
+                }
+            });
+        }
+
+        if (pageType === 'keyword') {
+            const urlPath = 'https://search.shopping.naver.com/ns/search?query=' + (keyword || '공업용 선풍기');
+            await utils.postAxios('/crawling/crawlPythonKeyword', {url : urlPath}).then((res) => {
+                if (res.msg === 'success') {
+                    let data = res.data;
+                    findRepeatKeyword(data.text);
+                    utils.showToast('키워드 정보를 크롤링 했습니다.');
+                } else {
+                    utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
+                }
+            });
+        }
     }
     
     const getCrawlingPythonTaobao = async() => {
@@ -90,8 +102,7 @@ function Crawling( props ) {
                 for (let i = 0; i < newCrawlingArr.length; i++) {
                     newCrawlingArr[i].taobaoLink = 'http://www.naver.com'
                 }
-                columns.push({key:'taobaoLink', name:'타오바오 링크', type: 'a'});
-                setGridCol(columns);
+
                 setCrawlingArr(newCrawlingArr);
                 utils.showToast('타오바오 정보를 크롤링 했습니다.');
             } else {
@@ -192,6 +203,53 @@ function Crawling( props ) {
         }
     }
 
+    // 키워드 데이터 많이 나오는 문자열 찾기
+    const findRepeatKeyword = (data) => {
+        const keywordArr = [];
+
+        // 단어뽑기기
+        for (const item of data) {
+            const itemArr = item.split(' ');
+            for (const arrItem of itemArr) {
+                let checkDuple = 0;
+                for (const keywordItem of keywordArr) {
+                    if (arrItem === keywordItem.keyword) {
+                        checkDuple++;
+                    }
+                }
+
+                if (checkDuple === 0) {
+                    keywordArr.push({keyword : arrItem, cnt: 0});
+                }
+            }
+        }
+
+        // 카운팅팅
+        for (const item of data) {
+            const itemArr = item.split(' ');
+            for (const arrItem of itemArr) {
+                for (const keywordItem of keywordArr) {
+                    if (arrItem === keywordItem.keyword) {
+                        keywordItem.cnt++;
+                    }
+                }
+            }
+        }
+
+        // 많은거 뽑기기
+        const arr = [];
+        for (const item of keywordArr) {
+            if (item.cnt > 1) {
+                item.productName = keyword || '공업용 선풍기';
+                arr.push(item);
+            }
+        }
+
+        const sortArr = [...arr].sort((a, b) => b.cnt - a.cnt);
+        console.log(sortArr)
+        setCrawlingArr(sortArr);
+    }
+
     useEffect(() => {
         if (ul.length > 0) {
             findLi(ul[1]);
@@ -219,6 +277,7 @@ function Crawling( props ) {
                 ...prev,
                 imageBtn: false,
             }));
+
             if (startCrawling > 0) {
                 downloadImg();
                 setStartCrawling(0);
@@ -232,16 +291,66 @@ function Crawling( props ) {
         }
     }, [imgArr]);
 
+    useEffect(() => {
+        if (pageType === 'taobao') {
+            const taobaoCol = [
+                {key:'name', name:'상품명'},
+                {key:'price', name:'가격', width: 20},
+                {key:'imgSrc', name:'이미지', type:'image', width: 20},
+                {key:'taobaoLink', name:'타오바오 링크', type: 'a'},
+            ];
+            setGridCol(taobaoCol);
+        }
+        
+        if (pageType === 'keyword') {
+            const keywordCol = [
+                {key:'productName', name:'상품명', width: 40},
+                {key:'keyword', name:'키워드'},
+                {key:'cnt', name:'횟수', width: 20},
+            ];
+            setGridCol(keywordCol);
+        }
+
+        setCrawlingArr([]);
+    }, [pageType])
+
     return (
         <>
             <div>
-                <label htmlFor='smartId'>https://smartstore.naver.com/</label>
-                <input type="text" id='smartId' style={{width: '20%'}} value={urlId} onChange={(e) => {setUrlId(e.target.value)}} placeholder='dwantae'></input>
+                <button type='button' className={'button' + (pageType === 'taobao' ? '' : ' secondary')} onClick={(e) => {setPageType('taobao')}}>타오바오</button>
+                <button type='button' className={'button' + (pageType === 'keyword' ? '' : ' secondary')} onClick={(e) => {setPageType('keyword')}}>키워드</button>
             </div>
+
+            {pageType && 
+                <>
+                    {pageType === 'taobao' && 
+                        <div>
+                            <label htmlFor='smartId'>https://smartstore.naver.com/</label>
+                            <input type="text" id='smartId' style={{width: '20%'}} value={urlId} onChange={(e) => {setUrlId(e.target.value)}} placeholder='dwantae'></input>
+                        </div>
+                    }
+                    {pageType === 'keyword' &&
+                        <div>
+                            <label htmlFor='keyword'>상품명</label>
+                            <input type="text" id='keyword' style={{width: '20%'}} value={keyword} onChange={(e) => {setKeyword(e.target.value)}} placeholder='공업용 선풍기'></input>
+                        </div>
+                    }
+                    <div>
+                        <button className='button danger' onClick={getCrawlingPython}>크롤링 시작</button>
+                        <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
+                        {pageType === 'taobao' && 
+                            <>
+                                <button type="button" className='button secondary' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
+                            </>
+                        }
+                        {pageType === 'keyword' &&
+                            <>
+                            </>
+                        }
+                    </div>
+                </>
+            }
             <div>
-                <button className='button' onClick={getCrawlingPython}>스마트스토어</button>
-                <button type="button" className='button secondary' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
-                <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
                 <SggGridReact 
                     sggRef={excelGrid}
                     sggColumns={gridCol} // 그리드 컬럼 Array
@@ -251,7 +360,7 @@ function Crawling( props ) {
                     // sggGridChecked={true} // 그리드 좌측 체크박스 boolean
                     sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                     sggPaging={false} // 페이징 여부 boolean
-                    sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
+                    // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
                     // sggTrOnDoubleClick={(e, item) => {console.log(e)}} // 행 더블 클릭 시 fnc
                 />
             </div>

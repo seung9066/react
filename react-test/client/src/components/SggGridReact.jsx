@@ -751,18 +751,16 @@ export default function SggGridReact({ sggRef,
             }
         }
 
-        if (sggColumns.length > 0) {
-            setComputedColumns(
-                sggColumns.length > 0
-                    ? sggColumns.map(col => ({
-                            ...col,
-                            width: col.width ? col.width.toString().includes('%') ? col.width
-                                                                                : `${col.width}%`
-                                            : `${getColLength(totalWidth, widthCnt)}%`
-                        }))
-                    : []
-            );
-        }
+        setComputedColumns(
+            sggColumns.length > 0
+                ? sggColumns.map(col => ({
+                        ...col,
+                        width: col.width ? col.width.toString().includes('%') ? col.width
+                                                                            : `${col.width}%`
+                                        : `${getColLength(totalWidth, widthCnt)}%`
+                    }))
+                : []
+        );
     }
 
     // 드래그 시작 시 노드 ID 저장
@@ -915,8 +913,8 @@ export default function SggGridReact({ sggRef,
                     for (let i = 0; i < pageLength; i++) {
                         gridData[i].no ? null : gridData[i].no = (gridData.length - i) + (currentPage - 1) * perPage;
                         sggGridChecked ? gridData[i].totalChecked ? null 
-                                                                : gridData[i].totalChecked = false 
-                                        : null;
+                        : gridData[i].totalChecked = false 
+                        : null;
                         if (gridData[i].setRowState !== 'DELETE') {
                             delete gridData[i].setRowState;
                             dataList.push(gridData[i]);
@@ -932,8 +930,9 @@ export default function SggGridReact({ sggRef,
                     sggData.gridData = dataList;
                     setCurrentList(dataList);
                 } else {
+                    const dataList = [];
                     for (let i = 0; i < gridData.length; i++) {
-                        gridData[i].no ? null : gridData[i].no = i + 1;
+                        gridData[i].no ? null : gridData[i].no = gridData.length - i;
                         sggGridChecked ? gridData[i].totalChecked ? null 
                                                                 : gridData[i].totalChecked = false 
                                         : null;
@@ -957,11 +956,11 @@ export default function SggGridReact({ sggRef,
                         sggData.gridData = gridData;
                         const startIdx = (currentPage - 1) * perPage;
                         const endIdx = startIdx + perPage;
-                        const reversed = [...sggData.gridData].reverse();
+                        const reversed = [...sggData.gridData];
                         setCurrentList(reversed.slice(startIdx, endIdx));
                     } else {
                         sggData.gridData = gridData;
-                        const reversed = [...sggData.gridData].reverse();
+                        const reversed = [...sggData.gridData];
                         setCurrentList(reversed)
                     }
                 }
@@ -1191,7 +1190,10 @@ export default function SggGridReact({ sggRef,
                                 <th
                                     key={'none'}
                                     className={styles.th}
-                                    style={{ position: 'relative', overflow: 'visible' }}  
+                                    style={{ position: 'relative', overflow: 'visible' }}
+                                    colSpan={(sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 2 
+                                                                        : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 1
+                                                                                                                : (sggColumns.length || 1) || 1}
                                 >
                                     -
                                 </th>

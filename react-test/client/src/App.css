@@ -230,6 +230,11 @@ input[type="text"]:focus, input[type="number"], input[type="password"]:focus {
   box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
 }
 
+label {
+  color: #333;
+  margin-right: 10px;
+}
+
 .input-wrapper {
   display: flex;
   flex-direction: column;

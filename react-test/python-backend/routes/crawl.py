@@ -155,3 +155,95 @@ def crawl_taobao():
     except Exception as e:
         print(f"❌ 에러 발생 (Taobao): {e}")
         return jsonify({'error': str(e)}), 500
+    
+
+
+
+# 🛒 스마트스토어 키워드드 크롤링
+@crawl_blueprint.route('/crawlKeyword', methods=['POST'])
+def crawl_keyword():
+    try:
+        url = request.json.get('url')
+        print("요청 데이터:", url)
+
+        driver = create_driver()
+        driver.get(url)
+        wait_for_page_load(driver)
+
+        # "누적 판매순" 버튼 클릭
+        try:
+            button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable(
+                    (By.CSS_SELECTOR, "button.productSortList_button__Y0khI[aria-labelledby='sort_PURCHASE']")
+                )
+            )
+
+            page_type = 'window'
+        except:
+            filter_button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable(
+                    (By.XPATH, "//button[contains(text(), '추천순')]")
+                )
+            )
+            
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", filter_button)
+
+            filter_button.click()
+
+            wait_for_page_load(driver)
+
+            button = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, ".productSortList_button__Y0khI._nlog_click._nlog_impression_element")
+                )
+            )
+
+            page_type = 'mobile'
+        
+        print(page_type)
+
+        wait_for_page_load(driver)
+        button.click()
+        
+        print('click')
+
+        # 다시 로딩 대기
+        wait_for_page_load(driver)
+
+        if page_type == 'window' :
+            # 모든 해당 요소 가져오기
+            elements = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".productCardTitle_product_card_title__eQupA.productCardTitle_view_type_grid2__4N618"))
+            )
+            print('elements')
+        else :
+            # 모든 해당 요소 가져오기
+            elements = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".productCardTitle_product_card_title__eQupA"))
+            )
+            print('elements')
+
+        # 각 요소에서 텍스트 추출
+        tag = []
+        for idx in range(len(elements)):
+            try:
+                # 요소를 다시 찾기
+                elements = driver.find_elements(By.CSS_SELECTOR, (
+                    ".productCardTitle_product_card_title__eQupA.productCardTitle_view_type_grid2__4N618"
+                    if page_type == 'window'
+                    else ".productCardTitle_product_card_title__eQupA"
+                ))
+                el = elements[idx]
+                tag.append(el.text)
+                print(f"{idx+1}번 요소 텍스트:", el.text)
+            except e:
+                print(f"⚠️ {idx+1}번 요소는 stale 상태입니다.")
+                continue
+
+        # driver.quit()  # 필요 시 활성화
+        print("SmartStore Crawl END")
+        return jsonify({'text': tag})
+
+    except Exception as e:
+        print(f"❌ 에러 발생 (SmartStore): {e}")
+        return jsonify({'error': str(e)}), 500
