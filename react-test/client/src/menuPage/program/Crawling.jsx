@@ -16,6 +16,7 @@ function Crawling( props ) {
     const [keyword, setKeyword] = useState('');
     const [recommendKeywordArr, setRecommendKeywordArr] = useState([]);
     const [recommendKeywordDrag, setRecommendKeywordDrag] = useState(true);
+    const [showHideRecommendKeyword, setShowHideRecommendKeyword] = useState(true);
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]);
@@ -436,7 +437,10 @@ function Crawling( props ) {
                                 <button type="button" className='button secondary' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
                             </>
                         }
-                        {pageType === 'keyword' &&
+                        {pageType === 'keyword' && 
+                            <button type='button' className='button' onClick={(e) => setShowHideRecommendKeyword(!showHideRecommendKeyword)}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
+                        }
+                        {pageType === 'keyword' && showHideRecommendKeyword &&
                             <div style={{ 
                                 position: 'fixed',
                                 top: '48%',
