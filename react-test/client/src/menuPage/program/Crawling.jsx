@@ -14,7 +14,7 @@ function Crawling( props ) {
     const [imgArr, setImgArr] = useState([]);
     const [startCrawling, setStartCrawling] = useState(0);
     const [keyword, setKeyword] = useState('');
-    const [recommendKeyword, setRecommendKeyword] = useState('');
+    const [recommendKeywordArr, setRecommendKeywordArr] = useState([]);
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]);
@@ -259,6 +259,24 @@ function Crawling( props ) {
         setKeywordCrawlingArr(sortArr);
     }
 
+    // 키워드 tr doubleClick recommendKeywordArr 바꾸기
+    const useRecommentKeyword = (item) => {
+        const split = structuredClone(recommendKeywordArr);
+
+        const text = typeof item === 'string' ? item : item.keyword;
+        const push = typeof item === 'string' ? false : true;
+        for (let i = 0; i < split.length; i++) {
+            if (split[i] !== ' ' && split[i] === text) {
+                split.splice(i, 1);
+                i--;
+            }
+        }
+
+        push ? split.push(text) : null;
+
+        setRecommendKeywordArr(split);
+    }
+
     useEffect(() => {
         if (ul.length > 0) {
             findLi(ul[1]);
@@ -336,14 +354,13 @@ function Crawling( props ) {
 
     useEffect(() => {
         if (keywordCrawlingArr.length > 0) {
-            let recommendText = '';
+            let recommendTextArr = [];
             for (let i = 0; i < keywordCrawlingArr.length; i++) {
                 if (i < 10) {
-                    recommendText += keywordCrawlingArr[i].keyword;
-                    recommendText += ' ';
+                    recommendTextArr.push(keywordCrawlingArr[i].keyword);
                 }
             }
-            setRecommendKeyword(recommendText);
+            setRecommendKeywordArr(recommendTextArr);
         }
     }, [keywordCrawlingArr])
 
@@ -366,7 +383,6 @@ function Crawling( props ) {
                         <div>
                             <label htmlFor='keyword'>상품명</label>
                             <input type="text" id='keyword' style={{width: '20%'}} value={keyword} onChange={(e) => {setKeyword(e.target.value)}} placeholder='공업용 선풍기'></input>
-                            <p>{recommendKeyword}</p>
                         </div>
                     }
                     <div>
@@ -378,8 +394,28 @@ function Crawling( props ) {
                             </>
                         }
                         {pageType === 'keyword' &&
-                            <>
-                            </>
+                            <div style={{  }}>
+                                {keywordCrawlingArr.length > 0 && 
+                                    <h3>추천어</h3>
+                                }
+                                {recommendKeywordArr.length > 0 &&
+                                    <>
+                                        <p>
+                                            {recommendKeywordArr.map((item) => {
+                                                return <span key={item} onDoubleClick={(e) => useRecommentKeyword(item)}>{item} </span>
+                                            })}
+                                        </p>
+                                    </>
+                                }
+                                {keywordCrawlingArr.length > 0 &&
+                                    <>
+                                        <p style={{ fontSize: '11px', color: 'gray'}}>
+                                            추천어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가
+                                            <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천어 초기화</button>
+                                        </p>
+                                    </>
+                                }
+                            </div>
                         }
                     </div>
                 </>
@@ -395,7 +431,7 @@ function Crawling( props ) {
                     sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                     sggPaging={false} // 페이징 여부 boolean
                     // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
-                    // sggTrOnDoubleClick={(e, item) => {console.log(e)}} // 행 더블 클릭 시 fnc
+                    sggTrOnDoubleClick={pageType === 'keyword' ? (e, item) => {useRecommentKeyword(item)} : null} // 행 더블 클릭 시 fnc
                 />
             </div>
         </>
