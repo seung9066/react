@@ -222,7 +222,7 @@ function Crawling( props ) {
             for (const arrItem of itemArr) {
                 let checkDuple = 0;
                 for (const keywordItem of keywordArr) {
-                    if (arrItem === keywordItem.keyword) {
+                    if (arrItem.replaceAll(' ', '') === keywordItem.keyword.replaceAll(' ', '')) {
                         checkDuple++;
                     }
                 }
