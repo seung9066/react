@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npx concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "dev": "node --max-http-header-size=1000000 node_modules/vite/bin/vite.js --host 0.0.0.0 --port 5173",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
