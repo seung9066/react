@@ -16,7 +16,7 @@ services:
   spring:
     build: ./spring-backend
     ports:
-      - "8090:8090"
+      - "8091:8091"
 
   spring:
     build: ./python-backedn
