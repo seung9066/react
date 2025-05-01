@@ -2,18 +2,23 @@ version: '3.8'
 
 services:
   client:
-    build: ./vite-client
+    build: ./client
     ports:
       - "5173:5173"
 
   express:
-    build: ./express-server
+    build: ./server
     ports:
       - "3000:3000"
     depends_on:
       - spring
 
   spring:
-    build: ./spring-server
+    build: ./spring-backend
     ports:
       - "8090:8090"
+
+  spring:
+    build: ./python-backedn
+    ports:
+      - "3001:3001"
