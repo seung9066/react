@@ -442,7 +442,7 @@ function Crawling( props ) {
                             <button type='button' className='button' onClick={(e) => setShowHideRecommendKeyword(!showHideRecommendKeyword)}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
                         }
                         {pageType === 'keyword' && showHideRecommendKeyword &&
-                            <Draggable>
+                            <Draggable cancel='.keyword'>
                                 <div style={{ 
                                     position: 'fixed',
                                     top: '48%',
@@ -484,6 +484,7 @@ function Crawling( props ) {
                                                                     boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
                                                                     margin: '2px'
                                                                 }}
+                                                                className='keyword'
                                                             >
                                                                 {item}
                                                             </span>

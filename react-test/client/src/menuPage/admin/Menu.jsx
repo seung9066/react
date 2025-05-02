@@ -961,6 +961,7 @@ function Menu( props ) {
             let newComponents = structuredClone(components);
     
             chkMenuComponents(newMenuData, newComponents);
+            utils.showToast('파일 로딩');
         }
     }, [menuComponents]);
 
