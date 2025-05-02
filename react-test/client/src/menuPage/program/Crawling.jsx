@@ -25,6 +25,7 @@ function Crawling( props ) {
     const [btnDisabled, setBtnDisabled] = useState({
         excelBtn: true,
         imageBtn: true,
+        recommendBtn: true,
     });
 
     // js 기반 페이지 puppeteer
@@ -391,11 +392,13 @@ function Crawling( props ) {
                 setBtnDisabled((prev) => ({
                     ...prev,
                     excelBtn: false,
+                    recommendBtn: true,
                 }));
             } else {
                 setBtnDisabled((prev) => ({
                     ...prev,
                     excelBtn: true,
+                    recommendBtn: true,
                 }));
             }
         } else if (pageType === 'keyword') {
@@ -403,11 +406,13 @@ function Crawling( props ) {
                 setBtnDisabled((prev) => ({
                     ...prev,
                     excelBtn: false,
+                    recommendBtn: false,
                 }));
             } else {
                 setBtnDisabled((prev) => ({
                     ...prev,
                     excelBtn: true,
+                    recommendBtn: true,
                 }));
             }
         }
@@ -445,7 +450,7 @@ function Crawling( props ) {
                             </>
                         }
                         {pageType === 'keyword' && 
-                            <button type='button' className='button' onClick={(e) => setShowHideRecommendKeyword(!showHideRecommendKeyword)}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
+                            <button type='button' className='button' onClick={(e) => setShowHideRecommendKeyword(!showHideRecommendKeyword)} disabled={btnDisabled.recommendBtn}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
                         }
                         {pageType === 'keyword' && showHideRecommendKeyword &&
                             <Draggable cancel='.keyword'>
