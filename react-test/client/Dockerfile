@@ -1,10 +1,14 @@
-# React 빌드 단계
+# client/Dockerfile
+
 FROM node:20 AS builder
+
 WORKDIR /app
 
-COPY ./react-test/client/package*.json ./
+# 현재 디렉토리 기준이므로 ./package.json
+COPY package.json package-lock.json ./
 RUN npm install
 
-# 예: Dockerfile이 react-test 폴더에 있고, build context는 그 상위(repo/)
-COPY ./react-test/client ./ 
+# 전체 소스 복사
+COPY . .
+
 RUN npm run build || (echo "❌ 빌드 실패!" && cat /app/dist/index.html || true)
