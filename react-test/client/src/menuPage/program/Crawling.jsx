@@ -17,7 +17,7 @@ function Crawling( props ) {
     const [keyword, setKeyword] = useState('');
     const [recommendKeywordArr, setRecommendKeywordArr] = useState([]);
     const [recommendKeywordDrag, setRecommendKeywordDrag] = useState(true);
-    const [showHideRecommendKeyword, setShowHideRecommendKeyword] = useState(true);
+    const [showHideRecommendKeyword, setShowHideRecommendKeyword] = useState(false);
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]);
@@ -404,6 +404,8 @@ function Crawling( props ) {
                 }
             }
             setRecommendKeywordArr(recommendTextArr);
+
+            setShowHideRecommendKeyword(true);
         }
     }, [keywordCrawlingArr])
 

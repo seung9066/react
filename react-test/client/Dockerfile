@@ -6,6 +6,7 @@ WORKDIR /app
 
 # 현재 디렉토리 기준이므로 ./package.json
 COPY package.json package-lock.json ./
+
 RUN npm install --legacy-peer-deps
 
 # 전체 소스 복사
