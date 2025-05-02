@@ -320,6 +320,24 @@ function Crawling( props ) {
         setRecommendKeywordArr(split);
     }
 
+    // 키워드 추출
+    const getRecommendKeyword = () => {
+        let recommendTextArr = [];
+        for (let i = 0; i < keywordCrawlingArr.length; i++) {
+            if (i < 10) {
+                recommendTextArr.push(keywordCrawlingArr[i].keyword);
+            }
+        }
+        setRecommendKeywordArr(recommendTextArr);
+    }
+
+    // 추천어 없을 때 생성
+    const checkNoRecommendKeyword = () => {
+        if (!showHideRecommendKeyword && keywordCrawlingArr.length > 0 && recommendKeywordArr.length === 0) {
+            getRecommendKeyword();
+        }
+    }
+
     useEffect(() => {
         if (ul.length > 0) {
             findLi(ul[1]);
@@ -374,13 +392,7 @@ function Crawling( props ) {
 
     useEffect(() => {
         if (keywordCrawlingArr.length > 0) {
-            let recommendTextArr = [];
-            for (let i = 0; i < keywordCrawlingArr.length; i++) {
-                if (i < 10) {
-                    recommendTextArr.push(keywordCrawlingArr[i].keyword);
-                }
-            }
-            setRecommendKeywordArr(recommendTextArr);
+            getRecommendKeyword();
 
             setShowHideRecommendKeyword(true);
         }
@@ -450,7 +462,7 @@ function Crawling( props ) {
                             </>
                         }
                         {pageType === 'keyword' && 
-                            <button type='button' className='button' onClick={(e) => setShowHideRecommendKeyword(!showHideRecommendKeyword)} disabled={btnDisabled.recommendBtn}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
+                            <button type='button' className='button' onClick={(e) => {setShowHideRecommendKeyword(!showHideRecommendKeyword), checkNoRecommendKeyword()}} disabled={btnDisabled.recommendBtn}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
                         }
                         {pageType === 'keyword' && showHideRecommendKeyword &&
                             <Draggable cancel='.keyword'>
