@@ -97,6 +97,10 @@ export const showToast = (msg) => {
     window.toastRef?.current?.showToast(msg);
 }
 
+export const getUserData = () => {
+    return window?.userData
+}
+
 // 이미지 파일을 base64로 변환
 export const imageSrcToBase64 = async (imgSrc) => {
     try {

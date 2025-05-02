@@ -57,8 +57,6 @@ function App() {
     urlDataNotice: urlDataNotice,
     setUrlDataNoticeData: setUrlDataNoticeData,
     propsData: propsData,
-    userData: userData,
-    setUserData: setUserData,
   }
   
   // 동적으로 불러온 컴포넌트들을 저장할 state
@@ -90,6 +88,10 @@ function App() {
       // 토스트 전역등록
       window.toastRef = toastRef;
   }, []);
+
+  useEffect(() => {
+    window.userData = userData;
+  }, [userData])
 
   // server에서 메뉴 정보 가져오기
   const getMenu = async () => {
