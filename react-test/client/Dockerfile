@@ -1,12 +1,20 @@
-# 빌드 단계
-FROM node:20 AS builder
-WORKDIR /app
-COPY . .
-RUN npm install && npm run build
+FROM node:20 as builder
 
-# 서빙 단계 (nginx 사용)
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
+# 빌드 작업
+WORKDIR /app
+COPY ./client/package.json ./client/package-lock.json ./
+RUN npm install
+COPY ./client ./
+RUN npm run build
+
+# React 앱을 직접 실행
+FROM node:20
+
+WORKDIR /app
+
+# 빌드된 파일을 복사
+COPY --from=builder /app/dist /app/dist
+
+# React 앱을 실행
+CMD ["npx", "serve", "-s", "dist", "-l", "5173"]
 EXPOSE 5173
-CMD ["nginx", "-g", "daemon off;"]
