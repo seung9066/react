@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as XLSX from 'xlsx';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
@@ -96,43 +95,6 @@ export const checkRequired = (ref) => {
 // 토스트
 export const showToast = (msg) => {
     window.toastRef?.current?.showToast(msg);
-}
-
-// 엑셀
-export const downExcel = (ref, excelName) => {
-    // ref로 가져온 테이블을 워크북으로 변환
-    const wb = XLSX.utils.table_to_book(ref.current, { sheet: "Sheet1" });
-
-    const ws = wb.Sheets["Sheet1"];
-    
-    // 열 너비 자동 조정
-    const range = ws['!ref']; // 시트의 범위 가져오기
-    const rows = range.split(":");
-    const startRow = parseInt(rows[0].substring(1));
-    const endRow = parseInt(rows[1].substring(1));
-    const columnCount = ws["!cols"] ? ws["!cols"].length : 0;
-
-    const getMaxTextLength = (colIndex) => {
-      let maxLength = 0;
-      for (let rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
-        const cell = ws[XLSX.utils.encode_cell({ r: rowIndex, c: colIndex })];
-        if (cell && cell.v) {
-          const textLength = String(cell.v).length;
-          maxLength = Math.max(maxLength, textLength);
-        }
-      }
-      return maxLength;
-    };
-
-    // 각 열에 대해 텍스트 길이에 맞게 너비 설정
-    for (let colIndex = 0; colIndex < columnCount; colIndex++) {
-      const maxTextLength = getMaxTextLength(colIndex);
-      ws['!cols'] = ws['!cols'] || [];
-      ws['!cols'][colIndex] = { wch: maxTextLength + 2 }; // 여유를 위해 +2 추가
-    }
-
-    // 엑셀 파일 다운로드
-    XLSX.writeFile(wb, excelName + '.xlsx');
 }
 
 // 이미지 파일을 base64로 변환
