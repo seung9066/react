@@ -1,15 +1,15 @@
-FROM node:20 as builder
+# client/Dockerfile
 
-# 빌드 작업
+FROM node:20 AS builder
+
 WORKDIR /app
 
-# REACT-TEST/client 내의 package.json과 package-lock.json을 복사
-COPY ./REACT-TEST/client/package.json ./REACT-TEST/client/package-lock.json ./
-
+# 현재 디렉토리 기준이므로 ./package.json
+COPY package.json package-lock.json ./
 RUN npm install
 
-# REACT-TEST/client 내의 나머지 파일들을 복사
-COPY ./REACT-TEST/client ./
-RUN npm run build
+# 전체 소스 복사
+COPY . .
 
-# 이후 nginx 또는 다른 설정들...
+# 빌드
+RUN npm run build
