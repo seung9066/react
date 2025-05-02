@@ -5,7 +5,7 @@ FROM node:20 AS builder
 WORKDIR /app
 
 # 현재 디렉토리 기준이므로 ./package.json
-COPY ./client/package.json ./client/package-lock.json ./client/
+COPY ../client/package.json ../client/package-lock.json ../client/
 
 RUN npm install --legacy-peer-deps
 
