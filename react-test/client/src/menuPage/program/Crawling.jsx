@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import * as utils from '@utils';
 
 import SggGridReact from '@components/SggGridReact';
+import Draggable from 'react-draggable';
 
 function Crawling( props ) {
     const [pageType, setPageType] = useState('');
@@ -441,64 +442,66 @@ function Crawling( props ) {
                             <button type='button' className='button' onClick={(e) => setShowHideRecommendKeyword(!showHideRecommendKeyword)}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
                         }
                         {pageType === 'keyword' && showHideRecommendKeyword &&
-                            <div style={{ 
-                                position: 'fixed',
-                                top: '48%',
-                                left: '0',
-                                right: '0',
-                                background: 'rgba(240, 244, 255, 0.6)', // 투명한 배경
-                                width: '50%',
-                                maxWidth: '800px',
-                                margin: '0 auto',
-                                padding: '20px 30px',
-                                borderRadius: '16px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                fontFamily: 'Arial, sans-serif',
-                                zIndex: 1000,
-                                opacity: '80%'
-                             }}>
-                                {keywordCrawlingArr.length > 0 && 
-                                    <h3 style={{ userSelect: 'none' }} onDoubleClick={(e) => utils.showToast('이거 말고 밑에 글자')}>추천 단어</h3>
-                                }
-                                {recommendKeywordArr.length > 0 &&
-                                    <>
-                                        <p>
-                                            {recommendKeywordArr.map((item) => {
-                                                return <span key={item}
-                                                            data-key={item}
-                                                            draggable={recommendKeywordDrag}
-                                                            onDragStart={handleDragStart}
-                                                            onDragOver={handleDragOver}
-                                                            onDrop={handleDrop} 
-                                                            onDoubleClick={(e) => useRecommentKeyword(item)}
-                                                            style={{ 
-                                                                display: 'inline-block',
-                                                                backgroundColor: '#e0f7fa',
-                                                                color: '#006064',
-                                                                padding: '6px 12px',
-                                                                borderRadius: '12px',
-                                                                fontSize: '14px',
-                                                                fontWeight: 'bold',
-                                                                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-                                                                margin: '2px'
-                                                            }}
-                                                        >
-                                                            {item}
-                                                        </span>
-                                            })}
-                                        </p>
-                                    </>
-                                }
-                                {keywordCrawlingArr.length > 0 &&
-                                    <>
-                                        <p style={{ fontSize: '11px', color: 'gray'}}>
-                                            추천 단어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가, 드래그 드롭으로 순서 변경
-                                        </p>
-                                        <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천 단어 초기화</button>
-                                        <button type='button' className='button' onClick={(e) => setRecommendKeywordDrag(!recommendKeywordDrag)}>{recommendKeywordDrag ? '드래그 허용' : '순서 이동'}</button>
-                                    </>
-                                }
-                            </div>
+                            <Draggable>
+                                <div style={{ 
+                                    position: 'fixed',
+                                    top: '48%',
+                                    left: '0',
+                                    right: '0',
+                                    background: 'rgba(240, 244, 255, 0.6)', // 투명한 배경
+                                    width: '50%',
+                                    maxWidth: '800px',
+                                    margin: '0 auto',
+                                    padding: '20px 30px',
+                                    borderRadius: '16px',
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                    fontFamily: 'Arial, sans-serif',
+                                    zIndex: 1000,
+                                    opacity: '80%'
+                                }}>
+                                    {keywordCrawlingArr.length > 0 && 
+                                        <h3 style={{ userSelect: 'none' }} onDoubleClick={(e) => utils.showToast('이거 말고 밑에 글자')}>추천 단어</h3>
+                                    }
+                                    {recommendKeywordArr.length > 0 &&
+                                        <>
+                                            <p>
+                                                {recommendKeywordArr.map((item) => {
+                                                    return <span key={item}
+                                                                data-key={item}
+                                                                draggable={recommendKeywordDrag}
+                                                                onDragStart={handleDragStart}
+                                                                onDragOver={handleDragOver}
+                                                                onDrop={handleDrop} 
+                                                                onDoubleClick={(e) => useRecommentKeyword(item)}
+                                                                style={{ 
+                                                                    display: 'inline-block',
+                                                                    backgroundColor: '#e0f7fa',
+                                                                    color: '#006064',
+                                                                    padding: '6px 12px',
+                                                                    borderRadius: '12px',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: 'bold',
+                                                                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                                                                    margin: '2px'
+                                                                }}
+                                                            >
+                                                                {item}
+                                                            </span>
+                                                })}
+                                            </p>
+                                        </>
+                                    }
+                                    {keywordCrawlingArr.length > 0 &&
+                                        <>
+                                            <p style={{ fontSize: '11px', color: 'gray'}}>
+                                                추천 단어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가, 드래그 드롭으로 순서 변경
+                                            </p>
+                                            <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천 단어 초기화</button>
+                                            <button type='button' className='button' onClick={(e) => setRecommendKeywordDrag(!recommendKeywordDrag)}>{recommendKeywordDrag ? '드래그 허용' : '순서 이동'}</button>
+                                        </>
+                                    }
+                                </div>
+                            </Draggable>
                         }
                     </div>
                 </>
