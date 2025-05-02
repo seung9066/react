@@ -9,16 +9,17 @@ services:
   express:
     build: ./server
     ports:
-      - "3000:3000"
+      - "5000:5000"
     depends_on:
       - spring
+      - python-backend
 
   spring:
     build: ./spring-backend
     ports:
       - "8091:8091"
 
-  spring:
-    build: ./python-backedn
+  python-backend:
+    build: ./python-backend
     ports:
-      - "3001:3001"
+      - "5001:5001"
