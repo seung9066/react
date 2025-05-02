@@ -362,36 +362,12 @@ function Crawling( props ) {
                 {key:'taobaoLink', name:'타오바오 링크', type: 'a'},
             ];
             setGridCol(taobaoCol);
-
-            if (crawlingArr.length > 0) {
-                setBtnDisabled((prev) => ({
-                    ...prev,
-                    excelBtn: false,
-                }));
-            } else {
-                setBtnDisabled((prev) => ({
-                    ...prev,
-                    excelBtn: true,
-                }));
-            }
         } else if (pageType === 'keyword') {
             const keywordCol = [
                 {key:'keyword', name:'키워드'},
                 {key:'cnt', name:'횟수', width: 20},
             ];
             setGridCol(keywordCol);
-
-            if (keywordCrawlingArr.length > 0) {
-                setBtnDisabled((prev) => ({
-                    ...prev,
-                    excelBtn: false,
-                }));
-            } else {
-                setBtnDisabled((prev) => ({
-                    ...prev,
-                    excelBtn: true,
-                }));
-            }
         }
     }, [pageType])
 
@@ -408,6 +384,34 @@ function Crawling( props ) {
             setShowHideRecommendKeyword(true);
         }
     }, [keywordCrawlingArr])
+
+    useEffect(() => {
+        if (pageType === 'taobao') {
+            if (crawlingArr.length > 0) {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: false,
+                }));
+            } else {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: true,
+                }));
+            }
+        } else if (pageType === 'keyword') {
+            if (keywordCrawlingArr.length > 0) {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: false,
+                }));
+            } else {
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    excelBtn: true,
+                }));
+            }
+        }
+    }, [pageType, crawlingArr, keywordCrawlingArr])
 
     return (
         <>
