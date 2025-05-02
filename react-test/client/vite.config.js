@@ -16,6 +16,11 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, 'src/commonJs/utils.js'),
     },
   },
+  build: {
+    rollupOptions: {
+        external: ['exceljs'],
+    },
+  },
   server: {
     host: '0.0.0.0',
     port: 5173,
