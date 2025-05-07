@@ -275,3 +275,24 @@ export const deleteImage = async (filename) => {
         }
     });
 }
+
+// 쿠키 설정
+export const setCookie = (name, value, days) => {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));  // 만료일 설정
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = `${name}=${value}; ${expires}; path=/`;  // 쿠키 설정
+}
+
+// 쿠키 가져오기
+export const getCookie = (name) => {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) {
+            return c.substring(nameEQ.length, c.length);
+        }
+    }
+    return null; // 쿠키가 없으면 null 반환
+}
