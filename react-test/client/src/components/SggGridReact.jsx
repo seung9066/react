@@ -918,8 +918,8 @@ export default function SggGridReact({ sggRef,
                     for (let i = 0; i < pageLength; i++) {
                         gridData[i].no ? null : gridData[i].no = (gridData.length - i) + (currentPage - 1) * perPage;
                         sggGridChecked ? gridData[i].totalChecked ? null 
-                        : gridData[i].totalChecked = false 
-                        : null;
+                                                                    : gridData[i].totalChecked = false 
+                                        : null;
                         if (gridData[i].setRowState !== 'DELETE') {
                             delete gridData[i].setRowState;
                             dataList.push(gridData[i]);
