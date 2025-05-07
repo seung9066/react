@@ -11,4 +11,6 @@ public interface LoginMapper {
     int upLoginCount(Map<String, String> map) throws Exception;
 
     int resetLoginCount(Map<String, String> map) throws Exception;
+
+    int log(Map<String, String> map) throws Exception;
 }

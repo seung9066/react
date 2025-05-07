@@ -35,4 +35,9 @@ public class LoginServiceImpl implements LoginService {
 
         return result;
     }
+
+    @Override
+    public int log(Map<String, String> map) throws Exception {
+        return loginMapper.log(map);
+    }
 }

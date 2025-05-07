@@ -55,4 +55,27 @@
         AND USER_ID = #{userId}
     </update>
 
+    <insert id="log" parameterType="map">
+        /* com.sgg.application.login.mapper.LoginMapper */
+        <selectKey keyProperty="logNo" resultType="resultMap" order="BEFORE">
+            SELECT NVL(MAX(LOG_NO), 0) + 1 AS LOG_NO
+            FROM SGG_LOG
+        </selectKey>
+        INSERT INTO SGG_LOG
+        (   LOG_NO
+            , USER_ID
+            , LOG_PATH
+            , USER_IP
+            , LOG_TIME
+            , MENU_NAME
+        )
+        VALUES
+        (   #{logNo}
+            , 'REACT'
+            , 'REACT'
+            , #{userIp}
+            , SYSDATE
+            , 'REACT'
+        )
+    </insert>
 </mapper>
