@@ -26,6 +26,7 @@ function Crawling( props ) {
         excelBtn: true,
         imageBtn: true,
         recommendBtn: true,
+        crawlingBtn: false,
     });
 
     // js 기반 페이지 puppeteer
@@ -69,6 +70,11 @@ function Crawling( props ) {
 
     // python 크롤링
     const getCrawlingPython = async() => {
+        utils.showToast('크롤링을 시작합니다.');
+        setBtnDisabled((prev) => ({
+            ...prev,
+            crawlingBtn: true,
+        }));
         if (pageType === 'taobao') {
             const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
             await utils.postAxios('/crawling/crawlPythonSmartStore', {url : urlPath}).then((res) => {
@@ -81,6 +87,11 @@ function Crawling( props ) {
                 } else {
                     utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
                 }
+
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    crawlingBtn: false,
+                }));
             });
         }
 
@@ -94,6 +105,11 @@ function Crawling( props ) {
                 } else {
                     utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
                 }
+
+                setBtnDisabled((prev) => ({
+                    ...prev,
+                    crawlingBtn: false,
+                }));
             });
         }
     }
@@ -454,7 +470,7 @@ function Crawling( props ) {
                         </>
                     }
                     <div>
-                        <button className='button danger' onClick={getCrawlingPython}>크롤링 시작</button>
+                        <button className='button danger' onClick={getCrawlingPython} disabled={btnDisabled.crawlingBtn}>크롤링 시작</button>
                         <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
                         {pageType === 'taobao' && 
                             <>
