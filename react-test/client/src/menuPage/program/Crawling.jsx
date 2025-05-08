@@ -433,9 +433,17 @@ function Crawling( props ) {
     // 키워드 추출
     const getRecommendKeyword = (product) => {
         let recommendTextArr = [];
-        for (let i = 0; i < keywordCrawlingArr.length; i++) {
-            if (keywordCrawlingArr[i].product === product && recommendTextArr.length <= 10) {
-                recommendTextArr.push(keywordCrawlingArr[i].keyword);
+        for (const item of excelGridData) {
+            if (item.product === product && item.keyword) {
+                recommendTextArr = item.keyword.split(' ');
+            }
+        }
+        
+        if (recommendTextArr.length === 0) {
+            for (let i = 0; i < keywordCrawlingArr.length; i++) {
+                if (keywordCrawlingArr[i].product === product && recommendTextArr.length <= 10) {
+                    recommendTextArr.push(keywordCrawlingArr[i].keyword);
+                }
             }
         }
         setRecommendKeywordArr(recommendTextArr);
