@@ -173,6 +173,7 @@ function Crawling( props ) {
                     let data = res.data;
                     // 키워드 카운팅
                     findRepeatKeyword(data.text);
+                    console.log(data.text)
                     utils.showToast('키워드 정보를 크롤링 했습니다.');
                 } else {
                     utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
