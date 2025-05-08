@@ -180,7 +180,7 @@ def crawl_keyword():
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
             # 모든 해당 요소 가져오기
-            elements = WebDriverWait(driver, 10).until(
+            elements = WebDriverWait(driver, 20).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".product_link__aFnaq.linkAnchor._nlog_click._nlog_impression_element"))
             )
 
