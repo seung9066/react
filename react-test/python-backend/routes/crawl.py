@@ -42,27 +42,21 @@ def crawl_smartstore():
         driver.get(url)
         wait_for_page_load(driver)
 
-        # "누적 판매순" 버튼 클릭
-        button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[text()='누적 판매순']"))
-        )
-        button.click()
-
-        # 다시 로딩 대기
-        wait_for_page_load(driver)
+        tag = []
 
         # 제품 목록 div 찾기
-        div = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "whole_products"))
-        )
+        elements_name = driver.find_elements(By.CSS_SELECTOR, "ul.wOWfwtMC_3.FR2H3hWxUo li > div > a > strong")
+        elements_price = driver.find_elements(By.CSS_SELECTOR, "ul.wOWfwtMC_3.FR2H3hWxUo li > div > a > div > strong > span")
+        elements_image = driver.find_elements(By.CSS_SELECTOR, "ul.wOWfwtMC_3.FR2H3hWxUo li > div > a > div > div > div > div > img")
 
-        ul_elements = div.find_elements(By.TAG_NAME, "ul")
-        ul_contents = [ul.get_attribute('outerHTML') for ul in ul_elements]
-
-        html = driver.page_source
-
+        for idx, el in enumerate(elements_name):
+            try:
+                tag.append({'name' : elements_name[idx].text, 'price': elements_price[idx].text, 'imgSrc': elements_image[idx].get_attribute("src")})
+            except Exception as e:
+                print(f"⚠️ {idx+1}번 요소는 stale 상태입니다: {e}")
+        
         # driver.quit()  # 필요 시 활성화
-        return jsonify({'content': html, 'ul': ul_contents})
+        return jsonify({'data': tag})
 
     except Exception as e:
         print(f"❌ 에러 발생 (SmartStore): {e}")

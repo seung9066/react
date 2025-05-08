@@ -15,12 +15,8 @@ function Crawling( props ) {
     // 크롬드라이버 경로
     const [chromeDriver, setChromeDriver] = useState('');
 
-    // 스마트스토어 크롤링 데이터
-    const [crawlingTaobaoData, setCrawlingTaobaoData] = useState([]);
     // 스마트스토어 아이디
     const [urlIdTaobao, setUrlIdTaobao] = useState('');
-    // ul 태그 담기용
-    const [ul, setUl] = useState([]);
     // 실제 타오바오 그리드 데이터
     const [crawlingTaobaoArr, setCrawlingTaobaoArr] = useState([]);
     // 타오바오 이미지
@@ -46,7 +42,6 @@ function Crawling( props ) {
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]); 
-
     // 입력 그리드
     const [excelGridCol, setExcelGridCol] = useState([]);
     // 입력 그리드 데이터
@@ -143,12 +138,11 @@ function Crawling( props ) {
         }));
         if (pageType === 'taobao') {
             // 타오바오 크롤링
-            const urlPath = urlIdTaobao || 'https://smartstore.naver.com/dwantae';
+            const urlPath = `https://smartstore.naver.com/${urlIdTaobao || 'dwantae'}/category/ALL?st=TOTALSALE&dt=BIG_IMAGE&page=1&size=40`;
             await utils.postAxios('/crawling/crawlPythonSmartStore', {url : urlPath, chromeDriverPath: chromeDriver}).then((res) => {
                 if (res.msg === 'success') {
                     let data = res.data;
-                    setUl(data.ul);
-                    setCrawlingTaobaoData(data.content);
+                    setCrawlingTaobaoArr(data.data);
                     setStartCrawling(1);
                     utils.showToast('스마트스토어 정보를 크롤링 했습니다.');
                 } else {
@@ -210,43 +204,6 @@ function Crawling( props ) {
         setCrawlingTaobaoArr(newCrawlingTaobaoArr);
     }
 
-    // 네이버 스마트 스토어 정보 뽑아내기
-    const findLi = (data) => {
-        const imgClass = '_25CKxIKjAk';
-        const imgArrData = data.split('<img class="' + imgClass + '" ');
-        const dataArr = [];
-        for (const item of imgArrData) {
-            if (item.indexOf('src="') > -1) {
-                const wonStartStr = '<span class="_2DywKu0J_8">';
-                const wonEndStr = '</span>원</strong>';
-                const wonStartIdx = item.indexOf(wonStartStr) + wonStartStr.length;
-                const wonEndIdx = item.indexOf(wonEndStr);
-                const won = item.substring(wonStartIdx, wonEndIdx)
-
-                const srcStartStr = 'src="';
-                const srcEndStr = '" alt="';
-                const srcStartIdx = item.indexOf(srcStartStr) + srcStartStr.length;
-                const srcEndIdx = item.indexOf(srcEndStr);
-                const src = item.substring(srcStartIdx, srcEndIdx);
-
-                const altStartStr = 'alt="';
-                const altEndStr = '"></div></div>';
-                const altStartIdx = item.indexOf(altStartStr) + altStartStr.length;
-                const altEndIdx = item.indexOf(altEndStr);
-                const alt = item.substring(altStartIdx, altEndIdx);
-
-                const dataObj = {imgSrc: src, name: alt, price: won};
-                if (dataArr.length >= 10) {
-                    break;
-                } else {
-                    dataArr.push(dataObj);
-                }
-            }
-        }
-
-        setCrawlingTaobaoArr(dataArr);
-    }
-
     // 엑셀 저장
     const downloadExcel = (e) => {
         let excelName = '';
@@ -277,6 +234,27 @@ function Crawling( props ) {
         }
 
         utils.base64ToImage(imgArr, crawlingNameArr);
+    }
+
+    // 초기화
+    const resetAllData = (e) => {
+        if (pageType === 'taobao') {
+            setUrlIdTaobao('');
+            setCrawlingTaobaoArr([]);
+            setImgArr([]);
+            setStartCrawling(0);
+        }
+
+        if (pageType === 'keyword') {
+            setKeywordCrawlingArr([]);
+            setKeyword('');
+            setRecommendKeywordArr([]);
+            setShowHideRecommendKeyword(false);
+            setRadioOrderType('ranking');
+            
+            setExcelGridData([]);
+            setTfAddExcelGridData(true);
+        }
     }
 
     // 파이썬 서버 이미지 저장
@@ -581,12 +559,6 @@ function Crawling( props ) {
     }, [chromeDriver]);
 
     useEffect(() => {
-        if (ul.length > 0) {
-            findLi(ul[1]);
-        }
-    }, [ul]);
-
-    useEffect(() => {
         if (crawlingTaobaoArr.length > 0) {
             imageSrcToBase64();
         }
@@ -729,9 +701,10 @@ function Crawling( props ) {
                         <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
                         {pageType === 'taobao' && 
                             <>
-                                <button type="button" className='button secondary' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
+                                <button type="button" className='button' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
                             </>
                         }
+                        <button type="button" className='button secondary' onClick={(e) => resetAllData(e)}>초기화</button>
                         {pageType === 'keyword' &&
                             <>
                                 <label>
@@ -806,7 +779,6 @@ function Crawling( props ) {
             }
             {pageType === 'keyword' &&
                 <>
-                    <h2>{keyword || '목록의 키워드 단어 팝업 클릭 시 변경됨'}</h2>
                     <div>
                         <SggGridReact
                             sggRef={(pageType === 'keyword' ? excelGrid : null)}
