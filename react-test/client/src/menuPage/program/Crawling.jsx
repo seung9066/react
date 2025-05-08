@@ -251,7 +251,7 @@ function Crawling( props ) {
             setRecommendKeywordArr([]);
             setShowHideRecommendKeyword(false);
             setRadioOrderType('ranking');
-            
+
             setExcelGridData([]);
             setTfAddExcelGridData(true);
         }
@@ -552,6 +552,10 @@ function Crawling( props ) {
             
             if (path.indexOf('"') === path.length - 1) {
                 path = path.slice(0, -1);
+            }
+
+            if (path !== chromeDriver) {
+                setChromeDriver(path);
             }
 
             setCookie(path);
