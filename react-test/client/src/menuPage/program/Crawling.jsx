@@ -294,7 +294,8 @@ function Crawling( props ) {
 
         const sortArr = [...arr].sort((a, b) => b.cnt - a.cnt);
 
-        setKeywordCrawlingArr(sortArr);
+        const newKeywordCrawlingArr = keywordCrawlingArr.concat(sortArr);
+        setKeywordCrawlingArr(newKeywordCrawlingArr);
     }
 
     // 드래그 시작 시 노드 ID 저장
