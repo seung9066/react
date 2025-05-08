@@ -14,8 +14,8 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # ✅ [공통 함수] 크롬 드라이버 생성
-def create_driver():
-    chrome_path = "C:\\Users\\SGG\\Desktop\\dev\\etc\\chromedriver-win64\\chromedriver.exe"
+def create_driver(path):
+    chrome_path = path.replace('/' , '\\')
     service = Service(executable_path=chrome_path)
     options = Options()
     # options.add_argument("--headless")  # 필요 시 주석 해제
@@ -35,8 +35,9 @@ def wait_for_page_load(driver, timeout=10):
 def crawl_smartstore():
     try:
         url = request.json.get('url')
+        path = request.json.get('chromeDriverPath')
 
-        driver = create_driver()
+        driver = create_driver(path)
         driver.get(url)
         wait_for_page_load(driver)
 
@@ -99,7 +100,9 @@ def crawl_taobao():
             return jsonify({'error': 'No images found on the server'}), 404
 
         # 웹드라이버 생성 및 페이지 로드
-        driver = create_driver()
+        path = request.json.get('chromeDriverPath')
+
+        driver = create_driver(path)
         driver.get('https://www.taobao.com/')
         wait_for_page_load(driver)
 
@@ -160,73 +163,33 @@ def crawl_taobao():
 def crawl_keyword():
     try:
         url = request.json.get('url')
+        path = request.json.get('chromeDriverPath')
+        keywordArr = request.json.get('keywordArr')
 
-        driver = create_driver()
-        driver.get(url)
-        wait_for_page_load(driver)
-
-        # "누적 판매순" 버튼 클릭
-        try:
-            button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "button.productSortList_button__Y0khI[aria-labelledby='sort_PURCHASE']")
-                )
-            )
-
-            page_type = 'window'
-        except:
-            filter_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable(
-                    (By.XPATH, "//button[contains(text(), '추천순')]")
-                )
-            )
+        tag = []
+        for idx, txt in enumerate(keywordArr):
+            searchUrl = url.replace('{searchKeyword}' , txt)
+            print(txt)
+            print(url)
+            print(searchUrl)
             
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", filter_button)
-
-            filter_button.click()
-
+            driver = create_driver(path)
+            driver.get(searchUrl)
             wait_for_page_load(driver)
 
-            button = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, ".productSortList_button__Y0khI._nlog_click._nlog_impression_element")
-                )
-            )
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-            page_type = 'mobile'
-        
-        wait_for_page_load(driver)
-        button.click()
-        
-        # 다시 로딩 대기
-        wait_for_page_load(driver)
-
-        if page_type == 'window' :
             # 모든 해당 요소 가져오기
             elements = WebDriverWait(driver, 10).until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".productCardTitle_product_card_title__eQupA.productCardTitle_view_type_grid2__4N618"))
-            )
-        else :
-            # 모든 해당 요소 가져오기
-            elements = WebDriverWait(driver, 10).until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".productCardTitle_product_card_title__eQupA"))
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".product_link__aFnaq.linkAnchor._nlog_click._nlog_impression_element"))
             )
 
-        # 각 요소에서 텍스트 추출
-        tag = []
-        for idx in range(len(elements)):
-            try:
-                # 요소를 다시 찾기
-                elements = driver.find_elements(By.CSS_SELECTOR, (
-                    ".productCardTitle_product_card_title__eQupA.productCardTitle_view_type_grid2__4N618"
-                    if page_type == 'window'
-                    else ".productCardTitle_product_card_title__eQupA"
-                ))
-                el = elements[idx]
-                tag.append(el.text)
-            except e:
-                print(f"⚠️ {idx+1}번 요소는 stale 상태입니다.")
-                continue
+            # 각 요소에서 텍스트 추출
+            for idx, el in enumerate(elements):
+                try:
+                    tag.append({'product': txt, 'name': el.text})
+                except Exception as e:
+                    print(f"⚠️ {idx+1}번 요소는 stale 상태입니다: {e}")
 
         # driver.quit()  # 필요 시 활성화
         return jsonify({'text': tag})
