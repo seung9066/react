@@ -5,6 +5,7 @@ import SggGridReact from '@components/SggGridReact';
 import Draggable from 'react-draggable';
 
 function Crawling( props ) {
+    const maxKeywordCrawling = 10;
     const [pageType, setPageType] = useState('');
     const [crawlingData, setCrawlingData] = useState([]);
     const [urlId, setUrlId] = useState('');
@@ -19,6 +20,7 @@ function Crawling( props ) {
     const [recommendKeywordArr, setRecommendKeywordArr] = useState([]);
     const [recommendKeywordDrag, setRecommendKeywordDrag] = useState(true);
     const [showHideRecommendKeyword, setShowHideRecommendKeyword] = useState(false);
+    const [radioOrderType, setRadioOrderType] = useState('ranking');    
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]);
@@ -55,15 +57,24 @@ function Crawling( props ) {
                 if (!item.product) {
                     checkProduct++;
                 }
+
+                for (const item2 of excelGridData) {
+
+                }
             }
 
-            if (checkOverFive > 4) {
-                utils.showToast('크롤링은 한번에 5개 까지만 가능 합니다.');
+            if (checkOverFive > maxKeywordCrawling) {
+                utils.showToast(`크롤링은 한번에 ${maxKeywordCrawling}개 까지만 가능 합니다.`);
                 return false;
             }
 
             if (excelGridData.length === 0 || checkProduct > 0) {
                 utils.showToast('크롤링 할 상품명을 입력 후 전체 저장 버튼을 클릭하세요.');
+                return false;
+            }
+            
+            if (!radioOrderType) {
+                utils.showToast('크롤링 순서를 선택해주세요.');
                 return false;
             }
         }
@@ -100,7 +111,16 @@ function Crawling( props ) {
                     keywordArr.push(item.product);
                 }
             }
-            const urlPath = `https://search.shopping.naver.com/search/all?adQuery={searchKeyword}&frm=NVSCDIG&origQuery={searchKeyword}&pagingIndex=1&pagingSize=40&productSet=overseas&query={searchKeyword}&sort=review&timestamp=&viewType=list`;
+
+            let urlPath = '';
+            if (radioOrderType === 'ranking') {
+                urlPath = `https://search.shopping.naver.com/search/all?adQuery={searchKeyword}&frm=NVSCDIG&origQuery={searchKeyword}&pagingIndex=1&pagingSize=40&productSet=overseas&query={searchKeyword}&sort=review&timestamp=&viewType=list`;
+            }
+
+            if (radioOrderType === 'review') {
+                urlPath = `https://search.shopping.naver.com/search/all?bt=-1&frm=NVSCDIG&query={searchKeyword}`;
+            }
+
             await utils.postAxios('/crawling/crawlPythonKeyword', {url : urlPath, chromeDriverPath: chromeDriver, keywordArr: keywordArr}).then((res) => {
                 if (res.msg === 'success') {
                     let data = res.data;
@@ -260,14 +280,17 @@ function Crawling( props ) {
             const itemArr = item.name.split(' ');
             for (const arrItem of itemArr) {
                 let checkDuple = 0;
+                const regText = arrItem.replace(/[^가-힣]/g, '');
                 for (const keywordItem of keywordArr) {
-                    if (arrItem.replaceAll(' ', '') === keywordItem.keyword.replaceAll(' ', '') && item.product === keywordItem.product) {
+                    if (regText === keywordItem.keyword && item.product === keywordItem.product) {
                         checkDuple++;
                     }
                 }
 
                 if (checkDuple === 0) {
-                    keywordArr.push({product: item.product, keyword : arrItem, cnt: 0});
+                    if (regText) {
+                        keywordArr.push({product: item.product, keyword : regText, cnt: 0});
+                    }
                 }
             }
         }
@@ -561,7 +584,7 @@ function Crawling( props ) {
     }, [pageType, crawlingArr, keywordCrawlingArr])
 
     useEffect(() => {
-        // 5개 이상 행추가 막기용
+        // 행추가 막기용
         if (excelGridData.length > 0) {
             let checkNew = 0;
             for (const item of excelGridData) {
@@ -570,7 +593,7 @@ function Crawling( props ) {
                 }
             }
 
-            if (checkNew > 4) {
+            if (checkNew >= maxKeywordCrawling) {
                 setTfAddExcelGridData(false);
             } else {
                 setTfAddExcelGridData(true);
@@ -611,6 +634,18 @@ function Crawling( props ) {
                         {pageType === 'taobao' && 
                             <>
                                 <button type="button" className='button secondary' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
+                            </>
+                        }
+                        {pageType === 'keyword' &&
+                            <>
+                                <label>
+                                    <input type='radio' name='orderType' value='ranking' checked={radioOrderType === 'ranking'} onChange={(e) => setRadioOrderType(e.target.value)} />
+                                    네이버 랭킹 순
+                                </label>
+                                <label>
+                                    <input type='radio' name='orderType' value='review' checked={radioOrderType === 'review'} onChange={(e) => setRadioOrderType(e.target.value)} />
+                                    리뷰 많은 순
+                                </label>
                             </>
                         }
                         {pageType === 'keyword' && showHideRecommendKeyword &&
@@ -676,7 +711,7 @@ function Crawling( props ) {
             }
             {pageType === 'keyword' &&
                 <>
-                    <h2>{keyword || '공업용 선풍기'}</h2>
+                    <h2>{keyword || '목록의 키워드 단어 팝업 클릭 시 변경됨'}</h2>
                     <div>
                         <SggGridReact
                             sggRef={excelGrid}
@@ -684,7 +719,7 @@ function Crawling( props ) {
                             sggBtn={{'c': tfAddExcelGridData, 'r': true, 'u': true, 'd': true, saveBtn : doExcelGridSaveBtn}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                             sggData={{gridData: excelGridData, setGridData: setExcelGridData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                             // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
-                            sggGridChecked={false} // 그리드 좌측 체크박스 boolean
+                            sggGridChecked={true} // 그리드 좌측 체크박스 boolean
                             sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                             sggPaging={false} // 페이징 여부 boolean
                             // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
