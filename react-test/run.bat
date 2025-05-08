@@ -11,5 +11,7 @@ cd python-backend
 REM Python 백엔드 서버 실행 (새 창에서)
 start cmd /k "python app.py"
 
+start chrome http://localhost:5173
+
 REM 배치 파일 종료
 exit
