@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import * as utils from '@utils';
 
 import SggGridReact from '@components/SggGridReact';
@@ -531,6 +531,23 @@ function Crawling( props ) {
         setShowHideRecommendKeyword(true);
     }
 
+    // 그리드 팝업 버튼 boolean
+    const booleanKeywordPopupBtn = (item) => {
+        const rowProduct = item.product;
+        let checkBoolean = 0;
+        for (const item2 of keywordCrawlingArr) {
+            if (rowProduct === item2.product) {
+                checkBoolean++;
+            }
+        }
+
+        if (checkBoolean > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     useEffect(() => {
         // 크롬 드라이버 경로 쿠키 세팅
         const chromeDriverCookie = getCookie();
@@ -607,12 +624,12 @@ function Crawling( props ) {
 
             const excelCol = [
                 {key:'product', name:'상품명', width: 40, type:'text'},
-                {key:'keywordBtn', name:'키워드 단어', width: 15, type:'button', btn: {btnText: '팝업', onClick: openKeywordPopup}},
+                {key:'keywordBtn', name:'키워드 단어', width: 15, type:'button', btn: {btnText: '팝업', onClick: openKeywordPopup, disabled: booleanKeywordPopupBtn}},
                 {key:'keyword', name:'키워드', type:'text'},
             ];
             setExcelGridCol(excelCol);
         }
-    }, [pageType])
+    }, [pageType, keywordCrawlingArr])
 
     useEffect(() => {
         if (pageType === 'taobao') {

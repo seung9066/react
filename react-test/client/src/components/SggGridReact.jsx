@@ -400,7 +400,19 @@ export default function SggGridReact({ sggRef,
                                                                             : <a href={item[col.key]} target="_blank" >{item[col.key]}</a>;
         }
         if (col.type === 'button') {
-            return <button type='button' className={col.btn.className || 'button'} onClick={(e) => {e.stopPropagation(); if (col.btn.onClick) col.btn.onClick(item);}}>{col.btn.btnText}</button>
+            let btnDisabled = false;
+            if (typeof col.btn.disabled === 'boolean') {
+                btnDisabled = col.btn.disabled;
+            }
+
+            if (typeof col.btn.disabled === 'function') {
+                btnDisabled = col.btn.disabled(item);
+            }
+            return <button type='button' 
+                            className={col.btn.className || 'button'} 
+                            onClick={(e) => {e.stopPropagation(); if (col.btn.onClick) col.btn.onClick(item);}}
+                            disabled={btnDisabled}
+                    >{col.btn.btnText}</button>
         }
         if (!col.type) {
             return item[col.key];
