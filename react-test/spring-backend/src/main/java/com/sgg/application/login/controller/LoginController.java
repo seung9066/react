@@ -21,4 +21,9 @@ public class LoginController {
     public Map<String, Object> getId(@RequestParam Map<String, String> map) throws Exception {
         return loginService.login(map);
     }
+
+    @GetMapping("/forIp")
+    public int forIp() throws Exception {
+        return 1;
+    }
 }

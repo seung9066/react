@@ -196,7 +196,7 @@ export default function SggGridReact({ sggRef,
             }
         }
 
-        if (sggData?.setgridData && chkDifferent > 0) {
+        if (sggData?.setGridData && chkDifferent > 0) {
             sggData.setGridData(newGridData);
         }
     }
@@ -342,7 +342,7 @@ export default function SggGridReact({ sggRef,
             }
         }
 
-        if (sggData?.setgridData && chkDifferent > 0) {
+        if (sggData?.setGridData && chkDifferent > 0) {
             sggData.setGridData(newGridData);
         }
     }
@@ -398,6 +398,9 @@ export default function SggGridReact({ sggRef,
                                                                                     <input type="text" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
                                                                             : <a href={item[col.key]} target="_blank" >{item[col.key]}</a>;
+        }
+        if (col.type === 'button') {
+            return <button type='button' className={col.btn.className || 'button'} onClick={(e) => {e.stopPropagation(); if (col.btn.onClick) col.btn.onClick(item);}}>{col.btn.btnText}</button>
         }
         if (!col.type) {
             return item[col.key];
@@ -691,14 +694,19 @@ export default function SggGridReact({ sggRef,
 
             if (newCurrentList[i].rowState) {
                 newCurrentList[i].setRowState = newCurrentList[i].rowState;
-                delete newCurrentList[i].rowState;
+                if (newCurrentList[i].rowState === 'DELETE') {
+                    newCurrentList.splice(i, 1);
+                    i--;
+                } else {
+                    delete newCurrentList[i].rowState;
+                }
             }
         }
 
         if (sggBtn.saveBtn && typeof sggBtn.saveBtn === 'function') {
             sggBtn.saveBtn(newCurrentList);
             setSelectedRow(null);
-            if (sggData?.setgridData) {
+            if (sggData?.setGridData) {
                 sggData.setGridData(newCurrentList);
             } else {
                 setCurrentList(newCurrentList);
@@ -706,7 +714,7 @@ export default function SggGridReact({ sggRef,
         } else {
             setSelectedRow(null);
             setCurrentList(newCurrentList);
-            if (sggData?.setgridData) {
+            if (sggData?.setGridData) {
                 sggData.setGridData(newCurrentList);
             }
             utils.showToast('적용되었습니다.');
@@ -741,11 +749,10 @@ export default function SggGridReact({ sggRef,
     };
 
     const setColumn = () => {
-        const newColumns = structuredClone(sggColumns);
         // 지정된 width 총 길이, 수 찾기
         let totalWidth = 0;
         let widthCnt = 0;
-        for (const item of newColumns) {
+        for (const item of sggColumns) {
             if (item.width) {
                 let width = item.width;
                 if (width.toString().includes('%')) {

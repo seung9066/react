@@ -15,12 +15,20 @@ function Crawling( props ) {
     const [imgArr, setImgArr] = useState([]);
     const [startCrawling, setStartCrawling] = useState(0);
     const [keyword, setKeyword] = useState('');
+    const [chromeDriver, setChromeDriver] = useState('');
     const [recommendKeywordArr, setRecommendKeywordArr] = useState([]);
     const [recommendKeywordDrag, setRecommendKeywordDrag] = useState(true);
     const [showHideRecommendKeyword, setShowHideRecommendKeyword] = useState(false);
 
     // 그리드 컬럼
     const [gridCol, setGridCol] = useState([]);
+
+    // 입력 그리드
+    const [excelGridCol, setExcelGridCol] = useState([]);
+    // 입력 그리드 데이터
+    const [excelGridData, setExcelGridData] = useState([]);
+    // 입력 그리드 행추가
+    const [tfAddExcelGridData, setTfAddExcelGridData] = useState(true);
 
     const [btnDisabled, setBtnDisabled] = useState({
         excelBtn: true,
@@ -29,47 +37,37 @@ function Crawling( props ) {
         crawlingBtn: false,
     });
 
-    // js 기반 페이지 puppeteer
-    const getCrawlingCheerio = async () => {
-        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
-        await utils.postAxios('/crawling/crawlCheerio', {url : urlPath}).then((res) => {
-            if (res.msg === 'success') {
-                let data = res.data;
-                setCrawlingData(data);
-            } else {
-                utils.showToast('cheerio 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
-            }
-        });
-    }
-
-    // js 기반 페이지 puppeteer
-    const getCrawlingPuppeteer = async () => {
-        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
-        await utils.postAxios('/crawling/crawlPuppeteer', {url : urlPath}).then((res) => {
-            if (res.msg === 'success') {
-                let data = res.data;
-                setCrawlingData(data);
-            } else {
-                utils.showToast('puppeteer 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
-            }
-        });
-    }
-
-    // js 기반 페이지 puppeteer
-    const getCrawlingPuppeteerControl = async () => {
-        const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
-        await utils.postAxios('/crawling/crawlPuppeteerControl', {url : urlPath}).then((res) => {
-            if (res.msg === 'success') {
-                let data = res.data;
-                setCrawlingData(data);
-            } else {
-                utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
-            }
-        });
-    }
-
     // python 크롤링
     const getCrawlingPython = async() => {
+        if (!chromeDriver) {
+            utils.showToast('크롬드라이버 경로를 입력하세요.');
+            return false;
+        }
+
+        if (pageType === 'keyword') {
+            let checkOverFive = 0;
+            let checkProduct = 0;
+            for (const item of excelGridData) {
+                if (!item.keyword) {
+                    checkOverFive++;
+                }
+
+                if (!item.product) {
+                    checkProduct++;
+                }
+            }
+
+            if (checkOverFive > 4) {
+                utils.showToast('크롤링은 한번에 5개 까지만 가능 합니다.');
+                return false;
+            }
+
+            if (excelGridData.length === 0 || checkProduct > 0) {
+                utils.showToast('크롤링 할 상품명을 입력 후 전체 저장 버튼을 클릭하세요.');
+                return false;
+            }
+        }
+
         utils.showToast('크롤링을 시작합니다.');
         setBtnDisabled((prev) => ({
             ...prev,
@@ -77,7 +75,7 @@ function Crawling( props ) {
         }));
         if (pageType === 'taobao') {
             const urlPath = urlId || 'https://smartstore.naver.com/dwantae';
-            await utils.postAxios('/crawling/crawlPythonSmartStore', {url : urlPath}).then((res) => {
+            await utils.postAxios('/crawling/crawlPythonSmartStore', {url : urlPath, chromeDriverPath: chromeDriver}).then((res) => {
                 if (res.msg === 'success') {
                     let data = res.data;
                     setUl(data.ul);
@@ -96,8 +94,14 @@ function Crawling( props ) {
         }
 
         if (pageType === 'keyword') {
-            const urlPath = 'https://search.shopping.naver.com/ns/search?query=' + (keyword || '공업용 선풍기');
-            await utils.postAxios('/crawling/crawlPythonKeyword', {url : urlPath}).then((res) => {
+            const keywordArr = [];
+            for (const item of excelGridData) {
+                if (!item.keyword) {
+                    keywordArr.push(item.product);
+                }
+            }
+            const urlPath = `https://search.shopping.naver.com/search/all?adQuery={searchKeyword}&frm=NVSCDIG&origQuery={searchKeyword}&pagingIndex=1&pagingSize=40&productSet=overseas&query={searchKeyword}&sort=review&timestamp=&viewType=list`;
+            await utils.postAxios('/crawling/crawlPythonKeyword', {url : urlPath, chromeDriverPath: chromeDriver, keywordArr: keywordArr}).then((res) => {
                 if (res.msg === 'success') {
                     let data = res.data;
                     findRepeatKeyword(data.text);
@@ -116,20 +120,24 @@ function Crawling( props ) {
     
     const getCrawlingPythonTaobao = async() => {
         const urlPath = 'https://www.taobao.com/';
-        await utils.postAxios('/crawling/crawlPythonTaobao').then((res) => {
+        await utils.postAxios('/crawling/crawlPythonTaobao', {chromeDriverPath: chromeDriver}).then((res) => {
             if (res.msg === 'success') {
                 let data = res.data;
-                const newCrawlingArr = structuredClone(crawlingArr);
-                for (let i = 0; i < newCrawlingArr.length; i++) {
-                    newCrawlingArr[i].taobaoLink = 'http://www.naver.com'
-                }
-
-                setCrawlingArr(newCrawlingArr);
+                
                 utils.showToast('타오바오 정보를 크롤링 했습니다.');
             } else {
                 utils.showToast('puppeteer control 크롤링 정보를 가져오는 중 오류가 발생했습니다.', res.error);
             }
         });
+    }
+
+    const setUrlTaobao = () => {
+        const newCrawlingArr = structuredClone(crawlingArr);
+        for (let i = 0; i < newCrawlingArr.length; i++) {
+            newCrawlingArr[i].taobaoLink = '타오바오 로그인 문제로 미지원'
+        }
+
+        setCrawlingArr(newCrawlingArr);
     }
 
     const findLi = (data) => {
@@ -177,8 +185,16 @@ function Crawling( props ) {
         }
 
         if (pageType === 'keyword') {
-            excelName = 'keyword_' + keyword.replaceAll(' ', '_') || '공업용 선풍기';
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');  // 0-based
+            const day = String(today.getDate()).padStart(2, '0');
+
+            const formattedDate = `${year}${month}${day}`;
+
+            excelName = 'naver_shopping_keyword_' + formattedDate;
         }
+
         utils.excelJSDown(excelGrid, urlId || excelName);
     }
 
@@ -198,6 +214,9 @@ function Crawling( props ) {
         for (const item of crawlingArr) {
             crawlingNameArr.push(item.name);
         }
+
+        setUrlTaobao();
+        return false;
 
         if (await utils.base64ToImageAndSend(imgArr, crawlingNameArr)) {
             getCrawlingPythonTaobao();
@@ -238,27 +257,27 @@ function Crawling( props ) {
 
         // 단어뽑기기
         for (const item of data) {
-            const itemArr = item.split(' ');
+            const itemArr = item.name.split(' ');
             for (const arrItem of itemArr) {
                 let checkDuple = 0;
                 for (const keywordItem of keywordArr) {
-                    if (arrItem.replaceAll(' ', '') === keywordItem.keyword.replaceAll(' ', '')) {
+                    if (arrItem.replaceAll(' ', '') === keywordItem.keyword.replaceAll(' ', '') && item.product === keywordItem.product) {
                         checkDuple++;
                     }
                 }
 
                 if (checkDuple === 0) {
-                    keywordArr.push({keyword : arrItem, cnt: 0});
+                    keywordArr.push({product: item.product, keyword : arrItem, cnt: 0});
                 }
             }
         }
 
         // 카운팅팅
         for (const item of data) {
-            const itemArr = item.split(' ');
+            const itemArr = item.name.split(' ');
             for (const arrItem of itemArr) {
                 for (const keywordItem of keywordArr) {
-                    if (arrItem === keywordItem.keyword) {
+                    if (arrItem === keywordItem.keyword && item.product === keywordItem.product) {
                         keywordItem.cnt++;
                     }
                 }
@@ -337,22 +356,117 @@ function Crawling( props ) {
     }
 
     // 키워드 추출
-    const getRecommendKeyword = () => {
+    const getRecommendKeyword = (product) => {
         let recommendTextArr = [];
         for (let i = 0; i < keywordCrawlingArr.length; i++) {
-            if (i < 10) {
+            if (keywordCrawlingArr[i].product === product && recommendTextArr.length <= 10) {
                 recommendTextArr.push(keywordCrawlingArr[i].keyword);
             }
         }
         setRecommendKeywordArr(recommendTextArr);
     }
 
-    // 추천어 없을 때 생성
-    const checkNoRecommendKeyword = () => {
-        if (!showHideRecommendKeyword && keywordCrawlingArr.length > 0 && recommendKeywordArr.length === 0) {
-            getRecommendKeyword();
-        }
+    // 쿠키 세팅
+    function setCookie(value) {
+        const date = new Date();
+        date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));  // 만료일 설정
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = `chromeDriverPath=${value}; ${expires}; path=/`;  // 쿠키 설정
     }
+
+    // 쿠키 가져오기
+    function getCookie() {
+        const nameEQ = 'chromeDriverPath' + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim();
+            if (c.indexOf(nameEQ) === 0) {
+            return c.substring(nameEQ.length, c.length);
+            }
+        }
+        return null; // 쿠키가 없으면 null 반환
+    }
+
+    // 엑셀용 그리드
+    const doExcelGridSaveBtn = (item) => {
+
+    }
+
+    // 팝업 닫기
+    const setClosePopUp = () => {
+        setShowHideRecommendKeyword(false);
+        setKeyword('');
+    }
+
+    // 입력 그리드 행추가 (팝업에서 추가 버튼 클릭)
+    const setExcelGridRow = () => {
+        // 같은 product 찾아서 그리드에 넣어주기
+        const newRecommendKeywordArr = structuredClone(recommendKeywordArr);
+        let recommendKeywordText = '';
+        for (let i = 0; i < newRecommendKeywordArr.length; i++) {
+            recommendKeywordText += newRecommendKeywordArr[i];
+            if (i !== newRecommendKeywordArr.length - 1) {
+                recommendKeywordText += ' ';
+            }
+        }
+
+        const newExcelGridData = structuredClone(excelGridData);
+        for (const item of newExcelGridData) {
+            if (item.product === keyword) {
+                item.keyword = recommendKeywordText;
+            }
+        }
+        setExcelGridData(newExcelGridData);
+
+        // 팝업 닫기
+        setShowHideRecommendKeyword(false);
+
+        // 키워드 초기화
+        setKeyword('');
+    }
+
+    // 전체 적용
+    const doGridSaveBtn = (item) => {
+        const newRecommendKeywordArr = [];
+
+        for (const item2 of item) {
+            if (item2.setTotalChecked) {
+                newRecommendKeywordArr.push(item2.keyword);
+            }
+        }
+
+        setRecommendKeywordArr(newRecommendKeywordArr);
+    }
+
+    // 입력 그리드 팝업 버튼
+    const openKeywordPopup = (item) => {
+        setKeyword(item.product);
+        setShowHideRecommendKeyword(true);
+    }
+
+    useEffect(() => {
+        // 크롬 드라이버 경로 쿠키 세팅
+        const chromeDriverCookie = getCookie();
+        if (chromeDriverCookie) {
+            setChromeDriver(chromeDriverCookie);
+        }
+    }, []);
+
+    // 크롬 드라이버 경로 입력 시 자동 쿠키 세팅
+    useEffect(() => {
+        if (chromeDriver) {
+            let path = chromeDriver;
+            if (path.indexOf('"') === 0) {
+                path = path.replace('"', '');
+            }
+            
+            if (path.indexOf('"') === path.length - 1) {
+                path = path.slice(0, -1);
+            }
+
+            setCookie(path);
+        }
+    }, [chromeDriver]);
 
     useEffect(() => {
         if (ul.length > 0) {
@@ -399,20 +513,19 @@ function Crawling( props ) {
             setGridCol(taobaoCol);
         } else if (pageType === 'keyword') {
             const keywordCol = [
-                {key:'keyword', name:'키워드'},
+                {key:'keyword', name:'키워드',},
                 {key:'cnt', name:'횟수', width: 20},
             ];
             setGridCol(keywordCol);
+
+            const excelCol = [
+                {key:'product', name:'상품명', width: 40, type:'text'},
+                {key:'keywordBtn', name:'키워드 단어', width: 15, type:'button', btn: {btnText: '팝업', onClick: openKeywordPopup}},
+                {key:'keyword', name:'키워드', type:'text'},
+            ];
+            setExcelGridCol(excelCol);
         }
     }, [pageType])
-
-    useEffect(() => {
-        if (keywordCrawlingArr.length > 0) {
-            getRecommendKeyword();
-
-            setShowHideRecommendKeyword(true);
-        }
-    }, [keywordCrawlingArr])
 
     useEffect(() => {
         if (pageType === 'taobao') {
@@ -446,26 +559,48 @@ function Crawling( props ) {
         }
     }, [pageType, crawlingArr, keywordCrawlingArr])
 
+    useEffect(() => {
+        // 5개 이상 행추가 막기용
+        if (excelGridData.length > 0) {
+            let checkNew = 0;
+            for (const item of excelGridData) {
+                if (!item.keyword) {
+                    checkNew++;
+                }
+            }
+
+            if (checkNew > 4) {
+                setTfAddExcelGridData(false);
+            } else {
+                setTfAddExcelGridData(true);
+            }
+        }
+    }, [excelGridData])
+
+    useEffect(() => {
+        if (keyword) {
+            getRecommendKeyword(keyword);
+        }
+    }, [keyword])
+
     return (
         <>
             <div>
-                <button type='button' className={'button' + (pageType === 'taobao' ? '' : ' secondary')} onClick={(e) => {setPageType('taobao')}}>타오바오</button>
-                <button type='button' className={'button' + (pageType === 'keyword' ? '' : ' secondary')} onClick={(e) => {setPageType('keyword')}}>키워드</button>
+                <button type='button' className={'button' + (pageType === 'taobao' ? '' : ' secondary')} style={{ width: '150px' }} onClick={(e) => {setPageType('taobao')}}>타오바오</button>
+                <button type='button' className={'button' + (pageType === 'keyword' ? '' : ' secondary')} style={{ width: '150px' }} onClick={(e) => {setPageType('keyword')}}>키워드</button>
             </div>
 
             {pageType && 
                 <>
+                    <div>
+                        <label htmlFor='chromeDriver'>크롬드라이버 경로</label>
+                        <input type="text" id='chromeDriver' style={{width: '20%'}} value={chromeDriver} onChange={(e) => {setChromeDriver(e.target.value)}} placeholder='크롬 경로'></input>
+                    </div>
                     {pageType === 'taobao' && 
-                        <div>
-                            <label htmlFor='smartId'>https://smartstore.naver.com/</label>
-                            <input type="text" id='smartId' style={{width: '20%'}} value={urlId} onChange={(e) => {setUrlId(e.target.value)}} placeholder='dwantae'></input>
-                        </div>
-                    }
-                    {pageType === 'keyword' &&
                         <>
                             <div>
-                                <label htmlFor='keyword'>상품명</label>
-                                <input type="text" id='keyword' style={{width: '20%'}} value={keyword} onChange={(e) => {setKeyword(e.target.value)}} placeholder='공업용 선풍기'></input>
+                                <label htmlFor='smartId'>https://smartstore.naver.com/</label>
+                                <input type="text" id='smartId' style={{width: '20%'}} value={urlId} onChange={(e) => {setUrlId(e.target.value)}} placeholder='dwantae'></input>
                             </div>
                         </>
                     }
@@ -476,9 +611,6 @@ function Crawling( props ) {
                             <>
                                 <button type="button" className='button secondary' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>
                             </>
-                        }
-                        {pageType === 'keyword' && 
-                            <button type='button' className='button' onClick={(e) => {setShowHideRecommendKeyword(!showHideRecommendKeyword), checkNoRecommendKeyword()}} disabled={btnDisabled.recommendBtn}>추천어 {showHideRecommendKeyword ? '닫기' : '열기'}</button>
                         }
                         {pageType === 'keyword' && showHideRecommendKeyword &&
                             <Draggable cancel='.keyword'>
@@ -498,9 +630,6 @@ function Crawling( props ) {
                                     zIndex: 1000,
                                     opacity: '80%'
                                 }}>
-                                    {keywordCrawlingArr.length > 0 && 
-                                        <h3 style={{ userSelect: 'none' }} onDoubleClick={(e) => utils.showToast('이거 말고 밑에 글자')}>추천 단어</h3>
-                                    }
                                     {recommendKeywordArr.length > 0 &&
                                         <>
                                             <p>
@@ -533,11 +662,9 @@ function Crawling( props ) {
                                     }
                                     {keywordCrawlingArr.length > 0 &&
                                         <>
-                                            <p style={{ fontSize: '11px', color: 'gray'}}>
-                                                추천 단어 글자 더블 클릭 시 글자 제거, 행 더블 클릭 시 추가, 드래그 드롭으로 순서 변경
-                                            </p>
-                                            <button type='button' className='button' onClick={(e) => setRecommendKeywordArr([])}>추천 단어 초기화</button>
-                                            <button type='button' className='button' onClick={(e) => setRecommendKeywordDrag(!recommendKeywordDrag)}>{recommendKeywordDrag ? '드래그 허용' : '순서 이동'}</button>
+                                            <button type='button' className='button' onClick={(e) => setClosePopUp()}>닫기</button>
+                                            {/* <button type='button' className='button' onClick={(e) => setRecommendKeywordDrag(!recommendKeywordDrag)}>{recommendKeywordDrag ? '드래그 허용' : '순서 이동'}</button> */}
+                                            <button type='button' className='button primary' onClick={(e) => setExcelGridRow()}>추가</button>
                                         </>
                                     }
                                 </div>
@@ -547,16 +674,31 @@ function Crawling( props ) {
                 </>
             }
             {pageType === 'keyword' &&
-                <h2>{keyword || '공업용 선풍기'}</h2>
+                <>
+                    <h2>{keyword || '공업용 선풍기'}</h2>
+                    <div>
+                        <SggGridReact
+                            sggRef={excelGrid}
+                            sggColumns={excelGridCol} // 그리드 컬럼 Array
+                            sggBtn={{'c': tfAddExcelGridData, 'r': true, 'u': true, 'd': true, saveBtn : doExcelGridSaveBtn}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                            sggData={{gridData: excelGridData, setGridData: setExcelGridData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                            // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
+                            sggGridChecked={false} // 그리드 좌측 체크박스 boolean
+                            sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
+                            sggPaging={false} // 페이징 여부 boolean
+                            // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
+                            // sggTrOnDoubleClick={pageType === 'keyword' ? (e, item) => {useRecommentKeyword(item)} : null} // 행 더블 클릭 시 fnc
+                            />
+                    </div>
+                </>
             }
             <div>
                 <SggGridReact 
-                    sggRef={excelGrid}
                     sggColumns={gridCol} // 그리드 컬럼 Array
-                    sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : null}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
-                    sggData={{gridData: (pageType === 'keyword' ? keywordCrawlingArr : crawlingArr)}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                    sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : (pageType === 'keyword' ? doGridSaveBtn : null)}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                    sggData={{gridData: (pageType === 'keyword' ? keywordCrawlingArr.filter((item) => item.product === keyword) : crawlingArr)}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
-                    // sggGridChecked={true} // 그리드 좌측 체크박스 boolean
+                    sggGridChecked={(pageType === 'keyword' ? true : false)} // 그리드 좌측 체크박스 boolean
                     sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                     sggPaging={false} // 페이징 여부 boolean
                     // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
