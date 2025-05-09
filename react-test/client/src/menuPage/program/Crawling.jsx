@@ -791,7 +791,7 @@ function Crawling( props ) {
                         <SggGridReact
                             sggRef={(pageType === 'keyword' ? excelGrid : null)}
                             sggColumns={excelGridCol} // 그리드 컬럼 Array
-                            sggBtn={{'c': tfAddExcelGridData, 'r': true, 'u': true, 'd': testCRUD, saveBtn : doExcelGridSaveBtn}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                            sggBtn={{'c': tfAddExcelGridData, 'r': true, 'u': true, 'd': true, saveBtn : doExcelGridSaveBtn}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                             sggData={{gridData: excelGridData, setGridData: setExcelGridData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                             // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
                             sggGridChecked={true} // 그리드 좌측 체크박스 boolean

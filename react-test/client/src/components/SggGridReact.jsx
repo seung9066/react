@@ -688,8 +688,8 @@ export default function SggGridReact({ sggRef,
 
         setSelectedRow(null);
 
-        if (sggBtn && sggBtn.r === 'function') {
-            sggBtn.r(sggData.gridData);
+        if (sggBtn && typeof sggBtn.r === 'function') {
+            sggBtn.r();
         }
     }
 
