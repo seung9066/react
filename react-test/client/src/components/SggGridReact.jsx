@@ -65,7 +65,6 @@ export default function SggGridReact({ sggRef,
                                         sggPaging = true }) {
     // 상태컬럼
     const stateTd = '48';
-    const toastRef = React.useRef(null);
     // 현재 페이지
     const [currentPage, setCurrentPage] = useState(1);
     // 데이터 목록
@@ -765,6 +764,8 @@ export default function SggGridReact({ sggRef,
             }
             utils.showToast('적용되었습니다.');
         }
+
+        setTotalCheck(false);
     }
 
     // 그리드 창 크기
