@@ -708,7 +708,6 @@ function Crawling( props ) {
                     <div>
                         <button className='button danger' onClick={getCrawlingPython} disabled={btnDisabled.crawlingBtn}>크롤링 시작</button>
                         <button type="button" className='button primary' onClick={(e) => downloadExcel(e)} disabled={btnDisabled.excelBtn}>엑셀</button>
-                        <button type="button" className='button primary' onClick={(e) => {imageSrcToBase64()}}>imageSrcToBase64</button>
                         {pageType === 'taobao' && 
                             <>
                                 <button type="button" className='button' onClick={(e) => downloadImgBtn(e)} disabled={btnDisabled.imageBtn}>이미지 파일</button>

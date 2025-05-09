@@ -55,7 +55,7 @@ def crawl_smartstore():
             except Exception as e:
                 print(f"⚠️ {idx+1}번 요소는 stale 상태입니다: {e}")
         
-        # driver.quit()  # 필요 시 활성화
+        driver.quit()  # 필요 시 활성화
         return jsonify({'data': tag})
 
     except Exception as e:
@@ -187,8 +187,8 @@ def crawl_keyword():
                     tag.append({'product': txt, 'name': el.text})
                 except Exception as e:
                     print(f"⚠️ {idx+1}번 요소는 stale 상태입니다: {e}")
+            driver.quit()  # 필요 시 활성화
 
-        # driver.quit()  # 필요 시 활성화
         return jsonify({'text': tag})
 
     except Exception as e:
