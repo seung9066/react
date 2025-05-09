@@ -36,7 +36,7 @@ function Crawling( props ) {
     const [radioOrderType, setRadioOrderType] = useState('ranking');
     // radioOrderType에 따른 url
     const radioOrderTypeUrl = {
-        ranking : 'https://search.shopping.naver.com/search/all?bt=-1&frm=NVSCDIG&query={searchKeyword}',
+        ranking : 'https://search.shopping.naver.com/search/all?adQuery={searchKeyword}&frm=NVSCDIG&origQuery={searchKeyword}&pagingIndex=1&pagingSize=40&productSet=overseas&query={searchKeyword}&sort=rel&timestamp=&viewType=list',
         review : 'https://search.shopping.naver.com/search/all?adQuery={searchKeyword}&frm=NVSCDIG&origQuery={searchKeyword}&pagingIndex=1&pagingSize=40&productSet=overseas&query={searchKeyword}&sort=review&timestamp=&viewType=list',
     }
 
