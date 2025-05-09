@@ -118,6 +118,45 @@ export const imageSrcToBase64 = async (imgSrc) => {
     }
 }
 
+export const imageSrcToBase64Arr = async (imgSrcArr) => {
+    try {
+        const arr = [];
+        for (const item of imgSrcArr) {
+            arr.push(item);
+            // arr.push(encodeURIComponent(item));
+        }
+
+        const requestBody = JSON.stringify({
+            arr : arr,
+        })
+
+        return await postAxios('/proxy/proxy-imageArr', requestBody).then((res) => {
+            if (res.msg === 'success') {
+                showToast("이미지 변환 성공");
+                return res
+            } else {
+                showToast("이미지 변환 실패", res.error);
+                console.log(res.error)
+                return false
+            }
+        });
+        const res = await post(`http://localhost:5000/api/proxy/proxy-imageArr`, JSON.stringify({arr : imgSrcArr}));
+        console.log(res)
+        const data = await res.json();
+        
+        if (data.base64Arr) {
+            console.log(data.base64Arr)
+            return data.base64Arr; // base64 이미지 반환
+        } else {
+            throw new Error('Base64 conversion failed');
+        }
+    } catch (e) {
+        console.log(e);
+        console.error('Image fetch or conversion failed', e);
+        return null; // 에러 발생 시 null 반환
+    }
+}
+
 // exeljs 엑셀 다운
 export const excelJSDown = async (tableRef, excelName) => {
     const workbook = new ExcelJS.Workbook();
