@@ -28,6 +28,7 @@ import * as utils from '@utils';
  * useState totalCount(데이터 총 수 - 없으면 앞단 페이징 처리)
  * @param {sggBtn={{'c': true, 'r': true, 'u': true, 'd': true}}}
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
+ * function {c, r, u, d} 기본 crud의 콜백함수로 작동
  * function saveBtn (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 처리 doSave = (data) => {} 필수))
  * @param {sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}}}
  * sggSearchParam의 3개는 세트
