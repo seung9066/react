@@ -680,10 +680,6 @@ function Crawling( props ) {
         }
     }, [recommendKeywordArr])
 
-    const testCRUD = (item) => {
-        console.log(item)
-    }
-
     return (
         <>
             <div>
