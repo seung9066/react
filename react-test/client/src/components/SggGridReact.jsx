@@ -450,6 +450,10 @@ export default function SggGridReact({ sggRef,
         sggData.gridData.splice(arrIdx, 0, newRow);
         setCurrentList(newCurrentList);
         setSelectedRow(newRow);
+
+        if (typeof sggBtn.c === 'function') {
+            sggBtn.c();
+        }
     }
 
     // 그리드 행수정
@@ -472,11 +476,22 @@ export default function SggGridReact({ sggRef,
             }
 
             setCurrentList(newCurrentList);
+
+            if (typeof sggBtn.u === 'function') {
+                sggBtn.u(newCurrentList.filter(item => item.rowState === 'UPDATE'));
+            }
         } else if (selectedRow && type !== 'check') {
             let no = selectedRow.no;
             doUpdate(no);
+
+            let newCurrentList = structuredClone(currentList);
+
+            if (typeof sggBtn.u === 'function') {
+                sggBtn.u(newCurrentList.filter(item => item.no === no));
+            }
         } else {
             utils.showToast('수정할 행을 선택하세요.');
+            return false;
         }
     }
 
@@ -535,6 +550,10 @@ export default function SggGridReact({ sggRef,
 
             sggData.gridData = sggData.gridData.filter((item) => item.rowState !== 'INSERTDELETE');
             setCurrentList(newCurrentList.filter((item) => item.rowState !== 'INSERTDELETE'));
+
+            if (typeof sggBtn.d === 'function') {
+                sggBtn.d(newCurrentList.filter((item) => item.rowState === 'DELETE'));
+            }
         } else if (selectedRow) {
             let no = selectedRow.no;
             let state = '';
@@ -548,6 +567,10 @@ export default function SggGridReact({ sggRef,
             if (state === 'INSERT') {
                 sggData.gridData = sggData.gridData.filter((item) => item.no !== no);
                 setCurrentList((prevList) => prevList.filter((item) => item.no !== no));
+
+                if (typeof sggBtn.d === 'function') {
+                    sggBtn.d(sggData.gridData);
+                }
             } else {
                 for (const item of sggData.gridData) {
                     if (item.no === selectedRow.no) {
@@ -560,10 +583,17 @@ export default function SggGridReact({ sggRef,
                         item.no === selectedRow.no ? { ...item, rowState: 'DELETE' } : item
                     )
                 );
+
+                if (typeof sggBtn.d === 'function') {
+                    let newCurrentList = structuredClone(currentList);
+                    newCurrentList.filter(item => item.no === selectedRow.no)[0].rowState = 'DELETE';
+                    sggBtn.d(newCurrentList.filter(item => item.no === selectedRow.no));
+                }
             }
             setSelectedRow(null);
         } else {
             utils.showToast('삭제할 행을 선택하세요.');
+            return false;
         }
     }
 
@@ -657,6 +687,10 @@ export default function SggGridReact({ sggRef,
         }
 
         setSelectedRow(null);
+
+        if (sggBtn && sggBtn.r === 'function') {
+            sggBtn.r(sggData.gridData);
+        }
     }
 
     const doReset = (no) => {
