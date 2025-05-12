@@ -31,8 +31,6 @@
         WHERE 1 = 1
         AND A1.USER_ID = A2.USER_ID(+)
         AND A1.USER_ID = #{userId}
-        AND A1.DEL_YN = 'N'
-        AND A2.DEL_YN(+) = 'N'
     </select>
 
     <update id="resetLoginCount" parameterType="map">

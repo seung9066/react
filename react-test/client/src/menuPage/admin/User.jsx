@@ -27,6 +27,7 @@ function Menu( props ) {
         {key:'userNm', name:'이름', type:'text'},
         {key:'userPw', name:'비밀번호', type:'password'},
         {key:'userAuth', name:'권한명', type:'select', option: typeOption},
+        {key:'delYn', name:'삭제여부', type:'select', option: [{label: 'Y', value: 'Y'}, {label: 'N', value: 'N'}], width: 10 },
         {key:'loginCnt', name:'비밀번호 오류', width: 10 },
     ];
     
@@ -86,7 +87,7 @@ function Menu( props ) {
     const checkBeforeSave = (data) => {
         for (const item of data) {
             for (const col of columns) {
-                if (!item[col.key] && col.key !== 'rnum' && !(item.setRowState === 'INSERT' && col.key === 'userPW')) {
+                if ((item.setRowState && item.setRowState !== 'DELETE') && !item[col.key] && col.key !== 'loginCnt' && col.key !== 'rnum' && !(item.setRowState === 'INSERT' && col.key === 'userPW')) {
                     item.rowState = item.setRowState;
                     utils.showToast(col.name + ' 은(는) 필수값 입니다.');
                     return false;
@@ -104,10 +105,11 @@ function Menu( props ) {
         }
         const newData = [];
         for (const item of data) {
-            if (item.userAuth === '') {
-                item.userAuth = '001';
-            }
             if (item.setRowState) {
+                if (item.userAuth === '') {
+                    item.userAuth = '001';
+                }
+
                 if (item.setRowState === 'DELETE') {
                     item.userAuth = '000';
                 }
