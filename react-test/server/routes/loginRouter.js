@@ -23,12 +23,12 @@ router.get('/login', async (req, res) => {
             const passwordCheck = data.passwordCheck;
             const loginCnt = data.loginCnt;
             
-            if (auth === '000') {
-                returnData.msg = 'failed';
-                returnData.data = '탈퇴한 회원입니다.';
-            } else if (passwordCheck !== 'Y') {
+            if (passwordCheck !== 'Y') {
                 returnData.msg = 'failed';
                 returnData.data = '비밀번호를 확인해주세요.';
+            } else if (auth === '000') {
+                returnData.msg = 'failed';
+                returnData.data = '탈퇴한 회원입니다.';
             } else if (Number(loginCnt) >= 5) {
                 returnData.msg = 'failed';
                 returnData.data = '비밀번호 5회 오류. 관리자 문의';
