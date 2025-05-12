@@ -92,13 +92,97 @@ export const checkRequired = (ref) => {
     return true;
 }
 
+// 로그인
+export const login = async (userData, checkAuth) => {
+    try {
+        const res = await getAxios('/login/login', userData);
+        if (res.msg === 'success') {
+            const data = res.data;
+            
+            if (data) {
+                const auth = data.userAuth;
+                const passwordCheck = data.passwordCheck;
+                const loginCnt = data.loginCnt;
+                
+                if (Number(loginCnt) >= 5) {
+                    showToast('비밀번호 5회 오류. 관리자 문의');
+                } else {
+                    if (passwordCheck === 'Y') {
+                        if (checkAuth && Number(auth) < Number(checkAuth)) {
+                            showToast('권한 부족');
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        showToast('비밀번호를 확인해주세요.');
+                    }
+                }
+            } else {
+                showToast('아이디를 확인해주세요.');
+            }
+
+        } else {
+            showToast("로그인 실패", res.error);
+        }
+
+        return false;
+    } catch (error) {
+        showToast('로그인 중 예외가 발생했습니다.', error);
+        return null;
+    }
+}
+
+// 로그아웃
+export const logout = async () => {
+    try {
+        const res = await getAxios('/login/logout');
+        if (res.msg === 'success') {
+            return res.data;
+        } else {
+            showToast('로그아웃 중 오류가 발생했습니다.', res.error);
+            return null;
+        }
+    } catch (error) {
+        showToast('로그아웃 중 예외가 발생했습니다.', error);
+        return null;
+    }
+}
+
+// 세션 권한 가져오기
+export const getUserAuthSession = async () => {
+    try {
+        const res = await getAxios('/session/getUserDataSession');
+        if (res.msg === 'success') {
+            return res.data.userAuth;
+        } else {
+            showToast('세션 정보를 가져오는 중 오류가 발생했습니다.', res.error);
+            return null;
+        }
+    } catch (error) {
+        showToast('세션 요청 중 예외가 발생했습니다.', error);
+        return null;
+    }
+}
+
+// 세션 정보 가져오기
+export const getUserDataSession = async () => {
+    try {
+        const res = await getAxios('/session/getUserDataSession');
+        if (res.msg === 'success') {
+            return res.data;
+        } else {
+            showToast('세션 정보를 가져오는 중 오류가 발생했습니다.', res.error);
+            return null;
+        }
+    } catch (error) {
+        showToast('세션 요청 중 예외가 발생했습니다.', error);
+        return null;
+    }
+}
+
 // 토스트
 export const showToast = (msg) => {
     window.toastRef?.current?.showToast(msg);
-}
-
-export const getUserData = () => {
-    return window?.userData
 }
 
 // 이미지 파일을 base64로 변환

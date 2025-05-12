@@ -24,12 +24,14 @@ public class LoginServiceImpl implements LoginService {
         }
 
         Map<String, Object> result = loginMapper.login(map);
-        if (!StringUtils.isEmpty(result.get("passwordCheck"))) {
-            System.out.println(result.get("passwordCheck"));
-            if (result.get("passwordCheck").equals("N")) {
-                loginMapper.upLoginCount(map);
-            } else {
-                loginMapper.resetLoginCount(map);
+        if (result != null && !result.isEmpty()) {
+            if (!StringUtils.isEmpty(result.get("passwordCheck"))) {
+                System.out.println(result.get("passwordCheck"));
+                if (result.get("passwordCheck").equals("N")) {
+                    loginMapper.upLoginCount(map);
+                } else {
+                    loginMapper.resetLoginCount(map);
+                }
             }
         }
 

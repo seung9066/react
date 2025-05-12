@@ -3,10 +3,11 @@ import * as utils from '@utils';
 
 function AdminPage (props) {
     const loginFormRef = useRef(null);
-    const [userData, setUserData] = useState({
+    const resetUserData = {
         userId: '',
         userPw: '',
-    });
+    }
+    const [userData, setUserData] = useState(resetUserData);
 
     const inputChange = (e) => {
         const name = e.target.name;
@@ -37,41 +38,30 @@ function AdminPage (props) {
     }
 
     const login = async () => {
-        await utils.getAxios('/login/login', userData).then((res) => {
-            if (res.msg === 'success') {
-                const data = res.data;
-
-                if (data) {
-                    const auth = data.userAuth;
-                    const passwordCheck = data.passwordCheck;
-                    const loginCnt = data.loginCnt;
-                    
-                    if (Number(loginCnt) >= 5) {
-                        utils.showToast('비밀번호 5회 오류. 관리자 문의');
-                    } else {
-                        if (passwordCheck === 'Y') {
-                            if (Number(auth) < Number(props.auth)) {
-                                utils.showToast('권한 부족');
-                            } else {
-                                props.setUserData(data);
-                            }
-                        } else {
-                            utils.showToast('비밀번호를 확인해주세요.');
-                        }
-                    }
-                } else {
-                    utils.showToast('아이디를 확인해주세요.');
-                }
-
-            } else {
-                utils.showToast("로그인 실패", res.error);
-            }
-        });
+        if (await utils.login(userData, props.auth)) {
+            getSessionAuthData();
+            setUserData(resetUserData);
+        }
     }
+
+    const getSessionAuthData = async () => {
+        const sessionAuth = await utils.getUserAuthSession();
+        if (sessionAuth) {
+            props.setSessionUserAuth(sessionAuth);
+        } else {
+            props.setSessionUserAuth('')
+        }
+    }
+
+    useEffect(() => {
+        if (props.auth > '000') {
+            getSessionAuthData();
+        }
+    }, [props.auth]);
 
     return (
         <>
-            {Number(props.userData.userAuth) < Number(props.auth) &&
+            {Number(props.sessionUserAuth) < Number(props.auth) &&
                 <>
                     <div ref={loginFormRef}>
                         <input type='text' placeholder='id' name='userId' value={userData.userId} onChange={inputChange} onKeyDown={enterKey}></input>
@@ -84,7 +74,7 @@ function AdminPage (props) {
                     </div>
                 </>
             }
-            {Number(props.userData.userAuth) >= Number(props.auth) &&
+            {Number(props.sessionUserAuth) >= Number(props.auth) &&
                 props.children
             }
         </>

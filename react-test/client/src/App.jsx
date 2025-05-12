@@ -30,19 +30,7 @@ function App() {
   const [menuData, setMenuData] = useState([]);
   const [menuNm, setMenuNm] = useState('React');
   const [urlDataNotice, setUrlDataNoticeData] = useState('');
-  const resetUserData = {userId: '',
-    userNm: '',
-    userAuth: '',
-    telNo: '',
-    city: '',
-    email: '',
-    gen: '',
-    country: '',
-    zip: '',
-    addr: '',
-    addrDtl: '',
-  }
-  const [userData, setUserData] = useState(resetUserData);
+  const [sessionUserAuth, setSessionUserAuth] = useState('');
 
   const getMenuNm = (value) => {
     setMenuNm(value);
@@ -89,10 +77,6 @@ function App() {
       window.toastRef = toastRef;
   }, []);
 
-  useEffect(() => {
-    window.userData = userData;
-  }, [userData]);
-
   // server에서 메뉴 정보 가져오기
   const getMenu = async () => {
     utils.getAxios('/menu/getMenu').then((res) => {
@@ -132,6 +116,13 @@ function App() {
     });
   }
 
+  const fncLogout = async () => {
+    const resultLogout = await utils.logout();
+    if (resultLogout.msg === 'success') {
+      setSessionUserAuth('');
+    }
+  }
+
   return (
     <>
     <BrowserRouter>
@@ -140,8 +131,13 @@ function App() {
         <div>
           {menuData.length > 0 && <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} props={props} />}
         </div>
-        <div style={{ marginTop: "60px", textAlign: "center" }}>
+        <div style={{ marginTop: "60px", display: "flex", justifyContent: "center", alignItems: "center", gap: "20px" }}>
           <GetTime />
+          {sessionUserAuth &&
+            <button type='button' className='button danger' onClick={(e) => {fncLogout()}}>로그아웃</button>
+          }
+        </div>
+        <div>
           <h1>{menuNm}</h1>
         </div>
       </div>
@@ -170,7 +166,7 @@ function App() {
               }
             }
 
-            return <Route path={pagePath} element={ <AdminPage auth={pageAuth} userData={userData} setUserData={setUserData}><Component props={props} key={Component.name} setMenu={setMenuData} /></AdminPage> } key={Component.name + 'route'} />
+            return <Route path={pagePath} element={ <AdminPage auth={pageAuth} sessionUserAuth={sessionUserAuth} setSessionUserAuth={setSessionUserAuth} ><Component props={props} key={Component.name} setMenu={setMenuData} /></AdminPage> } key={Component.name + 'route'} />
           })}
           <Route path="*" element={<NotFound props={props} />} />
         </Routes>

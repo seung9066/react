@@ -8,6 +8,7 @@
 
 // express 모듈을 불러옴 (웹 서버 프레임워크)
 import express from 'express';
+import session from 'express-session';
 
 // CORS(Cross-Origin Resource Sharing) 설정을 위한 모듈
 import cors from 'cors';
@@ -33,6 +34,16 @@ app.use(cors());
 // JSON 파싱을 위한 미들웨어 (요청 본문이 JSON일 때 자동으로 파싱해줌)
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+app.use(session({
+    secret: 'your-secret-key',  // 세션 ID를 암호화하는 데 사용되는 비밀 키
+    resave: false,              // 세션을 항상 저장할지 여부 (변경이 없어도 저장)
+    saveUninitialized: false,   // 세션이 초기화되지 않은 경우에도 저장할지 여부
+    cookie: {
+      secure: false,            // HTTPS 사용시 true로 설정, http에서는 false
+      maxAge: 1000 * 60 * 60  // 세션 쿠키의 만료 시간 (1시간)
+    }
+  }));
 
 // "routes" 디렉토리 내 라우터 파일 자동 로딩
 const loadRoutes = async () => {
