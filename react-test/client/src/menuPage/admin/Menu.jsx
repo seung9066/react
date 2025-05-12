@@ -430,11 +430,13 @@ function Menu( props ) {
         if (selectId) {
             // 수정, 삭제
             let idx = 0;
+            let upId = '';
             
             for (let i = 0; i < newMenuData.length; i++) {
                 if (selectId === newMenuData[i].id) {
                     idx = i;
                     newMenuData[i] = newSelectedData;
+                    upId = newSelectedData.upId;
                 }
             }
 

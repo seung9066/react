@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-// 세션 유저 정보 저장
+// 세션 유저 정보 가져오기
 router.get('/getUserDataSession', (req, res) => {
     if (req.session?.userData) {
         return res.json(req.session.userData);

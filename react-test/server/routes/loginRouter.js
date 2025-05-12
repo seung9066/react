@@ -11,11 +11,40 @@ router.get('/login', async (req, res) => {
         const response = await api.get('/spring/login/login', {
             params: req.query // 요청 쿼리 파라미터를 전달
         });
-        console.log(response.data)
+        // 유저 정보 세션 저장
+        const data = response.data;
+        req.session.userData = data;
 
-        req.session.userData = response.data;
+        const pageAuth = req.query.auth;
+        const returnData = {};
+
+        if (data) {
+            const auth = data.userAuth;
+            const passwordCheck = data.passwordCheck;
+            const loginCnt = data.loginCnt;
+            
+            if (auth === '000') {
+                returnData.msg = 'failed';
+                returnData.data = '탈퇴한 회원입니다.';
+            } else if (passwordCheck !== 'Y') {
+                returnData.msg = 'failed';
+                returnData.data = '비밀번호를 확인해주세요.';
+            } else if (Number(loginCnt) >= 5) {
+                returnData.msg = 'failed';
+                returnData.data = '비밀번호 5회 오류. 관리자 문의';
+            } else if (pageAuth && Number(auth) < Number(pageAuth)) {
+                returnData.msg = 'failed';
+                returnData.data = '권한 부족';
+            } else {
+                returnData.msg = 'success';
+                returnData.data = true;
+            }
+        } else {
+            returnData.msg = 'failed';
+            returnData.data = '아이디를 확인해주세요.';
+        }
         
-        return res.json(response.data);
+        return res.json(returnData);
     } catch (error) {
         console.error('Error fetching user data:', error);
         res.status(500).send('Error fetching user data');

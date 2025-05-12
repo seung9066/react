@@ -95,32 +95,16 @@ export const checkRequired = (ref) => {
 // 로그인
 export const login = async (userData, checkAuth) => {
     try {
-        const res = await getAxios('/login/login', userData);
+        const param = {userId : userData.userId, userPw: userData.userPw, auth: checkAuth || '000'};
+        const res = await getAxios('/login/login', param);
         if (res.msg === 'success') {
             const data = res.data;
             
-            if (data) {
-                const auth = data.userAuth;
-                const passwordCheck = data.passwordCheck;
-                const loginCnt = data.loginCnt;
-                
-                if (Number(loginCnt) >= 5) {
-                    showToast('비밀번호 5회 오류. 관리자 문의');
-                } else {
-                    if (passwordCheck === 'Y') {
-                        if (checkAuth && Number(auth) < Number(checkAuth)) {
-                            showToast('권한 부족');
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        showToast('비밀번호를 확인해주세요.');
-                    }
-                }
+            if (data.msg === 'success') {
+                return true;
             } else {
-                showToast('아이디를 확인해주세요.');
+                showToast(data.data);
             }
-
         } else {
             showToast("로그인 실패", res.error);
         }

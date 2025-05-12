@@ -54,14 +54,14 @@ function AdminPage (props) {
     }
 
     useEffect(() => {
-        if (props.auth > '000') {
+        if (Number(props.auth) > 1) {
             getSessionAuthData();
         }
     }, [props.auth]);
 
     return (
         <>
-            {Number(props.sessionUserAuth) < Number(props.auth) &&
+            {(Number(props.auth) > 1 && Number(props.sessionUserAuth) < Number(props.auth)) &&
                 <>
                     <div ref={loginFormRef}>
                         <input type='text' placeholder='id' name='userId' value={userData.userId} onChange={inputChange} onKeyDown={enterKey}></input>
@@ -74,7 +74,7 @@ function AdminPage (props) {
                     </div>
                 </>
             }
-            {Number(props.sessionUserAuth) >= Number(props.auth) &&
+            {(Number(props.auth) <= 1 || Number(props.sessionUserAuth) >= Number(props.auth)) &&
                 props.children
             }
         </>
