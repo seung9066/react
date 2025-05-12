@@ -855,7 +855,7 @@ export default function SggGridReact({ sggRef,
 
     // th 재정렬
     const handleSwap = (from, to) => {
-        let newComputedColumns = structuredClone(computedColumns);
+        let newComputedColumns = [...computedColumns];
         // 뽑아내기
         let [fromObj] = newComputedColumns.splice(from, 1);
         // 넣기
