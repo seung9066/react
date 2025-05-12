@@ -140,16 +140,6 @@ export const imageSrcToBase64Arr = async (imgSrcArr) => {
                 return false
             }
         });
-        const res = await post(`http://localhost:5000/api/proxy/proxy-imageArr`, JSON.stringify({arr : imgSrcArr}));
-        console.log(res)
-        const data = await res.json();
-        
-        if (data.base64Arr) {
-            console.log(data.base64Arr)
-            return data.base64Arr; // base64 이미지 반환
-        } else {
-            throw new Error('Base64 conversion failed');
-        }
     } catch (e) {
         console.log(e);
         console.error('Image fetch or conversion failed', e);
@@ -334,4 +324,62 @@ export const getCookie = (name) => {
         }
     }
     return null; // 쿠키가 없으면 null 반환
+}
+
+// 날짜 가져오기
+export const getDate = (y, m, d, format) => {
+    const today = new Date();
+
+    y ? today.setFullYear(today.getFullYear() + y) : null;
+    m ? today.setMonth(today.getMonth() + m) : null;
+    d ? today.setDate(today.getDate() + d) : null;
+    
+    let year = today.getFullYear().toString();
+    year = ('0000' + year).slice(-4);
+    let month = (today.getMonth() + 1).toString();
+    month = ('00' + month).slice(-2);
+    let date = today.getDate().toString();
+    date = ('00' + date).slice(-2);
+
+    let returnDate = '';
+    if (format) {
+        const lowerFormat = format.toLowerCase();
+        returnDate = lowerFormat.replace('yyyy', year).replace('mm', month).replace('dd', date);
+    } else {
+        returnDate = year + '' + month + '' + date;
+    }
+
+    return returnDate;
+}
+
+// 시간 가져오기
+export const getTime = (h, m, s, format) => {
+    const today = new Date();
+
+    h ? today.setHours(today.getHours() + h) : null;
+    m ? today.setMinutes(today.getMinutes() + m) : null;
+    s ? today.setSeconds(today.getSeconds() + s) : null;
+    
+    let hour = today.getHours().toString();
+    hour = ('00' + hour).slice(-2);
+    let minute = (today.getMinutes() + 1).toString();
+    minute = ('00' + minute).slice(-2);
+    let seconds = today.getSeconds().toString();
+    seconds = ('00' + seconds).slice(-2);
+    
+    let returnTime = '';
+    if (format) {
+        const lowerFormat = format.toLowerCase();
+        if (lowerFormat.indexOf('24hh') > -1) {
+            returnTime = lowerFormat.replace('24hh', hour).replace('mm', minute).replace('ss', seconds);
+        } else {
+            hour = hour > 12 ? hour - 12 : hour;
+            hour = ('00' + hour).slice(-2);
+            returnTime = lowerFormat.replace('hh', hour).replace('mm', minute).replace('ss', seconds);
+        }
+    } else {
+        returnTime = hour + '' + minute + '' + seconds;
+    }
+
+    return returnTime;
 }

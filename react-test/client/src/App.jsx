@@ -30,8 +30,7 @@ function App() {
   const [menuData, setMenuData] = useState([]);
   const [menuNm, setMenuNm] = useState('React');
   const [urlDataNotice, setUrlDataNoticeData] = useState('');
-  const [userData, setUserData] = useState({
-    userId: '',
+  const resetUserData = {userId: '',
     userNm: '',
     userAuth: '',
     telNo: '',
@@ -42,7 +41,8 @@ function App() {
     zip: '',
     addr: '',
     addrDtl: '',
-  });
+  }
+  const [userData, setUserData] = useState(resetUserData);
 
   const getMenuNm = (value) => {
     setMenuNm(value);
@@ -91,7 +91,7 @@ function App() {
 
   useEffect(() => {
     window.userData = userData;
-  }, [userData])
+  }, [userData]);
 
   // server에서 메뉴 정보 가져오기
   const getMenu = async () => {
