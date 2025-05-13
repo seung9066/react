@@ -94,7 +94,7 @@ function Menu( props ) {
 
         if (node.upId) {
             // 하위 메뉴
-            selectTreeChildrenDisabled();
+            selectTreeChildrenDisabled(node);
         } else {
             if (node.children?.length > 0) {
                 // 자식 있는 부모 메뉴 클릭
@@ -132,7 +132,7 @@ function Menu( props ) {
     }
 
     // 하위 메뉴 클릭
-    const selectTreeChildrenDisabled = () => {
+    const selectTreeChildrenDisabled = (node) => {
         setBtnDisabled({
             ...btnDisabled,
             CBtn : true,
@@ -147,6 +147,8 @@ function Menu( props ) {
             title: false,
             menuAuth: true,
         })
+
+        selectMenuAuth(node);
     }
 
     // 자식 있는 부모 메뉴 클릭
@@ -194,6 +196,22 @@ function Menu( props ) {
         newSelectedData[name] = value;
 
         setSelectedData(newSelectedData);
+    }
+
+    // 부모 클릭 시 자식도 부모와 같은 메뉴 권한 가지도록
+    const selectMenuAuth = (node) => {
+        const upId = node.upId;
+        let upMenuAuth = '';
+        for (const item of menuData) {
+            if (upId === item.id) {
+                upMenuAuth = item.menuAuth;
+            }
+        }
+
+        setSelectedData((prev) => ({
+            ...prev,
+            menuAuth: upMenuAuth,
+        }))
     }
 
     // 타이틀 입력 후 focus out + path 없을 시 path를 title로 자동 입력
@@ -394,7 +412,7 @@ function Menu( props ) {
                 ...inputDisabled,
                 path: false,
                 title: false,
-                menuAuth: false,
+                menuAuth: true,
             })
         } else {
             setInputDisabled({
