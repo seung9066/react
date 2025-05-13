@@ -83,7 +83,6 @@ const loadRoutes = async () => {
 };
 
 app.use((req, res, next) => {
-    console.log(req.session)
     console.log(req.method, req.url); // 요청 정보 출력
     next();
 });
