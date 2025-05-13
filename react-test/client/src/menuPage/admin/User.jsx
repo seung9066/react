@@ -34,7 +34,8 @@ function Menu( props ) {
     useEffect(() => {
         for (const item of columns) {
             if (item.key === 'userAuth') {
-                item.option = typeOption;
+                let gridTypeOption = structuredClone(typeOption).filter((item) => item.label !== '전체');
+                item.option = gridTypeOption;
             }
         }
         setGridCol(columns)
