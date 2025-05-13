@@ -1,5 +1,6 @@
 import os
 import time
+import socket
 from flask import Blueprint, request, jsonify, session
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -16,10 +17,23 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 # ✅ [공통 함수] 크롬 드라이버 생성
 def create_driver(path):
-    chrome_path = path.replace('/' , '\\')
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+
+    print("서버 IP 주소:", ip_address)
+    if ip_address == '129.154.222.120' :
+        chrome_path = '/usr/local/bin/chromedriver'
+    else :
+        chrome_path = path.replace('/' , '\\')
+
     service = Service(executable_path=chrome_path)
     options = Options()
-    # options.add_argument("--headless")  # 필요 시 주석 해제
+
+    if ip_address == '129.154.222.120' :
+        options.add_argument("--headless")  # 필요 시 주석 해제
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument("--window-size=1920,1080")  # 추가
+    
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
 
