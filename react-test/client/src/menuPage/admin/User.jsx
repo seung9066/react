@@ -87,7 +87,7 @@ function Menu( props ) {
     const checkBeforeSave = (data) => {
         for (const item of data) {
             for (const col of columns) {
-                if ((item.setRowState && item.setRowState !== 'DELETE') && !item[col.key] && col.key !== 'loginCnt' && col.key !== 'rnum' && !(item.setRowState === 'INSERT' && col.key === 'userPW')) {
+                if ((item.setRowState && item.setRowState !== 'DELETE') && !item[col.key] && col.key !== 'loginCnt' && col.key !== 'rnum' && col.key !== 'userPw') {
                     item.rowState = item.setRowState;
                     utils.showToast(col.name + ' 은(는) 필수값 입니다.');
                     return false;
@@ -113,6 +113,7 @@ function Menu( props ) {
                 if (item.setRowState === 'DELETE') {
                     item.userAuth = '000';
                 }
+
                 newData.push(item);
             }
         }

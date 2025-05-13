@@ -83,7 +83,15 @@
             USING (
                 <foreach collection="list" item="item" separator="UNION">
                     SELECT #{item.userId} AS userId
+                        <if test="item.userPw != null and item.userPw != ''">
                         , #{item.userPw} AS userPw
+                        </if>
+                        <if test="item.userPw == null or item.userPw == ''">
+                        , (SELECT USER_PW 
+                            FROM SGG_USER 
+                            WHERE 1 = 1 
+                            AND USER_ID = #{item.userId}) AS userPW
+                        </if>
                         , #{item.userNm} AS userNm
                         , #{item.userAuth} AS userAuth 
                         , #{item.delYn} AS delYn
@@ -95,6 +103,7 @@
                 UPDATE SET 
                     A1.USER_NM = A2.userNm
                     , A1.USER_AUTH = A2.userAuth
+                    , A1.USER_PW = A2.userPw
                     , A1.LOGIN_CNT = 0
                     , A1.UPDATE_DT = SYSDATE
                     , A1.DEL_YN = A2.delYn

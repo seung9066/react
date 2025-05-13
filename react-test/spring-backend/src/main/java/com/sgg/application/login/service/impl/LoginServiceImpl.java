@@ -18,15 +18,14 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Map<String, Object> login(Map<String, String> map) throws Exception {
         String encPw = "";
-        if (!StringUtils.isEmpty(map.get("userPw"))) {
+        if (StringUtils.hasText(map.get("userPw"))) {
             encPw = cmnUtil.hashEncpt(map.get("userPw"));
             map.put("userPw", encPw);
         }
 
         Map<String, Object> result = loginMapper.login(map);
         if (result != null && !result.isEmpty()) {
-            if (!StringUtils.isEmpty(result.get("passwordCheck"))) {
-                System.out.println(result.get("passwordCheck"));
+            if (StringUtils.hasText((String) result.get("passwordCheck"))) {
                 if (result.get("passwordCheck").equals("N")) {
                     loginMapper.upLoginCount(map);
                 } else {

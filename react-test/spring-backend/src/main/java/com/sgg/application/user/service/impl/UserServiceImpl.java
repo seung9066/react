@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> mergeParam = new HashMap<>();
         for (int i = 0; i < list.size(); i++) {
-            if (!StringUtils.isEmpty(list.get(i).get("userPw"))) {
+            if (StringUtils.hasText((String) list.get(i).get("userPw"))) {
                 list.get(i).put("userPw", cmnUtil.hashEncpt((String) list.get(i).get("userPw")));
             }
         }
