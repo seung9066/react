@@ -111,7 +111,7 @@ function App() {
             let newData = transformDataToTree(data);
             setMenuData(newData);
         } else {
-            showToast('메뉴 목록을 가져오는 중 오류가 발생했습니다.', res.error);
+            utils.showToast('메뉴 목록을 가져오는 중 오류가 발생했습니다.', res.error);
         }
     });
   }
