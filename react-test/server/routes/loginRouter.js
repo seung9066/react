@@ -13,7 +13,6 @@ router.get('/login', async (req, res) => {
         });
         // 유저 정보 세션 저장
         const data = response.data;
-        req.session.userData = data;
 
         const pageAuth = req.query.auth;
         const returnData = {};
@@ -39,6 +38,7 @@ router.get('/login', async (req, res) => {
             } else {
                 returnData.msg = 'success';
                 returnData.data = true;
+                req.session.userData = data;
             }
         } else {
             returnData.msg = 'failed';
