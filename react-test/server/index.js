@@ -42,7 +42,8 @@ app.use(session({
     cookie: {
       secure: false,            // HTTPS 사용시 true로 설정, http에서는 false
       maxAge: 1000 * 60 * 60  // 세션 쿠키의 만료 시간 (1시간)
-    }
+    },
+    rolling: true // 요청마다 maxAge 초기화
   }));
 
 // "routes" 디렉토리 내 라우터 파일 자동 로딩
@@ -82,6 +83,7 @@ const loadRoutes = async () => {
 };
 
 app.use((req, res, next) => {
+    console.log(req.session)
     console.log(req.method, req.url); // 요청 정보 출력
     next();
 });
