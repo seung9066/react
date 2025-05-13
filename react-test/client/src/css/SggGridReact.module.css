@@ -6,7 +6,7 @@
   .table {
     width: 99%;
     border-collapse: collapse;
-    font-size: 15px;
+    font-size: 13px;
     min-width: 600px;
     table-layout: fixed;
   }
@@ -16,15 +16,25 @@
     color: white;
     text-align: center;
   }
+
+  .th {
+    padding: 5px 0px;
+    border-bottom: 1px solid #ddd;
+    user-select: none;
+  }
   
-  .th, .td {
-    padding: 6px 0px;
+  .td {
+    padding: 3px 0px;
     border-bottom: 1px solid #ddd;
     user-select: none;
   }
 
+  .tdColspan {
+    padding: 9px;
+  }
+
   .th {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .a {
@@ -117,7 +127,7 @@
     padding: 8px 12px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    font-size: 13px;
+    font-size: 12px;
     min-width: 120px;
     max-width: 400px;
   }
@@ -129,7 +139,7 @@
     color: #fff;
     border: none;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
     white-space: nowrap;
   }
