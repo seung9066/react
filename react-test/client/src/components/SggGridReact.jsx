@@ -2,8 +2,6 @@ import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 're
 
 import styles from '@css/SggGridReact.module.css';
 
-import * as utils from '@utils';
-
 /**
  * @param {sggRef={sggRef}}
  * useRef
