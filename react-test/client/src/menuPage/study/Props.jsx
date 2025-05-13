@@ -66,7 +66,7 @@ function Props(props) {
                 <p>부모에서 setState 함수를 자식으로 넘겨서 자식에서 해당 함수로 부모의 state를 바꿀 수 있다.</p>
                 <CodeTextArea code={returnCode(3)} />
                 <ChgIptNm setIptNm={setIptNm}/>
-                <input type="text" readOnly={true} value={iptNm}></input>
+                <input type="text" className='input' readOnly={true} value={iptNm}></input>
             </div>
 
         </>

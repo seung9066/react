@@ -24,13 +24,9 @@
   }
   
   .td {
-    padding: 3px 0px;
+    padding: 9px 0px;
     border-bottom: 1px solid #ddd;
     user-select: none;
-  }
-
-  .tdColspan {
-    padding: 9px;
   }
 
   .th {
@@ -55,6 +51,81 @@
   
   .tbodyRow:hover {
     background-color: #e0dfdf;
+  }
+
+  .tdSelect {
+    border-radius: 8px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    width: 80%;
+    outline: none;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* 🔽 여기서 화살표 위치 조절 가능 */
+    background-size: 14px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .tdSelect:focus {
+    border-color: #2980b9;
+    box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+  }
+
+  .tdSelect option {
+    padding: 10px;
+    background-color: white;
+    color: #333;
+  }
+
+  .select {
+    background-color: white;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    width: 200px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* 🔽 여기서 화살표 위치 조절 가능 */
+    background-size: 14px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  /* select에 focus 되었을 때 */
+  .select:focus {
+    border-color: #2980b9;
+    box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+  }
+
+  /* 옵션 스타일 */
+  .select option {
+    padding: 10px;
+    background-color: white;
+    color: #333;
+  }
+
+  /* hover 효과 */
+  .select:hover {
+    background-color: #f0f8ff;
+  }
+
+  /* 비활성화 상태 스타일 */
+  .select:disabled {
+    background-color: #eeeeee;
+    color: #999;
+    border-color: #ccc;
+    cursor: default;
+    box-shadow: none;
   }
   
   .pagination {
@@ -171,13 +242,14 @@
     color: #333;
     opacity: 1; /* 일부 브라우저는 opacity로 흐리게 처리함 */
     width: 90%;
-    padding: 8px 0px;
+    /* padding: 8px 0px; */
     background-image: none;
     text-align: center;
   }
   
   select.selected {
     border: 2px solid #ccc;
+    padding: 8px 10px;
     background-color: transparent;
     color: #333;
     opacity: 1; /* 일부 브라우저는 opacity로 흐리게 처리함 */
@@ -186,21 +258,33 @@
     box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
   }
 
-  input.tdInput {
+  .tdInput {
     width: 90%;
     border: none;
     background-color: transparent;
+    padding: 8px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: border-color 0.3s ease-in-out;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .tdInpu:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
   }
 
   /* Chrome, Safari, Edge, Opera */
-  input.tdInput[type="number"]::-webkit-outer-spin-button,
-  input.tdInput[type="number"]::-webkit-inner-spin-button {
+  .tdInput[type="number"]::-webkit-outer-spin-button,
+  .tdInput[type="number"]::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
   }
 
   /* Firefox */
-  input.tdInput[type="number"] {
+  .tdInput[type="number"] {
       -moz-appearance: textfield;
       appearance: textfield;
   }

@@ -359,13 +359,13 @@ export default function SggGridReact({ sggRef,
             return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="number" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
-                                                                            : item[col.key];
+                                                                            : <span>{item[col.key]}</span>;
         }
         if (col.type === 'text') {
             return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="text" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
-                                                                            : item[col.key];
+                                                                            : <span>{item[col.key]}</span>;
         }
         if (col.type === 'password') {
             return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
@@ -382,7 +382,7 @@ export default function SggGridReact({ sggRef,
             const disabledNow = !!(selectedRow && selectedRow.no === item.no && item.rowState);
 
             const option = col.option;
-            return <select name={col.key} value={item[col.key]} onChange={inputChange} className={className} onMouseDown={(e) => clickSelectTr(e, disabledNow)}>
+            return <select name={col.key} value={item[col.key]} onChange={inputChange} className={className + ' ' + styles.tdSelect} onMouseDown={(e) => clickSelectTr(e, disabledNow)}>
                         {option?.map((opt) => (
                             <option key={item.no + '-' + item.key + '-' + opt.value} value={opt.value}>
                                 {opt.label}
@@ -415,7 +415,7 @@ export default function SggGridReact({ sggRef,
                     >{col.btn.btnText}</button>
         }
         if (!col.type) {
-            return item[col.key];
+            return <span>{item[col.key]}</span>;
         }
     }
 
@@ -1159,7 +1159,7 @@ export default function SggGridReact({ sggRef,
                                     };
                                     
                                     return (
-                                        <select key={item.key} className={styles.searchInput} {...commonProps}>
+                                        <select key={item.key} className={styles.searchInput + ' ' + styles.select} {...commonProps}>
                                             {option?.map((opt) => (
                                                 <option key={item.key + '-' + opt.value} value={opt.value}>
                                                     {opt.label}
@@ -1196,6 +1196,7 @@ export default function SggGridReact({ sggRef,
                         </div>
                         {sggPaging !== false &&
                             <select value={perPage}
+                                className={styles.select}
                                 onChange={(e) => {
                                     setPerPage(Number(e.target.value));
                                     setCurrentPage(1);
@@ -1303,7 +1304,7 @@ export default function SggGridReact({ sggRef,
                                     <tr key={'emptyTr' + i} draggable={sggGridFormChange.rowMove} onDragStart={handleDragStartRow} onDragOver={handleDragOver} onDrop={handleDropRow}>
                                         <td colSpan={(sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 2 
                                                                                 : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 1 
-                                                                                                                                            : (sggColumns.length || 1) || 1} className={styles.tdColspan + ' ' + styles.td} key={'emptyTd' + i} data-no={-1}>&nbsp;</td>
+                                                                                                                                            : (sggColumns.length || 1) || 1} className={styles.td} key={'emptyTd' + i} data-no={-1}>&nbsp;</td>
                                     </tr>
                                 )
                             )}
@@ -1313,14 +1314,14 @@ export default function SggGridReact({ sggRef,
                                 <tr>
                                     <td colSpan={(sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 2 
                                                                             : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 1
-                                                                                                                                        : (sggColumns.length || 1) || 1} className={styles.tdColspan + ' ' + styles.td}>데이터가 없습니다.</td>
+                                                                                                                                        : (sggColumns.length || 1) || 1} className={styles.td}>데이터가 없습니다.</td>
                                 </tr>
                                 {sggPaging !== false && 
                                     Array.from({ length: perPage - 1}).map((_, i) => 
                                         <tr key={'emptyTr' + i}>
                                             <td colSpan={(sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 2 
                                                                                     : ((sggGridChecked && !sggBtn) || !sggGridChecked && sggBtn) ? (sggColumns.length || 1) + 1 
-                                                                                                                                                : (sggColumns.length || 1) || 1} className={styles.tdColspan + ' ' + styles.td} key={'emptyTd' + i}>&nbsp;</td>
+                                                                                                                                                : (sggColumns.length || 1) || 1} className={styles.td} key={'emptyTd' + i}>&nbsp;</td>
                                         </tr>
                                     )
                                 }

@@ -1004,12 +1004,12 @@ function Menu( props ) {
                         ].map((field) => (
                             <div className="form-row" key={field.id}>
                                 <label htmlFor={field.id}>{field.label}</label>
-                                <input type="text" id={field.id} name={field.id} value={selectedData[field.id] ?? ''} disabled={inputDisabled[field.id]} onChange={changeValue} onBlur={onBlur}/>
+                                <input type="text" id={field.id} name={field.id} className='input' value={selectedData[field.id] ?? ''} disabled={inputDisabled[field.id]} onChange={changeValue} onBlur={onBlur}/>
                             </div>
                         ))}
                         <div className='form-row'>
                             <label htmlFor='upId'>상위 ID</label>
-                            <select id='upId' name='upId' disabled={inputDisabled['upId']} onChange={changeValue} value={selectedData['upId'] ?? ''}>
+                            <select id='upId' name='upId' className='select' disabled={inputDisabled['upId']} onChange={changeValue} value={selectedData['upId'] ?? ''}>
                                 {!selectedData['upId'] && (
                                     <option value=''></option>
                                 )}
@@ -1020,7 +1020,7 @@ function Menu( props ) {
                         </div>
                         <div className='form-row'>
                             <label htmlFor='menuAuth'>권한</label>
-                            <select id='menuAuth' name='menuAuth' disabled={inputDisabled['menuAuth']} onChange={changeValue} value={selectedData['menuAuth'] ?? ''}>
+                            <select id='menuAuth' name='menuAuth' className='select' disabled={inputDisabled['menuAuth']} onChange={changeValue} value={selectedData['menuAuth'] ?? ''}>
                                 {typeOption && typeOption.map((item) => 
                                     <option value={item.value} key={item.value}>{item.label}</option>
                                 )}

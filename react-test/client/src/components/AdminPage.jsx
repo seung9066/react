@@ -64,10 +64,10 @@ function AdminPage (props) {
             {(Number(props.auth) > 1 && Number(props.sessionUserAuth) < Number(props.auth)) &&
                 <>
                     <div ref={loginFormRef}>
-                        <input type='text' placeholder='id' name='userId' value={userData.userId} onChange={inputChange} onKeyDown={enterKey}></input>
+                        <input type='text' placeholder='id' name='userId' className='input' value={userData.userId} onChange={inputChange} onKeyDown={enterKey}></input>
                         <br />
                         <br />
-                        <input type='password' placeholder='password' name='userPw' value={userData.userPw} onChange={inputChange} onKeyDown={enterKey}></input>
+                        <input type='password' placeholder='password' name='userPw' className='input' value={userData.userPw} onChange={inputChange} onKeyDown={enterKey}></input>
                     </div>
                     <div>
                         <button type='button' className='button' onClick={login}>로그인</button>

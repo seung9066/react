@@ -691,13 +691,13 @@ function Crawling( props ) {
                 <>
                     <div>
                         <label htmlFor='chromeDriver'>크롬드라이버 경로</label>
-                        <input type="text" id='chromeDriver' style={{width: '20%'}} value={chromeDriver} onChange={(e) => {setChromeDriver(e.target.value)}} placeholder='크롬 경로'></input>
+                        <input type="text" id='chromeDriver' className='input' style={{width: '20%'}} value={chromeDriver} onChange={(e) => {setChromeDriver(e.target.value)}} placeholder='크롬 경로'></input>
                     </div>
                     {pageType === 'taobao' && 
                         <>
                             <div>
                                 <label htmlFor='smartId'>https://smartstore.naver.com/</label>
-                                <input type="text" id='smartId' style={{width: '20%'}} value={urlIdTaobao} onChange={(e) => {setUrlIdTaobao(e.target.value)}} placeholder='dwantae'></input>
+                                <input type="text" id='smartId' className='input' style={{width: '20%'}} value={urlIdTaobao} onChange={(e) => {setUrlIdTaobao(e.target.value)}} placeholder='dwantae'></input>
                             </div>
                         </>
                     }
@@ -713,11 +713,11 @@ function Crawling( props ) {
                         {pageType === 'keyword' &&
                             <>
                                 <label>
-                                    <input type='radio' name='orderType' value='ranking' checked={radioOrderType === 'ranking'} onChange={(e) => setRadioOrderType(e.target.value)} />
+                                    <input type='radio' name='orderType' className='input' value='ranking' checked={radioOrderType === 'ranking'} onChange={(e) => setRadioOrderType(e.target.value)} />
                                     네이버 랭킹 순
                                 </label>
                                 <label>
-                                    <input type='radio' name='orderType' value='review' checked={radioOrderType === 'review'} onChange={(e) => setRadioOrderType(e.target.value)} />
+                                    <input type='radio' name='orderType' className='input' value='review' checked={radioOrderType === 'review'} onChange={(e) => setRadioOrderType(e.target.value)} />
                                     리뷰 많은 순
                                 </label>
                             </>
