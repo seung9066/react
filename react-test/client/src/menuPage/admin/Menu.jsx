@@ -145,7 +145,7 @@ function Menu( props ) {
             ...inputDisabled,
             path: false,
             title: false,
-            menuAuth: false,
+            menuAuth: true,
         })
     }
 
