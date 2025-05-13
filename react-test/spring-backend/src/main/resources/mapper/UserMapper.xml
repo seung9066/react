@@ -9,7 +9,7 @@
         /* com.sgg.application.user.mapper.UserMapper.userList */
         SELECT *
         FROM (
-            SELECT ROW_NUMBER() OVER(ORDER BY USER_NM DESC) AS RNUM
+            SELECT ROW_NUMBER() OVER(ORDER BY A1.INPT_DT, A1.UPDATE_DT) AS RNUM
                 , A1.USER_ID
                 , A1.USER_NM
                 , (SELECT CD_DTL_NAME
@@ -46,7 +46,7 @@
             <if test="notM != null and notM == 'Y'.toString()">
                 AND A1.USER_ID != 'minsun1234'
             </if>
-            ORDER BY A1.INPT_DT DESC, A1.UPDATE_DT DESC
+            ORDER BY A1.INPT_DT, A1.UPDATE_DT
         )
         WHERE RNUM BETWEEN ((#{page} - 1) * #{row}) + 1 AND #{page} * #{row}
         ORDER BY RNUM DESC
