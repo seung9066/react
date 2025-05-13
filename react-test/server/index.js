@@ -36,7 +36,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(session({
-    secret: 'your-secret-key',  // 세션 ID를 암호화하는 데 사용되는 비밀 키
+    secret: 'SD1933GB357BG',  // 세션 ID를 암호화하는 데 사용되는 비밀 키
     resave: false,              // 세션을 항상 저장할지 여부 (변경이 없어도 저장)
     saveUninitialized: false,   // 세션이 초기화되지 않은 경우에도 저장할지 여부
     cookie: {
