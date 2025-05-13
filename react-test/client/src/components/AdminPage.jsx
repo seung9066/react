@@ -38,19 +38,14 @@ function AdminPage (props) {
     }
 
     const login = async () => {
-        if (await utils.login(userData, props.auth)) {
-            getSessionAuthData();
-            setUserData(resetUserData);
-        }
+        const loginAccept = await utils.login(userData, props.auth);
+        loginAccept ? await getSessionAuthData() : null;
+        setUserData(resetUserData);
     }
 
     const getSessionAuthData = async () => {
-        const sessionAuth = await utils.getUserAuthSession();
-        if (sessionAuth) {
-            props.setSessionUserAuth(sessionAuth);
-        } else {
-            props.setSessionUserAuth('')
-        }
+        const sessionAuth = await utils.getUserAuthSession() || '';
+        props.setSessionUserAuth(sessionAuth);
     }
 
     useEffect(() => {
