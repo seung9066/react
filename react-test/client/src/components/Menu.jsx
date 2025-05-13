@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react'
 import '@css/Menu.css';
 
 import Modal from '@components/Modal';
+import AdminPage from '@components/AdminPage';
 
 const modules = import.meta.glob('/src/menuPage/*.jsx');
 const modules2 = import.meta.glob('/src/menuPage/*/*.jsx');
 
-function Menu({ getMenuNm, menuData, setMenuData, props }) {
+function Menu({ getMenuNm, menuData, setMenuData, sessionUserAuth, setSessionUserAuth, props }) {
     const [title, setTitle] = useState();
 
     const clickMenu = (e, path) => {
@@ -106,11 +107,32 @@ function Menu({ getMenuNm, menuData, setMenuData, props }) {
     return (
         <>
             <Modal isOpen={isViewModalOpen} onClose={() => setIsViewModalOpen(false)} title={filePath.replace('/src/menuPage', '')}>
-                {components.map((item) => {
+                {components.map((item, idx) => {
+                    // pathName === "main" ? pathName = "" : null;
+                    let root = './menuPage';
                     let path = item.path;
+                    let pagePath = path?.substring(root.length).replace('.jsx', '')??'';
+                    let nextPagePath = (idx !== components.length - 1) ? components[idx + 1].path.substring(root.length).replace('.jsx', '') : '';
+
+                    pagePath === '' ? pagePath = nextPagePath : null;
+
+                    // 메뉴 권한 체크
+                    let pageAuth = '000';
+
+                    for (const item of menuData) {
+                        if (item.menuAuth) {
+                            const menuPath = (item.upPath || '') + item.path.toLowerCase() + (item.upPath ? '' : '/');
+                            const programPath = pagePath.toLowerCase();
+
+                            if (programPath.indexOf(menuPath) > -1) {
+                            pageAuth = item.menuAuth;
+                            }
+                        }
+                    }
+
                     if (path === filePath) {
                         const Component = item.component;
-                        return <Component key={item.path + 'modal'} props={props} setMenu={setMenuData} />;
+                        return <AdminPage key={item.path + 'adminPage'} auth={pageAuth} sessionUserAuth={sessionUserAuth} setSessionUserAuth={setSessionUserAuth}><Component key={item.path + 'modal'} props={props} setMenu={setMenuData} /></AdminPage>;
                     }
                 })}
             </Modal>

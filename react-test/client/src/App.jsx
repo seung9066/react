@@ -129,7 +129,7 @@ function App() {
       <ToastAlert ref={toastRef} />
       <div>
         <div>
-          {menuData.length > 0 && <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} props={props} />}
+          {menuData.length > 0 && <Menu getMenuNm={getMenuNm} menuData={menuData} setMenuData={setMenuData} sessionUserAuth={sessionUserAuth} setSessionUserAuth={setSessionUserAuth} props={props} />}
         </div>
         <div style={{ marginTop: "60px", display: "flex", justifyContent: "center", alignItems: "center", gap: "20px" }}>
           <GetTime />
