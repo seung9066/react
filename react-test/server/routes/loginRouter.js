@@ -21,7 +21,6 @@ router.get('/login', async (req, res) => {
             const auth = data.userAuth;
             const passwordCheck = data.passwordCheck;
             const loginCnt = data.loginCnt;
-            console.log(data)
             
             if (passwordCheck !== 'Y') {
                 returnData.msg = 'failed';
