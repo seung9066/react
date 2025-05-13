@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 
 import styles from '@css/SggGridReact.module.css';
 
@@ -64,6 +64,8 @@ export default function SggGridReact({ sggRef,
                                         sggGridChecked = false, 
                                         sggGridFormChange = {resize: false, headerMove: false, rowMove: false}, 
                                         sggPaging = true }) {
+    // toast
+    const toastRef = useRef(null);
     // 상태컬럼
     const stateTd = '48';
     // 현재 페이지
@@ -490,7 +492,7 @@ export default function SggGridReact({ sggRef,
                 sggBtn.u(newCurrentList.filter(item => item.no === no));
             }
         } else {
-            utils.showToast('수정할 행을 선택하세요.');
+            toastRef.current.showToast('수정할 행을 선택하세요.');
             return false;
         }
     }
@@ -505,7 +507,7 @@ export default function SggGridReact({ sggRef,
         }
 
         if (state === 'INSERT') {
-            utils.showToast('신규 등록된 행은 수정할 수 없습니다.');
+            toastRef.current.showToast('신규 등록된 행은 수정할 수 없습니다.');
         } else {
             setCurrentList((prevList) =>
                 prevList.map((item) =>
@@ -524,7 +526,7 @@ export default function SggGridReact({ sggRef,
     // 그리드 행삭제
     const deleteRow = () => {
         if (checkedRows.length > 0) {
-            utils.showToast('체크된 행을 삭제합니다.');
+            toastRef.current.showToast('체크된 행을 삭제합니다.');
 
             let newCurrentList = structuredClone(currentList);
             for (const item of newCurrentList) {
@@ -592,7 +594,7 @@ export default function SggGridReact({ sggRef,
             }
             setSelectedRow(null);
         } else {
-            utils.showToast('삭제할 행을 선택하세요.');
+            toastRef.current.showToast('삭제할 행을 선택하세요.');
             return false;
         }
     }
@@ -649,12 +651,12 @@ export default function SggGridReact({ sggRef,
                 setCurrentList(resetRowData);
             }
 
-            utils.showToast('체크된 행을 초기화 합니다.');
+            toastRef.current.showToast('체크된 행을 초기화 합니다.');
         } else if (selectedRow) {
             let no = selectedRow.no;
             doReset(no);
             
-            utils.showToast('행을 초기화 합니다.');
+            toastRef.current.showToast('행을 초기화 합니다.');
         } else {
             if (sggData?.setGridData) {
                 sggData.setGridData((prev) =>
@@ -683,7 +685,7 @@ export default function SggGridReact({ sggRef,
 
             drawGrid(['totalChecked', 'rowState']);
             setColumn();
-            utils.showToast('전체 행을 초기화 합니다.');
+            toastRef.current.showToast('전체 행을 초기화 합니다.');
         }
 
         setSelectedRow(null);
@@ -763,7 +765,7 @@ export default function SggGridReact({ sggRef,
             if (sggData?.setGridData) {
                 sggData.setGridData(newCurrentList);
             }
-            utils.showToast('적용되었습니다.');
+            toastRef.current.showToast('적용되었습니다.');
         }
 
         setTotalCheck(false);
@@ -1134,6 +1136,7 @@ export default function SggGridReact({ sggRef,
 
     return (
         <>
+            <ToastAlert ref={toastRef} />
             <div className={styles.tableContainer} ref={gridRef}>
                 {sggSearchParam && sggSearchParam.searchForm && sggSearchParam.setSearchParam && sggSearchParam.doSearch && (
                     <div className={styles.searchForm}>
@@ -1334,3 +1337,40 @@ export default function SggGridReact({ sggRef,
         </>
     );
 }
+
+const ToastAlert = forwardRef((props, ref) => {
+    const [toasts, setToasts] = useState([]);
+
+    // 부모 컴포넌트에서 showToast 호출 가능하도록 설정
+    useImperativeHandle(ref, () => ({
+        showToast(message, consoleMessage) {
+            setToasts(prev => [...prev, { id: Date.now(), message }]);
+
+            if (consoleMessage) {
+                console.log(consoleMessage); // 콘솔에 메시지 출력
+            }
+        }
+    }));
+
+    useEffect(() => {
+        if (toasts.length === 0) return; // 토스트가 없으면 실행 X
+
+        const timers = toasts.map(toast =>
+            setTimeout(() => {
+                setToasts(prev => prev.filter(t => t.id !== toast.id)); // 개별적으로 제거
+            }, 1000) // 1초 후 제거
+        );
+
+        return () => timers.forEach(timer => clearTimeout(timer)); // 정리(cleanup)
+    }, [toasts]); // 토스트 배열이 변경될 때마다 실행
+
+    return (
+        <div className={styles.toastContainer}>
+            {toasts.map((toast) => (
+                <div key={toast.id} className={styles.toastshow}>
+                    {toast.message}
+                </div>
+            ))}
+        </div>
+    );
+});

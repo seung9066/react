@@ -49,6 +49,7 @@
             ORDER BY A1.INPT_DT DESC, A1.UPDATE_DT DESC
         )
         WHERE RNUM BETWEEN ((#{page} - 1) * #{row}) + 1 AND #{page} * #{row}
+        ORDER BY RNUM DESC
     </select>
 
     <!-- 목록조회수 -->

@@ -165,8 +165,8 @@ export const getUserDataSession = async () => {
 }
 
 // 토스트
-export const showToast = (msg) => {
-    window.toastRef?.current?.showToast(msg);
+export const showToast = (msg, consoleMsg) => {
+    window.toastRef?.current?.showToast(msg, consoleMsg);
 }
 
 // 이미지 파일을 base64로 변환
