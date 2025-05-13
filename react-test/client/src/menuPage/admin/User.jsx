@@ -43,7 +43,7 @@ function Menu( props ) {
 
     // 검색조건 폼
     const searchForm= [
-        {key: 'userIdSearch', type: 'text', placeholder:'아이디',},
+        {key: 'userIdSearch', type: 'text', placeholder:'아이디'},
         {key: 'userNmSearch', type: 'text', placeholder:'사용자명',},
         {key: 'type', type: 'select', placeholder:'권한명', option: typeOption},
     ];

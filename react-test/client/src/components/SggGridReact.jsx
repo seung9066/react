@@ -267,10 +267,31 @@ export default function SggGridReact({ sggRef,
         });
     }
 
+    const checkRequired = (ref) => {
+        const requiredTag = ref.current.querySelectorAll('[required]');
+        for (const item of requiredTag) {
+            const tagValue = item.value;
+            if (!tagValue.trim() || tagValue.trim() === '') {
+                item.focus();
+                let msg = ' 은(는) 필수값 입니다.';
+                if (item.id && ref.current.querySelector('label[' + item.id + ']')?.innerText) {
+                    let innerText = ref.current.querySelector('label[' + item.id + ']').innerText;
+                    msg = innerText + msg;
+                    toastRef.current.showToast(msg);
+                } else if (item.placeholder) {
+                    msg = item.placeholder + msg;
+                    toastRef.current.showToast(msg);
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
     // 검색조건 조회
     const onBtnSearchClick = (e) => {
         // 검색조건 필수값 체크
-        if (!utils.checkRequired(searchFormInputRef)) {
+        if (!checkRequired(searchFormInputRef)) {
             return false;
         }
 
@@ -1153,7 +1174,7 @@ export default function SggGridReact({ sggRef,
                                         ...rest,
                                     };
                                     
-                                    return <input key={item.key} className={styles.searchInput} {...commonProps} />;
+                                    return <input key={item.key} className={styles.searchInput} {...commonProps}/>;
                                 } else {
                                     const commonProps = {
                                         name: item.key,
@@ -1367,7 +1388,7 @@ const ToastAlert = forwardRef((props, ref) => {
     return (
         <div className={styles.toastContainer}>
             {toasts.map((toast) => (
-                <div key={toast.id} className={styles.toastshow}>
+                <div key={toast.id} className={`${styles.toast} show`}>
                     {toast.message}
                 </div>
             ))}
