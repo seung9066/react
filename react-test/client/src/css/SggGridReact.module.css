@@ -312,7 +312,7 @@
     transition: border-color 0.3s ease-in-out;
     box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
     flex: 1 1 200px;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 12px;
