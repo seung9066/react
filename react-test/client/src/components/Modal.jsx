@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function Modal({ isOpen, onClose, children, onConfirm, title }) {
+function Modal({ isOpen, onClose, closeBtn, children, onConfirm, title }) {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden'; // 스크롤 막기
@@ -22,7 +22,7 @@ function Modal({ isOpen, onClose, children, onConfirm, title }) {
                     <h2>{title}</h2>
                     {children}
                     {onConfirm && <button type='button' className='button' onClick={onConfirm} style={closeBtnStyle}>확인</button>}
-                    <button type='button' className='button' onClick={onClose} style={closeBtnStyle}>닫기</button>
+                    {closeBtn !== false && <button type='button' className='button' onClick={onClose} style={closeBtnStyle}>닫기</button>}
                 </div>
             </div>
         </div>

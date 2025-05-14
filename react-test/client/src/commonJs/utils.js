@@ -37,6 +37,20 @@ export const postAxios = async (url, data) => {
     }
 }
 
+// axios post file
+export const postAxiosFile = async (url, data) => {
+    try {
+        const res = await axios.post('/api' + url, data); // ✅ headers, data 설정 제거
+        if (res.status === 200) {
+            return { msg: 'success', data: res.data };
+        } else {
+            return { msg: 'error :: ' + url, res };
+        }
+    } catch (error) {
+        return { msg: 'error :: ' + url, error };
+    }
+};
+
 // axios patch
 export const patchAxios = async (url, data) => {
     try {

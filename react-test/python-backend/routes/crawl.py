@@ -31,7 +31,7 @@ def create_driver(path):
     options = Options()
 
     if ip_address == '129.154.222.120' or system == 'Linux' :
-        options.add_argument("--headless")  # 필요 시 주석 해제
+        options.add_argument("--headless=new")
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument("--window-size=1920,1080")  # 추가
     

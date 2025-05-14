@@ -214,7 +214,7 @@ body {
 }
 
 /* 입력 필드 스타일 */
-.input[type="text"], .input[type="number"], .input[type="password"] {
+.input {
   width: 200px;
   padding: 12px;
   border: 2px solid #ccc;
@@ -224,7 +224,7 @@ body {
   box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.input[type="text"]:focus, .input[type="number"], .input[type="password"]:focus {
+.input:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
@@ -336,4 +336,23 @@ label {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.inputFile::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.inputFile {
+  width: 400px;
+}
+
+.inputFile::before {
+    content: '파일 선택';
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }

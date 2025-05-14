@@ -12,6 +12,14 @@
         "upId": null
     },
     {
+        "upPath": "/study",
+        "path": "/cbt",
+        "no": 1,
+        "upId": "A002",
+        "id": "B012",
+        "title": "CBT"
+    },
+    {
         "upId": "A002",
         "title": "LifeCycleHook",
         "path": "/lifeCycleHook",
@@ -41,6 +49,14 @@
         "id": "A004",
         "upId": null,
         "menuAuth": "002"
+    },
+    {
+        "upPath": "/program",
+        "path": "/cbtPdf",
+        "no": 1,
+        "upId": "A004",
+        "id": "B011",
+        "title": "CBTpdf"
     },
     {
         "upPath": "/program",

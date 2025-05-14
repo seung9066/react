@@ -1,0 +1,1003 @@
+[
+    {
+        "no": 1,
+        "question": "1. UML 다이어그램 중 순차 다이어그램에 대한 설명으로 틀린 \n것은?",
+        "item1": "① 객체 간의 동적 상호작용을 시간 개념을 중심으로 모델링 \n하는 것이다.\n   ",
+        "item2": "② 주로 시스템의 정적 측면을 모델링하기 위해 사용한다.\n   ",
+        "item3": "③ 일반적으로 다이어그램의 수직 방향이 시간의 흐름을 나\n타낸다.\n   ",
+        "item4": "④ 회귀 메시지(Self-Message), 제어블록(Statement block) \n등으로 구성된다.\n",
+        "answer": 2,
+        "image": "data:image/jpeg;base64,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",
+        "totalChecked": false
+    },
+    {
+        "no": 2,
+        "question": "2. 메시지 지향 미들웨어(Message-Oriented Middleware, \nMOM)에 대한 설명으로 틀린 것은?",
+        "item1": "① 느리고 안정적인 응답보다는 즉각적인 응답이 필요한 온\n라인 업무에 적합하다.\n   ",
+        "item2": "② 독립적인 애플리케이션을 하나의 통합된 시스템으로 묶기 \n위한 역할을 한다.\n   ",
+        "item3": "③ 송신측과 수신측의 연결 시 메시지 큐를 활용하는 방법이 \n있다.\n   ",
+        "item4": "④ 상이한 애플리케이션 간 통신을 비동기 방식으로 지원한\n다.\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 3,
+        "question": "3. 익스트림 프로그래밍에 대한 설명으로 틀린 것은?",
+        "item1": "① 대표적인 구조적 방법론 중 하나이다.\n   ",
+        "item2": "② 소규모 개발 조직이 불확실하고 변경이 많은 요구를 접하\n였을 때 적절한 방법이다.\n   ",
+        "item3": "③ 익스트림 프로그래밍을 구동시키는 원리는 상식적인 원리\n와 경험을 최대한 끌어 올리는 것이다.\n   ",
+        "item4": "④ 구체적인 실천 방법을 정의하고 있으며, 개발 문서 보다\n는 소스코드에 중점을 둔다.\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 4,
+        "question": "4. 유스케이스(Use Case)의 구성 요소 간의 관계에 포함되지 \n않는 것은?",
+        "item1": "① 연관",
+        "item2": "② 확장\n   ",
+        "item3": "③ 구체화",
+        "item4": "④ 일반화\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 5,
+        "question": "5. 요구사항 분석에서 비기능적(Nonfunctional) 요구에 대한 설\n명으로 옳은 것은?",
+        "item1": "① 시스템의 처리량(Throughput), 반응 시간 등의 성능 요구\n나 품질 요구는 비기능적 요구에 해당하지 않는다.\n   ",
+        "item2": "② '차량 대여 시스템이 제공하는 모든 화면이 3초 이내에 \n사용자에게 보여야 한다'는 비기능적 요구이다.\n   ",
+        "item3": "③ 시스템 구축과 관련된 안전, 보안에 대한 요구사항들은 \n비기능적 요구에 해당하지 않는다.\n   ",
+        "item4": "④ '금융 시스템은 조회, 인출, 입금, 송금의 기능이 있어야 \n한다'는 비기능적 요구이다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 6,
+        "question": "6. 정보공학 방법론에서 데이터베이스 설계의 표현으로 사용하\n는 모델링 언어는?",
+        "item1": "① Package Diagram  ",
+        "item2": "② State Transition Diagram\n   ",
+        "item3": "③ Deployment Diagram  ",
+        "item4": "④ Entity-Relationship Diagram\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 7,
+        "question": "7. 미들웨어(Middleware)에 대한 설명으로 틀린 것은?",
+        "item1": "① 여러 운영체제에서 응용 프로그램들 사이에 위치한 소프\n트웨어이다.\n   ",
+        "item2": "② 미들웨어의 서비스 이용을 위해 사용자가 정보 교환 방법 \n등의 내부 동작을 쉽게 확인할 수 있어야 한다.\n   ",
+        "item3": "③ 소프트웨어 컴포넌트를 연결하기 위한 준비된 인프라 구\n조를 제공한다.\n   ",
+        "item4": "④ 여러 컴포넌트를 1대 1, 1대 다, 다대 다 등 여러 가지 \n형태로 연결이 가능하다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 8,
+        "question": "8. UI의 설계 지침으로 틀린 것은?",
+        "item1": "① 이해하기 편하고 쉽게 사용할 수 있는 환경을 제공해야 \n한다.\n   ",
+        "item2": "② 주요 기능을 메인 화면에 노출하여 조작이 쉽도록 하여야 \n한다.\n   ",
+        "item3": "③ 치명적인 오류에 대한 부정적인 사항은 사용자가 인지할 \n수 없도록 한다.\n   ",
+        "item4": "④ 사용자의 직무, 연령, 성별 등 다양한 계층을 수용하여야 \n한다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 9,
+        "question": "9. 객체지향 개념에서 다형성(Polymorphism)과 관련한 설명으로 \n틀린 것은?",
+        "item1": "① 다형성은 현재 코드를 변경하지 않고 새로운 클래스를 쉽\n게 추가할 수 있게 한다.\n   ",
+        "item2": "② 다형성이란 여러 가지 형태를 가지고 있다는 의미로, 여\n러 형태를 받아들일 수 있는 특징을 말한다.\n   ",
+        "item3": "③ 메소드 오버라이딩(Overriding)은 상위 클래스에서 정의한 \n일반 메소드의 구현을 하위 클래스에서 무시하고 재정의\n할 수 있다.\n   ",
+        "item4": "④ 메소드 오버로딩(Overloading)의 경우 매개 변수 타입은 \n동일하지만 메소드명을 다르게 함으로써 구현, 구분할 수 \n있다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 10,
+        "question": "10. 소프트웨어 개발 영역을 결정하는 요소 중 다음 사항과 관\n계있는 것은?",
+        "item1": "① 기능(Function)",
+        "item2": "② 성능(Performance)\n    ",
+        "item3": "③ 제약 조건(Constraint)",
+        "item4": "④ 인터페이스(Interface)\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 11,
+        "question": "11. 객체에 대한 설명으로 틀린 것은?",
+        "item1": "① 객체는 상태, 동작, 고유 식별자를 가진 모든 것이라 할 \n수 있다.\n    ",
+        "item2": "② 객체는 공통 속성을 공유하는 클래스들의 집합이다.\n    ",
+        "item3": "③ 객체는 필요한 자료 구조와 이에 수행되는 함수들을 가\n진 하나의 독립된 존재이다.\n    ",
+        "item4": "④ 객체의 상태는 속성값에 의해 정의된다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 12,
+        "question": "12. 속성과 관련된 연산(Operation)을 클래스 안에 묶어서 하나\n로 취급하는 것을 의미하는 객체지향 개념은?",
+        "item1": "① Inheritance",
+        "item2": "② Class\n    ",
+        "item3": "③ Encapsulation",
+        "item4": "④ Association\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 13,
+        "question": "13. 애자일(Agile) 프로세스 모델에 대한 설명으로 틀린 것은?",
+        "item1": "① 변화에 대한 대응보다는 자세한 계획을 중심으로 소프트\n웨어를 개발한다.\n1과목 : 소프트웨어 설계\n\n정보처리기사             ◐2022년 04월 24일 필기 기출문제 ◑ 전자문제집 CBT : www.comcbt.com\n최강 자격증 기출문제 전자문제집 CBT : www.comcbt.com\n    ",
+        "item2": "② 프로세스와 도구 중심이 아닌 개개인과의 상호소통을 통\n해 의견을 수렴한다.\n    ",
+        "item3": "③ 협상과 계약보다는 고객과의 협력을 중시한다.\n    ",
+        "item4": "④ 문서 중심이 아닌, 실행 가능한 소프트웨어를 중시한다.\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 14,
+        "question": "14. 명백한 역할을 가지고 독립적으로 존재할 수 있는 시스템의 \n부분으로 넓은 의미에서는 재사용되는 모든 단위라고 볼 수 \n있으며, 인터페이스를 통해서만 접근할 수 있는 것은?",
+        "item1": "① Model",
+        "item2": "② Sheet\n    ",
+        "item3": "③ Component",
+        "item4": "④ Cell\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 15,
+        "question": "15. GoF(Gang of Four) 디자인 패턴을 생성, 구조, 행동 패턴\n의 세 그룹으로 분류할 때, 구조 패턴이 아닌 것은?",
+        "item1": "① Adapter 패턴",
+        "item2": "② Bridge 패턴\n    ",
+        "item3": "③ Builder 패턴",
+        "item4": "④ Proxy 패턴\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 16,
+        "question": "16. UI와 관련된 기본 개념 중 하나로, 시스템의 상태와 사용자\n의 지시에 대한 효과를 보여주어 사용자가 명령에 대한 진\n행 상황과 표시된 내용을 해석할 수 있도록 도와주는 것은?",
+        "item1": "① Feedback",
+        "item2": "② Posture\n    ",
+        "item3": "③ Module",
+        "item4": "④ Hash\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 17,
+        "question": "17. UI의 종류로 멀티 터치(Multi-touch), 동작 인식(Gesture \nRecognition) 등 사용자의 자연스러운 움직임을 인식하여 \n서로 주고받는 정보를 제공하는 사용자 인터페이스를 의미\n하는 것은?",
+        "item1": "① GUI(Graphical User Interface)\n    ",
+        "item2": "② OUI(Organic User Interface)\n    ",
+        "item3": "③ NUI(Natural User Interface)\n    ",
+        "item4": "④ CLI(Command Line Interface)\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 18,
+        "question": "18. 소프트웨어 모델링과 관련한 설명으로 틀린 것은?",
+        "item1": "① 모델링 작업의 결과물은 다른 모델링 작업에 영향을 줄 \n수 없다.\n    ",
+        "item2": "② 구조적 방법론에서는 DFD(Data Flow Diagram), \nDD(Data Dictionary) 등을 사용하여 요구 사항의 결과를 \n표현한다.\n    ",
+        "item3": "③ 객체지향 방법론에서는 UML 표기법을 사용한다.\n    ",
+        "item4": "④ 소프트웨어 모델을 사용할 경우 개발될 소프트웨어에 대\n한 이해도 및 이해 당사자 간의 의사소통 향상에 도움이 \n된다.\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 19,
+        "question": "19. 유스케이스 다이어그램(Use Case Diagram)에 관련된 내용\n으로 틀린 것은?",
+        "item1": "① 시스템과 상호작용하는 외부시스템은 액터로 파악해서는 \n안된다.\n    ",
+        "item2": "② 유스케이스는 사용자 측면에서의 요구사항으로, 사용자\n가 원하는 목표를 달성하기 위해 수행할 내용을 기술한\n다.\n    ",
+        "item3": "③ 시스템 액터는 다른 프로젝트에서 이미 개발되어 사용되\n고 있으며, 본 시스템과 데이터를 주고받는 등 서로 연\n동되는 시스템을 말한다.\n    ",
+        "item4": "④ 액터가 인식할 수 없는 시스템 내부의 기능을 하나의 유\n스케이스로 파악해서는 안된다.\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 20,
+        "question": "20. 소프트웨어 아키텍처 모델 중 MVC(Model-View-Controller)\n와 관련한 설명으로 틀린 것은?",
+        "item1": "① MVC 모델은 사용자 인터페이스를 담당하는 계층의 응집\n도를 높일 수 있고, 여러 개의 다른 UI를 만들어 그 사\n이에 결합도를 낮출 수 있다.\n    ",
+        "item2": "② 모델(Model)은 뷰(View)와 제어(Controller) 사이에서 전\n달자 역할을 하며, 뷰마다 모델 서브시스템이 각각 하나\n씩 연결된다.\n    ",
+        "item3": "③ 뷰(View)는 모델(Model)에 있는 데이터를 사용자 인터페\n이스에 보이는 역할을 담당한다.\n    ",
+        "item4": "④ 제어(Controller)는 모델(Model)에 명령을 보냄으로써 모\n델의 상태를 변경할 수 있다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 21,
+        "question": "21. 통합 테스트(Integration Test)와 관련한 설명으로 틀린 것\n은?",
+        "item1": "① 시스템을 구성하는 모듈의 인터페이스와 결합을 테스트\n하는 것이다.\n    ",
+        "item2": "② 하향식 통합 테스트의 경우 넓이 우선(Breadth First) 방\n식으로 테스트를 할 모듈을 선택할 수 있다.\n    ",
+        "item3": "③ 상향식 통합 테스트의 경우 시스템 구조도의 최상위에 \n있는 모듈을 먼저 구현하고 테스트한다.\n    ",
+        "item4": "④ 모듈 간의 인터페이스와 시스템의 동작이 정상적으로 잘\n되고 있는지를 빨리 파악하고자 할 때 상향식 보다는 하\n향식 통합 테스트를 사용하는 것이 좋다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 22,
+        "question": "22. 다음과 같이 레코드가 구성되어 있을 때, 이진 검색 방법으\n로 14를 찾을 경우 비교되는 횟수는?",
+        "item1": "① 2",
+        "item2": "② 3\n    ",
+        "item3": "③ 4",
+        "item4": "④ 5\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 23,
+        "question": "23. 소프트웨어 공학에서 워크스루(Walkthrough)에 대한 설명으\n로 틀린 것은?",
+        "item1": "① 사용사례를 확장하여 명세하거나 설계 다이어그램, 원시\n코드, 테스트 케이스 등에 적용할 수 있다.\n    ",
+        "item2": "② 복잡한 알고리즘 또는 반복, 실시간 동작, 병행 처리와 \n같은 기능이나 동작을 이해하려고 할 때 유용하다.\n    ",
+        "item3": "③ 인스펙션(Inspection)과 동일한 의미를 가진다.\n    ",
+        "item4": "④ 단순한 테스트 케이스를 이용하여 프로덕트를 수작업으\n로 수행해 보는 것이다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 24,
+        "question": "24. 소프트웨어의 개발과정에서 소프트웨어의 변경사항을 관리\n하기 위해 개발된 일련의 활동을 뜻하는 것은?",
+        "item1": "① 복호화",
+        "item2": "② 형상관리\n    ",
+        "item3": "③ 저작권",
+        "item4": "④ 크랙\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 25,
+        "question": "25. 테스트 케이스와 관련한 설명으로 틀린 것은?",
+        "item1": "① 테스트의 목표 및 테스트 방법을 결정하기 전에 테스트 \n케이스를 작성해야 한다.\n    ",
+        "item2": "② 프로그램에 결함이 있더라도 입력에 대해 정상적인 결과\n를 낼 수 있기 때문에 결함을 검사할 수 있는 테스트 케\n이스를 찾는 것이 중요하다.\n    ",
+        "item3": "③ 개발된 서비스가 정의된 요구 사항을 준수하는지 확인하\n기 위한 입력 값과 실행 조건, 예상 결과의 집합으로 볼 \n수 있다.\n    ",
+        "item4": "④ 테스트 케이스 실행이 통과되었는지 실패하였는지 판단\n하기 위한 기준을 테스트 오라클(Test Oracle)이라고 한\n다.\n2과목 : 소프트웨어 개발\n\n정보처리기사             ◐2022년 04월 24일 필기 기출문제 ◑ 전자문제집 CBT : www.comcbt.com\n최강 자격증 기출문제 전자문제집 CBT : www.comcbt.com\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 26,
+        "question": "26. 객체지향 개념을 활용한 소프트웨어 구현과 관련한 설명 중 \n틀린 것은?",
+        "item1": "① 객체(Object)란 필요한 자료 구조와 수행되는 함수들을 \n가진 하나의 독립된 존재이다.\n    ",
+        "item2": "② JAVA에서 정보은닉(Information Hiding)을 표기할 때 \nprivate의 의미는 '공개'이다.\n    ",
+        "item3": "③ 상속(Inheritance)은 개별 클래스를 상속 관계로 묶음으\n로써 클래스 간의 체계화된 전체 구조를 파악하기 쉽다\n는 장점이 있다.\n    ",
+        "item4": "④ 같은 클래스에 속하는 개개의 객체이자 하나의 클래스에\n서 생성된 객체를 인스턴스(Instance)라고 한다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 27,
+        "question": "27. DRM(Digital Rights Management)과 관련한 설명으로 틀린 \n것은?",
+        "item1": "① 디지털 콘텐츠와 디바이스의 사용을 제한하기 위해 하드\n웨어 제조업자, 저작권자, 출판업자 등이 사용할 수 있는 \n접근 제어 기술을 의미한다.\n    ",
+        "item2": "② 디지털 미디어의 생명 주기 동안 발생하는 사용 권한 관\n리, 과금, 유통 단계를 관리하는 기술로도 볼 수 있다.\n    ",
+        "item3": "③ 클리어링 하우스(Clearing House)는 사용자에게 콘텐츠 \n라이센스를 발급하고 권한을 부여해주는 시스템을 말한\n다.\n    ",
+        "item4": "④ 원본을 안전하게 유통하기 위한 전자적 보안은 고려하지 \n않기 때문에 불법 유통과 복제의 방지는 불가능하다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 28,
+        "question": "28. 위험 모니터링의 의미로 옳은 것은?",
+        "item1": "① 위험을 이해하는 것\n    ",
+        "item2": "② 첫 번째 조치로 위험을 피할 수 있도록 하는 것\n    ",
+        "item3": "③ 위험 발생 후 즉시 조치하는 것\n    ",
+        "item4": "④ 위험 요소 징후들에 대하여 계속적으로 인지하는 것\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 29,
+        "question": "29. 동시에 소스를 수정하는 것을 방지하며 다른 방향으로 진행\n된 개발 결과를 합치거나 변경 내용을 추적할 수 있는 소프\n트웨어 버전 관리 도구는?",
+        "item1": "① RCS(Revision Control System)\n    ",
+        "item2": "② RTS(Reliable Transfer Service)\n    ",
+        "item3": "③ RPC(Remote Procedure Call)\n    ",
+        "item4": "④ RVS(Relative Version System)\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 30,
+        "question": "30. 화이트박스 테스트와 관련한 설명으로 틀린 것은?",
+        "item1": "① 화이트박스 테스트의 이해를 위해 논리흐름도\n(Logic-Flow Diagram)를 이용할 수 있다.\n    ",
+        "item2": "② 테스트 데이터를 이용해 실제 프로그램을 실행함으로써 \n오류를 찾는 동적 테스트(Dynamic Test)에 해당한다.\n    ",
+        "item3": "③ 프로그램의 구조를 고려하지 않기 때문에 테스트 케이스\n는 프로그램 또는 모듈의 요구나 명세를 기초로 결정한\n다.\n    ",
+        "item4": "④ 테스트 데이터를 선택하기 위하여 검증기준(Test \nCoverage)을 정한다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 31,
+        "question": "31. 알고리즘과 관련한 설명으로 틀린 것은?",
+        "item1": "① 주어진 작업을 수행하는 컴퓨터 명령어를 순서대로 나열\n한 것으로 볼 수 있다.\n    ",
+        "item2": "② 검색(Searching)은 정렬이 되지 않은 데이터 혹은 정렬\n이 된 데이터 중에서 키값에 해당되는 데이터를 찾는 알\n고리즘이다.\n    ",
+        "item3": "③ 정렬(Sorting)은 흩어져있는 데이터를 키값을 이용하여 \n순서대로 열거하는 알고리즘이다.\n    ",
+        "item4": "④ 선형 검색은 검색을 수행하기 전에 반드시 데이터의 집\n합이 정렬되어 있어야 한다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 32,
+        "question": "32. 버블 정렬을 이용하여 다음 자료를 오름차순으로 정렬할 경\n우 PASS 1의 결과는?",
+        "item1": "① 6, 9, 7, 3, 5",
+        "item2": "② 3, 9, 6, 7, 5\n    ",
+        "item3": "③ 3, 6, 7, 9, 5",
+        "item4": "④ 6, 7, 3, 5, 9\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 33,
+        "question": "33. 다음은 인스펙션(Inspection) 과정을 표현한 것이다. (가)~\n(마)에 들어갈 말을 보기에서 찾아 바르게 연결한 것은?",
+        "item1": "① (가) - ㉡, (나) - ㉢",
+        "item2": "② (나) - ㉠, (다) - ㉢\n    ",
+        "item3": "③ (다) - ㉢, (라) - ㉤",
+        "item4": "④ (라) - ㉣, (마) - ㉢\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 34,
+        "question": "34. 소프트웨어를 보다 쉽게 이해할 수 있고 적은 비용으로 수\n정할 수 있도록 겉으로 보이는 동작의 변화 없이 내부구조\n를 변경하는 것은?",
+        "item1": "① Refactoring",
+        "item2": "② Architecting\n    ",
+        "item3": "③ Specification",
+        "item4": "④ Renewal\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 35,
+        "question": "35. 단위 테스트(Unit Test)와 관련한 설명으로 틀린 것은?",
+        "item1": "① 구현 단계에서 각 모듈의 개발을 완료한 후 개발자가 명\n세서의 내용대로 정확히 구현되었는지 테스트한다.\n    ",
+        "item2": "② 모듈 내부의 구조를 구체적으로 볼 수 있는 구조적 테스\n트를 주로 시행한다.\n    ",
+        "item3": "③ 필요 데이터를 인자를 통해 넘겨주고, 테스트 완료 후 \n그 결과값을 받는 역할을 하는 가상의 모듈을 테스트 스\n텁(Stub)이라고 한다.\n    ",
+        "item4": "④ 테스트할 모듈을 호출하는 모듈도 있고, 테스트할 모듈\n이 호출하는 모듈도 있다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 36,
+        "question": "36. IDE(Integrated Development Environment) 도구의 각 기능\n에 대한 설명으로 틀린 것은?",
+        "item1": "① Coding - 프로그래밍 언어를 가지고 컴퓨터 프로그램을 \n작성할 수 있는 환경을 제공\n    ",
+        "item2": "② Compile - 저급언어의 프로그램을 고급언어 프로그램으\n로 변환하는 기능\n    ",
+        "item3": "③ Debugging - 프로그램에서 발견되는 버그를 찾아 수정\n할 수 있는 기능\n    ",
+        "item4": "④ Deployment - 소프트웨어를 최종 사용자에게 전달하기 \n위한 기능\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 37,
+        "question": "37. 아래 Tree 구조에 대하여 후위 순회(Postorder) 한 결과는?",
+        "item1": "① a → b → d → c → e → g → h → f\n    ",
+        "item2": "② d → b → g → h → e → f → c → a\n    ",
+        "item3": "③ d → b → a → g → e → h → c → f\n    ",
+        "item4": "④ a → b → d → g → e → h → c → f\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 38,
+        "question": "38. 인터페이스 구현 시 사용하는 기술로 속성-값 쌍\n(Attribute-Value Pairs)으로 이루어진 데이터 오브젝트를 전\n달하기 위해 사용하는 개방형 표준 포맷은?",
+        "item1": "① JSON",
+        "item2": "② HTML\n    ",
+        "item3": "③ AVPN",
+        "item4": "④ DOF\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 39,
+        "question": "39. 순서가 있는 리스트에서 데이터의 삽입(Push), 삭제(Pop)가 \n한 쪽 끝에서 일어나며 LIFO(Last-In-First-Out)의 특징을 \n가지는 자료구조는?",
+        "item1": "① Tree",
+        "item2": "② Graph\n    ",
+        "item3": "③ Stack",
+        "item4": "④ Queue\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 40,
+        "question": "40. 다음 중 단위 테스트 도구로 사용될 수 없는 것은?",
+        "item1": "① CppUnit",
+        "item2": "② JUnit\n    ",
+        "item3": "③ HttpUnit",
+        "item4": "④ IgpUnit\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 41,
+        "question": "41. 다음 조건을 모두 만족하는 정규형은?",
+        "item1": "① BCNF",
+        "item2": "② 제1정규형\n    ",
+        "item3": "③ 제2정규형",
+        "item4": "④ 제3정규형\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 42,
+        "question": "42. 데이터베이스의 트랜잭션 성질들 중에서 다음 설명에 해당\n하는 것은?",
+        "item1": "① Atomicity",
+        "item2": "② Consistency\n    ",
+        "item3": "③ Isolation",
+        "item4": "④ Durability\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 43,
+        "question": "43. 분산 데이터베이스 시스템과 관련한 설명으로 틀린 것은?",
+        "item1": "① 물리적으로 분산된 데이터베이스 시스템을 논리적으로 \n하나의 데이터베이스 시스템처럼 사용할 수 있도록 한 \n것이다.\n    ",
+        "item2": "② 물리적으로 분산되어 지역별로 필요한 데이터를 처리할 \n수 있는 지역 컴퓨터(Local Computer)를 분산 처리기\n(Distributed Processor)라고 한다.\n    ",
+        "item3": "③ 분산 데이터베이스 시스템을 위한 통신 네트워크 구조가 \n데이터 통신에 영향을 주므로 효율적으로 설계해야 한\n다.\n    ",
+        "item4": "④ 데이터베이스가 분산되어 있음을 사용자가 인식할 수 있\n도록 분산 투명성(Distribution Transparency)을 배제해\n야 한다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 44,
+        "question": "44. 다음 테이블을 보고 강남지점의 판매량이 많은 제품부터 출\n력되도록 할 때 다음 중 가장 적절한 SQL 구문은?",
+        "item1": "① SELECT 제품명, 판매량 FROM 푸드\nORDER BY 판매량 ASC;\n    ",
+        "item2": "② SELECT 제품명, 판매량 FROM 푸드\nORDER BY 판매량 DESC;\n    ",
+        "item3": "③ SELECT 제품명, 판매량 FROM 푸드\nWHERE 지점명 = '강남지점'\nORDER BY 판매량 ASC;\n    ",
+        "item4": "④ SELECT 제품명, 판매량 FROM 푸드\nWHERE 지점명 = '강남지점'\nORDER BY 판매량 DESC;\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 45,
+        "question": "45. 데이터베이스의 인덱스와 관련한 설명으로 틀린 것은?",
+        "item1": "① 문헌의 색인, 사전과 같이 데이터를 쉽고 빠르게 찾을 \n수 있도록 만든 데이터 구조이다.\n    ",
+        "item2": "② 테이블에 붙여진 색인으로 데이터 검색 시 처리 속도 향\n상에 도움이 된다.\n    ",
+        "item3": "③ 인덱스의 추가, 삭제 명령어는 각각 ADD, DELETE이다.\n    ",
+        "item4": "④ 대부분의 데이터베이스에서 테이블을 삭제하면 인덱스도 \n같이 삭제된다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 46,
+        "question": "46. 물리적 데이터베이스 구조의 기본 데이터 단위인 저장 레코\n드의 양식을 설계할 때 고려 사항이 아닌 것은?",
+        "item1": "① 데이터 타입",
+        "item2": "② 데이터 값의 분포\n    ",
+        "item3": "③ 트랜잭션 모델링",
+        "item4": "④ 접근 빈도\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 47,
+        "question": "47. SQL의 기능에 따른 분류 중에서 REVOKE문과 같이 데이터\n\n의 사용 권한을 관리하는데 사용하는 언어는?",
+        "item1": "① DDL(Data Definition Language)\n    ",
+        "item2": "② DML(Data Manipulation Language)\n    ",
+        "item3": "③ DCL(Data Control Language)\n    ",
+        "item4": "④ DUL(Data User Language)\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 48,
+        "question": "48. 데이터 사전에 대한 설명으로 틀린 것은?",
+        "item1": "① 시스템 카탈로그 또는 시스템 데이터베이스라고도 한다.\n    ",
+        "item2": "② 데이터 사전 역시 데이터베이스의 일종이므로 일반 사용\n자가 생성, 유지 및 수정 할 수 있다.\n    ",
+        "item3": "③ 데이터베이스에 대한 데이터인 메타데이터(Metadata)를 \n저장하고 있다.\n    ",
+        "item4": "④ 데이터 사전에 있는 데이터에 실제로 접근하는 데 필요\n한 위치 정보는 데이터 디렉토리(Data Directory)라는 곳\n에서 관리한다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 49,
+        "question": "49. 데이터베이스에서 릴레이션에 대한 설명으로 틀린 것은?",
+        "item1": "① 모든 튜플은 서로 다른 값을 가지고 있다.\n    ",
+        "item2": "② 하나의 릴레이션에서 튜플은 특정한 순서를 가진다.\n    ",
+        "item3": "③ 각 속성은 릴레이션 내에서 유일한 이름을 가진다.\n    ",
+        "item4": "④ 모든 속성 값은 원자 값(atomic value)을 가진다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 50,
+        "question": "50. 데이터베이스에서의 뷰(View)에 대한 설명으로 틀린 것은?",
+        "item1": "① 뷰는 다른 뷰를 기반으로 새로운 뷰를 만들 수 있다.\n    ",
+        "item2": "② 뷰는 일종의 가상 테이블이며, update에는 제약이 따른\n다.\n    ",
+        "item3": "③ 뷰는 기본 테이블을 만드는 것처럼 create view를 사용\n하여 만들 수 있다.\n    ",
+        "item4": "④ 뷰는 논리적으로 존재하는 기본 테이블과 다르게 물리적\n으로만 존재하며 카탈로그에 저장된다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 51,
+        "question": "51. 트랜잭션의 상태 중 트랜잭션의 마지막 연산이 실행된 직후\n의 상태로, 모든 연산의 처리는 끝났지만 트랜잭션이 수행\n한 최종 결과를 데이터베이스에 반영하지 않은 상태는?",
+        "item1": "① Active",
+        "item2": "② Partially Committed\n    ",
+        "item3": "③ Committed",
+        "item4": "④ Aborted\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 52,
+        "question": "52. SQL의 명령을 사용 용도에 따라 DDL, DML, DCL로 구분할 \n경우, 그 성격이 나머지 셋과 다른 것은?",
+        "item1": "① SELECT",
+        "item2": "② UPDATE\n    ",
+        "item3": "③ INSERT",
+        "item4": "④ GRANT\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 53,
+        "question": "53. 키의 종류 중 유일성과 최소성을 만족하는 속성 또는 속성\n들의 집합은?",
+        "item1": "① Atomic key",
+        "item2": "② Super key\n    ",
+        "item3": "③ Candidate key",
+        "item4": "④ Test key\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 54,
+        "question": "54. 데이터베이스에서 개념적 설계 단계에 대한 설명으로 틀린 \n것은?",
+        "item1": "① 산출물로 E-R Diagram을 만들 수 있다.\n    ",
+        "item2": "② DBMS에 독립적인 개념 스키마를 설계한다.\n    ",
+        "item3": "③ 트랜잭션 인터페이스를 설계 및 작성한다.\n    ",
+        "item4": "④ 논리적 설계 단계의 앞 단계에서 수행된다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 55,
+        "question": "55. 테이블의 기본키(Primary Key)로 지정된 속성에 관한 설명\n으로 가장 거리가 먼 것은?",
+        "item1": "① NOT NULL로 널 값을 가지지 않는다.\n    ",
+        "item2": "② 릴레이션에서 튜플을 구별할 수 있다.\n    ",
+        "item3": "③ 외래키로 참조될 수 있다.\n    ",
+        "item4": "④ 검색할 때 반드시 필요하다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 56,
+        "question": "56. 데이터 모델의 구성 요소 중 데이터 구조에 따라 개념 세계\n나 컴퓨터 세계에서 실제로 표현된 값들을 처리하는 작업을 \n의미하는 것은?",
+        "item1": "① Relation",
+        "item2": "② Data Structure\n    ",
+        "item3": "③ Constraint",
+        "item4": "④ Operation\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 57,
+        "question": "57. 다음 [조건]에 부합하는 SQL문을 작성하고자 할 때, [SQL\n문]의 빈칸에 들어갈 내용으로 옳은 것은?",
+        "item1": "① WHERE 이름 = '정도일'\n    ",
+        "item2": "② SELECT 팀코드 FROM 이름\nWHERE 직원 = '정도일'\n    ",
+        "item3": "③ WHERE 직원 = '정도일'\n    ",
+        "item4": "④ SELECT 팀코드 FROM 직원\nWHERE 이름 = '정도일'\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 58,
+        "question": "58. 무결성 제약조건 중 개체 무결성 제약조건에 대한 설명으로 \n옳은 것은?",
+        "item1": "① 릴레이션 내의 튜플들이 각 속성의 도메인에 정해진 값\n만을 가져야 한다.\n    ",
+        "item2": "② 기본키는 NULL 값을 가져서는 안되며 릴레이션 내에 오\n직 하나의 값만 존재해야 한다.\n    ",
+        "item3": "③ 자식 릴레이션의 외래키는 부모 릴레이션의 기본키와 도\n메인이 동일해야 한다.\n    ",
+        "item4": "④ 자식 릴레이션의 값이 변경될 때 부모 릴레이션의 제약\n을 받는다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 59,
+        "question": "59. 관계 데이터 모델에서 릴레이션(Relation)에 포함되어 있는 \n튜플(Tuple)의 수를 무엇이라고 하는가?",
+        "item1": "① Degree",
+        "item2": "② Cardinality\n    ",
+        "item3": "③ Attribute",
+        "item4": "④ Cartesian product\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 60,
+        "question": "60. 사용자 'PARK'에게 테이블을 생성할 수 있는 권한을 부여하\n기 위한 SQL문의 구성으로 빈칸에 적합한 내용은?",
+        "item1": "① CREATE TABLE TO  ",
+        "item2": "② CREATE TO\n    ",
+        "item3": "③ CREATE FROM  ",
+        "item4": "④ CREATE TABLE FROM\n\n정보처리기사             ◐2022년 04월 24일 필기 기출문제 ◑ 전자문제집 CBT : www.comcbt.com\n최강 자격증 기출문제 전자문제집 CBT : www.comcbt.com\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 61,
+        "question": "61. C언어에서 문자열 처리 함수의 서식과 그 기능의 연결로 틀\n린 것은?",
+        "item1": "① strlen(s) - s의 길이를 구한다.\n    ",
+        "item2": "② strcpy(s1, s2) - s2를 s1으로 복사한다.\n    ",
+        "item3": "③ strcmp(s1, s2) - s1과 s2를 연결한다.\n    ",
+        "item4": "④ strrev(s)－s를 거꾸로 변환한다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 62,
+        "question": "62. 다음 C언어 프로그램이 실행되었을 때, 실행 결과는?",
+        "item1": "① ０",
+        "item2": "② ２\n    ",
+        "item3": "③ ５",
+        "item4": "④ 14\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 63,
+        "question": "63. 다음 C언어 프로그램이 실행되었을 때, 실행 결과는?",
+        "item1": "① 30",
+        "item2": "② 60\n    ",
+        "item3": "③ 80",
+        "item4": "④ 120\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 64,
+        "question": "64. IP 프로토콜에서 사용하는 필드와 해당 필드에 대한 설명으\n로 틀린 것은?",
+        "item1": "① Header Length는 IP 프로토콜의 헤더 길이를 32비트 워\n드 단위로 표시한다.\n    ",
+        "item2": "② Packet Length는 IP 헤더를 제외한 패킷 전체의 길이를 \n나타내며 최대 크기는 2\n32\n－1비트이다.\n    ",
+        "item3": "③ Time To Live는 송신 호스트가 패킷을 전송하기 전 네\n트워크에서 생존할 수 있는 시간을 지정한 것이다.\n    ",
+        "item4": "④ Version Number는 IP 프로토콜의 버전번호를 나타낸다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 65,
+        "question": "65. 다음 Python 프로그램의 실행 결과가 [실행결과]와 같을 \n때, 빈칸에 적합한 것은?",
+        "item1": "① either",
+        "item2": "② elif\n    ",
+        "item3": "③ else if",
+        "item4": "④ else\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 66,
+        "question": "66. RIP 라우팅 프로토콜에 대한 설명으로 틀린 것은?",
+        "item1": "① 경로 선택 메트릭은 홉 카운트(hop count)이다.\n    ",
+        "item2": "② 라우팅 프로토콜을 IGP와 EGP로 분류했을 때 EGP에 해\n당한다.\n    ",
+        "item3": "③ 최단 경로 탐색에 Bellman-Ford 알고리즘을 사용한다.\n    ",
+        "item4": "④ 각 라우터는 이웃 라우터들로부터 수신한 정보를 이용하\n여 라우팅 표를 갱신한다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 67,
+        "question": "67. 다음에서 설명하는 프로세스 스케줄링은?",
+        "item1": "① FIFO 스케줄링",
+        "item2": "② RR 스케줄링\n    ",
+        "item3": "③ HRN 스케줄링",
+        "item4": "④ MQ 스케줄링\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 68,
+        "question": "68. UNIX 운영체제에 관한 특징으로 틀린 것은?",
+        "item1": "① 하나 이상의 작업에 대하여 백그라운드에서 수행이 가능\n하다.\n    ",
+        "item2": "② Multi-User는 지원하지만 Multi-Tasking은 지원하지 않\n는다.\n    ",
+        "item3": "③ 트리 구조의 파일 시스템을 갖는다.\n4과목 : 프로그래밍 언어 활용\n\n정보처리기사             ◐2022년 04월 24일 필기 기출문제 ◑ 전자문제집 CBT : www.comcbt.com\n최강 자격증 기출문제 전자문제집 CBT : www.comcbt.com\n    ",
+        "item4": "④ 이식성이 높으며 장치 간의 호환성이 높다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 69,
+        "question": "69. UDP 프로토콜의 특징이 아닌 것은?",
+        "item1": "① 비연결형 서비스를 제공한다.\n    ",
+        "item2": "② 단순한 헤더 구조로 오버헤드가 적다.\n    ",
+        "item3": "③ 주로 주소를 지정하고, 경로를 설정하는 기능을 한다.\n    ",
+        "item4": "④ TCP와 같이 트랜스포트 계층에 존재한다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 70,
+        "question": "70. Python 데이터 타입 중 시퀀스(Sequence) 데이터 타입에 \n해당하며 다양한 데이터 타입들을 주어진 순서에 따라 저장\n할 수 있으나 저장된 내용을 변경할 수 없는 것은?",
+        "item1": "① 복소수(complex) 타입",
+        "item2": "② 리스트(list) 타입\n    ",
+        "item3": "③ 사전(dict) 타입",
+        "item4": "④ 튜플(tuple) 타입\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 71,
+        "question": "71. 다음 JAVA 프로그램이 실행되었을 때, 실행결과는?",
+        "item1": "① 1 2 3 4",
+        "item2": "② 0 1 2 3\n    ",
+        "item3": "③ 1 2 3",
+        "item4": "④ 0 1 2\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 72,
+        "question": "72. 다음 JAVA 프로그램이 실행되었을 때의 결과는?",
+        "item1": "① 1",
+        "item2": "② 2\n    ",
+        "item3": "③ 3",
+        "item4": "④ 4\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 73,
+        "question": "73. 다음 중 Myers가 구분한 응집도(Cohesion)의 정도에서 가\n장 낮은 응집도를 갖는 단계는?",
+        "item1": "① 순차적 응집도(Sequential Cohesion)\n    ",
+        "item2": "② 기능적 응집도(Functional Cohesion)\n    ",
+        "item3": "③ 시간적 응집도(Temporal Cohesion)\n    ",
+        "item4": "④ 우연적 응집도(Coincidental Cohesion)\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 74,
+        "question": "74. 다음 C언어 프로그램이 실행되었을 때, 실행 결과는?",
+        "item1": "① 0",
+        "item2": "② 1\n    ",
+        "item3": "③ 2",
+        "item4": "④ 3\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 75,
+        "question": "75. IP 프로토콜의 주요 특징에 해당하지 않는 것은?",
+        "item1": "① 체크섬(Checksum) 기능으로 데이터 체크섬(Data \nChecksum)만 제공한다.\n    ",
+        "item2": "② 패킷을 분할, 병합하는 기능을 수행하기도 한다.\n    ",
+        "item3": "③ 비연결형 서비스를 제공한다.\n    ",
+        "item4": "④ Best Effort 원칙에 따른 전송 기능을 제공한다.\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 76,
+        "question": "76. 4개의 페이지를 수용할 수 있는 주기억장치가 있으며, 초기\n에는 모두 비어 있다고 가정한다. 다음의 순서로 페이지 참\n조가 발생할 때, LRU 페이지 교체 알고리즘을 사용할 경우 \n몇 번의 페이지 결함이 발생하는가?",
+        "item1": "① 5회",
+        "item2": "② 6회\n    ",
+        "item3": "③ 7회",
+        "item4": "④ 8회\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 77,
+        "question": "77. 사용자 수준에서 지원되는 스레드(thread)가 커널에서 지원\n되는 스레드에 비해 가지는 장점으로 옳은 것은?",
+        "item1": "① 한 프로세스가 운영체제를 호출할 때 전체 프로세스가 \n대기할 필요가 없으므로 시스템 성능을 높일 수 있다.\n    ",
+        "item2": "② 동시에 여러 스레드가 커널에 접근할 수 있으므로 여러 \n스레드가 시스템 호출을 동시에 사용할 수 있다.\n    ",
+        "item3": "③ 각 스레드를 개별적으로 관리할 수 있으므로 스레드의 \n독립적인 스케줄링이 가능하다.\n    ",
+        "item4": "④ 커널 모드로의 전환 없이 스레드 교환이 가능하므로 오\n버헤드가 줄어든다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 78,
+        "question": "78. 한 모듈이 다른 모듈의 내부 기능 및 그 내부 자료를 참조\n하는 경우의 결합도는?",
+        "item1": "① 내용 결합도(Content Coupling)\n    ",
+        "item2": "② 제어 결합도(Control Coupling)\n    ",
+        "item3": "③ 공통 결합도(Common Coupling)\n\n정보처리기사             ◐2022년 04월 24일 필기 기출문제 ◑ 전자문제집 CBT : www.comcbt.com\n최강 자격증 기출문제 전자문제집 CBT : www.comcbt.com\n    ",
+        "item4": "④ 스탬프 결합도(Stamp Coupling)\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 79,
+        "question": "79. a[0]의 주소값이 10일 경우 다음 C언어 프로그램이 실행되\n었을 때의 결과는?",
+        "item1": "① 14, 10",
+        "item2": "② 14, 14\n    ",
+        "item3": "③ 18, 10",
+        "item4": "④ 18, 14\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 80,
+        "question": "80. 모듈화(Modularity)와 관련한 설명으로 틀린 것은?",
+        "item1": "① 시스템을 모듈로 분할하면 각각의 모듈을 별개로 만들고 \n수정할 수 있기 때문에 좋은 구조가 된다.\n    ",
+        "item2": "② 응집도는 모듈과 모듈 사이의 상호의존 또는 연관 정도\n를 의미한다.\n    ",
+        "item3": "③ 모듈 간의 결합도가 약해야 독립적인 모듈이 될 수 있\n다.\n    ",
+        "item4": "④ 모듈 내 구성 요소들 간의 응집도가 강해야 좋은 모듈 \n설계이다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 81,
+        "question": "81. 소프트웨어 개발에서 정보보안 3요소에 해당 하지 않는 설\n명은?",
+        "item1": "① 기밀성 : 인가된 사용자에 대해서만 자원 접근이 가능하\n다.\n    ",
+        "item2": "② 무결성 : 인가된 사용자에 대해서만 자원 수정이 가능하\n며 전송중인 정보는 수정되지 않는다.\n    ",
+        "item3": "③ 가용성 : 인가된 사용자는 가지고 있는 권한 범위 내에\n서 언제든 자원 접근이 가능하다.\n    ",
+        "item4": "④ 휘발성 : 인가된 사용자가 수행한 데이터는 처리 완료 \n즉시 폐기 되어야 한다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 82,
+        "question": "82. 어떤 외부 컴퓨터가 접속되면 접속 인가 여부를 점검해서 \n인가된 경우에는 접속이 허용되고, 그 반대의 경우에는 거\n부할 수 있는 접근제어 유틸리티는?",
+        "item1": "① tcp wrapper",
+        "item2": "② trace checker\n    ",
+        "item3": "③ token finder",
+        "item4": "④ change detector\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 83,
+        "question": "83. 기기를 키오스크에 갖다 대면 원하는 데이터를 바로 가져올 \n수 있는 기술로 10㎝ 이내 근접 거리에서 기가급 속도로 데\n이터 전송이 가능한 초고속 근접무선통신(NFC : Near Field \nCommunication) 기술은?",
+        "item1": "① BcN(Broadband Convergence Network)\n    ",
+        "item2": "② Zing\n    ",
+        "item3": "③ Marine Navi\n    ",
+        "item4": "④ C-V2X(Cellular Vehicle To Everything)\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 84,
+        "question": "84. 취약점 관리를 위한 응용 프로그램의 보안 설정과 가장 거\n리가 먼 것은?",
+        "item1": "① 서버 관리실 출입 통제   ",
+        "item2": "② 실행 프로세스 권한 설정\n    ",
+        "item3": "③ 운영체제의 접근 제한    ",
+        "item4": "④ 운영체제의 정보 수집 제한\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 85,
+        "question": "85. 소프트웨어 개발 프레임워크와 관련한 설명으로 가장 적절\n하지 않은 것은?",
+        "item1": "① 반제품 상태의 제품을 토대로 도메인별로 필요한 서비스 \n컴포넌트를 사용하여 재사용성 확대와 성능을 보장 받을 \n수 있게 하는 개발 소프트웨어이다.\n    ",
+        "item2": "② 라이브러리와는 달리 사용자 코드에서 프레임워크를 호\n출해서 사용하고, 그에 대한 제어도 사용자 코드가 가지\n는 방식이다.\n    ",
+        "item3": "③ 설계 관점에 개발 방식을 패턴화시키기 위한 노력의 결\n과물인 소프트웨어 디자인 패턴을 반제품 소프트웨어 상\n태로 집적화시킨 것으로 볼 수 있다.\n    ",
+        "item4": "④ 프레임워크의 동작 원리를 그 제어 흐름의 일반적인 프\n로그램 흐름과 반대로 동작한다고 해서 IoC(Inversion of \nControl)이라고 설명하기도 한다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 86,
+        "question": "86. 클라우드 기반 HSM(Cloud-based Hardware Security \nModule)에 대한 설명으로 틀린 것은?",
+        "item1": "① 클라우드(데이터센터) 기반 암호화 키 생성, 처리, 저장 \n등을 하는 보안 기기이다.\n    ",
+        "item2": "② 국내에서는 공인인증제의 폐지와 전자서명법 개정을 추\n진하면서 클라우드 HSM 용어가 자주 등장하였다.\n    ",
+        "item3": "③ 클라우드에 인증서를 저장하므로 기존 HSM 기기나 휴대\n폰에 인증서를 저장해 다닐 필요가 없다.\n    ",
+        "item4": "④ 하드웨어가 아닌 소프트웨어적으로만 구현되기 때문에 \n소프트웨어식 암호 기술에 내재된 보안 취약점을 해결할 \n수 없다는 것이 주요 단점이다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 87,
+        "question": "87. 다음 내용이 설명하는 기술로 가장 적절한 것은?",
+        "item1": "① Virtual Local Area Network\n    ",
+        "item2": "② Simple Station Network\n    ",
+        "item3": "③ Mesh Network\n    ",
+        "item4": "④ Modem Network\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 88,
+        "question": "88. 물리적 위협으로 인한 문제에 해당하지 않는 것은?",
+        "item1": "① 화재, 홍수 등 천재지변으로 인한 위협\n    ",
+        "item2": "② 하드웨어 파손, 고장으로 인한 장애\n    ",
+        "item3": "③ 방화, 테러로 인한 하드웨어와 기록장치를 물리적으로 \n파괴하는 행위\n    ",
+        "item4": "④ 방화벽 설정의 잘못된 조작으로 인한 네트워크, 서버 보\n안 위협\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 89,
+        "question": "89. 악성코드의 유형 중 다른 컴퓨터의 취약점을 이용하여 스스\n로 전파하거나 메일로 전파되며 스스로를 증식하는 것은?",
+        "item1": "① Worm",
+        "item2": "② Rogue Ware\n    ",
+        "item3": "③ Adware",
+        "item4": "④ Reflection Attack\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 90,
+        "question": "90. 다음 설명에 해당하는 공격기법은?",
+        "item1": "① Ping of Death",
+        "item2": "② Session Hijacking\n    ",
+        "item3": "③ Piggyback Attack",
+        "item4": "④ XSS\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 91,
+        "question": "91. 다음 설명에 해당하는 소프트웨어는?",
+        "item1": "① 전역 함수 라이브러리  ",
+        "item2": "② 소프트웨어 개발 프레임워크\n    ",
+        "item3": "③ 컨테이너 아키텍처     ",
+        "item4": "④ 어휘 분석기\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 92,
+        "question": "92. 소프트웨어 개발 방법론 중 애자일(Agile) 방법론의 특징과 \n가장 거리가 먼 것은?",
+        "item1": "① 각 단계의 결과가 완전히 확인된 후 다음 단계 진행\n    ",
+        "item2": "② 소프트웨어 개발에 참여하는 구성원들 간의 의사소통 중\n시\n    ",
+        "item3": "③ 환경 변화에 대한 즉시 대응\n    ",
+        "item4": "④ 프로젝트 상황에 따른 주기적 조정\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 93,
+        "question": "93. 대칭 암호 알고리즘과 비대칭 암호 알고리즘에 대한 설명으\n로 틀린 것은?",
+        "item1": "① 대칭 암호 알고리즘은 비교적 실행 속도가 빠르기 때문\n에 다양한 암호의 핵심 함수로 사용될 수 있다.\n    ",
+        "item2": "② 대칭 암호 알고리즘은 비밀키 전달을 위한 키 교환이 필\n요하지 않아 암호화 및 복호화의 속도가 빠르다.\n    ",
+        "item3": "③ 비대칭 암호 알고리즘은 자신만이 보관하는 비밀키를 이\n용하여 인증, 전자서명 등에 적용이 가능하다.\n    ",
+        "item4": "④ 대표적인 대칭키 암호 알고리즘으로는 AES, IDEA 등이 \n있다.\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 94,
+        "question": "94. 두 명의 개발자가 5개월에 걸쳐 10000 라인의 코드를 개발\n하였을 때, 월별(man-month) 생산성 측정을 위한 계산 방\n식으로 가장 적합한 것은?",
+        "item1": "① 10000／2",
+        "item2": "② 10000／(5×2)\n    ",
+        "item3": "③ 10000／5",
+        "item4": "④ (2×10000)／5\n",
+        "answer": 2,
+        "totalChecked": false
+    },
+    {
+        "no": 95,
+        "question": "95. 접근 통제 방법 중 조직 내에서 직무, 직책 등 개인의 역할\n에 따라 결정하여 부여하는 접근 정책은?",
+        "item1": "① RBAC",
+        "item2": "② DAC\n    ",
+        "item3": "③ MAC",
+        "item4": "④ QAC\n",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 96,
+        "question": "96. COCOMO(Constructive Cost Model) 모형의 특징이 아닌 \n것은?",
+        "item1": "① 프로젝트를 완성하는데 필요한 man-month로 산정 결과\n를 나타낼 수 있다.\n    ",
+        "item2": "② 보헴(Boehm)이 제안한 것으로 원시코드 라인 수에 의한 \n비용 산정 기법이다.\n    ",
+        "item3": "③ 비교적 작은 규모의 프로젝트 기록을 통계 분석하여 얻\n은 결과를 반영한 모델이며 중소 규모 소프트웨어 프로\n젝트 비용 추정에 적합하다.\n    ",
+        "item4": "④ 프로젝트 개발유형에 따라 object, dynamic, function의 \n3가지 모드로 구분한다.\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 97,
+        "question": "97. 각 사용자 인증의 유형에 대한 설명으로 가장 적절하지 않\n은 것은?",
+        "item1": "① 지식 : 주체는 '그가 알고 있는 것'을 보여주며 예시로는 \n패스워드, PIN 등이 있다.\n    ",
+        "item2": "② 소유 : 주체는 '그가 가지고 있는 것'을 보여주며 예시로\n는 토큰, 스마트카드 등이 있다.\n    ",
+        "item3": "③ 존재 : 주체는 '그를 대체하는 것'을 보여주며 예시로는 \n패턴, QR 등이 있다.\n    ",
+        "item4": "④ 행위 : 주체는 '그가 하는 것'을 보여주며 예시로는 서명, \n움직임, 음성 등이 있다.\n",
+        "answer": 3,
+        "totalChecked": false
+    },
+    {
+        "no": 98,
+        "question": "98. 시스템의 사용자가 로그인하여 명령을 내리는 과정에 대한 \n시스템의 동작 중 다음 설명에 해당하는 것은?",
+        "item1": "① Aging",
+        "item2": "② Accounting\n    ",
+        "item3": "③ Authorization",
+        "item4": "④ Authentication\n",
+        "answer": 4,
+        "totalChecked": false
+    },
+    {
+        "no": 99,
+        "question": "99. 다음에서 설명하는 IT 기술은?",
+        "item1": "① SDN(Software Defined Networking)\n    ",
+        "item2": "② NFS(Network File System)\n    ",
+        "item3": "③ Network Mapper\n    ",
+        "item4": "99. 다음에서 설명하는 IT 기술은?\n    \n    ① SDN(Software Defined Networking)\n    ② NFS(Network File System)\n    ③ Network Mapper\n    ",
+        "answer": 1,
+        "totalChecked": false
+    },
+    {
+        "no": 100,
+        "question": "100. 프로젝트 일정 관리 시 사용하는 PERT 차트에 대한 설명\n에 해당하는 것은?",
+        "item1": "① 각 작업들이 언제 시작하고 언제 종료되는지에 대한 일\n정을 막대 도표를 이용하여 표시한다.\n    ",
+        "item2": "② 시간선(Time-line) 차트라고도 한다.\n    ",
+        "item3": "③ 수평 막대의 길이는 각 작업의 기간을 나타낸다.\n    ",
+        "item4": "④ 작업들 간의 상호 관련성, 결정경로, 경계시간, 자원할당 \n등을 제시한다.\n\n정보처리기사             ◐2022년 04월 24일 필기 기출문제 ◑ 전자문제집 CBT : www.comcbt.com\n최강 자격증 기출문제 전자문제집 CBT : www.comcbt.com\n전자문제집 CBT PC 버전 : www.comcbt.com\n전자문제집 CBT 모바일 버전 : m.comcbt.com\n기출문제 및 해설집 다운로드 : www.comcbt.com/xe\n전자문제집 CBT란?\n종이 문제집이 아닌 인터넷으로 문제를 풀고 자동으로 채점하며 \n모의고사, 오답 노트, 해설까지 제공하는 무료 기출문제 학습 프\n로그램으로 실제 시험에서 사용하는 OMR 형식의 CBT를 제공합\n니다.\nPC 버전 및 모바일 버전 완벽 연동\n교사용/학생용 관리기능도 제공합니다.\n오답 및 오탈자가 수정된 최신 자료와 해설은 전자문제집 CBT \n에서 확인하세요.\n12345678910\n②①①③②④②③④④\n11121314151617181920\n②③①③③①③①①②\n21222324252627282930\n③②③②①②④④①③\n31323334353637383940\n④④②①③②②①③④\n41424344454647484950\n①①④④③③③②②④\n51525354555657585960\n②④③③④④④②②①\n61626364656667686970\n③②②②②②③②③④\n71727374757677787980\n②③④②①①④①③②\n81828384858687888990\n④①②①②④③④①①\n919293949596979899100\n②①②②①④③④①④",
+        "answer": 4,
+        "totalChecked": false
+    }
+]
