@@ -299,6 +299,13 @@ function Crawling( props ) {
 
     // server에서 정보 가져오기
     const getCbtData = async (title, no) => {
+        setCbtData(allCbtData.filter((item) => item.test === title));
+        setQuestionNo(no);
+        setIsModalOpen(true);
+    };
+
+    // server에서 단건 정보 가져오기
+    const getCbtDataOne = async (title, no) => {
         utils.getAxios('/cbt/getData', {title: title}).then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
@@ -322,7 +329,6 @@ function Crawling( props ) {
     }, []);
 
     useEffect(() => {
-        console.log(questionNo)
         if (questionNo > 0) {
             const newCbtData = cbtData.filter((item) => (item.no === questionNo && item.test === testYear));
 
