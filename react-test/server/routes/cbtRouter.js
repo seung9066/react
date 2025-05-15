@@ -88,6 +88,35 @@ router.post('/updateData', (req, res) => {
     }
 });
 
+// DELETE: 특정 json 파일 삭제
+router.delete('/deleteData', (req, res) => {
+    try {
+        const dataArr = req.body.data;
+        let check = 0;
+        for (const item of dataArr) {
+            const title = item.fileName + '.json';
+            const fileName = title;
+            const folderPath = foldersRoot;
+            const filePath = path.join(folderPath, fileName);
+            
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+                check++;
+            } else {
+                check--;
+            }
+        }
+        
+        if (check === dataArr.length) {
+            res.status(200).json({ message: '삭제 완료' });
+        } else {
+            res.status(404).json({ message: '파일이 존재하지 않습니다.' });
+        }
+    } catch (err) {
+        console.error('삭제 중 오류:', err);
+        res.status(500).send('서버 에러');
+    }
+});
 
 
 // 라우터 모듈 외부로 내보냄 (다른 곳에서 import 가능)

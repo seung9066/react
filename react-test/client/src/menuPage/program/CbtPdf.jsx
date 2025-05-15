@@ -72,9 +72,32 @@ function Crawling( props ) {
         setIsModalOpen(true);
     }
 
+    // 전체 초기화
+    const onClickBtnReset = (item) => {
+        setCbtData([]);
+        setTitle({
+            year: '',
+            count: '',
+        });
+        setSelectedCbtData({});
+    }
+
     // 저장
     const saveCbtGrid = async (item) => {
-        saveData(title, item);
+        const saveTitle = title.year + '-' + title.count;
+        saveData(saveTitle, item);
+    }
+
+    // 삭제
+    const deleteCbt = async (item) => {
+        const deleteDataArr = [];
+        for (const item2 of item) {
+            if (item2.setRowState === 'DELETE') {
+                deleteDataArr.push(item2);
+            }
+        }
+
+        deleteData(deleteDataArr);
     }
 
     // server에서 정보 가져오기
@@ -102,6 +125,18 @@ function Crawling( props ) {
             }
         });
     };
+
+    // server에 정보 삭제
+    const deleteData = async (data) => {
+        utils.deleteAxios('/cbt/deleteData', {data: data}).then((res) => {
+            if (res.msg === 'success') {
+                const data = res.data;
+                utils.showToast(data.message);
+            } else {
+                utils.showToast('삭제 실패', res.error);
+            }
+        });
+    }
 
     // 이미지 크기 줄이기
     const resizeImage = (file, maxWidth = 400, maxHeight = 400) => {
@@ -369,10 +404,10 @@ function Crawling( props ) {
                     <SggGridReact
                         sggRef={(null)}
                         sggColumns={cbtListGridCol} // 그리드 컬럼 Array
-                        sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : false}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                        sggBtn={{'c': false, 'r': true, 'u': false, 'd': true, saveBtn : deleteCbt}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                         sggData={{gridData: cbtListData, setGridData: setCbtListData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                         // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
-                        sggGridChecked={false} // 그리드 좌측 체크박스 boolean
+                        sggGridChecked={true} // 그리드 좌측 체크박스 boolean
                         sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                         sggPaging={false} // 페이징 여부 boolean
                         // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
@@ -391,7 +426,7 @@ function Crawling( props ) {
                 <SggGridReact
                     sggRef={(null)}
                     sggColumns={cbtGridCol} // 그리드 컬럼 Array
-                    sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : saveCbtGrid}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                    sggBtn={{'c': false, 'r': onClickBtnReset, 'u': false, 'd': false, saveBtn : saveCbtGrid}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                     sggData={{gridData: cbtData, setGridData: setCbtData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
                     sggGridChecked={false} // 그리드 좌측 체크박스 boolean

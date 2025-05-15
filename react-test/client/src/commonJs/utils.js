@@ -74,7 +74,7 @@ export const patchAxios = async (url, data) => {
 export const deleteAxios = async (url, data) => {
     try {
         const res = await axios.delete('/api' + url, {
-            params: data,
+            data,
         });
         if (res.status === 200) {
             return {msg: 'success', data: res.data};

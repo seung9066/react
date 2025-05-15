@@ -429,7 +429,7 @@ export default function SggGridReact({ sggRef,
             if (typeof col.btn.disabled === 'function') {
                 btnDisabled = col.btn.disabled(item);
             }
-            
+
             return <button type='button' 
                             className={col.btn.className || 'button'} 
                             onClick={(e) => {e.stopPropagation(); if (col.btn.onClick) col.btn.onClick(item);}}
@@ -762,31 +762,31 @@ export default function SggGridReact({ sggRef,
 
             if (newCurrentList[i].rowState) {
                 newCurrentList[i].setRowState = newCurrentList[i].rowState;
-                if (newCurrentList[i].rowState === 'DELETE') {
-                    newCurrentList.splice(i, 1);
-                    i--;
-                } else {
-                    delete newCurrentList[i].rowState;
-                }
+                delete newCurrentList[i].rowState;
             }
         }
 
         if (sggBtn.saveBtn && typeof sggBtn.saveBtn === 'function') {
-            sggBtn.saveBtn(newCurrentList);
-            setSelectedRow(null);
-            if (sggData?.setGridData) {
-                sggData.setGridData(newCurrentList);
-            } else {
-                setCurrentList(newCurrentList);
-            }
-        } else {
-            setSelectedRow(null);
-            setCurrentList(newCurrentList);
-            if (sggData?.setGridData) {
-                sggData.setGridData(newCurrentList);
-            }
-            toastRef.current.showToast('적용되었습니다.');
+            const saveBtnCurrentList = structuredClone(newCurrentList);
+            sggBtn.saveBtn(saveBtnCurrentList);
         }
+
+        for (let i = 0; i < newCurrentList.length; i++) {
+            if (newCurrentList[i].setRowState) {
+                if (newCurrentList[i].setRowState === 'DELETE') {
+                    newCurrentList.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        setSelectedRow(null);
+        if (sggData?.setGridData) {
+            sggData.setGridData(newCurrentList);
+        } else {
+            setCurrentList(newCurrentList);
+        }
+        toastRef.current.showToast('적용되었습니다.');
 
         setTotalCheck(false);
     }
