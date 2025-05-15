@@ -61,6 +61,19 @@ function Crawling( props ) {
         {key:'subject5', name:'5과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 81))}},
     ]);
 
+    useEffect(() => {
+        if (allCbtData.length > 0) {
+            setCbtGridCol([
+                {key:'fileName', name:'년도,회차'},
+                {key:'subject1', name:'1과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 1))}},
+                {key:'subject2', name:'2과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 21))}},
+                {key:'subject3', name:'3과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 41))}},
+                {key:'subject4', name:'4과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 61))}},
+                {key:'subject5', name:'5과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 81))}},
+            ])
+        }
+    }, [allCbtData])
+
     // 모달
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -299,8 +312,8 @@ function Crawling( props ) {
     // server에서 정보 가져오기
     const getCbtData = async (title, no) => {
         setCbtData(allCbtData.filter((item) => item.test === title));
-        setQuestionNo(no);
         setIsModalOpen(true);
+        setQuestionNo(no);
     };
 
     // server에서 단건 정보 가져오기
