@@ -27,17 +27,18 @@ function Crawling( props ) {
     const [selectedCbtData, setSelectedCbtData] = useState(resetSelectedData);
     
     // 과목 풀기
-    const openKeywordPopup = (no) => {
-        console.log(no)
+    const openKeywordPopup = (item, no) => {
+        getCbtData(item.fileName, no);
     }
 
     // 그리드 컬럼
     const [cbtGridCol, setCbtGridCol] = useState([
         {key:'fileName', name:'년도,회차'},
-        {key:'subject1', name:'1과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((e) => openKeywordPopup(1))}},
-        {key:'subject2', name:'2과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((e) => openKeywordPopup(2))}},
-        {key:'subject3', name:'3과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((e) => openKeywordPopup(3))}},
-        {key:'subject4', name:'4과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((e) => openKeywordPopup(4))}},
+        {key:'subject1', name:'1과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 1))}},
+        {key:'subject2', name:'2과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 21))}},
+        {key:'subject3', name:'3과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 41))}},
+        {key:'subject4', name:'4과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 61))}},
+        {key:'subject5', name:'5과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 81))}},
     ]);
 
     // 모달
@@ -45,7 +46,7 @@ function Crawling( props ) {
 
     // 그리드 더블클릭
     const cbtGridDoubleClick = async (item) => {
-        getCbtData(item.fileName);
+        getCbtData(item.fileName, 1);
     }
 
     // 정답 확인
@@ -75,11 +76,13 @@ function Crawling( props ) {
     }
 
     // server에서 정보 가져오기
-    const getCbtData = async (title) => {
+    const getCbtData = async (title, no) => {
         utils.getAxios('/cbt/getData', {title: title}).then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
                 setCbtData(data);
+                setQuestionNo(no);
+                setIsModalOpen(true);
 
                 utils.showToast('데이터 로드 완료');
             } else {
@@ -91,13 +94,6 @@ function Crawling( props ) {
     useEffect(() => {
         getCbtList();
     }, []);
-
-    useEffect(() => {
-        if (cbtData.length > 0) {
-            setQuestionNo(1);
-            setIsModalOpen(true);
-        }
-    }, [cbtData])
 
     useEffect(() => {
         if (questionNo > 0) {

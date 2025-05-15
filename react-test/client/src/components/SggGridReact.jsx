@@ -429,6 +429,7 @@ export default function SggGridReact({ sggRef,
             if (typeof col.btn.disabled === 'function') {
                 btnDisabled = col.btn.disabled(item);
             }
+            
             return <button type='button' 
                             className={col.btn.className || 'button'} 
                             onClick={(e) => {e.stopPropagation(); if (col.btn.onClick) col.btn.onClick(item);}}

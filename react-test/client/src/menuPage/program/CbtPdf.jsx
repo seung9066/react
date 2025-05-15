@@ -17,19 +17,34 @@ function Crawling( props ) {
         count: '',
     })
 
+    // 목록
+    const [cbtListData, setCbtListData] = useState([]);
+
+    // 목록 그리드 컬럼
+    const [cbtListGridCol, setCbtListGridCol] = useState([
+        {key:'fileName', name:'년도,회차'},
+    ]);
+
     // 모달
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // 목록 모달
+    const [isListModalOpen, setIsListModalOpen] = useState(false);
 
     // 모달 컨펌
     const onConfirmModal = () => {
         const newCbtData = structuredClone(cbtData);
         for (const item of newCbtData) {
             if (selectedCbtData.no === item.no) {
-                item.image = imgBase64;
-                setCbtData(newCbtData);
+                if (imgBase64) {
+                    item.image = imgBase64;
+                } else {
+                    delete item.image;
+                }
             }
         }
-
+        
+        setCbtData(newCbtData);
         setIsModalOpen(false);
     }
 
@@ -39,6 +54,16 @@ function Crawling( props ) {
             ...prev,
             [e.target.name]: e.target.value,
         }))
+    }
+
+    // 목록 그리드 더블클릭
+    const cbtListGridDoubleClick = (item) => {
+        getCbtData(item.fileName);
+        setTitle({
+            year: item.fileName.substring(0, 4),
+            count: item.fileName.substring(4),
+        });
+        setIsListModalOpen(false);
     }
 
     // 그리드 더블클릭
@@ -53,11 +78,11 @@ function Crawling( props ) {
     }
 
     // server에서 정보 가져오기
-    const getCbtData = async () => {
-        utils.getAxios('/cbt/getData', {title: title.year + title.count}).then((res) => {
+    const getCbtData = async (title) => {
+        utils.getAxios('/cbt/getData', {title: title}).then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
-                console.log(data)
+                setCbtData(data);
 
                 utils.showToast('데이터 로드 완료');
             } else {
@@ -171,6 +196,13 @@ function Crawling( props ) {
         };
     }, [isModalOpen]);
 
+    // 사진 제거
+    const handleImageDelete = () => {
+        const newSelectedData = structuredClone(selectedCbtData);
+        delete newSelectedData.image;
+        setSelectedCbtData(newSelectedData);
+    }
+
     // 파일 선택 핸들러
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -275,22 +307,84 @@ function Crawling( props ) {
         });
     };
 
+    // 목록 가져오기
+    const getCbtList = async () => {
+        utils.getAxios('/cbt/getList').then((res) => {
+            if (res.msg === 'success') {
+                const data = res.data;
+                const cbtListArr = [];
+                for (const item of data) {
+                    const cbtItem = {fileName : item.replace('.json', '')};
+                    cbtListArr.push(cbtItem)
+                }
+                setCbtListData(cbtListArr);
+    
+                utils.showToast('목록 조회 완료');
+            } else {
+                utils.showToast('목록 조회 실패', res.error);
+            }
+        });
+    }
+
+    useEffect(() => {
+        getCbtList();
+    }, [])
+
     return (
         <>
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={onConfirmModal}>
                 <h4>{selectedCbtData.question}</h4>
-                <img src={selectedCbtData.image}></img>
+                {selectedCbtData.image && 
+                    <div style={{ position: 'relative', display: 'inline-block' }}>
+                        <button
+                            onClick={handleImageDelete}
+                            style={{
+                                position: 'absolute',
+                                top: '5px',
+                                right: '5px',
+                                background: 'red',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '50%',
+                                width: '24px',
+                                height: '24px',
+                                cursor: 'pointer',
+                                fontWeight: 'bold',
+                                lineHeight: '20px',
+                            }}
+                        >
+                            ×
+                        </button>
+                        <img src={selectedCbtData.image}></img>
+                    </div>
+                }
                 <p>{selectedCbtData.item1}</p>
                 <p>{selectedCbtData.item2}</p>
                 <p>{selectedCbtData.item3}</p>
                 <p>{selectedCbtData.item4}</p>
                 <p>정답 : {selectedCbtData.answer}</p>
             </Modal>
+            <Modal isOpen={isListModalOpen} onClose={() => setIsListModalOpen(false)}>
+                <div>
+                    <SggGridReact
+                        sggRef={(null)}
+                        sggColumns={cbtListGridCol} // 그리드 컬럼 Array
+                        sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : false}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                        sggData={{gridData: cbtListData, setGridData: setCbtListData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                        // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
+                        sggGridChecked={false} // 그리드 좌측 체크박스 boolean
+                        sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
+                        sggPaging={false} // 페이징 여부 boolean
+                        // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
+                        sggTrOnDoubleClick={(e, item) => {cbtListGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
+                    />
+                </div>
+            </Modal>
             <div>
                 <input type="file" className='inputFile' accept="application/pdf" onChange={handleFileChange} />
                 <button type='button' className='button' onClick={handleUpload}>변환</button>
             </div>
-                <button type='button' className='button' onClick={getCbtData}>변환</button>
+                <button type='button' className='button' onClick={(e) => setIsListModalOpen(true)}>목록</button>
 
             <div>
                 <input type='number' className='input' name='year' value={title.year} onChange={onChangeValue}/> 년도 <input type='number' className='input' name='count' value={title.count} onChange={onChangeValue}/> 회차
