@@ -167,7 +167,6 @@ function Crawling( props ) {
     // 오답 이전
     const beforeWrong = (no) => {
         const newWrongData = structuredClone(wrongData);
-        console.log(no)
         
         if (no > 0) {
             const item = newWrongData[no - 1];
