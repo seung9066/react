@@ -5,12 +5,22 @@ import Modal from '@components/Modal';
 import SggGridReact from '@components/SggGridReact';
 
 function Crawling( props ) {
+    const resetReadOnlyTF = {
+        question: false,
+        item1: false,
+        item2: false,
+        item3: false,
+        item4: false,
+        answer: false,
+    };
+    const [readOnlyTF, setReadOnlyTF] = useState(resetReadOnlyTF)
     const [cbtFile, setCbtFile] = useState(null);
     const [cbtData, setCbtData] = useState([]);
     const [selectedCbtData, setSelectedCbtData] = useState({});
     const [imgBase64, setImgBase64] = useState('');
     const [cbtGridCol, setCbtGridCol] = useState([
         {key:'question', name:'문제'},
+        {key:'imageYN', name:'이미지 여부', width: 10},
     ]);
     const [title, setTitle] = useState({
         year: '',
@@ -36,16 +46,31 @@ function Crawling( props ) {
         const newCbtData = structuredClone(cbtData);
         for (const item of newCbtData) {
             if (selectedCbtData.no === item.no) {
-                if (imgBase64) {
-                    item.image = imgBase64;
+                item.question = selectedCbtData.question;
+                item.image = selectedCbtData.image;
+                item.item1 = selectedCbtData.item1;
+                item.item2 = selectedCbtData.item2;
+                item.item3 = selectedCbtData.item3;
+                item.item4 = selectedCbtData.item4;
+                item.answer = selectedCbtData.answer;
+                if (item.image) {
+                    item.imageYN = 'Y';
                 } else {
-                    delete item.image;
+                    item.imageYN = 'N';
                 }
             }
         }
         
         setCbtData(newCbtData);
         setIsModalOpen(false);
+        setReadOnlyTF(resetReadOnlyTF);
+    }
+
+    const onChangeValueSelected = (e) => {
+        setSelectedCbtData((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+        }))
     }
 
     // input value change
@@ -54,6 +79,12 @@ function Crawling( props ) {
             ...prev,
             [e.target.name]: e.target.value,
         }))
+    }
+
+    // 목록 버튼
+    const onClickBtnList = () => {
+        getCbtList();
+        setIsListModalOpen(true);
     }
 
     // 목록 그리드 더블클릭
@@ -72,19 +103,29 @@ function Crawling( props ) {
         setIsModalOpen(true);
     }
 
-    // 전체 초기화
-    const onClickBtnReset = (item) => {
-        setCbtData([]);
-        setTitle({
-            year: '',
-            count: '',
-        });
-        setSelectedCbtData({});
+    // 모달 문제 더블클릭
+    const onDoubleClickModalItem = (e) => {
+        setReadOnlyTF((prev) => ({
+            ...prev,
+            [e.currentTarget.dataset.name]: !(prev[e.currentTarget.dataset.name]),
+        }))
+    }
+
+    // 초기화
+    const onClickBtnReset = (msg) => {
+        if (msg === 'ALL') {
+            setCbtData([]);
+            setTitle({
+                year: '',
+                count: '',
+            });
+            setSelectedCbtData({});
+        }
     }
 
     // 저장
     const saveCbtGrid = async (item) => {
-        const saveTitle = title.year + '-' + title.count;
+        const saveTitle = title.year + title.count;
         saveData(saveTitle, item);
     }
 
@@ -105,6 +146,13 @@ function Crawling( props ) {
         utils.getAxios('/cbt/getData', {title: title}).then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
+                for (const item of data) {
+                    if (item.image) {
+                        item.imageYN = 'Y';
+                    } else {
+                        item.imageYN = 'N';
+                    }
+                }
                 setCbtData(data);
 
                 utils.showToast('데이터 로드 완료');
@@ -367,8 +415,38 @@ function Crawling( props ) {
 
     return (
         <>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={onConfirmModal}>
-                <h4>{selectedCbtData.question}</h4>
+            <Modal isOpen={isListModalOpen} onClose={() => setIsListModalOpen(false)}>
+                <div>
+                    <SggGridReact
+                        sggRef={(null)}
+                        sggColumns={cbtListGridCol} // 그리드 컬럼 Array
+                        sggBtn={{'c': false, 'r': true, 'u': false, 'd': true, saveBtn : deleteCbt}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                        sggData={{gridData: cbtListData, setGridData: setCbtListData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                        // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
+                        sggGridChecked={true} // 그리드 좌측 체크박스 boolean
+                        sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
+                        sggPaging={false} // 페이징 여부 boolean
+                        // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
+                        sggTrOnDoubleClick={(e, item) => {cbtListGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
+                    />
+                </div>
+            </Modal>
+            <Modal isOpen={isModalOpen} onClose={() => (setIsModalOpen(false), setReadOnlyTF(resetReadOnlyTF))} onConfirm={onConfirmModal}>
+                {readOnlyTF.question === true ? 
+                        <textarea
+                            className="input"
+                            data-name='question'
+                            name="question"
+                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                            value={selectedCbtData.question}
+                            onChange={onChangeValueSelected}
+                            onDoubleClick={onDoubleClickModalItem}
+                        />
+                    :
+                        <h4 data-name='question' onDoubleClick={onDoubleClickModalItem}>
+                            {selectedCbtData.question || '...'}
+                        </h4>
+                }
                 {selectedCbtData.image && 
                     <div style={{ position: 'relative', display: 'inline-block' }}>
                         <button
@@ -393,36 +471,94 @@ function Crawling( props ) {
                         <img src={selectedCbtData.image}></img>
                     </div>
                 }
-                <p>{selectedCbtData.item1}</p>
-                <p>{selectedCbtData.item2}</p>
-                <p>{selectedCbtData.item3}</p>
-                <p>{selectedCbtData.item4}</p>
-                <p>정답 : {selectedCbtData.answer}</p>
-            </Modal>
-            <Modal isOpen={isListModalOpen} onClose={() => setIsListModalOpen(false)}>
-                <div>
-                    <SggGridReact
-                        sggRef={(null)}
-                        sggColumns={cbtListGridCol} // 그리드 컬럼 Array
-                        sggBtn={{'c': false, 'r': true, 'u': false, 'd': true, saveBtn : deleteCbt}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
-                        sggData={{gridData: cbtListData, setGridData: setCbtListData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
-                        // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
-                        sggGridChecked={true} // 그리드 좌측 체크박스 boolean
-                        sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
-                        sggPaging={false} // 페이징 여부 boolean
-                        // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
-                        sggTrOnDoubleClick={(e, item) => {cbtListGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
-                    />
-                </div>
+
+                {readOnlyTF.item1 === true ?
+                        <textarea
+                            className="input"
+                            name="item1"
+                            data-name='item1'
+                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                            value={selectedCbtData.item1}
+                            onChange={onChangeValueSelected}
+                            onDoubleClick={onDoubleClickModalItem}
+                        />
+                    :
+                        <p data-name='item1' onDoubleClick={onDoubleClickModalItem}>
+                            {selectedCbtData.item1 || '...'}
+                        </p>
+                }
+                {readOnlyTF.item2 === true ?
+                        <textarea
+                            className="input"
+                            name="item2"
+                            data-name='item2'
+                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                            value={selectedCbtData.item2}
+                            onChange={onChangeValueSelected}
+                            onDoubleClick={onDoubleClickModalItem}
+                        />
+                    :
+                        <p data-name='item2' onDoubleClick={onDoubleClickModalItem}>
+                            {selectedCbtData.item2 || '...'}
+                        </p>
+                }
+                {readOnlyTF.item3 === true ?
+                        <textarea
+                            className="input"
+                            name="item3"
+                            data-name='item3'
+                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                            value={selectedCbtData.item3}
+                            onChange={onChangeValueSelected}
+                            onDoubleClick={onDoubleClickModalItem}
+                        />
+                    :
+                        <p data-name='item3' onDoubleClick={onDoubleClickModalItem}>
+                            {selectedCbtData.item3 || '...'}
+                        </p>
+                }
+                {readOnlyTF.item4 === true ?
+                        <textarea
+                            className="input"
+                            name="item4"
+                            data-name='item4'
+                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                            value={selectedCbtData.item4}
+                            onChange={onChangeValueSelected}
+                            onDoubleClick={onDoubleClickModalItem}
+                        />
+                    :
+                        <p data-name='item4' onDoubleClick={onDoubleClickModalItem}>
+                            {selectedCbtData.item4 || '...'}
+                        </p>
+                }
+                {readOnlyTF.answer === true ?
+                        <>
+                            정답 : 
+                            <input
+                                type='input'
+                                className="input"
+                                name="answer"
+                                data-name='answer'
+                                value={selectedCbtData.answer}
+                                onChange={onChangeValueSelected}
+                                onDoubleClick={onDoubleClickModalItem}
+                            />
+                        </>
+                    :
+                        <p data-name='answer' onDoubleClick={onDoubleClickModalItem}>
+                            정답 : {selectedCbtData.answer}
+                        </p>
+                }
             </Modal>
             <div>
                 <input type="file" className='inputFile' accept="application/pdf" onChange={handleFileChange} />
                 <button type='button' className='button' onClick={handleUpload}>변환</button>
             </div>
-                <button type='button' className='button' onClick={(e) => setIsListModalOpen(true)}>목록</button>
+                <button type='button' className='button' onClick={onClickBtnList}>목록</button>
 
             <div>
-                <input type='number' className='input' name='year' value={title.year} onChange={onChangeValue}/> 년도 <input type='number' className='input' name='count' value={title.count} onChange={onChangeValue}/> 회차
+                <input type='number' className='input' name='year' value={title.year} onChange={onChangeValue}/> 년도 <input type='number' className='input' name='count' value={title.count} onChange={onChangeValue}/> 월
                 <SggGridReact
                     sggRef={(null)}
                     sggColumns={cbtGridCol} // 그리드 컬럼 Array

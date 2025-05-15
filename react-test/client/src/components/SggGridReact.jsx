@@ -711,7 +711,15 @@ export default function SggGridReact({ sggRef,
         setSelectedRow(null);
 
         if (sggBtn && typeof sggBtn.r === 'function') {
-            sggBtn.r();
+            let msg = '';
+            if (checkedRows.length > 0) {
+                msg = 'CHECK';
+            } else if (selectedRow) {
+                msg = 'ROW';
+            } else {
+                msg = 'ALL';
+            }
+            sggBtn.r(msg);
         }
     }
 

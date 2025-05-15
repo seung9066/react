@@ -69,7 +69,7 @@ router.get('/getData', (req, res) => {
 // POST: menu.json 파일 저장
 router.post('/updateData', (req, res) => {
     try {
-        const title = req.body.title.year + req.body.title.count + '.json';
+        const title = req.body.title + '.json';
         const fileName = title;
         const folderPath = foldersRoot;
         const filePath = path.join(folderPath, fileName);
