@@ -27,6 +27,8 @@ function Crawling( props ) {
         count: '',
     })
 
+    const [disabledTitle, setDisabledTitle] = useState(false);
+
     // 목록
     const [cbtListData, setCbtListData] = useState([]);
 
@@ -56,7 +58,7 @@ function Crawling( props ) {
                 if (item.image) {
                     item.imageYN = 'Y';
                 } else {
-                    item.imageYN = 'N';
+                    item.imageYN = '';
                 }
             }
         }
@@ -95,6 +97,8 @@ function Crawling( props ) {
             count: item.fileName.substring(4),
         });
         setIsListModalOpen(false);
+
+        setDisabledTitle(true);
     }
 
     // 그리드 더블클릭
@@ -120,12 +124,19 @@ function Crawling( props ) {
                 count: '',
             });
             setSelectedCbtData({});
+
+            setDisabledTitle(false);
         }
     }
 
     // 저장
     const saveCbtGrid = async (item) => {
         const saveTitle = title.year + title.count;
+
+        for (const item2 of item) {
+            item2.test = title.year + title.count;
+        }
+
         saveData(saveTitle, item);
     }
 
@@ -150,7 +161,7 @@ function Crawling( props ) {
                     if (item.image) {
                         item.imageYN = 'Y';
                     } else {
-                        item.imageYN = 'N';
+                        item.imageYN = '';
                     }
                 }
                 setCbtData(data);
@@ -301,6 +312,11 @@ function Crawling( props ) {
             return;
         }
 
+        if (!title.year || !title.count) {
+            utils.showToast('년도, 월을 입력해주세요.');
+            return;
+        }
+
         const formData = new FormData();
         formData.append("pdf", cbtFile);
 
@@ -355,6 +371,7 @@ function Crawling( props ) {
                         q.item2 = item2;
                         q.item3 = item3;
                         q.item4 = item4;
+                        q.imageYN = '';
 
                         questionArr.push(q);
                     }
@@ -552,13 +569,13 @@ function Crawling( props ) {
                 }
             </Modal>
             <div>
-                <input type="file" className='inputFile' accept="application/pdf" onChange={handleFileChange} />
-                <button type='button' className='button' onClick={handleUpload}>변환</button>
-            </div>
                 <button type='button' className='button' onClick={onClickBtnList}>목록</button>
+                <input type="file" className='inputFile' accept="application/pdf" onChange={handleFileChange} />
+            </div>
 
             <div>
-                <input type='number' className='input' name='year' value={title.year} onChange={onChangeValue}/> 년도 <input type='number' className='input' name='count' value={title.count} onChange={onChangeValue}/> 월
+                <input type='number' className='input' name='year' value={title.year} onChange={onChangeValue} disabled={disabledTitle}/> 년도 <input type='number' className='input' name='count' value={title.count} onChange={onChangeValue} disabled={disabledTitle}/> 월
+                <button type='button' className='button' onClick={handleUpload}>변환</button>
                 <SggGridReact
                     sggRef={(null)}
                     sggColumns={cbtGridCol} // 그리드 컬럼 Array

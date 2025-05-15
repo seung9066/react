@@ -3,6 +3,7 @@ import express from 'express';
 
 // 파일 시스템 접근을 위한 fs 모듈 불러옴
 import fs from 'fs';
+import { readdir, readFile } from 'fs/promises';
 
 // 경로 조작을 위한 path 모듈 불러옴
 import path from 'path';
@@ -33,6 +34,28 @@ router.get('/getList', (req, res) => {
             res.json(jsonFiles);
         });
 
+    } catch (err) {
+        console.error('목록 오류:', err);
+        res.status(500).send('서버 오류');
+    }
+});
+
+router.get('/getListData', async (req, res) => {
+    try {
+        const folderPath = foldersRoot;
+
+        const files = await readdir(folderPath);
+        const jsonFiles = files.filter(file => path.extname(file) === '.json');
+
+        const jsonFileArr = [];
+
+        for (const file of jsonFiles) {
+            const filePath = path.join(folderPath, file);
+            const jsonData = await readFile(filePath, 'utf-8');
+            jsonFileArr.push(JSON.parse(jsonData));
+        }
+
+        res.json(jsonFileArr);
     } catch (err) {
         console.error('목록 오류:', err);
         res.status(500).send('서버 오류');

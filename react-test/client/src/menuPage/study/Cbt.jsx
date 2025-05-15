@@ -13,6 +13,10 @@ function Crawling( props ) {
     const [cbtData, setCbtData] = useState([]);
     // 현재 문제 번호
     const [questionNo, setQuestionNo] = useState(0);
+    // 틀린 문제 번호
+    const [wrongQuestionNo, setWrongQuestionNo] = useState(-1);
+    // 시험 년월
+    const [testYear, setTestYear] = useState(''); 
     // 선택 문제
     const resetSelectedData = {
         no: 0,
@@ -23,11 +27,22 @@ function Crawling( props ) {
         item3: '',
         item4: '',
         answer: '',
+        test: '',
     }
+    // 선택 문제
     const [selectedCbtData, setSelectedCbtData] = useState(resetSelectedData);
-    
+    // 선택 문제 오답
+    const [wrongSelectedCbtData, setWrongSelectedCbtData] = useState(resetSelectedData);
+
+    // 모든 문제
+    const [allCbtData, setAllCbtData] = useState([]);
+
+    // 오답목록
+    const [wrongData, setWrongData] = useState([]);
+
     // 과목 풀기
     const openKeywordPopup = (item, no) => {
+        setTestYear(item.fileName);
         getCbtData(item.fileName, no);
     }
 
@@ -46,14 +61,159 @@ function Crawling( props ) {
 
     // 그리드 더블클릭
     const cbtGridDoubleClick = async (item) => {
+        setTestYear(item.fileName);
         getCbtData(item.fileName, 1);
     }
 
     // 정답 확인
     const checkAnswer = (e) => {
-        const selectAnswer = Number(selectedCbtData.answer);
+        const selectNo = Number(selectedCbtData.no || wrongSelectedCbtData.no);
+        const selectAnswer = Number(selectedCbtData.answer || wrongSelectedCbtData.answer);
+        const selectTest = selectedCbtData.test || wrongSelectedCbtData.test;
         const chooseAnswer = Number(e.currentTarget.dataset.name);
-        selectAnswer === chooseAnswer ? (utils.showToast('정답'), setCorrect(selectAnswer)) : utils.showToast('오답');
+
+        const newSelectedData = structuredClone(selectedCbtData);
+        if (selectAnswer === chooseAnswer) {
+            utils.showToast('정답');
+            // 정답 빨간 표시용
+            setCorrect(selectAnswer);
+
+            // 오답처리 목록
+            const checkWrong = wrongData.filter((item) => (item.no === selectNo && selectTest === testYear)).length;
+            if (checkWrong > 0) {
+                const newWrongData = wrongData.filter((item) => !(item.no === selectNo && selectTest === testYear));
+                if (selectedCbtData.no > 0) {
+                    setWrongData(newWrongData);
+                }
+            }
+        } else {
+            utils.showToast('오답');
+            // 정답 빨간 표시용
+            setCorrect(0);
+            
+            if (selectedCbtData.no > 0) {
+                // 오답처리 목록
+                const newWrongData = structuredClone(wrongData);
+                const checkWrong = newWrongData.filter((item) => (item.no === selectNo && selectTest === testYear)).length;
+                if (checkWrong === 0) {
+                    newWrongData.push(newSelectedData);
+                    setWrongData(newWrongData);
+                }
+            }
+        }
+    }
+
+    // 오답 목록
+    const showWrong = () => {
+        const newWrongData = structuredClone(wrongData);
+        
+        if (newWrongData.length > 0) {
+            const item = newWrongData[0];
+            setWrongSelectedCbtData(item);
+            setIsModalOpen(true);
+            setWrongQuestionNo(0);
+            setTestYear(item.test);
+        } else {
+            utils.showToast('오답 목록이 없습니다.');
+        }
+    }
+    
+    // 오답 다음
+    const nextWrong = (no) => {
+        const newWrongData = structuredClone(wrongData);
+
+        if (newWrongData.length > no + 1) {
+            const item = newWrongData[no + 1];
+            setWrongSelectedCbtData(item);
+            setWrongQuestionNo(no + 1);
+            setTestYear(item.test);
+            setCorrect(0);
+        }
+    }
+    
+    // 오답 이전
+    const beforeWrong = (no) => {
+        const newWrongData = structuredClone(wrongData);
+        
+        if (no > 0) {
+            const item = newWrongData[no - 1];
+            setWrongSelectedCbtData(item);
+            setWrongQuestionNo(no - 1);
+            setTestYear(item.test);
+            setCorrect(0);
+        }
+    }
+
+    const resetModal = () => {
+        // 모달 닫기
+        setIsModalOpen(false);
+        // 모달 문제집
+        setCbtData([]);
+        // 보여줄 문제번호
+        setQuestionNo(0);
+        // 문제
+        setSelectedCbtData(resetSelectedData);
+        // 클릭 정답 체크용
+        setCorrect(0);
+        // 시험명
+        setTestYear('');
+
+        // 오답 번호
+        setWrongQuestionNo(-1);
+        // 오답 보여줄 문제
+        setWrongSelectedCbtData(resetSelectedData);
+    }
+
+    // 과목명
+    const getSubject = (no) => {
+        if (1 <= no && no <= 20) {
+            return '1과목 : 소프트웨어 설계';
+        } else if (21 <= no && no <= 40) {
+            return '2과목 : 소프트웨어 개발';
+        } else if (41 <= no && no <= 60) {
+            return '3과목 : 데이터베이스 구축';
+        } else if (61 <= no && no <= 80) {
+            return '4과목 : 프로그래밍 언어 활용';
+        } else if (81 <= no && no <= 100) {
+            return '5과목 : 정보시스템 구축관리';
+        }
+    }
+
+    // 문자열 깔끔하게
+    const resetTxt = (item) => {
+        let returnItem = item.replaceAll('\n', '');
+        return wrappedText(returnItem);
+    }
+
+    const wrappedText = (item) => {
+        const regex = /^(100|[1-9][0-9]?)[.)]\s(.+)$/gm;
+
+        let returnItem = '';
+        item.replace(regex, (match, num, content) => {
+            const wrapAt = 50;
+            const wrappedContent = content.replace(
+                new RegExp(`(.{1,${wrapAt}})(\\s|$)`, 'g'),
+                '$1\n'
+            ).trim();
+
+            returnItem = `${num}. ${wrappedContent}`;
+        })
+        
+        return returnItem;
+    };
+
+    // 랜덤풀기용 전체 시험 조회
+    const onClickBtnRandom = () => {
+        utils.getAxios('/cbt/getListData').then((res) => {
+            if (res.msg === 'success') {
+                const data = res.data;
+                setAllCbtData(data);
+    
+                utils.showToast('전체 조회 완료');
+            } else {
+                utils.showToast('전체 조회 실패', res.error);
+            }
+        });
     }
 
     // 목록 가져오기
@@ -92,30 +252,44 @@ function Crawling( props ) {
     };
 
     useEffect(() => {
+        // 시험 목록
         getCbtList();
     }, []);
 
     useEffect(() => {
         if (questionNo > 0) {
-            setSelectedCbtData(cbtData.filter((item) => item.no === questionNo)[0] || {});
+            const newCbtData = cbtData.filter((item) => (item.no === questionNo && item.test === testYear));
+
+            if (newCbtData.length > 0) {
+                setSelectedCbtData(newCbtData[0]);
+                setCorrect(0);
+            }
         }
     }, [questionNo]);
 
     return (
         <>
-            <Modal isOpen={isModalOpen} onClose={() => (setIsModalOpen(false), setCbtData([]), setQuestionNo(0))} closeBtn={false} onConfirm={null}>
-                <h4>{selectedCbtData?.question || ''}</h4>
+            <Modal isOpen={isModalOpen} onClose={resetModal} closeBtn={false} onConfirm={null}>
+                <p style={{ userSelect: 'none' }}>{getSubject(selectedCbtData?.no || wrongSelectedCbtData?.no || '')}</p>
+                <h4 style={{ whiteSpace: 'pre-wrap', userSelect: 'none' }}>{resetTxt(selectedCbtData?.question || wrongSelectedCbtData?.question ||'')}</h4>
                 <div>
-                    <img src={selectedCbtData?.image || ''}></img>
-                    <p style={{ cursor: 'pointer', color: correct === 1 ? 'red' : 'black'}} data-name='1' onClick={checkAnswer}>{selectedCbtData?.item1 || ''}</p>
-                    <p style={{ cursor: 'pointer', color: correct === 2 ? 'red' : 'black' }} data-name='2' onClick={checkAnswer}>{selectedCbtData?.item2 || ''}</p>
-                    <p style={{ cursor: 'pointer', color: correct === 3 ? 'red' : 'black' }} data-name='3' onClick={checkAnswer}>{selectedCbtData?.item3 || ''}</p>
-                    <p style={{ cursor: 'pointer', color: correct === 4 ? 'red' : 'black' }} data-name='4' onClick={checkAnswer}>{selectedCbtData?.item4 || ''}</p>
-                    <button type='button' className='button' onClick={(e) => {questionNo >= 1 ? (setQuestionNo(questionNo - 1), setCorrect(0)) : null}}>이전</button>
-                    <button type='button' className='button' onClick={(e) => {questionNo < 100 ? (setQuestionNo(questionNo + 1), setCorrect(0)) : null}}>다음</button>
+                    <img src={selectedCbtData?.image || wrongSelectedCbtData?.image || ''}></img>
+
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 1 ? 'red' : 'black'}} data-name='1' onClick={checkAnswer}>{selectedCbtData?.item1 || wrongSelectedCbtData?.item1 || ''}</p>
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 2 ? 'red' : 'black' }} data-name='2' onClick={checkAnswer}>{selectedCbtData?.item2 || wrongSelectedCbtData?.item2 || ''}</p>
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 3 ? 'red' : 'black' }} data-name='3' onClick={checkAnswer}>{selectedCbtData?.item3 || wrongSelectedCbtData?.item3 || ''}</p>
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 4 ? 'red' : 'black' }} data-name='4' onClick={checkAnswer}>{selectedCbtData?.item4 || wrongSelectedCbtData?.item4 || ''}</p>
+                    
+                    {questionNo > 0 && <button type='button' className='button' onClick={(e) => {questionNo > 1 ? (setQuestionNo(questionNo - 1), setCorrect(0)) : null}}>이전</button>}
+                    {questionNo > 0 && <button type='button' className='button' onClick={(e) => {questionNo < 100 ? (setQuestionNo(questionNo + 1), setCorrect(0)) : null}}>다음</button>}
+
+                    {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {wrongQuestionNo >= 1 ? (beforeWrong(wrongQuestionNo)) : null}}>이전</button>}
+                    {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {wrongQuestionNo < 100 ? (nextWrong(wrongQuestionNo)) : null}}>다음</button>}
                 </div>
             </Modal>
 
+            <button type='button' className='button danger' onClick={showWrong}>오답목록</button>
+            <button type='button' className='button danger' onClick={onClickBtnRandom}>랜덤풀기</button>
             <div>
                 <SggGridReact
                     sggRef={(null)}
