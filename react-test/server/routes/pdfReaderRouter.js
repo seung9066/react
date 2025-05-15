@@ -4,7 +4,6 @@ import pdfParse from 'pdf-parse';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import poppler from 'pdf-poppler';
 import pkg from 'pdfjs-dist';
 const { getDocument } = pkg;
 

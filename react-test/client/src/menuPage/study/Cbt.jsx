@@ -36,6 +36,11 @@ function Crawling( props ) {
 
     // 모든 문제
     const [allCbtData, setAllCbtData] = useState([]);
+    // 모든 문제 모달
+    const [isRandomModalOpen, setIsRandomModalOpen] = useState(false);
+    const [allSelectedCbtData, setAllSelectedCbtData] = useState(resetSelectedData);
+    const [allCorrect, setAllCorrect] = useState(0);
+    const [allQuesionNo, setAllQuestionNo] = useState(-1);
 
     // 오답목록
     const [wrongData, setWrongData] = useState([]);
@@ -78,12 +83,14 @@ function Crawling( props ) {
             // 정답 빨간 표시용
             setCorrect(selectAnswer);
 
-            // 오답처리 목록
-            const checkWrong = wrongData.filter((item) => (item.no === selectNo && selectTest === testYear)).length;
-            if (checkWrong > 0) {
-                const newWrongData = wrongData.filter((item) => !(item.no === selectNo && selectTest === testYear));
-                if (selectedCbtData.no > 0) {
-                    setWrongData(newWrongData);
+            if (wrongSelectedCbtData.no > 0) {
+                // 오답처리 목록
+                const checkWrong = wrongData.filter((item) => (item.no === selectNo && selectTest === testYear)).length;
+                if (checkWrong > 0) {
+                    const newWrongData = wrongData.filter((item) => !(item.no === selectNo && selectTest === testYear));
+                    if (selectedCbtData.no > 0) {
+                        setWrongData(newWrongData);
+                    }
                 }
             }
         } else {
@@ -99,6 +106,32 @@ function Crawling( props ) {
                     newWrongData.push(newSelectedData);
                     setWrongData(newWrongData);
                 }
+            }
+        }
+    }
+
+    // 랜덤 정답 확인
+    const checkAllAnswer = (e) => {
+        const selectNo = Number(allSelectedCbtData.no);
+        const selectAnswer = Number(allSelectedCbtData.answer);
+        const selectTest = allSelectedCbtData.test;
+        const chooseAnswer = Number(e.currentTarget.dataset.name);
+
+        const newAllSelectedData = structuredClone(allSelectedCbtData);
+        if (selectAnswer === chooseAnswer) {
+            utils.showToast('정답');
+            setAllCorrect(selectAnswer);
+        } else {
+            utils.showToast('오답');
+            // 정답 빨간 표시용
+            setAllCorrect(0);
+            
+            // 오답처리 목록
+            const newWrongData = structuredClone(wrongData);
+            const checkWrong = newWrongData.filter((item) => (item.no === selectNo && selectTest === testYear)).length;
+            if (checkWrong === 0) {
+                newWrongData.push(newAllSelectedData);
+                setWrongData(newWrongData);
             }
         }
     }
@@ -202,12 +235,38 @@ function Crawling( props ) {
         return returnItem;
     };
 
+    // 랜덤 문제 풀기
+    const randomTest = () => {
+        setIsRandomModalOpen(true);
+        randomTextNext();
+    }
+
+    // 랜덤 다음 문제
+    const randomTextNext = () => {
+        const arrLength = allCbtData.length;
+        const randomNo = Math.floor(Math.random() * arrLength);
+
+        const newAllCbtData = structuredClone(allCbtData);
+        const item = newAllCbtData[randomNo]
+        setAllSelectedCbtData(item);
+        newAllCbtData.splice(randomNo, 1);
+        setAllCbtData(newAllCbtData);
+        setTestYear(item.test);
+        setAllCorrect(0);
+    }
+
     // 랜덤풀기용 전체 시험 조회
     const onClickBtnRandom = () => {
         utils.getAxios('/cbt/getListData').then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
-                setAllCbtData(data);
+                const dataArr = [];
+                for (const item of data) {
+                    for (const item2 of item) {
+                        dataArr.push(item2);
+                    }
+                }
+                setAllCbtData(dataArr);
     
                 utils.showToast('전체 조회 완료');
             } else {
@@ -254,6 +313,9 @@ function Crawling( props ) {
     useEffect(() => {
         // 시험 목록
         getCbtList();
+
+        // 전체 목록 랜덤 풀기용
+        onClickBtnRandom();
     }, []);
 
     useEffect(() => {
@@ -283,13 +345,28 @@ function Crawling( props ) {
                     {questionNo > 0 && <button type='button' className='button' onClick={(e) => {questionNo > 1 ? (setQuestionNo(questionNo - 1), setCorrect(0)) : null}}>이전</button>}
                     {questionNo > 0 && <button type='button' className='button' onClick={(e) => {questionNo < 100 ? (setQuestionNo(questionNo + 1), setCorrect(0)) : null}}>다음</button>}
 
-                    {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {wrongQuestionNo >= 1 ? (beforeWrong(wrongQuestionNo)) : null}}>이전</button>}
-                    {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {wrongQuestionNo < 100 ? (nextWrong(wrongQuestionNo)) : null}}>다음</button>}
+                    {(wrongQuestionNo > -1 && wrongQuestionNo > 0) && <button type='button' className='button' onClick={(e) => {wrongQuestionNo >= 1 ? (beforeWrong(wrongQuestionNo)) : null}}>이전</button>}
+                    {(wrongQuestionNo > -1 && wrongData.length > (wrongQuestionNo + 1)) && <button type='button' className='button' onClick={(e) => {wrongQuestionNo < 100 ? (nextWrong(wrongQuestionNo)) : null}}>다음</button>}
+                </div>
+            </Modal>
+
+            <Modal isOpen={isRandomModalOpen} onClose={(e) => {setIsRandomModalOpen(false)}} closeBtn={false} onConfirm={null}>
+                <p style={{ userSelect: 'none' }}>{getSubject(allSelectedCbtData?.no || '')}</p>
+                <h4 style={{ whiteSpace: 'pre-wrap', userSelect: 'none' }}>{resetTxt(allSelectedCbtData?.question ||'')}</h4>
+                <div>
+                    <img src={allSelectedCbtData?.image || ''}></img>
+
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: allCorrect === 1 ? 'red' : 'black'}} data-name='1' onClick={checkAllAnswer}>{allSelectedCbtData?.item1 || ''}</p>
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: allCorrect === 2 ? 'red' : 'black' }} data-name='2' onClick={checkAllAnswer}>{allSelectedCbtData?.item2 || ''}</p>
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: allCorrect === 3 ? 'red' : 'black' }} data-name='3' onClick={checkAllAnswer}>{allSelectedCbtData?.item3 || ''}</p>
+                    <p style={{ cursor: 'pointer', userSelect: 'none', color: allCorrect === 4 ? 'red' : 'black' }} data-name='4' onClick={checkAllAnswer}>{allSelectedCbtData?.item4 || ''}</p>
+                    
+                    {allCbtData.length > 0 && <button type='button' className='button' onClick={(e) => {randomTextNext()}}>다음</button>}
                 </div>
             </Modal>
 
             <button type='button' className='button danger' onClick={showWrong}>오답목록</button>
-            <button type='button' className='button danger' onClick={onClickBtnRandom}>랜덤풀기</button>
+            <button type='button' className='button danger' onClick={randomTest}>랜덤풀기</button>
             <div>
                 <SggGridReact
                     sggRef={(null)}
