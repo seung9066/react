@@ -365,7 +365,7 @@ function Crawling( props ) {
             </Modal>
 
             <Modal isOpen={isRandomModalOpen} onClose={(e) => {setIsRandomModalOpen(false)}} closeBtn={false} onConfirm={null}>
-                <p style={{ userSelect: 'none' }}>{getSubject(allSelectedCbtData?.no || '')}</p>
+                <p style={{ userSelect: 'none' }}>{allSelectedCbtData.test} / {getSubject(allSelectedCbtData?.no || '')}</p>
                 <h4 style={{ whiteSpace: 'pre-wrap', userSelect: 'none' }}>{resetTxt(allSelectedCbtData?.question ||'')}</h4>
                 <div>
                     <img src={allSelectedCbtData?.image || ''}></img>
