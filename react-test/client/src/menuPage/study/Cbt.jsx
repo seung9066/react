@@ -12,7 +12,7 @@ function Crawling( props ) {
     // 시험 회차별 정보
     const [cbtData, setCbtData] = useState([]);
     // 현재 문제 번호
-    const [questionNo, setQuestionNo] = useState(0);
+    const [questionNo, setQuestionNo] = useState(-1);
     // 틀린 문제 번호
     const [wrongQuestionNo, setWrongQuestionNo] = useState(-1);
     // 시험 년월
@@ -88,9 +88,7 @@ function Crawling( props ) {
                 const checkWrong = wrongData.filter((item) => (item.no === selectNo && selectTest === testYear)).length;
                 if (checkWrong > 0) {
                     const newWrongData = wrongData.filter((item) => !(item.no === selectNo && selectTest === testYear));
-                    if (selectedCbtData.no > 0) {
-                        setWrongData(newWrongData);
-                    }
+                    setWrongData(newWrongData);
                 }
             }
         } else {
@@ -161,12 +159,15 @@ function Crawling( props ) {
             setWrongQuestionNo(no + 1);
             setTestYear(item.test);
             setCorrect(0);
+        } else {
+            utils.showToast('마지막 문제입니다.')
         }
     }
     
     // 오답 이전
     const beforeWrong = (no) => {
         const newWrongData = structuredClone(wrongData);
+        console.log(no)
         
         if (no > 0) {
             const item = newWrongData[no - 1];
@@ -174,6 +175,8 @@ function Crawling( props ) {
             setWrongQuestionNo(no - 1);
             setTestYear(item.test);
             setCorrect(0);
+        } else {
+            utils.showToast('첫번째 문제입니다.');
         }
     }
 
@@ -183,7 +186,7 @@ function Crawling( props ) {
         // 모달 문제집
         setCbtData([]);
         // 보여줄 문제번호
-        setQuestionNo(0);
+        setQuestionNo(-1);
         // 문제
         setSelectedCbtData(resetSelectedData);
         // 클릭 정답 체크용
@@ -319,12 +322,18 @@ function Crawling( props ) {
     }, []);
 
     useEffect(() => {
+        console.log(questionNo)
         if (questionNo > 0) {
             const newCbtData = cbtData.filter((item) => (item.no === questionNo && item.test === testYear));
 
             if (newCbtData.length > 0) {
                 setSelectedCbtData(newCbtData[0]);
                 setCorrect(0);
+            }
+        } else {
+            if (questionNo !== -1) {
+                utils.showToast('첫번째 문제입니다.');
+                setQuestionNo(1);
             }
         }
     }, [questionNo]);
@@ -342,11 +351,11 @@ function Crawling( props ) {
                     <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 3 ? 'red' : 'black' }} data-name='3' onClick={checkAnswer}>{selectedCbtData?.item3 || wrongSelectedCbtData?.item3 || ''}</p>
                     <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 4 ? 'red' : 'black' }} data-name='4' onClick={checkAnswer}>{selectedCbtData?.item4 || wrongSelectedCbtData?.item4 || ''}</p>
                     
-                    {questionNo > 0 && <button type='button' className='button' onClick={(e) => {questionNo > 1 ? (setQuestionNo(questionNo - 1), setCorrect(0)) : null}}>이전</button>}
-                    {questionNo > 0 && <button type='button' className='button' onClick={(e) => {questionNo < 100 ? (setQuestionNo(questionNo + 1), setCorrect(0)) : null}}>다음</button>}
+                    {questionNo > -1 && <button type='button' className='button' onClick={(e) => {(setQuestionNo(questionNo - 1), setCorrect(0))}}>이전</button>}
+                    {questionNo > -1 && <button type='button' className='button' onClick={(e) => {(setQuestionNo(questionNo + 1), setCorrect(0))}}>다음</button>}
 
-                    {(wrongQuestionNo > -1 && wrongQuestionNo > 0) && <button type='button' className='button' onClick={(e) => {wrongQuestionNo >= 1 ? (beforeWrong(wrongQuestionNo)) : null}}>이전</button>}
-                    {(wrongQuestionNo > -1 && wrongData.length > (wrongQuestionNo + 1)) && <button type='button' className='button' onClick={(e) => {wrongQuestionNo < 100 ? (nextWrong(wrongQuestionNo)) : null}}>다음</button>}
+                    {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {beforeWrong(wrongQuestionNo)}}>이전</button>}
+                    {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {nextWrong(wrongQuestionNo)}}>다음</button>}
                 </div>
             </Modal>
 
