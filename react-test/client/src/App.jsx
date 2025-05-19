@@ -120,6 +120,7 @@ function App() {
     const resultLogout = await utils.logout();
     if (resultLogout.msg === 'success') {
       setSessionUserAuth('');
+      utils.showToast('로그아웃 되었습니다.');
     }
   }
 
