@@ -383,6 +383,7 @@ function Crawling( props ) {
 
     // 관리자 저장 기능
     const saveCbtData = () => {
+        getSessionAuthData();
         const title = selectedCbtData.test;
         const data = structuredClone(cbtData);
         saveData(title, data);
@@ -484,6 +485,12 @@ function Crawling( props ) {
         // 권한 정보
         getSessionAuthData();
     }, []);
+
+    useEffect(() => {
+        if (isModalOpen && cbtType === 'practical' && sessionAuth === '999') {
+            getSessionAuthData();
+        }
+    }, [isModalOpen])
 
     useEffect(() => {
         if (questionNo > 0) {
