@@ -9,6 +9,7 @@
 // express 모듈을 불러옴 (웹 서버 프레임워크)
 import express from 'express';
 import session from 'express-session';
+import FileStoreFactory from 'session-file-store';
 
 // CORS(Cross-Origin Resource Sharing) 설정을 위한 모듈
 import cors from 'cors';
@@ -27,6 +28,9 @@ const PORT = 5000;
 // __dirname 대체 (ESM 환경에서)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const sessionDir = path.join(__dirname, '..', 'data', 'session');
+
+const FileStore = FileStoreFactory(session);
 
 // CORS 허용 설정 (다른 도메인에서 API 접근 가능하도록 허용)
 app.use(cors());
@@ -36,6 +40,11 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(session({
+    store: new FileStore({
+        path: sessionDir,
+        ttl: 60 * 60 * 24, // 세션 저장 시간 (초 단위)
+        retries: 1, // 세션 저장 실패 시 재시도 횟수
+    }), 
     secret: 'SD1933GB357BG',  // 세션 ID를 암호화하는 데 사용되는 비밀 키
     resave: false,              // 세션을 항상 저장할지 여부 (변경이 없어도 저장)
     saveUninitialized: false,   // 세션이 초기화되지 않은 경우에도 저장할지 여부

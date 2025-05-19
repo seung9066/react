@@ -24,9 +24,10 @@ import styles from '@css/SggGridReact.module.css';
  * useState *gridData(그리드에 담을 데이터)
  * setUseState *setGridData(그리드 데이터 set)
  * useState totalCount(데이터 총 수 - 없으면 앞단 페이징 처리)
- * @param {sggBtn={{'c': true, 'r': true, 'u': true, 'd': true}}}
+ * @param {sggBtn={{'c': true, 'r': true, 'u': true, 'd': true, saveBtn: saveBtn, disabled: {'c': true/false, 'r': true/false, 'u': true/false, 'd': true/false, 'saveBtn': true/false}}}}
  * obj {'c': true/false(행추가버튼), 'r': true/false(초기화버튼), 'u': true/false(행수정버튼), 'd': true/false(행삭제버튼)}
- * function {c, r, u, d} 기본 crud의 콜백함수로 작동
+ * function {c, r, u, d, saveBtn} 기본 crud의 콜백함수로 작동
+ * boolean disabled
  * function saveBtn (적용 버튼 추가 로직 (setGridData 비동기 이슈로 doSave function에 매개변수 처리 doSave = (data) => {} 필수))
  * @param {sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}}}
  * sggSearchParam의 3개는 세트
@@ -380,13 +381,13 @@ export default function SggGridReact({ sggRef,
             return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="number" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
-                                                                            : <span>{item[col.key]}</span>;
+                                                                            : <span title={item[col.key]}>{item[col.key]}</span>;
         }
         if (col.type === 'text') {
             return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
                                                                                     <input type="text" name={col.key} value={item[col.key]} className={styles.tdInput} onChange={inputChange} />
                                                                                 </div>
-                                                                            : <span>{item[col.key]}</span>;
+                                                                            : <span title={item[col.key]}>{item[col.key]}</span>;
         }
         if (col.type === 'password') {
             return selectedRow && selectedRow.no === item.no && item.rowState && crudAuth ? <div style={{ padding: '0px 20px' }}>
@@ -437,7 +438,7 @@ export default function SggGridReact({ sggRef,
                     >{col.btn.btnText}</button>
         }
         if (!col.type) {
-            return <span>{item[col.key]}</span>;
+            return <span title={item[col.key]}>{item[col.key]}</span>;
         }
     }
 
@@ -1219,11 +1220,41 @@ export default function SggGridReact({ sggRef,
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <div style={{ display: 'flex' }}>
-                            {sggBtn?.c && <button type="button" className={`${styles.button} ${styles.accept}`} onClick={() => {addRow()}} >행 추가</button>}
-                            {sggBtn?.u && <button type="button" className={`${styles.button} ${styles.primary}`} onClick={() => {updateRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정</button>}
-                            {sggBtn?.d && <button type="button" className={`${styles.button} ${styles.danger}`} onClick={() => {deleteRow()}} >{checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제</button>}
-                            {sggBtn?.r && <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={() => {resetRow()}} >{checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화</button>}
-                            {(sggBtn?.c || sggBtn?.u || sggBtn?.d || sggBtn?.saveBtn) && <button type="button" className={`${styles.button} ${styles.etc}`} onClick={() => {setRow()}} >{'전체 ' + (sggBtn.saveBtn ? '저장' : '적용')}</button>}
+                            {sggBtn?.c && <button type="button" 
+                                                className={`${styles.button} ${styles.accept}`} 
+                                                onClick={() => {addRow()}} 
+                                                disabled={sggBtn?.disabled?.c} 
+                                            >
+                                                    행 추가
+                                            </button>}
+                            {sggBtn?.u && <button type="button" 
+                                                className={`${styles.button} ${styles.primary}`} 
+                                                onClick={() => {updateRow()}} 
+                                                disabled={sggBtn?.disabled?.u} 
+                                            >
+                                                    {checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 수정
+                                            </button>}
+                            {sggBtn?.d && <button type="button" 
+                                                className={`${styles.button} ${styles.danger}`} 
+                                                onClick={() => {deleteRow()}} 
+                                                disabled={sggBtn?.disabled?.d} 
+                                            >
+                                                    {checkedRows.length > 0 ? '체크 ' : selectedRow ? '선택 ' : ''}행 삭제
+                                            </button>}
+                            {sggBtn?.r && <button type="button" 
+                                                className={`${styles.button} ${styles.secondary}`} 
+                                                onClick={() => {resetRow()}} 
+                                                disabled={sggBtn?.disabled?.r} 
+                                            >
+                                                    {checkedRows.length > 0 ? '체크 행 ' : selectedRow ? '선택 행 ' : '전체 '}초기화
+                                            </button>}
+                            {(sggBtn?.c || sggBtn?.u || sggBtn?.d || sggBtn?.saveBtn) && <button type="button" 
+                                                                                                className={`${styles.button} ${styles.etc}`} 
+                                                                                                onClick={() => {setRow()}} 
+                                                                                                disabled={sggBtn?.disabled?.saveBtn} 
+                                                                                            >
+                                                                                                    {'전체 ' + (sggBtn.saveBtn ? '저장' : '적용')}
+                                                                                            </button>}
                         </div>
                         {sggPaging !== false &&
                             <select value={perPage}

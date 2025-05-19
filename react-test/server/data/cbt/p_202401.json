@@ -1,0 +1,142 @@
+[
+    {
+        "no": 1,
+        "question": "01. 아래응집도와관련하여응집도가높은순에서낮은순으로답안을작성하시오.\n\n①기능②교환③우연④시간\n",
+        "answer": "①②④③",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음에서설명하는네트워크용어를영문약어로작성하시오.\n\n다음은인터넷프로토콜스위트의데이터교환을위해네트워크장치간의정보를배포하는데사용되는링크\n상태라우팅프로토콜이다. 이프로토콜은최단경로우선원칙을사용하여라우팅결정을내리며, 라우터가\n동일한계층의다른라우터와직접적으로정보를교환할수있도록한다. 특히대규모네트워크에서효율적이\n며, 라우팅테이블을최신상태로유지하기위해자주업데이트된다. 라우터는이프로토콜을사용하여네트워\n크의변경사항에신속하게반응하고, 네트워크의각 세그먼트에서정보를동기화하는데필요한데이터를교환\n한다.\n",
+        "answer": "OSPF(Open Shortest Path First)",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 3,
+        "question": "03. 다음은애플리케이션테스트에대한내용이다. 해당하는답을보기에서골라작성하시오.\n\n다음은소프트웨어테스팅에서사용되는테스트커버리지기준중하나이다. 이기준은각 결정점에서모든\n가능한결정결과를최소한번이상실행하도록요구하며, 모든조건식이참과거짓이되도록만들어진다. \n이를통해개발자와테스터는소프트웨어내의결정점에서발생할수있는다양한조건변경사항들이올바르\n게처리되고있는지검증할수있다. 이러한테스트커버리지는조건의모든논리적경로를테스트하여소프\n트웨어의품질을향상시키는데중요한역할을한다.\n",
+        "answer": "변경조건/결정커버리지",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 4,
+        "question": "04. 아래내용을보고보기에서알맞은용어를골라작성하시오.\n\n다음은컴퓨터시스템내에서사용자의허가없이자신의존재를숨기고, 관리자레벨의접근권한을얻기위\n해설계된악성소프트웨어의한유형이다. 이소프트웨어는시스템의기본적인기능에깊숙이침투하여활동\n을감추고, 다양한보안도구로부터탐지를피할수있다. 종종시스템로그파일을수정하거나, 키스트로크를\n기록하고, 비밀번호를도용하는등의활동을포함할수있다. 이러한특성때문에보안전문가들에게는큰위\n협이며, 제거가매우어려울수있다.\n\n\n- 3 -\n",
+        "answer": "Rootkit",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 5,
+        "question": "05. 아래내용을보고보기에서알맞은용어를골라작성하시오.\n\n다음은고도로조직화된공격자그룹이특정대상에대해장기간에걸쳐은밀하게수행하는사이버공격방법\n이다. 이러한공격은대개국가지원을받는해커들에의해이루어지며, 특정기업, 정부기관, 또는중요인프\n라를목표로삼는다. 공격자들은네트워크내에오랫동안숨어있으면서데이터를탈취하거나시스템을조작하\n는등의활동을통해심각한피해를입힐수있다. 이러한공격은그목적과수행방식에있어일반적인사이\n버위협과구별되며, 매우정교하고지속적인모니터링을요구한다.\n",
+        "answer": "APT(Advanced Persistent Threat)",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 6,
+        "question": "06. 아래내용을보고보기에서알맞은용어를작성하시오.\n\n다음은소프트웨어공학에서사용되는생성디자인패턴중하나로, 관련또는의존하는객체의집합을생성하\n기위한인터페이스를제공한다. 이패턴은구체적인클래스를지정하지않고도객체의생성을캡슐화하는방\n법을제공하여, 클라이언트코드가특정클래스의인스턴스에직접의존하지않도록한다. 이를통해클라이언\n트는여러제품군중필요한제품군을선택하여생성할수있으며, 시스템의확장성과유연성이증가된다. 다\n양한환경에서공통적으로사용될수있는제품군을생성하는과정에서특히유용하다.\n",
+        "answer": "Abstract Factory",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 7,
+        "question": "07. 아래네트워크구성에서, 2, 4, 6번의라우터에할당가능한IP를보기에서찾아쓰시오.\n\n[적용된IP]\n①192.168.35.12/24\n③129.200.10.16/22\n⑤192.168.36.32/24\n[보기]\n192.168.35.72\n129.200.8.249\n192.168.36.249\n\n\n- 4 -\n",
+        "answer": "②192.168.35.72④129.200.8.249⑥192.168.36.249",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 8,
+        "question": "08. 다음은조인에대한설명이다. 괄호에들어갈답안을작성하시오.\n\n• (  ①) : 두테이블을특정조건을기반으로결합하는조인방법이다. 이조인은조건이'='(동등)뿐만아\n니라'<', '>', '<=', '>=', '!=' 등의비교연산자를사용할수있다. 이조인을통해다양한조건을기반으\n로두테이블간의관계를정의하고, 조건에맞는행을결합하여새로운결과집합을만든다.\n• (  ②) : 두테이블을결합할때, 조인조건으로'='(동등) 연산자를사용하는조인방법이다. 이조인은\n두테이블의특정컬럼값이동일한행들을결합하여결과집합을만든다. 주로관계형데이터베이스에서\n외래키와기본키를매칭할때사용되며, 결합된행들만결과집합에포함된다.\n• (  ③) : 두테이블을결합할때, 동일한이름의컬럼을기반으로동등비교를수행하여조인하는방법이\n다. 이조인은조인조건을명시하지않아도동일한이름의컬럼들을자동으로매칭하여결합한다. 결과집\n합에는중복되는컬럼이하나만포함되며, 두테이블간의공통된컬럼값이동일한행들만결합된다.\n",
+        "answer": "①세타조인②동등조인③자연조인",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 9,
+        "question": "09. 다음페이지순서를고려하여, LRU 와LFU 알고리즘의부재횟수를쓰시오.\n 단, 페이지프레임은3개라고\n가정한다.\n페이지참조순서: 1 2 3 1 2 4 1 2 5 7\n",
+        "answer": "①LRU : 6 ②LFU : 6",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 10,
+        "question": "10. 아래표에서나타내고있는정규형을쓰시오.\n\n학생아이디강좌명담당강사\n001영어P001\n002한국사P002\n003영어P001\n003한국사P004\n004영어P003\n004한국사P004\n\n\n- 5 -\n",
+        "answer": "제3 정규형",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 11,
+        "question": "11. 아래SQL문장을수행하였을때의결과를표로작성하시오.\n\nSELECT B FROM T1\nWHERE C IN\n(\n    SELECT C FROM T2\n    WHERE D = ‘k’\n)\n<<T1>>\nABC\n1AX\n2BX\n1CW\n3DW\n<<T2>>\nCDE\nXK3\nYK3\nZS2\n",
+        "answer": "BAB",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 12,
+        "question": "12. 아래SQL문장을수행하였을때의결과를표로작성하시오.\n\nSELECT \n    COUNT(*) \nFROM TABLE\nWHERE EMPNO > 100\nAND SAL >= 3000\nOR EMP = 200\n<<TABLE>>\nEMPNOSAL\n1001000\n2003000\n3001500\n",
+        "answer": "COUNT(*)1",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 13,
+        "question": "13. 다음C언어코드의출력결과를쓰시오.\n\n#include <stdio.h>\nint main() {\n    int v1 = 0, v2 = 35, v3 = 29;\n    if(v1 > v2 ? v2 : v1) {\n        v2 = v2 << 2;\n    }else {\n        v3 = v3 << 2;\n    }\n    printf(\"%d\", v2+v3);\n    return 0;\n}\n\n\n- 6 -\n",
+        "answer": "151",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 14,
+        "question": "14. 다음C언어코드의출력결과를쓰시오.\n\nint main(int argc, char*argv[]) {\n    char str[100] = \"ABCDEFGH\";\n    reverse(str);\n    int len = strlen(str);\n    for(int i=1; i<len; i+=2) {\n        printf(\"%c\",str[i]);\n    }\n    printf(\" \\n\");\n \n    return 0;\n}\nvoid reverse(char*str) {\n    int len = strlen(str);\n    char*p1 = str;\n    char*p2 = str + len - 1;\n    while(p1<p2) {\n        char t = *p1;\n        *p1 = *p2;\n        *p2 = t;\n        p1++;\n        p2--;\n    }\n}\n\n\n- 7 -\n",
+        "answer": "GECA",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 15,
+        "question": "15. 다음C언어코드의출력결과를쓰시오.\n\nstruct ACC {\n    int accNum;\n    double bal;\n};\nvoid init(struct ACC *acc, int x, double y) {\n    acc->accNum = x;\n    acc->bal = y;\n}\ndouble sim(double base, int year) {\n    double r = 1.0;\n    for(int i = 0; i < year; i++) {\n        r *= base;\n    }\n    return r;\n}\nvoid xxx(struct ACC *acc, double en) {\n    if( en > 0 && en < acc->bal) {\n        acc->bal -= en;\n    }\n    else {\n        acc->bal += en;\n    }\n}\nvoid yyy(struct ACC *acc) {\n    acc->bal *= sim(1.1, 3);\n}\nint main() {\n    struct ACC acc;\n    init(&acc, 9981, 2200.0);\n    xxx(&acc, 100.0);\n    yyy(&acc);\n    printf(\"%d and %0.2f \\n\", \n        acc.accNum, acc.bal);\n    return 0;\n}\n\n\n- 8 -\n",
+        "answer": "9981 and 2795.10",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 16,
+        "question": "16. 다음C언어코드의출력결과를쓰시오.\n\n char p[] = \"It is 8\";\n char result[20];\n int i;\n for(i=0; p[i]!=' \\0'; i++) {\n     if(isupper(p[i]))\n        result[i] = (p[i]-'A'+5) % 26 + 'A’;\n    else if(islower(p[i]))\n        result[i] = (p[i]-'a'+10) % 26 + 'a’;\n    else if(isdigit(p[i]))\n        result[i] = (p[i]-'0'+3) % 10 + '0’;\n    else\n        result[i] = p[i];\n}\nresult[i] = ' \\0';\nprintf(\"%s \\n\",result);\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n6566676869707172737475767778798081828384858687888990\nabcdefghijklm\n979899100101102103104105106107108109\nnopqrstuvwxyz\n110111112113114115116117118119120121122\n\n\n- 9 -\n",
+        "answer": "Nd sc 1",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음은JAVA 코드이다. 실행되는순서를쓰시오.\n\nclass P {\n    int x, y;\n     P(int x, int y) { ①\n        this.x=x;\n        this y=y;\n    }\n     int getData() { ②\n        return x*y;\n    }\n}\n class C extend P {\n    int x;\n     C(int x) { ③\n        super(x+1, x);\n        this.x=x;\n    }\n    int getData(int n) { ④\n        return super.getData()+n;\n    }\n    public static void main(String[] args) { ⑤\n        P p = new C(10); ⑥\n        System.out.println(p.getData()); ⑦\n    }\n}\n\n\n- 10 -\n",
+        "answer": "5 →6 →3 →1 →7 →2",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음JAVA 코드의출력결과를쓰시오.\n\nclass Connection {\n    private static Connection _inst = null;\n    private int count = 0;\n    static public Connection get() {\n        if(_inst == null) {\n            _inst = new Connection();\n            return _inst;\n        }\n        return _inst;\n    }\n    public void count() { count++; };\n    public int getCount() { return count; }\n}\nConnection conn1 = Connection.get();\nconn1.count();\nConnection conn2 = Connection.get();\nconn2.count();\nConnection conn3 = Connection.get();\nconn3.count();\nconn1.count();\nSystem.out.print(conn1.getCount());\n\n\n- 11 -\n",
+        "answer": "4",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음JAVA 코드의출력결과를쓰시오.\n\nclass One {\n    int a, b;\n     public One(int a, int b) {\n        this.a = a;\n        this.b = b;\n    }\n    public void print() {\n        System.out.println(a + b);\n    }\n}\nclass Two extends One {\n    int po = 3;\n    public Two(int i) {\n        super(i, i+1);\n    }\n    public void print() {\n        System.out.println(po*po);\n    }\n    public static void main(String[] args) {\n        One one = new Two(10);\n        one.print();\n    }\n}\n",
+        "answer": "9",
+        "imageYN": "",
+        "test": "p_202401"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음Python 코드의출력결과를쓰시오.\n\na = [\"Seoul\", \"Kyeonggi\", \"Incheon\", \"Daejun\", \"Daegu\", \"Pusan\"] \nstr = \"S\"\nfor i in a:\n    str = str + i[1]\n \nprint(str)\n\n\n- 12 -\n",
+        "answer": "Seynaau",
+        "imageYN": "",
+        "test": "p_202401"
+    }
+]

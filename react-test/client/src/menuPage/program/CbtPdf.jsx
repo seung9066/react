@@ -5,6 +5,9 @@ import Modal from '@components/Modal';
 import SggGridReact from '@components/SggGridReact';
 
 function Crawling( props ) {
+    // input file
+    const fileRef = useRef(null);
+    const [cbtType, setCbtType] = useState('written'); // CBT 유형
     const resetReadOnlyTF = {
         question: false,
         item1: false,
@@ -27,10 +30,14 @@ function Crawling( props ) {
         count: '',
     })
 
-    const [disabledTitle, setDisabledTitle] = useState(false);
+    const [disabledTitle, setDisabledTitle] = useState(true);
 
     // 목록
-    const [cbtListData, setCbtListData] = useState([]);
+    const [writtenCbtListData, setWrittenCbtListData] = useState([]);
+    const [practicalCbtListArr, setPracticalCbtListArr] = useState([]);
+
+    // 그리드 저장 버튼
+    const [disabledSaveBtn, setDisabledSaveBtn] = useState(true);
 
     // 목록 그리드 컬럼
     const [cbtListGridCol, setCbtListGridCol] = useState([
@@ -85,20 +92,30 @@ function Crawling( props ) {
 
     // 목록 버튼
     const onClickBtnList = () => {
-        getCbtList();
         setIsListModalOpen(true);
     }
 
     // 목록 그리드 더블클릭
     const cbtListGridDoubleClick = (item) => {
         getCbtData(item.fileName);
+        let year = '';
+        let count = '';
+        if (cbtType === 'practical') {
+            year = item.fileName.substring(2, 6);
+            count = item.fileName.substring(6);
+        } else {
+            year = item.fileName.substring(0, 4);
+            count = item.fileName.substring(4);
+        }
         setTitle({
-            year: item.fileName.substring(0, 4),
-            count: item.fileName.substring(4),
+            year: year,
+            count: count,
         });
         setIsListModalOpen(false);
 
         setDisabledTitle(true);
+
+        setDisabledSaveBtn(false);
     }
 
     // 그리드 더블클릭
@@ -126,15 +143,23 @@ function Crawling( props ) {
             setSelectedCbtData({});
 
             setDisabledTitle(false);
+
+            setCbtFile(null);
+
+            setDisabledSaveBtn(true);
         }
     }
 
     // 저장
     const saveCbtGrid = async (item) => {
-        const saveTitle = title.year + title.count;
+        const saveTitle = (cbtType === 'practical' ? 'p_' : '') + (title.year + title.count);
 
         for (const item2 of item) {
-            item2.test = title.year + title.count;
+            if (cbtType === 'practical') {
+                item2.test = 'p_' + title.year + title.count;
+            } else {
+                item2.test = title.year + title.count;
+            }
         }
 
         saveData(saveTitle, item);
@@ -301,22 +326,24 @@ function Crawling( props ) {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            const regexNumber = /[^0-9]/g;
+            const fileName = file.name.replaceAll(regexNumber, '');
+
+            const fileNameYear = fileName.substring(0, 4);
+            const fileNameCount = ('00' + fileName.substring(4, 6)).slice(-2);
+            setTitle({
+                year: fileNameYear,
+                count: fileNameCount,
+            });
+
+            setDisabledTitle(false);
+            setDisabledSaveBtn(true);
             setCbtFile(file);
         }
     };
 
     // 파일 업로드 핸들러
     const handleUpload = async () => {
-        if (!cbtFile) {
-            utils.showToast("PDF 파일을 선택해주세요.");
-            return;
-        }
-
-        if (!title.year || !title.count) {
-            utils.showToast('년도, 월을 입력해주세요.');
-            return;
-        }
-
         const formData = new FormData();
         formData.append("pdf", cbtFile);
 
@@ -324,100 +351,196 @@ function Crawling( props ) {
             if (res.msg === 'success') {
                 const data = res.data;
                 const text = data.text;
-                const regexQuestion = /(?=\b(100|[1-9][0-9]?)\.\s)/g;
-                const regexQuestionDetail = /^(100|[1-9]?[0-9])\.\s.*/;
-                const question = text.split(regexQuestion);
-                const questionArr = [];
-                let questionNo = 1;
-                // 문제, 보기 넣기
-                for (const item of question) {
-                    if (regexQuestionDetail.test(item)) {
-                        const q = {};
-                        q.no = questionNo;
-                        questionNo++;
-
-                        const questionMark = item.indexOf('?') + 1;
-                        let question = item.substring(0, questionMark);
-                        if (item.indexOf('정보처리기사') > -1) {
-                            const CBT = item.indexOf('정보처리기사');
-                            const subject = item.indexOf('과목') - 1;
-                            const CBTUrl = item.lastIndexOf('www.comcbt.com') + 'www.comcbt.com'.length;
-                            const questionMark = item.indexOf('?');
-                            const questionToMark = item.substring(0, (questionMark + 1));
-
-                            if (subject > -1) {
-                                question = questionToMark.substring(0, subject) + questionToMark.substring(CBTUrl);
-                            } else {
-                                question = questionToMark.substring(0, CBT) + questionToMark.substring(CBTUrl);
-                            }
-                        }
-                        q.question = question;
-                        
-                        const itemNo1 = item.indexOf('①');
-                        const itemNo2 = item.indexOf('②');
-                        const itemNo3 = item.indexOf('③');
-                        const itemNo4 = item.indexOf('④');
-                        const itemEnd = item.indexOf('정보처리기사');
-                        const item1 = item.substring(itemNo1, itemNo2);
-                        const item2 = item.substring(itemNo2, itemNo3);
-                        const item3 = item.substring(itemNo3, itemNo4);
-                        let item4 = '';
-                        if (questionNo !== 100) {
-                            item4 = item.substring(itemNo4);
-                        } else {
-                            item4 = item.substring(itemNo4, itemEnd);
-                        }
-                        q.item1 = item1;
-                        q.item2 = item2;
-                        q.item3 = item3;
-                        q.item4 = item4;
-                        q.imageYN = '';
-
-                        questionArr.push(q);
-                    }
-                }
                 
-                const textArr = text.split('\n');
-                const regexAsnwer = /^[①②③④]+$/;
-                const answerArr = [];
-                const changeAnswerStrToint = {
-                    '①' : 1,
-                    '②' : 2,
-                    '③' : 3,
-                    '④' : 4,
+                let dataArr = [];
+                if (cbtType === 'written') {
+                    dataArr = getCbtWritten(text);
                 }
-                // 답변 배열 만들기
-                for (const item of textArr) {
-                    if (regexAsnwer.test(item)) {
-                        for (const item2 of item) {
-                            answerArr.push(changeAnswerStrToint[item2]);
-                        }
-                    }
+                if (cbtType === 'practical') {
+                    dataArr = getCbtPractical(text);
                 }
+                setCbtData(dataArr);
 
-                // 문제에 맞는 답 넣기
-                for (let i = 0; i < questionArr.length; i++) {
-                    questionArr[i].answer = answerArr[i]
-                }
-
-                setCbtData(questionArr);
+                setDisabledSaveBtn(false);
+                utils.showToast('pdf 변환 완료');
             } else {
                 utils.showToast("pdf 로딩 실패", res.error);
             }
         });
     };
 
+    // 필기 pdf 변환
+    const getCbtWritten = (text) => {
+        const regexQuestion = /(?=\b(100|[1-9][0-9]?)\.\s)/g;
+        const regexQuestionDetail = /^(100|[1-9]?[0-9])\.\s.*/;
+        const question = text.split(regexQuestion);
+        const questionArr = [];
+        let questionNo = 1;
+        // 문제, 보기 넣기
+        for (const item of question) {
+            if (regexQuestionDetail.test(item)) {
+                const q = {};
+                q.no = questionNo;
+                questionNo++;
+
+                const questionMark = item.indexOf('?') + 1;
+                let question = item.substring(0, questionMark);
+                if (item.indexOf('정보처리기사') > -1) {
+                    const CBT = item.indexOf('정보처리기사');
+                    const subject = item.indexOf('과목') - 1;
+                    const CBTUrl = item.lastIndexOf('www.comcbt.com') + 'www.comcbt.com'.length;
+                    const questionMark = item.indexOf('?');
+                    const questionToMark = item.substring(0, (questionMark + 1));
+
+                    if (subject > -1) {
+                        question = questionToMark.substring(0, subject) + questionToMark.substring(CBTUrl);
+                    } else {
+                        question = questionToMark.substring(0, CBT) + questionToMark.substring(CBTUrl);
+                    }
+                }
+                q.question = question;
+                
+                const itemNo1 = item.indexOf('①');
+                const itemNo2 = item.indexOf('②');
+                const itemNo3 = item.indexOf('③');
+                const itemNo4 = item.indexOf('④');
+                const itemEnd = item.indexOf('정보처리기사');
+                const item1 = item.substring(itemNo1, itemNo2);
+                const item2 = item.substring(itemNo2, itemNo3);
+                const item3 = item.substring(itemNo3, itemNo4);
+                let item4 = '';
+                if (questionNo !== 100) {
+                    item4 = item.substring(itemNo4);
+                } else {
+                    item4 = item.substring(itemNo4, itemEnd);
+                }
+                q.item1 = item1;
+                q.item2 = item2;
+                q.item3 = item3;
+                q.item4 = item4;
+                q.imageYN = '';
+
+                questionArr.push(q);
+            }
+        }
+        
+        const textArr = text.split('\n');
+        const regexAsnwer = /^[①②③④]+$/;
+        const answerArr = [];
+        const changeAnswerStrToint = {
+            '①' : 1,
+            '②' : 2,
+            '③' : 3,
+            '④' : 4,
+        }
+
+        // 답변 배열 만들기
+        for (const item of textArr) {
+            if (regexAsnwer.test(item)) {
+                for (const item2 of item) {
+                    answerArr.push(changeAnswerStrToint[item2]);
+                }
+            }
+        }
+
+        // 문제에 맞는 답 넣기
+        for (let i = 0; i < questionArr.length; i++) {
+            questionArr[i].answer = answerArr[i]
+        }
+
+        return questionArr;
+    }
+
+    // 실기 pdf 변환
+    const getCbtPractical = (text) => {
+        const regexHDTeacher = /\[\d{4}년\s?\d{1,2}회\s?정보처리기사\s?실기\]\s?기출해설\s?특강\s?학습자료/g;
+        const regexNullCode = /\u0000/g;
+        text = text.replaceAll(regexNullCode, ' ');
+        text = text.replaceAll(regexHDTeacher, '');
+        text = text.replaceAll('with. 흥달쌤', '');
+        // 문제,  보기
+        const questionArr = [];
+        let questionText = text;
+        for (let i = 1; i <= 20; i++) {
+            let questionNo = '00';
+            questionNo = questionNo + i;
+            questionNo = questionNo.slice(-2);
+            questionNo = questionNo + '.';
+            const questionIdx = questionText.indexOf(questionNo);
+
+            let nextQuestionNo = '00';
+            if (i < 20) {
+                nextQuestionNo = nextQuestionNo + (i + 1);
+                nextQuestionNo = nextQuestionNo.slice(-2);
+                nextQuestionNo = nextQuestionNo + '.';
+            } else {
+                nextQuestionNo = '정답';
+            }
+            const nextQuestionIdx = questionText.indexOf(nextQuestionNo);
+
+            const question = questionText.substring(questionIdx, nextQuestionIdx)
+                                        .replace('시오.', '시오.\n')
+                                        .split('').map(ch => {
+                                            const code = ch.charCodeAt(0);
+                                            return (code === 376) ? '• ' : ch;
+                                        })
+                                        .join('');
+            questionText = questionText.substring(questionIdx);
+            questionArr.push(question);
+        }
+
+        // 정답
+        const answerArr = [];
+        const answerText = text.substring(text.indexOf('정답') + 3);
+        const answerTextArr = answerText.split('\n');
+        let answer = '';
+        const regexAnswer = /^(0[1-9]|1[0-9]|20)[\s\S]*/;
+        for (let i = 0; i < answerTextArr.length; i++) {
+            if (regexAnswer.test(answerTextArr[i])) {
+                if (i !== 0) {
+                    answerArr.push(answer.substring(2));
+                }
+                answer = answerTextArr[i];
+            } else {
+                answer += answerTextArr[i];
+            }
+
+            if (i === answerTextArr.length - 1) {
+                answerArr.push(answer.substring(2));
+            }
+        }
+
+        const returnArr = [];
+        for (let i = 0; i < questionArr.length; i++) {
+            const q = {};
+            q.no = i + 1;
+            q.question = questionArr[i];
+            q.answer = answerArr[i];
+            q.imageYN = '';
+
+            returnArr.push(q);
+        }
+
+        return returnArr;
+    }
+
     // 목록 가져오기
     const getCbtList = async () => {
         utils.getAxios('/cbt/getList').then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
-                const cbtListArr = [];
+                const writtenCbtListArr = [];
+                const practicalCbtListArr = [];
                 for (const item of data) {
                     const cbtItem = {fileName : item.replace('.json', '')};
-                    cbtListArr.push(cbtItem)
+                    if (item.indexOf('p_') > -1) {
+                        practicalCbtListArr.push(cbtItem);
+                    } else {
+                        writtenCbtListArr.push(cbtItem);
+                    }
                 }
-                setCbtListData(cbtListArr);
+                setWrittenCbtListData(writtenCbtListArr);
+                setPracticalCbtListArr(practicalCbtListArr);
     
                 utils.showToast('목록 조회 완료');
             } else {
@@ -430,40 +553,91 @@ function Crawling( props ) {
         getCbtList();
     }, [])
 
+    useEffect(() => {
+        if (cbtFile) {
+            handleUpload();
+        } else {
+            setDisabledSaveBtn(true);
+            fileRef.current.value = null;
+        }
+    }, [cbtFile]);
+
+    useEffect(() => {
+        onClickBtnReset('ALL');
+    }, [cbtType]);
+
+    useEffect(() => {
+        if (cbtType === 'practical') {
+            const questionElement = document.querySelector('.textarea[name="question"]');
+            if (questionElement) {
+                const nowHeight = (questionElement.style.height).replace('px', '');
+                if (nowHeight < questionElement.scrollHeight) {
+                    questionElement.style.height = 'auto';
+                    questionElement.style.height = `${questionElement.scrollHeight}px`;
+                }
+            }
+        }
+    }, [selectedCbtData.question]);
+
+    useEffect(() => {
+        if (cbtType === 'practical') {
+            const answerElement = document.querySelector('.textarea[name="answer"]');
+            if (answerElement) {
+                const nowHeight = answerElement.style.height;
+                if (nowHeight < answerElement.scrollHeight) {
+                    answerElement.style.height = 'auto';
+                    answerElement.style.height = `${answerElement.scrollHeight}px`;
+                }
+            }
+        }
+    }, [selectedCbtData.answer]);
+
     return (
         <>
             <Modal isOpen={isListModalOpen} onClose={() => setIsListModalOpen(false)}>
+                <button type='button' className='button primary' onClick={getCbtList}>새로고침</button>
                 <div>
                     <SggGridReact
                         sggRef={(null)}
                         sggColumns={cbtListGridCol} // 그리드 컬럼 Array
                         sggBtn={{'c': false, 'r': true, 'u': false, 'd': true, saveBtn : deleteCbt}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
-                        sggData={{gridData: cbtListData, setGridData: setCbtListData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                        sggData={{gridData: (cbtType === 'written' ? writtenCbtListData : practicalCbtListArr), setGridData: (cbtType === 'written' ? setWrittenCbtListData : setPracticalCbtListArr)}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                         // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
                         sggGridChecked={true} // 그리드 좌측 체크박스 boolean
                         sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                         sggPaging={false} // 페이징 여부 boolean
-                        // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
-                        sggTrOnDoubleClick={(e, item) => {cbtListGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
+                        sggTrOnClick={(e, item) => {cbtListGridDoubleClick(item)}} // 행 클릭 시 fnc
+                        // sggTrOnDoubleClick={(e, item) => {cbtListGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
                     />
                 </div>
             </Modal>
             <Modal isOpen={isModalOpen} onClose={() => (setIsModalOpen(false), setReadOnlyTF(resetReadOnlyTF))} onConfirm={onConfirmModal}>
-                {readOnlyTF.question === true ? 
-                        <textarea
-                            className="input"
+                <div>
+                    {readOnlyTF.question === true ? 
+                            <textarea
+                            className="textarea"
                             data-name='question'
                             name="question"
                             style={{ width: '500px', height: '80px', resize: 'vertical' }}
                             value={selectedCbtData.question}
                             onChange={onChangeValueSelected}
                             onDoubleClick={onDoubleClickModalItem}
-                        />
-                    :
-                        <h4 data-name='question' onDoubleClick={onDoubleClickModalItem}>
-                            {selectedCbtData.question || '...'}
-                        </h4>
-                }
+                            />
+                        : cbtType === 'written' ?
+                                <h4 data-name='question' onDoubleClick={onDoubleClickModalItem}>
+                                    {selectedCbtData.question || '...'}
+                                </h4>
+                            :
+                                <textarea
+                                    className="textarea"
+                                    data-name='question'
+                                    name="question"
+                                    style={{ width: '500px', height: '200px', resize: 'vertical', border: 'none' }}
+                                    value={selectedCbtData.question}
+                                    onChange={onChangeValueSelected}
+                                />
+                        }
+                </div>
                 {selectedCbtData.image && 
                     <div style={{ position: 'relative', display: 'inline-block' }}>
                         <button
@@ -488,68 +662,72 @@ function Crawling( props ) {
                         <img src={selectedCbtData.image}></img>
                     </div>
                 }
-
-                {readOnlyTF.item1 === true ?
-                        <textarea
-                            className="input"
-                            name="item1"
-                            data-name='item1'
-                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
-                            value={selectedCbtData.item1}
-                            onChange={onChangeValueSelected}
-                            onDoubleClick={onDoubleClickModalItem}
-                        />
-                    :
-                        <p data-name='item1' onDoubleClick={onDoubleClickModalItem}>
-                            {selectedCbtData.item1 || '...'}
-                        </p>
-                }
-                {readOnlyTF.item2 === true ?
-                        <textarea
-                            className="input"
-                            name="item2"
-                            data-name='item2'
-                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
-                            value={selectedCbtData.item2}
-                            onChange={onChangeValueSelected}
-                            onDoubleClick={onDoubleClickModalItem}
-                        />
-                    :
-                        <p data-name='item2' onDoubleClick={onDoubleClickModalItem}>
-                            {selectedCbtData.item2 || '...'}
-                        </p>
-                }
-                {readOnlyTF.item3 === true ?
-                        <textarea
-                            className="input"
-                            name="item3"
-                            data-name='item3'
-                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
-                            value={selectedCbtData.item3}
-                            onChange={onChangeValueSelected}
-                            onDoubleClick={onDoubleClickModalItem}
-                        />
-                    :
-                        <p data-name='item3' onDoubleClick={onDoubleClickModalItem}>
-                            {selectedCbtData.item3 || '...'}
-                        </p>
-                }
-                {readOnlyTF.item4 === true ?
-                        <textarea
-                            className="input"
-                            name="item4"
-                            data-name='item4'
-                            style={{ width: '500px', height: '80px', resize: 'vertical' }}
-                            value={selectedCbtData.item4}
-                            onChange={onChangeValueSelected}
-                            onDoubleClick={onDoubleClickModalItem}
-                        />
-                    :
-                        <p data-name='item4' onDoubleClick={onDoubleClickModalItem}>
-                            {selectedCbtData.item4 || '...'}
-                        </p>
+                {cbtType === 'written' &&
+                    <>
+                        {readOnlyTF.item1 === true ?
+                                <textarea
+                                className="textarea"
+                                name="item1"
+                                data-name='item1'
+                                style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                                value={selectedCbtData.item1}
+                                onChange={onChangeValueSelected}
+                                onDoubleClick={onDoubleClickModalItem}
+                                />
+                                :
+                                <p data-name='item1' onDoubleClick={onDoubleClickModalItem}>
+                                    {selectedCbtData.item1 || '...'}
+                                </p>
+                        }
+                        {readOnlyTF.item2 === true ?
+                                <textarea
+                                className="textarea"
+                                name="item2"
+                                data-name='item2'
+                                style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                                value={selectedCbtData.item2}
+                                onChange={onChangeValueSelected}
+                                onDoubleClick={onDoubleClickModalItem}
+                                />
+                                :
+                                <p data-name='item2' onDoubleClick={onDoubleClickModalItem}>
+                                    {selectedCbtData.item2 || '...'}
+                                </p>
+                        }
+                        {readOnlyTF.item3 === true ?
+                                <textarea
+                                className="textarea"
+                                name="item3"
+                                data-name='item3'
+                                style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                                value={selectedCbtData.item3}
+                                onChange={onChangeValueSelected}
+                                onDoubleClick={onDoubleClickModalItem}
+                                />
+                                :
+                                <p data-name='item3' onDoubleClick={onDoubleClickModalItem}>
+                                    {selectedCbtData.item3 || '...'}
+                                </p>
+                        }
+                        {readOnlyTF.item4 === true ?
+                                <textarea
+                                className="textarea"
+                                name="item4"
+                                data-name='item4'
+                                style={{ width: '500px', height: '80px', resize: 'vertical' }}
+                                value={selectedCbtData.item4}
+                                onChange={onChangeValueSelected}
+                                onDoubleClick={onDoubleClickModalItem}
+                                />
+                                :
+                                <p data-name='item4' onDoubleClick={onDoubleClickModalItem}>
+                                    {selectedCbtData.item4 || '...'}
+                                </p>
+                        }
+                    </>
                 }
                 {readOnlyTF.answer === true ?
+                    cbtType === 'written' ?
                         <>
                             정답 : 
                             <input
@@ -560,33 +738,54 @@ function Crawling( props ) {
                                 value={selectedCbtData.answer}
                                 onChange={onChangeValueSelected}
                                 onDoubleClick={onDoubleClickModalItem}
-                            />
+                                />
                         </>
                     :
                         <p data-name='answer' onDoubleClick={onDoubleClickModalItem}>
                             정답 : {selectedCbtData.answer}
                         </p>
+                        :
+                            <div>
+                                <p>정답</p>
+                                <textarea
+                                    className="textarea"
+                                    data-name='answer'
+                                    name="answer"
+                                    style={{ width: '500px', height: '100px', resize: 'vertical', border: 'none' }}
+                                    value={selectedCbtData.answer}
+                                    onChange={onChangeValueSelected}
+                                />
+                            </div>
                 }
             </Modal>
+            
+            <div>
+                <label>
+                    <input type='radio' name='cbtType' value='written' onChange={(e) => {setCbtType(e.target.value)}} checked={cbtType === 'written'} /> 필기
+                </label>
+                <label>
+                    <input type='radio' name='cbtType' value='practical' onChange={(e) => {setCbtType(e.target.value)}} checked={cbtType === 'practical'} /> 실기
+                </label>
+            </div>
+
             <div>
                 <button type='button' className='button' onClick={onClickBtnList}>목록</button>
-                <input type="file" className='inputFile' accept="application/pdf" onChange={handleFileChange} />
+                <input type="file" className='inputFile' accept="application/pdf" ref={fileRef} onChange={handleFileChange} />
             </div>
 
             <div>
                 <input type='number' className='input' name='year' value={title.year} onChange={onChangeValue} disabled={disabledTitle}/> 년도 <input type='number' className='input' name='count' value={title.count} onChange={onChangeValue} disabled={disabledTitle}/> 월
-                <button type='button' className='button' onClick={handleUpload}>변환</button>
                 <SggGridReact
                     sggRef={(null)}
                     sggColumns={cbtGridCol} // 그리드 컬럼 Array
-                    sggBtn={{'c': false, 'r': onClickBtnReset, 'u': false, 'd': false, saveBtn : saveCbtGrid}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                    sggBtn={{'c': false, 'r': onClickBtnReset, 'u': false, 'd': false, saveBtn : saveCbtGrid, disabled : {saveBtn : disabledSaveBtn}}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
                     sggData={{gridData: cbtData, setGridData: setCbtData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
                     // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
                     sggGridChecked={false} // 그리드 좌측 체크박스 boolean
                     sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
                     sggPaging={false} // 페이징 여부 boolean
-                    // sggTrOnClick={(e, item) => {console.log(item)}} // 행 클릭 시 fnc
-                    sggTrOnDoubleClick={(e, item) => {cbtGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
+                    sggTrOnClick={(e, item) => {cbtGridDoubleClick(item)}} // 행 클릭 시 fnc
+                    // sggTrOnDoubleClick={(e, item) => {cbtGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
                     />
             </div>
         </>

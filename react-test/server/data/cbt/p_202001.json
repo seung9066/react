@@ -1,0 +1,143 @@
+[
+    {
+        "no": 1,
+        "question": "01. 데이터베이스 모델링 과정 중 비정규화(Denormalization, 반정규화, 역정규화)의 개념을 간략히 서술하시오.",
+        "answer": "데이터베이스 정규화 이후, 성능향상과 개발 편의성 등 정규화 기법에 위배되는 수행 기법  ",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음 설명에 부합하는 마크업 언어는 무엇인지 영문 약어로 쓰시오.\n\n• (       )은 SGML의 단순화된 부분집합으로, 다른 많은 종류의 데이터를 기술하는 데 사용할 수 있다.\n• (       )은 주로 다른 종류의 시스템, 특히 인터넷에 연결된 시스템끼리 데이터를 쉽게 주고받을 수 있게 \n하여 HTML의 한계를 극복할 목적으로 만들어졌다.\n• (       )은 텍스트 데이터 형식으로 유니코드를 사용해 전 세계 언어를 지원한다. \n",
+        "answer": "XML",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 3,
+        "question": "03. 소프트웨어 테스트 방법의 원리 중 하나인 살충제 패러독스(Pesticide Paradox)의 개념을 간략히 설명하시오.\n\n",
+        "answer": "동일한 테스트 케이스로 동일한 절차를 반복 수행하면 새로운 결함을 찾을 수 없다.",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 4,
+        "question": "04. 프로그램 모듈화와 모듈의 독립성에 대한 설명이다. 아래 ①, ②에 해당하는 용어를 쓰시오.\n\n• 모듈의 독립성을 판단하는 두 가지 지표이다. ( ① )는 모듈과 모듈간의 상호 의존 정도, ( ② )는 모듈 \n내부의 기능적인 집중 정도이다.\n• 모듈의 독립성을 높이기 위해서는 모듈 간의 상호 의존 정도를 나타내는 ( ① )를 낮추고 모듈이 \n독립적으로 자체 기능만을 수행하도록 ( ② )를 높여야 한다.\n",
+        "answer": "① 결합도 또는 Coupling② 응집도 또는 Cohesion",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 5,
+        "question": "05. 다음은 어떤 프로그램의 구조를 나타낸다. Fan-in의 수가 2 이상인 모듈의 이름을 쓰시오.",
+        "answer": "F, H",
+        "imageYN": "Y",
+        "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCACQAZADASIAAhEBAxEB/8QAGwABAQEAAwEBAAAAAAAAAAAAAAUEAQMGAgj/xABGEAABBAEBBAUHBwsDBAMAAAABAAIDBAUREhNU0xYhMZSVBhQVQVFhsiIyMzVzdIEjNlJTVVZxkZKTs0LR0iVicnVDgqH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A/S88t2XKS1qktaKOOGOQmWF0hJc549T26fMH819brK8bR7o/mrmD6/ufdYPjlW9BP3WV42j3R/NTdZXjaPdH81UEQT91leNo90fzU3WV42j3R/NVBEE/dZXjaPdH81N1leNo90fzVQRBP3WV42j3R/NTdZXjaPdH81UEQT91leNo90fzU3WV42j3R/NVBEE/dZXjaPdH81N1leNo90fzVQRBP3WV42j3R/NTdZXjaPdH81UEQT91leNo90fzU3WV42j3R/NVBEE/dZXjaPdH81N1leNo90fzVQRBP3WV42j3R/NTdZXjaPdH81UEQT91leNo90fzU3WV42j3R/NVBEE/dZXjaPdH81N1leNo90fzVOc7yht2bL6N3EwVmSujYyalJI/5PV1uEzQev3Bc+b+VX7UwfhsvPQUN1leNo90fzU3WV42j3R/NUwM8pjO6EZjAmZrQ9zBjpdoNOoBI847Dof5Fffm/lV+1MH4bLz0FDdZXjaPdH81N1leNo90fzVJ86z1DMYmDJWsXZrXZ3wOEFSSJ7SIZJAQTK4f/AB6aaetemQT91leNo90fzU3WV42j3R/NVBEE/dZXjaPdH81N1leNo90fzVQRBP3WV42j3R/NTdZXjaPdH81UEQT91leNo90fzU3WV42j3R/NVBEE/dZXjaPdH81N1leNo90fzVQRBP3WV42j3R/NTdZXjaPdH81UEQT91leNo90fzU3WV42j3R/NVBEE/dZXjaPdH81N1leNo90fzVQRBP3WV42j3R/NTdZXjaPdH81UEQT91leNo90fzVwDkIZ4POLFSSJ79lzWV3MPYT1EvPs9iorNc+kq/bD4XIOmD6/ufdYPjlW9YIPr+591g+OVb0BERAREQEREBERAREQEREBERAREQEREBERARF0XbtWjFvbtmGvGToHSvDQT7NT60EWnnsRSkuV7uVoV522ZNqOWwxjhqdRqCdexaelHk/8AtzFd7j/3Xx6VnulpxOLlmY9pcLFsGtGDrppo4GQn1j5GhHrT0LZuanL5CR7HM2TXpg1o9ddddoEya+r54B9iCRBfwUflC7Ju8qcY6d2210PnMQbuiGgDt11BY06kkdbtANpWulHk/wDtzFd7j/3U6LyfxDvKC9WONqCEU67mtbEG7Li+f5QI6w73jrW70TdpbRxd8vj2QG1rw3zRp7JOqQE+suL/AOCCbk8zi8j5Q+TEWPyVK1K29I4sgna9wHms410B7OsfzXrVF9MPpOd6Wx01RrS0ecQjfwu197RtNA9Ze1o96qVLVe5AJqk8U8Lux8Tw5p/EIO5ERAREQERE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",
+        "test": "p_202001"
+    },
+    {
+        "no": 6,
+        "question": "06. 다음 설명 중 빈칸에 가장 부합하는 용어를 영문 약어로 쓰시오.\n\n• Javascript 객체 문법으로 구조화된 데이터를 표현하기 위한 문자 기반의 표준 포맷\n• (        ) 표현식은 사람과 기계 모두 이해하기 쉬우며 용량이 작아서, 최근에는 (        )이 XML을 \n대체해서 데이터 전송 등에 많이 사용한다.\n• 프로그래밍 문법이 아닌 단순히 데이터를 표시하는 표현 방법일 뿐이다.\n• (        ) 데이터는 이름과 값의 쌍으로 이루어진다.\n",
+        "answer": "JSON",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 7,
+        "question": "07. 다음 설명 중 빈칸 ①~③에 가장 부합하는 애플리케이션 성능 측정을 위한 지표를 쓰시오.\n\n• ( ① ) : 일정 시간 내에 애플리케이션이 처리하는 일의 양\n• ( ② ) : 애플리케이션에 요청을 전달한 시간부터 응답이 도착할 때까지 걸린 시간\n• ( ③ ) : 애플리케이션에 요청을 전달한 시간부터 처리가 완료될 때까지 걸린 시간\n• 자원 사용률(Resource Usage) : 애플리케이션이 작업을 처리하는 동안의 CPU 사용량, 메모리 사용량, \n네트워크 사용량 등 자원 사용률\n",
+        "answer": "① 처리량(Throughput)② 응답 시간(Response Time)③ 경과 시간(Turn Around Time)",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 8,
+        "question": "08. 학생(STUDENT) 테이블에 전자과 학생 50명, 전기과 학생 100명, 건축과 학생 50명의 정보가 저장되어 있을 \n때, 다음 ①~③ SQL문의 실행 결과 튜플 수를 쓰시오.\n (단, DEPT 컬럼은 학과명이다.)\n① SELECT DEPT FROM STUDENT;\n② SELECT DISTINCT DEPT FROM STUDENT;\n③ SELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT= ‘건축과’;\n",
+        "answer": "① 200② 3② 1",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 9,
+        "question": "09. 다음에 가장 부합하는 네트워크 공격 유형을 쓰시오.\n\n• 출발지 IP와 목적지 IP가 같은 패킷을 만들어 보내는 공격 방법\n• 수신자가 응답을 보낼 때, 목적지 주소가 자기 자신이므로 SYN 신호가 계속 자신의 서버를 돌게 되어 \n서버의 자원을 고갈시켜 가용성을 파괴한다.\n• 방화벽에서 출발지와 목적지가 같은 패킷은 모두 제거하여 대응한다.\n\n\n",
+        "answer": "Land attack",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 10,
+        "question": "10. 통신 프로토콜 또는 통신 규약은 컴퓨터나 원거리 통신 장비 사이에서 메시지를 주고받는 양식과 규칙의 \n체계이다. 통신 프로토콜의 기본 요소 3가지를 쓰시오.\n\n",
+        "answer": "구문(Syntax), 의미(Semantic), 타이밍(Timing)",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 11,
+        "question": "11. HRN(Highest Response-ratio Next) 우선순위를 결정하는 계산식을 쓰시오.\n\n",
+        "answer": "(대기시간 + 서비스시간) / 서비스시간",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 12,
+        "question": "12. 다음은 트랜잭션(Transaction)의 주요 특성 4가지이다. 빈칸 ①~②에 알맞은 용어를 쓰시오.\n\n( ① )\n트랜잭션의 가장 기본적인 특성으로 트랜잭션 내의 연산은 반드시 모두 수행되어야 하며 그렇지 \n못한 경우 모두 수행되지 않아야 함\n일관성\n트랜잭션이 정상적으로 완료된 후 언제나 일관성 있는 데이터베이스 상태가 되어야 하며, 결과에 \n모순이 생겨서는 안 됨\n( ② )\n하나의 트랜잭션이 수행 중에는 다른 트랜잭션이 접근할 수 없고 각각의 트랜잭션은 독립적이어야 \n함\n영속성지속성이라고도 하며, 트랜잭션이 성공적으로 완료된 후 결과는 지속적으로 유지되어야 함\n",
+        "answer": "① 원자성② 격리성",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 13,
+        "question": "13. OSI 7 참조 모델 중 다음이 설명하는 계층을 쓰시오.\n\n• 전기적, 기계적, 기능적인 특성을 이용해서 통신 케이블로 데이터를 전송\n• 통신 단위는 비트이며 이것은 1과 0으로 나타내어지는, 즉 전기적으로 On, Off 상태이다.\n• 데이터를 전달할 뿐, 데이터가 무엇인지 어떤 에러가 있는지 신경쓰지 않는다.\n",
+        "answer": "물리계층",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 14,
+        "question": "14. 릴리즈 노트 작성 항목 중 문서 이름(릴리스 노트 이름), 제품 이름, 버전 번호, 릴리즈 날짜, 참고 날짜, 노트 \n버전 등을 기술하는 작성 항목은 무엇인지 쓰시오.\n\n",
+        "answer": "헤더 / Header",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 15,
+        "question": "15. 데이터 마이닝(Data mining)의 개념을 간략히 서술하시오.\n\n\n\n",
+        "answer": "- 대규모로 저장된 데이터 안에서 체계적이고 자동적으로 통계적 규칙이나 패턴을 찾아내는 것- 수많은 데이터에서 가치 있는 유용한 정보를 찾아내는 것",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 16,
+        "question": "16. 1990년 R. Rivert가 MD4를 일방향 해시 함수로 개선한 알고리즘으로, 임의의 길이의 값을 입력받아서 \n128비트 길이의 해시값을 출력하는 알고리즘은 무엇인지 쓰시오.\n\n",
+        "answer": "MD5",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 17,
+        "question": "17. LOC 기법에 의하여 예측된 총 라인 수가 30,000라인일 경우 개발에 투입될 프로그래머의 수가 5명이고, \n프로그래머들의 평균 생산성이 월당 300라인일 때, 개발에 소요되는 기간을 구하는 계산식과 기간(개월)을 \n구하여 쓰시오.\n \n",
+        "answer": "30000 / 300 / 5 = 20",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음은 C언어로 작성된 프로그램이다. 이를 실행한 결과를 쓰시오.\n\nint a[] = { 95, 75, 85, 100, 50 };\nint i, j, temp;\nint n = sizeof(a) / sizeof(int); // \nint n = 5; \nfor( i = 0; i < n - 1 ; i++ ) {\n    for( j = 0; j < 4 - i ; j++ ) {\n        if( a[j] > a[j+ 1] ) {\n            temp = a[j];\n            a[j] = a[j+ 1] ;\n            a[j+ 1] = temp ;\n        }\n    }\n}\n \nfor( i = 0; i < 5; i++ ) {\n     printf(“%d ”, a[i]);\n }\n\n\n",
+        "answer": "50  75  85  95  100",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음은 JAVA로 작성된 프로그램이다. 이를 실행한 결과를 쓰시오.\n\npublic static int[] makeArray(int n) {\n    int[] t = new int[n];\n    for(int i = 0; i < n; i++) {\n        t[i] = i;\n    }\n    return t;\n}\npublic static void main(String[] args) {\n    int[] a = makeArray(4);\n    for(int i = 0; i < a.length; i++)\n        System.out.print(a[i] + “ ”);\n}\n",
+        "answer": "0  1  2  3",
+        "imageYN": "",
+        "test": "p_202001"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음은 JAVA로 작성된 프로그램이다. 이를 실행한 결과를 쓰시오.\n\nint i = 3, c = 1 ;\nswitch( i ) {\n    case 1: c++ ;\n    case 2: c + = 3 ;\n    case 3: c = 0;\n    case 4: c + = 3 ;\n    case 5: c - = 10 ;\n    default: c- - ;\n}\nSystem.out.print(c) ;\n\n\n",
+        "answer": "-8",
+        "imageYN": "",
+        "test": "p_202001"
+    }
+]

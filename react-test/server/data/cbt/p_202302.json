@@ -1,0 +1,142 @@
+[
+    {
+        "no": 1,
+        "question": "01. 아래에서 설명하는 테스트 커버리지는 무엇인지 쓰시오.\n\n소프트웨어 테스트의 효율성을 평가하는 지표 중 하나로, 주로 소프트웨어의 각 조건식이 모두 참과 거짓인 경\n우를 최소 한 번씩 평가되었는지를 측정하는 데 사용된다. 조건문 내의 각각의 논리 조건이 True와 False로 평\n가될 때 해당 코드의 행동을 테스트한다.\n",
+        "answer": "조건 커버리지",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음 내용에서 설명하는 용어를 쓰시오.\n\n소프트웨어가 불법으로 변경되었을 경우, 소프트웨어가 정상 수행되지 않게 하는 기법이다.\n특정 기기, 데이터 또는 소프트웨어가 무단 변경, 파괴 또는 조작으로부터 보호되도록 설계하는 과정이다.\n무단 접근을 시도하는 행위를 탐지하고 방지하는 데 목적이 있다.\n",
+        "answer": "템퍼프루핑(Tamperproofing)",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 3,
+        "question": "03. 아래의 데이터베이스 설계 순서를 올바르게 나열하시오.\n\n(보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공되었습니다.)\n",
+        "answer": "요구조건 분석 - 개념적 설계 - 논리적 설계 - 물리적 설계 - 구현",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 4,
+        "question": "04. 다음에서 설명하는 디자인 패턴을 보기에서 찾아 쓰시오.\n\n(보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공되었습니다.)\n• ( ① ) : 특정 클래스의 인스턴스가 하나만 생성되도록 보장하고, 그 인스턴스에 어디에서든 접근할 수 있\n도록 하는 패턴이다.\n• ( ② ) : 객체 구조 내의 요소에 대해 수행할 작업을 캡슐화하는 디자인 패턴이다. 객체 구조의 클래스를 \n수정하지 않고도 새로운 연산을 추가할 수 있게 해준다.\n\n\n- 1 -\n",
+        "answer": "① 싱글톤(Singleton)   ② 비지터(Visitor)",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 5,
+        "question": "05. 다음에서 설명하는 답을 보기에서 골라 작성하시오.\n\n(보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공되었습니다.)\n• ( ① ) : 송수신 과정에서의 단일 비트 오류를 검출하고 정정할 수 있게 한다.\n• ( ② ) : 데이터를 전송하기 전에 오류 정정 코드를 추가하여, 수신측에서 발생 가능한 오류를 검출하고 정\n정할 수 있도록 하는 기술이다.\n• ( ③ ) : 오류가 감지된 후 데이터를 복구하기 위해 데이터 송신자에게 재전송을 요청하는 오류 수정 방식\n이다.\n• ( ④ ) : 데이터의 무결성을 확인하기 위해 사용되는 간단한 오류 검출 방식이다. \n• ( ⑤ ) : 데이터 전송의 정확성을 보장하기 위해 사용되는 오류 검출 기법이다. 데이터 블록 전체에 대해 \n특정 다항식을 사용하여 검사값(체크섬)을 계산하고, 이 값을 데이터에 추가한다.\n",
+        "answer": "① hamming   ② FEC   ③ BEC   ④ parity   ⑤ CRC",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 6,
+        "question": "06. 다음에서 설명하는 답을 보기에서 골라 작성하시오.\n\n(보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공되었습니다.)\n• ( ① ) : HDLC 프레임 중, 데이터 전송을 위한 프레임이다. 사용자 데이터를 포함하며, 데이터 링크 계층\n에서 종단 간 데이터 전송을 담당한다.\n• ( ② ) : HDLC 프레임 중, 오류 검출, 흐름 제어를 위해 사용한다. 데이터를 포함하지 않고, 대신 정보 프\n레임의 수신 상태를 관리한다.\n• ( ③ ) : 추가적인 제어 목적이나 특별한 상황에 사용한다. 설정, 해제, 오류 보고와 같은 추가적인 제어 명\n령이나, 비정상 상태의 관리를 위해 사용한다.\n• ( ④ ) : HDLC 전송 모드 중, 모든 단말이 주국 기능을 수행할 수 있으며, 독립적으로 데이터를 전송하고 \n수신할 수 있고, 좀 더 유연하고 효율적인 양방향 통신을 제공한다.\n• ( ⑤ ) : HDLC 전송 모드 중, 주국이 통신을 제어하지만, 종국도 자체적으로 데이터 전송을 시작할 수 있\n는 모드이다.\n",
+        "answer": "① 정보② 감독③ 비번호 / 비순서④ 비동기 균형⑤ 비동기 응답",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 7,
+        "question": "07. 다음 보기에서 대칭키와 비대칭키에 해당하는 내용을 알맞게 쓰시오.\n\nRSA, DES, AES, ECC, ARIA, SEED\n\n\n- 2 -\n",
+        "answer": "① 대칭키 : DES, AES, ARIA, SEED② 비대칭키 : RSA, ECC",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 8,
+        "question": "08. 다음 괄호에 알맞은 내용을 쓰시오.\n\n보안에서 사용되는 (   )는 데이터의 무결성과 인증을 보장하는 데 중요한 역할을 하는 기술이다. \n(   ) 임의 길이의 데이터를 입력 받아 고정된 크기의 값을 출력한다.\n이 값들은 입력 데이터의 고유한 지문과 같은 역할을 하며, 원본 데이터에 아주 작은 변화가 생기더라도 출력\n되는 값은 완전히 달라진다. 이 특성을 통해 데이터의 무결성을 확인할 수 있다.\n",
+        "answer": "해시",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 9,
+        "question": "09. 학생뷰를 참조하는 모든 다른 뷰들을 삭제하는 명령을 완성하시오.\n\nDROP VIEW 학생 (    )\n",
+        "answer": "CASCADE",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 10,
+        "question": "10. 다음 테이블에 아래 데이터를 넣기 위한 SQL문을 작성하시오.\n\n \nCREATE TABLE STUDENT (  \n    num int,  \n    name varchar(20),  \n    grade int,  \n    major varchar(30),  \n    tel varchar(20)\n); \n      \nnumnamegrademajortel\n123lee3com010\n\n\n- 3 -\n",
+        "answer": "INSERT INTO STUDENT (num, name, grade, major, tel)VALUES(123, ‘lee’, 3, ‘com’, ‘010’);",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 11,
+        "question": "11. 다음 설명에 대한 알맞은 답을 쓰시오.\n\n• ( ① ) : 아직 개발되지 않았거나 테스트되지 않은 모듈의 상위 모듈을 시뮬레이션하는 테스트 코드이다. \n테스트 대상인 하위 모듈에 필요한 입력을 제공하고, 그 출력을 받아들여 테스트를 가능하게 한다.\n• ( ② ) : 아직 개발되지 않았거나 테스트되지 않은 모듈의 하위 모듈을 시뮬레이션하는 코드이다. 주로 하\n위 모듈이 아직 준비되지 않았을 때 상위 모듈을 테스트하기 위해 사용된다. 상위 모듈로부터 호출을 받아 \n적절한 응답을 반환함으로써, 상위 모듈이 독립적으로 테스트될 수 있도록 돕는다.\n",
+        "answer": "① 드라이버(Driver)   ② 스텁(Stub)",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 12,
+        "question": "12. 다음 C언어 코드이다. 43215로 출력되도록 괄호 안에 알맞은 코드를 쓰시오.\n \n#include\nint main() {\n    int n[5] = {5, 4, 3, 2, 1};\n    for(int i=0; i<5; i++) {\n        printf(\"%d \", ①);\n    }\n}\n",
+        "answer": "n[(i+1)%5]",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 13,
+        "question": "13. 다음은 JAVA 코드의 일부이다. 가지고 있는 돈의 합계가 4620원일 경우, 1000원, 500원, 100원, 10원의 \n지폐와 동전을 이용하여, 조건에 맞게 프로그램을 완성하시오.\n (단, 최소한의 코드로 작성해야 한다.)\n[조건]\n변수 : m\n연산자 : %, /\n정수 : 1000, 500, 100, 10\n    \n[출력결과]\n4\n1\n1\n2\n \nm = 4620;  \na = ①; \nb = ②; \nc = ③; \nd = ④;  \nSystem.out.println(a); \nSystem.out.println(b); \nSystem.out.println(c); \nSystem.out.println(d); \n\n\n- 4 -\n",
+        "answer": "① m / 1000② (m % 1000) / 500③ (m % 500) / 100④ (m % 100) / 10",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 14,
+        "question": "14. 다음은 C언어 코드이다. 입력값이 홍길동, 김철수, 박영희 순서일 때, 출력결과를 쓰시오.\n\nchar n[30];\nchar* getname(){\n    printf(\"입력:\");\n    gets(n);\n    return n;\n}\nint main() {\n    char* n1 = getname();\n    char* n2 = getname();\n    char* n3 = getname();\n    printf(\"%s\\n\",n1);\n    printf(\"%s\\n\",n2);\n    printf(\"%s\\n\",n3);\n    return 0;\n}\n",
+        "answer": "박영희박영희박영희",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 15,
+        "question": "15. 다음 C언어 코드의 결과를 쓰시오.\n\nint n[3] = {73, 95, 82};\nint sum = 0;\nfor (int i=0; i<3; i++){\n    sum += n[i];\n}\nswitch(sum/30){\n    case 10:\n    case 9: printf(\"A\");\n    case 8: printf(\"B\");\n    case 7:\n    case 6: printf(\"C\");\n    default: printf(\"D\");\n}\n\n\n- 5 -\n",
+        "answer": "BCD",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 16,
+        "question": "16. 다음 C언어 코드의 결과를 쓰시오.\n\nint c=0;\nfor(int i=1; i<=2023; i++) {\n    if(i%4 == 0) c++;\n}\nprintf(\"%d\", c);\n",
+        "answer": "505",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음 파이썬 코드의 결과를 쓰시오.\n\na = \"engineer information programming\"\nb = a[:3]\nc = a[4:6]\nd = a[29:]\ne=b+c+d\nprint(e)\n",
+        "answer": "engneing",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음 자바 코드의 결과를 쓰시오.\n\nclass Eraon {\n    public static void main(String[] args) {\n        String str1 = \"Programming\"; \n        String str2 = \"Programming\";\n        String str3 = new String(\"Programming\");\n        System.out.println(str1==str2);\n        System.out.println(str1==str3);\n        System.out.println(str1.equals(str3));\n        System.out.println(str2.equals(str3));\n    }\n}\n\n\n- 6 -\n",
+        "answer": "truefalsetruetrue",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음 C언어 코드의 결과를 쓰시오.\n\n#define MAX_SIZE 10\nint stack[MAX_SIZE];\nint top = -1;\nint isEmpty() {\n    if (top == -1) return 1;\n    return 0;\n}\nint isFull() {\n    if (top == 10) return 1;\n    return 0;\n}\nvoid push(int num) {\n    if (isFull())\n        printf(\"Full\");\n    stack[++top] = num;\n}\nint pop() {\n    if (isEmpty())    \n        printf(\"Empty\");\n    return stack[top--];\n}\nint main(int argc, char const *argv[]){\n    push(5); \n    push(2);\n    while(!isEmpty()){\n        printf(\"%d\", pop());\n        push(4); push(1); \n        printf(\"%d\", pop());\n        push(3); \n        printf(\"%d\", pop()); \n        printf(\"%d\", pop());\n        push(6); \n        printf(\"%d\", pop()); \n        printf(\"%d\", pop());\n    }\n}\n\n\n- 7 -\n",
+        "answer": "213465",
+        "imageYN": "",
+        "test": "p_202302"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음 C언어 코드이다. 11 12 22 25 64 로 출력되도록 괄호 안에 알맞은 코드를 쓰시오.\n \nint E[] = {64, 25, 12, 22, 11};\nint n = sizeof(E) / sizeof(E[0]);\nint i = 0;\ndo {\n    int j = i + 1;\n    do {\n        if (E[i] (  ) E[j]) {\n            int tmp = E[i];\n            E[i] = E[j];\n            E[j] = tmp;\n        }\n        j++;\n    } while (j < n);\n    i++;\n} while (i < n-1);\nfor(int i=0; i<=4; i++)\n    printf(\"%d \", E[i]);\n\n\n- 8 -\n",
+        "answer": ">",
+        "imageYN": "",
+        "test": "p_202302"
+    }
+]

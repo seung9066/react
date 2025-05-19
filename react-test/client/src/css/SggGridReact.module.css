@@ -27,6 +27,23 @@
     padding: 9px 0px;
     border-bottom: 1px solid #ddd;
     user-select: none;
+    text-overflow: ellipsis;
+  }
+
+  .td > span {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .td > a {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .th {

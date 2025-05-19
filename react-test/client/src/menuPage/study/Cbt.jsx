@@ -1,14 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
 import * as utils from '@utils';
+import { useEffect, useState } from 'react';
 
 import Modal from '@components/Modal';
 import SggGridReact from '@components/SggGridReact';
 
 function Crawling( props ) {
+    // 권한 정보
+    const [sessionAuth, setSessionAuth] = useState('');
+    // 필기 written, 실기 practical
+    const [cbtType, setCbtType] = useState('written');
     // 정답표시
     const [correct, setCorrect] = useState(0);
     // 목록
-    const [cbtListData, setCbtListData] = useState([]);
+    const [writtenCbtListData, setWrittenCbtListData] = useState([]);
+    const [practicalCbtListData, setPracticalCbtListData] = useState([]);
+
+    // 실기 내가 적은 답
+    const [myAnswer, setMyAnswer] = useState('');
+    // 실기 정답보기
+    const [showAnswer, setShowAnswer] = useState(false);
     // 시험 회차별 정보
     const [cbtData, setCbtData] = useState([]);
     // 현재 문제 번호
@@ -63,6 +73,16 @@ function Crawling( props ) {
 
     useEffect(() => {
         if (allCbtData.length > 0) {
+            setGridColByCbtType();
+        }
+    }, [allCbtData]);
+
+    useEffect(() => {
+        setGridColByCbtType();
+    }, [cbtType]);
+
+    const setGridColByCbtType = () => {
+        if (cbtType === 'written') {
             setCbtGridCol([
                 {key:'fileName', name:'년도,회차'},
                 {key:'subject1', name:'1과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 1))}},
@@ -71,8 +91,12 @@ function Crawling( props ) {
                 {key:'subject4', name:'4과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 61))}},
                 {key:'subject5', name:'5과목', width: 15, type:'button', btn: {btnText: '시작', onClick: ((item) => openKeywordPopup(item, 81))}},
             ])
+        } else {
+            setCbtGridCol([
+                {key:'fileName', name:'년도,회차'},
+            ])
         }
-    }, [allCbtData])
+    }
 
     // 모달
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -167,11 +191,13 @@ function Crawling( props ) {
         const newWrongData = structuredClone(wrongData);
 
         if (newWrongData.length > no + 1) {
-            const item = newWrongData[no + 1];
+            const nextNo = correct === 0 ? no + 1 : no;
+            const item = newWrongData[nextNo];
             setWrongSelectedCbtData(item);
-            setWrongQuestionNo(no + 1);
+            setWrongQuestionNo(nextNo);
             setTestYear(item.test);
             setCorrect(0);
+            setShowAnswer(false);
         } else {
             utils.showToast('마지막 문제입니다.')
         }
@@ -182,11 +208,13 @@ function Crawling( props ) {
         const newWrongData = structuredClone(wrongData);
         
         if (no > 0) {
-            const item = newWrongData[no - 1];
+            const nextNo = correct === 0 ? no - 1 : no;
+            const item = newWrongData[nextNo];
             setWrongSelectedCbtData(item);
-            setWrongQuestionNo(no - 1);
+            setWrongQuestionNo(nextNo);
             setTestYear(item.test);
             setCorrect(0);
+            setShowAnswer(false);
         } else {
             utils.showToast('첫번째 문제입니다.');
         }
@@ -203,6 +231,8 @@ function Crawling( props ) {
         setSelectedCbtData(resetSelectedData);
         // 클릭 정답 체크용
         setCorrect(0);
+        // 실기 시험 정답 보기
+        setShowAnswer(false);
         // 시험명
         setTestYear('');
 
@@ -225,6 +255,34 @@ function Crawling( props ) {
         } else if (81 <= no && no <= 100) {
             return '5과목 : 정보시스템 구축관리';
         }
+    }
+
+    // 오답률
+    const getWrongCount = (test) => {
+        const newWrongData = structuredClone(wrongData);
+        const wrong = newWrongData.filter((item) => (item.test === test));
+        let firstSubject = 0;
+        let secondSubject = 0;
+        let thirdSubject = 0;
+        let fourthSubject = 0;
+        let fifthSubject = 0;
+
+        for (const item of wrong) {
+            if (1 <= item.no && item.no <= 20) {
+                firstSubject++;
+            } else if (21 <= item.no && item.no <= 40) {
+                secondSubject++;
+            } else if (41 <= item.no && item.no <= 60) {
+                thirdSubject++;
+            } else if (61 <= item.no && item.no <= 80) {
+                fourthSubject++;
+            } else if (81 <= item.no && item.no <= 100) {
+                fifthSubject++;
+            }
+        };
+
+        const totalWrong = '오답 (1과목 : ' + firstSubject + ' | 2과목 : ' + secondSubject + ' | 3과목 : ' + thirdSubject + ' | 4과목 : ' + fourthSubject + ' | 5과목 : ' + fifthSubject + ')';
+        return totalWrong;
     }
 
     // 문자열 깔끔하게
@@ -270,6 +328,66 @@ function Crawling( props ) {
         setAllCorrect(0);
     }
 
+    // 실기 나의 정답
+    const getMyAnswer = (e) => {
+        const test = selectedCbtData.test;
+        const no = selectedCbtData.no;
+
+        const newCbtData = cbtData.filter((item) => (item.test === test && item.no === no));
+        if (newCbtData.length > 0) {
+            setMyAnswer(newCbtData[0].myAnswer || '');
+        } else {
+            setMyAnswer('');
+        }
+    }
+
+    // 실기 나의 정답 입력
+    const onChangeMyAnser = (value) => {
+        const test = selectedCbtData.test;
+        const no = selectedCbtData.no;
+
+        const newAllCbtData = structuredClone(allCbtData);
+        for (const item of newAllCbtData) {
+            if (item.test === test && item.no === no) {
+                item.myAnswer = value;
+            }
+        }
+        setAllCbtData(newAllCbtData);
+
+        const newCbtData = structuredClone(cbtData);
+        for (const item of newCbtData) {
+            if (item.test === test && item.no === no) {
+                item.myAnswer = value;
+            }
+        }
+        setCbtData(newCbtData);
+        setMyAnswer(value);
+    }
+
+    // 관리자 문제 실시간 변경
+    const onChangePracticalData = (e) => {
+        const test = selectedCbtData.test;
+        const no = selectedCbtData.no;
+        const newCbtData = structuredClone(cbtData);
+        for (const item of newCbtData) {
+            if (item.test === test && item.no === no) {
+                item[e.target.name] = e.target.value;
+            }
+        }
+        setCbtData(newCbtData);
+
+        setSelectedCbtData((prev) => ({
+            ...prev, [e.target.name]: e.target.value
+        }));
+    }
+
+    // 관리자 저장 기능
+    const saveCbtData = () => {
+        const title = selectedCbtData.test;
+        const data = structuredClone(cbtData);
+        saveData(title, data);
+    }
+
     // 랜덤풀기용 전체 시험 조회
     const onClickBtnRandom = () => {
         utils.getAxios('/cbt/getListData').then((res) => {
@@ -295,12 +413,18 @@ function Crawling( props ) {
         utils.getAxios('/cbt/getList').then((res) => {
             if (res.msg === 'success') {
                 const data = res.data;
-                const cbtListArr = [];
+                const writtenCbtListArr = [];
+                const practicalCbtListArr = [];
                 for (const item of data) {
                     const cbtItem = {fileName : item.replace('.json', '')};
-                    cbtListArr.push(cbtItem)
+                    if (item.indexOf('p_') > -1) {
+                        practicalCbtListArr.push(cbtItem);
+                    } else {
+                        writtenCbtListArr.push(cbtItem)
+                    }
                 }
-                setCbtListData(cbtListArr);
+                setWrittenCbtListData(writtenCbtListArr);
+                setPracticalCbtListData(practicalCbtListArr);
     
                 utils.showToast('목록 조회 완료');
             } else {
@@ -332,12 +456,33 @@ function Crawling( props ) {
         });
     };
 
+    // server에 정보 저장
+    const saveData = async (title, data) => {
+        utils.postAxios('/cbt/updateData', {title: title, data: data}).then((res) => {
+            if (res.msg === 'success') {
+                const data = res.data;
+                utils.showToast(data.message);
+            } else {
+                utils.showToast('저장 실패', res.error);
+            }
+        });
+    };
+
+    // 권한 정보 가져오기
+    const getSessionAuthData = async () => {
+        const getSessionAuth = await utils.getUserAuthSession() || '';
+        setSessionAuth(getSessionAuth);
+    }
+
     useEffect(() => {
         // 시험 목록
         getCbtList();
 
         // 전체 목록 랜덤 풀기용
         onClickBtnRandom();
+
+        // 권한 정보
+        getSessionAuthData();
     }, []);
 
     useEffect(() => {
@@ -347,6 +492,7 @@ function Crawling( props ) {
             if (newCbtData.length > 0) {
                 setSelectedCbtData(newCbtData[0]);
                 setCorrect(0);
+                setShowAnswer(false);
             }
         } else {
             if (questionNo !== -1) {
@@ -356,33 +502,134 @@ function Crawling( props ) {
         }
     }, [questionNo]);
 
+    useEffect(() => {
+        if (cbtType === 'practical') {
+            getMyAnswer();
+        }
+    }, [selectedCbtData, wrongSelectedCbtData]);
+
+    useEffect(() => {
+        if (cbtType === 'practical') {
+            const questionElement = document.querySelector('.textarea[name="question"]');
+            if (questionElement) {
+                const nowHeight = (questionElement.style.height).replace('px', '');
+                if (nowHeight < questionElement.scrollHeight) {
+                    questionElement.style.height = 'auto';
+                    questionElement.style.height = `${questionElement.scrollHeight}px`;
+                }
+            }
+        }
+    }, [selectedCbtData.question]);
+
+    useEffect(() => {
+        if (cbtType === 'practical') {
+            const answerElement = document.querySelector('.textarea[name="answer"]');
+            if (answerElement) {
+                const nowHeight = answerElement.style.height;
+                if (nowHeight < answerElement.scrollHeight) {
+                    answerElement.style.height = 'auto';
+                    answerElement.style.height = `${answerElement.scrollHeight}px`;
+                }
+            }
+        }
+    }, [selectedCbtData.answer]);
+
+    useEffect(() => {
+        if (cbtType === 'practical') {
+            const myAnswerElement = document.querySelector('.textarea[name="myAnswer"]');
+            if (myAnswerElement) {
+                const nowHeight = myAnswerElement.style.height;
+                if (nowHeight < myAnswerElement.scrollHeight) {
+                    myAnswerElement.style.height = 'auto';
+                    myAnswerElement.style.height = `${myAnswerElement.scrollHeight}px`;
+                }
+            }
+        }
+    }, [myAnswer]);
+
     return (
         <>
+            {/* 문제풀기, 오답풀기 */}
             <Modal isOpen={isModalOpen} onClose={resetModal} closeBtn={false} onConfirm={null}>
-                <p style={{ userSelect: 'none' }}>{getSubject(selectedCbtData?.no || wrongSelectedCbtData?.no || '')}</p>
-                <h4 style={{ whiteSpace: 'pre-wrap', userSelect: 'none' }}>{resetTxt(selectedCbtData?.question || wrongSelectedCbtData?.question ||'')}</h4>
                 <div>
-                    <img src={selectedCbtData?.image || wrongSelectedCbtData?.image || ''}></img>
-
-                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 1 ? 'red' : 'black'}} data-name='1' onClick={checkAnswer}>{selectedCbtData?.item1 || wrongSelectedCbtData?.item1 || ''}</p>
-                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 2 ? 'red' : 'black' }} data-name='2' onClick={checkAnswer}>{selectedCbtData?.item2 || wrongSelectedCbtData?.item2 || ''}</p>
-                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 3 ? 'red' : 'black' }} data-name='3' onClick={checkAnswer}>{selectedCbtData?.item3 || wrongSelectedCbtData?.item3 || ''}</p>
-                    <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 4 ? 'red' : 'black' }} data-name='4' onClick={checkAnswer}>{selectedCbtData?.item4 || wrongSelectedCbtData?.item4 || ''}</p>
-                    
-                    {questionNo > -1 && <button type='button' className='button' onClick={(e) => {(setQuestionNo(questionNo - 1), setCorrect(0))}}>이전</button>}
-                    {questionNo > -1 && <button type='button' className='button' onClick={(e) => {(setQuestionNo(questionNo + 1), setCorrect(0))}}>다음</button>}
+                    <span style={{ userSelect: 'none' }}>{selectedCbtData?.test || wrongSelectedCbtData?.test || ''} </span>
+                    {cbtType === 'written' &&
+                        <>
+                            <span style={{ userSelect: 'none' }}>{getSubject(selectedCbtData?.no || wrongSelectedCbtData?.no || '')}</span>
+                            <p style={{ userSelect: 'none', fontSize: '12px' }}>{getWrongCount(selectedCbtData?.test || wrongSelectedCbtData?.test || '')}</p>
+                            <h4 style={{ whiteSpace: 'pre-wrap', userSelect: 'none' }}>{resetTxt(selectedCbtData?.question || wrongSelectedCbtData?.question ||'')}</h4>
+                        </>
+                    }
+                </div>
+                {cbtType === 'practical' &&
+                    <>
+                        <textarea
+                            className="textarea"
+                            data-name='question'
+                            name="question"
+                            readOnly={sessionAuth !== '999'}
+                            value={selectedCbtData.question}
+                            onChange={(e) => {onChangePracticalData(e)}}
+                        />
+                    </>
+                }
+                <div>
+                    {(selectedCbtData?.image || wrongSelectedCbtData?.image) &&
+                        <img src={selectedCbtData?.image || wrongSelectedCbtData?.image || ''}></img>
+                    }
+                    {cbtType === 'written' &&
+                        <>
+                            <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 1 ? 'red' : 'black'}} data-name='1' onClick={checkAnswer}>{selectedCbtData?.item1 || wrongSelectedCbtData?.item1 || ''}</p>
+                            <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 2 ? 'red' : 'black' }} data-name='2' onClick={checkAnswer}>{selectedCbtData?.item2 || wrongSelectedCbtData?.item2 || ''}</p>
+                            <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 3 ? 'red' : 'black' }} data-name='3' onClick={checkAnswer}>{selectedCbtData?.item3 || wrongSelectedCbtData?.item3 || ''}</p>
+                            <p style={{ cursor: 'pointer', userSelect: 'none', color: correct === 4 ? 'red' : 'black' }} data-name='4' onClick={checkAnswer}>{selectedCbtData?.item4 || wrongSelectedCbtData?.item4 || ''}</p>
+                        </>
+                    }
+                    {cbtType === 'practical' &&
+                        <>  
+                            <div>
+                                <textarea
+                                    className="textarea"
+                                    data-name='myAnswer'
+                                    name="myAnswer"
+                                    value={myAnswer}
+                                    onChange={(e) => {onChangeMyAnser(e.target.value)}}
+                                />
+                            </div>
+                            {showAnswer && 
+                                <div>
+                                    <textarea
+                                        className="textarea"
+                                        data-name='answer'
+                                        name="answer"
+                                        style={{ border: '1px solid red' }}
+                                        readOnly={sessionAuth !== '999'}
+                                        value={selectedCbtData.answer}
+                                        onChange={(e) => {onChangePracticalData(e)}}
+                                    />
+                                </div>
+                            }
+                            <button type='button' className='button primary' onClick={(e) => {setShowAnswer(!showAnswer)}}>정답 {showAnswer ? ' 닫기' : ' 보기'}</button>
+                        </>
+                    }
+                    {questionNo > -1 && <button type='button' className='button' onClick={(e) => {(setQuestionNo(questionNo - 1), setCorrect(0), setShowAnswer(false))}}>이전</button>}
+                    {questionNo > -1 && <button type='button' className='button' onClick={(e) => {(setQuestionNo(questionNo + 1), setCorrect(0), setShowAnswer(false))}}>다음</button>}
 
                     {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {beforeWrong(wrongQuestionNo)}}>이전</button>}
                     {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {nextWrong(wrongQuestionNo)}}>다음</button>}
+
+                    {sessionAuth === '999' && <div><button type='button' className='button primary' onClick={(e) => {saveCbtData()}}>저장</button></div>}
                 </div>
             </Modal>
 
+            {/* 전체 랜덤 */}
             <Modal isOpen={isRandomModalOpen} onClose={(e) => {setIsRandomModalOpen(false)}} closeBtn={false} onConfirm={null}>
-                <p style={{ userSelect: 'none' }}>{allSelectedCbtData.test} / {getSubject(allSelectedCbtData?.no || '')}</p>
+                <span style={{ userSelect: 'none' }}>{allSelectedCbtData.test} / {getSubject(allSelectedCbtData?.no || '')}</span>
                 <h4 style={{ whiteSpace: 'pre-wrap', userSelect: 'none' }}>{resetTxt(allSelectedCbtData?.question ||'')}</h4>
                 <div>
-                    <img src={allSelectedCbtData?.image || ''}></img>
-
+                    {allSelectedCbtData?.image &&
+                        <img src={allSelectedCbtData?.image || ''}></img>
+                    }
                     <p style={{ cursor: 'pointer', userSelect: 'none', color: allCorrect === 1 ? 'red' : 'black'}} data-name='1' onClick={checkAllAnswer}>{allSelectedCbtData?.item1 || ''}</p>
                     <p style={{ cursor: 'pointer', userSelect: 'none', color: allCorrect === 2 ? 'red' : 'black' }} data-name='2' onClick={checkAllAnswer}>{allSelectedCbtData?.item2 || ''}</p>
                     <p style={{ cursor: 'pointer', userSelect: 'none', color: allCorrect === 3 ? 'red' : 'black' }} data-name='3' onClick={checkAllAnswer}>{allSelectedCbtData?.item3 || ''}</p>
@@ -392,22 +639,36 @@ function Crawling( props ) {
                 </div>
             </Modal>
 
-            <button type='button' className='button danger' onClick={showWrong}>오답목록</button>
-            <button type='button' className='button danger' onClick={randomTest}>랜덤풀기</button>
             <div>
-                <SggGridReact
-                    sggRef={(null)}
-                    sggColumns={cbtGridCol} // 그리드 컬럼 Array
-                    sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : false}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
-                    sggData={{gridData: cbtListData, setGridData: setCbtListData}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
-                    // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
-                    sggGridChecked={false} // 그리드 좌측 체크박스 boolean
-                    sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
-                    sggPaging={false} // 페이징 여부 boolean
-                    sggTrOnClick={(e, item) => {cbtGridDoubleClick(item)}} // 행 클릭 시 fnc
-                    // sggTrOnDoubleClick={(e, item) => {cbtGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
-                    />
+                <label>
+                    <input type='radio' name='cbtType' value='written' onChange={(e) => {setCbtType(e.target.value)}} checked={cbtType === 'written'} /> 필기
+                </label>
+                <label>
+                    <input type='radio' name='cbtType' value='practical' onChange={(e) => {setCbtType(e.target.value)}} checked={cbtType === 'practical'} /> 실기
+                </label>
             </div>
+
+            {cbtType === 'written' &&
+                <>
+                    <button type='button' className='button danger' onClick={showWrong}>오답목록</button>
+                    <button type='button' className='button danger' onClick={randomTest}>랜덤풀기</button>
+                </>
+            }
+
+                <div>
+                    <SggGridReact
+                        sggRef={(null)}
+                        sggColumns={cbtGridCol} // 그리드 컬럼 Array
+                        sggBtn={{'c': false, 'r': true, 'u': false, 'd': false, saveBtn : false}} // 그리드 위 행 CRUD 버튼, c/r/u/d boolean, saveBtn fnc
+                        sggData={{gridData: (cbtType === 'written' ? writtenCbtListData : practicalCbtListData), setGridData: (cbtType === 'written' ? setWrittenCbtListData : setPracticalCbtListData)}} // 데이터 state, 적용(저장) 버튼 시 setState, 총 수 (앞단 페이징일 경우 필요 X) state
+                        // sggSearchParam={{searchForm: searchForm, setSearchParam: setSearchParam, doSearch: doSearch}} // 검색조건 입력 폼 Array, 검색조건 setState, 검색 조회 버튼 fnc {3개는 세트로 하나 있으면 다 있어야함}
+                        sggGridChecked={false} // 그리드 좌측 체크박스 boolean
+                        sggGridFormChange={{resize: true, headerMove: true, rowMove: true}} // 컬럼 리사이징 boolean, 컬럼 이동 boolean, 행 이동 boolean
+                        sggPaging={false} // 페이징 여부 boolean
+                        sggTrOnClick={(e, item) => {cbtGridDoubleClick(item)}} // 행 클릭 시 fnc
+                        // sggTrOnDoubleClick={(e, item) => {cbtGridDoubleClick(item)}} // 행 더블 클릭 시 fnc
+                        />
+                </div>
         </>
     );
 }

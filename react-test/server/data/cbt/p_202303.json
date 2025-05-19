@@ -1,0 +1,142 @@
+[
+    {
+        "no": 1,
+        "question": "01. 아래에서 설명하는 용어를 보기에서 골라 답안을 작성하시오.\n\n    (보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공됩니다.)\n인터넷 사용자가 웹사이트나 애플리케이션에 비밀번호를 공개하지 않고도 정보를 다른 웹사이트에서 안전하게 \n접근할 수 있도록 허용하는 개방형 표준이다.\n예를 들어, 한 웹사이트에서 다른 서비스에 로그인 할 때 사용자의 비밀번호를 직접 입력하지 않고도 서비스 \n간에 안전하게 권한을 부여할 수 있다.\n서드 파티 애플리케이션이 사용자의 비밀번호에 접근하지 않고도 서비스 간에 데이터를 안전하게 공유할 수 \n있도록 한다.\n소셜 미디어 로그인, 데이터 공유 API, 클라우드 서비스 등 다양한 분야에서 널리 사용되고 있다.\n",
+        "answer": "OAuth",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 2,
+        "question": "02. 리눅스에서 사용자에게 읽기/쓰기/실행 권한을 부여하고, 그룹에는 읽기/실행 권한을 부여하고, 그 이외에는 \n실행 권한만을 text.txt 파일에 부여하고자 한다. 명령어를 포함해서 알맞은 답안을 작성하시오.\n\n",
+        "answer": "chmod 751 text.txt",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 3,
+        "question": "03. 두 테이블을 이용하여 UNION 연산을 수행하였다. 결과값을 표 형태로 작성하시오.\n (타이틀은 포함하지 않아도 \n된다.)\n  \nSELECT A FROM  T1\nUNION\nSELECT B FROM  T2\nORDER BY A DESC;\n        \n<<T1>>\nA\n4\n1\n3\n  \n<<T2>>\nB\n4\n2\n3\n         \n",
+        "answer": "A4321",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 4,
+        "question": "04. 다음은 접근 통제 유형에 대한 설명이다. 괄호에 들어갈 영문 약어를 쓰시오.\n\n• ( ① ) : 리소스마다 분류 레이블(예: 기밀, 비밀)이 지정되고 사용자마다 보안 등급이 주어진다. 사용자의 \n보안 등급이 리소스의 분류 레이블을 만족할 때만 접근이 허용된다. 이 모델은 주로 국방이나 정부 기관에\n서 중요한 데이터를 보호하기 위해 사용된다. \n• ( ② ) : 데이터 소유자가 자신의 자원에 대한 접근 권한을 직접 관리할 수 있는 모델이다. 소유자는 다른 \n사용자나 그룹에게 자원을 사용할 권한을 부여하거나 취소할 수 있다.\n• ( ③ ) : 사용자의 역할에 따라 접근 권한을 부여하는 모델이다. 각 사용자는 하나 이상의 역할을 부여받으\n며, 해당 역할은 특정 권한과 연결된다. 이 모델은 조직 내에서 역할에 따라 자원 접근을 효율적으로 관리\n하고자 할 때 유용하다.\n\n\n- 3 -\n",
+        "answer": "① 강제적 접근 통제(Mandatory Access Control, MAC)② 임의적 접근 통제(Discretionary Access Control, DAC)③ 역할 기반 접근 통제(Role-Based Access Control, RBAC)",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 5,
+        "question": "05. 다음에서 설명하는 용어를 영어 약자로 작성하시오.\n\n광대역 멀티미디어 통신을 지원하기 위해 고안된 네트워크 기술이다. 이 기술은 특히 고속 네트워크 환경에서 \n다양한 종류의 트래픽을 효과적으로 처리할 수 있도록 설계되었으며, 주로 전화망 및 인터넷 백본에서 사용되\n었다.\n데이터를 53바이트 크기의 고정 길이 셀로 전송한다. 이 중 5바이트는 헤더로 사용되며, 48바이트는 페이로드\n(실제 데이터)이다. 고정 길이 셀 사용은 셀 스위칭이 간단하고 빠르다는 장점을 제공한다. 데이터 전송을 시작\n하기 전에 논리적 연결이 먼저 설정되어야 한다.\n",
+        "answer": "ATM(Asynchronous Transfer Mode)",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 6,
+        "question": "06. 괄호에 들어갈 용어를 영어 약자로 작성하시오.\n\n(   )는 주로 사설 네트워크와 공인 네트워크 간의 IP 주소를 매핑하고 변환하는데 사용되어, 여러 대의 컴퓨\n터가 하나의 공인 IP 주소를 공유하여 인터넷에 접속할 수 있도록 한다.\n(   )는 주로 라우터나 방화벽과 같은 네트워크 장치에서 구현된다. 네트워크 내부의 장치(사설 IP 주소를 가\n진)가 인터넷(공인 IP 주소를 사용하는)으로 데이터를 전송할 때, (   ) 장치는 내부 IP 주소를 공인 IP 주소로 \n변환한다. \n(   )는 네트워크 설계와 운영에 있어 필수적인 역할을 하고 있으며, IP 주소의 부족 문제를 완화하고 네트워\n크 보안을 강화하는 데 중요한 기술이다.\n",
+        "answer": "NAT(Network Address Transformation)",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 7,
+        "question": "07. UML을 이용한 다이어그램 중 아래 그림에 해당하는 다이어그램을 쓰시오.\n\n   \n\n\n- 4 -\n",
+        "answer": "패키지 다이어그램",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 8,
+        "question": "08. 다음에서 설명하는 테스트 기법을 보기에서 골라 작성하시오.\n\n    (보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공됩니다.)\n이 기법은 입력 데이터를 효율적으로 테스트하기 위해 사용되며, 특히 입력 데이터의 범위나 조건에 따라 테스\n트를 최소화하면서도 최대의 효과를 달성하는 데 도움을 준다. 전체 입력 데이터를 여러 개의 '등가 클래스'로 \n나눈다. 각 등가 클래스는 해당 클래스의 모든 값이 기대되는 동일한 행동을 보여야 한다고 가정한다. 즉, 한 \n클래스의 하나의 값을 테스트하면, 해당 클래스의 다른 모든 값도 동일한 결과를 보일 것이라고 예상한다. 이\n러한 방식으로 테스트 케이스의 수를 줄일 수 있으며, 테스트의 범위와 효율성을 높일 수 있다.\n",
+        "answer": "Equivalence Partitioning",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 9,
+        "question": "09. 다음은 클라우드에 대한 설명이다. 괄호 안에 알맞은 답을 보기에서 골라 작성하시오.\n\n    (보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공됩니다.)\n• ( ① ) : 가상화된 컴퓨팅 자원을 인터넷을 통해 제공한다. 사용자는 서버, 스토리지, 네트워킹과 같은 기본 \n컴퓨팅 인프라를 임대하여 사용한다. 사용자는 운영 체제 및 응용 프로그램 설치, 데이터 관리 등을 스스로 \n관리한다. 확장성이 뛰어나고, 사용한 만큼 비용을 지불하는 구조이다.\n• ( ② ) : 애플리케이션 개발과 배포를 위한 플랫폼 및 환경을 인터넷을 통해 제공한다. 사용자는 개발할 수 \n있는 환경을 제공받으며, 하드웨어 및 운영 체제 관리는 서비스 제공자가 담당한다. 개발, 테스트, 배포, \n호스팅 및 유지 보수의 단순화된 프로세스를 제공한다.\n• ( ③ ) : 인터넷을 통해 소프트웨어 애플리케이션을 제공한다. 사용자는 소프트웨어를 설치하거나 관리할 \n필요 없이 웹 브라우저를 통해 애플리케이션을 사용할 수 있다. 모든 소프트웨어 업데이트와 유지 관리는 \n제공 업체가 담당한다. 사용자는 보통 정기적인 구독료를 지불하며, 다수의 사용자가 쉽게 접근할 수 있다.\n",
+        "answer": "① IaaS(Infrastructure as a Service)② PaaS(Platform as a Service)③ SaaS(Software as a Service)",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 10,
+        "question": "10. 다음에서 설명하는 프로토콜을 영어 약어로 작성하시오.\n\n내부 라우팅 프로토콜 중 하나로, 네트워크 내 라우터들 사이에서 정보를 교환하여 최적의 경로를 결정하는 데 \n사용된다.\n거리 벡터 라우팅 프로토콜의 일종으로, 목적지까지의 거리를 기반으로 라우팅 결정을 한다.\n경로의 길이를 홉 카운트로 측정하며, 최대 15개의 홉까지만 허용한다.\n일반적으로 30초마다 전체 라우팅 테이블을 네트워크 내 다른 라우터에게 브로드캐스트하거나 멀티캐스트 한다.\n\n\n- 5 -\nclass A {\n    public void paint() {\n        System.out.print(\"A\");\n        draw();\n    }\n    public void draw() {\n        System.out.print(\"B\");\n        draw();\n    }\n}\nclass B extends A {\n    public void paint() {\n        super.draw();\n        System.out.print(\"C\");\n        this.draw();\n    }\n    public void draw() {\n        System.out.print(\"D\");\n    }\n}\n",
+        "answer": "RIP(Routing Information Protocol)",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 11,
+        "question": "11. 다음은 관계 대수 기호이다. 보기에서 알맞은 기호를 작성하시오.\n\n• ① JOIN : ( ① ) \n• ② PROJECT : ( ② )\n• ③ SELECT : ( ③ )\n• ④ DIVISION : ( ④ )\n",
+        "answer": "① ⋈   ② π   ③ σ   ④ ÷",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 12,
+        "question": "12. 다음에서 설명하는 제약조건에 대해서 쓰시오.\n\n데이터베이스의 (   ) 무결성 제약조건은 데이터베이스 내에서 데이터의 정확성과 일관성을 유지하는 데 \n중요한 역할을 한다. 이 제약조건은 특히 관계형 데이터베이스에서 외래키(Foreign Key) 관계를 통해 \n구현되며, 연관된 테이블 간에 적절한 데이터 관계가 유지되도록 보장한다. 한 테이블의 필드(외래키)가 다른 \n테이블의 기본키(Primary Key)를 참조할 때, 외래키 값은 참조하는 테이블의 기본키에 존재하는 값이어야 \n한다. 즉, 참조하는 데이터가 실제로 존재해야 한다.\n",
+        "answer": "참조 무결성",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 13,
+        "question": "13. 다음 JAVA 코드의 출력결과를 쓰시오.\n\n\n\n- 6 -\nclass EraonEdu {\n    public static void main(String[] args) {\n        A b = new B();\n        b.paint();\n        b.draw();\n    }\n}\n",
+        "answer": "BDCDD",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 14,
+        "question": "14. 다음 C언어 코드의 출력결과를 쓰시오.\n\n#include <stdio.h>\nint main() {\n    char* p = \"KOREA\";\n    printf(\"%s \\n\", p);\n    printf(\"%s \\ n \", p+1);\n    printf(\"%c \\ n \", *p);\n    printf(\"%c \\ n \", *(p+3));\n    printf(\"%c \", *p+4);\n}\n",
+        "answer": "KOREAOREAKEO",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 15,
+        "question": "15. C언어 코드에서 구조체의 멤버에 접근하기 위한 괄호 내의 공통된 접근자를 쓰시오.\n\n#include <stdio.h>\nstruct User{\n    char *name;\n    int age; \n};\nint main() {\n    struct User d1;\n    struct User *d2;\n    d2(   )name = “Lee”;\n    d2(   )age = 45;\n    printf(“%s, %d”, d2(   )name, d2(   )age);\n}\n\n\n- 7 -\n",
+        "answer": "->",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 16,
+        "question": "16. 다음 C언어 코드의 출력결과를 쓰시오.\n\nint func(int n) {\n    int i, sum = 0;\n    for (i = 1; i <= n / 2; i++){\n        if (n % i == 0)\n            sum += i;\n    }\n     if (n == sum) \n        return 1;\n \n    return 0;\n}\nint main(){\n    int i, sum=0;\n    for (i = 2; i <= 100; i++){ \n        if (func(i))\n            sum += i;\n    }\n    printf(\"%d \", sum); \n    return 0;\n}\n",
+        "answer": "34",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음 자바코드는 오류가 발생한다. 오류가 발생하는 명령을 쓰시오.\n\nclass Person {\n    private String name;\n    public Person(String val) {\n        name = val;\n    }\n    public static String get() {\n        return name;\n    }\n    public void print() {\n        System.out.println(name);\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Person obj = new Person(“Lee\");\n        obj.print();\n    }\n}\n\n\n- 8 -\n",
+        "answer": "return name;",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음 자바코드의 결과를 쓰시오.\n\nclass Parent {\n    int com(int n) {\n        if(n <= 1)\n            return n;\n        return com(n-1) + com(n-2);\n    }\n}\nclass Child extends Parent {\n    int com(int n) {\n        if(n <= 1)\n            return n;\n        return com(n-1) + com(n-3);\n    }\n}\nParent obj = new Child();\nSystem.out.print(obj.com(7));\n",
+        "answer": "2",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음 JAVA 프로그램의 출력결과를 쓰시오.\n\n#include <stdio.h>\nint f(int n) {\n    if(n<=1) return 1;\n    else return n*f(n-1);\n}\nint main() {\n    printf(\"%d\", f(7));\n}\n",
+        "answer": "5040",
+        "imageYN": "",
+        "test": "p_202303"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음 파이썬 코드 중 괄호에 들어갈 알맞은 함수를 작성하시오.\n\n    (단, 입력된 값은 2 3이고, 출력은 2 3으로 출력된다.)\nnum1, num2 = input()._____()\nnum1 = int(num1)\nnum2 = int(num2)\nprint(num1,num2)\n\n\n- 9 -\n",
+        "answer": "split",
+        "imageYN": "",
+        "test": "p_202303"
+    }
+]

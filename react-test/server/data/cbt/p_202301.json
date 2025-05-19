@@ -1,0 +1,142 @@
+[
+    {
+        "no": 1,
+        "question": "01. 다음 괄호 안에 들어갈 용어를 영문 약어로 쓰시오.\n\n(     )은 웹 페이지를 새로 고치지 않고 서버로부터 데이터를 비동기적으로 가져오는 기술이다.\nJavaScript를 이용하여 비동기적으로 서버에 데이터를 요청하고 응답을 처리하는 기술이다.\nJavaScript를 이용하여 서버로부터 XML 또는 JSON 형식의 데이터를 비동기적으로 받아오는 프로그래밍 기법\n이다.\n",
+        "answer": "AJAX(Asynchronous JavaScript and XML)",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음 괄호 안에 들어갈 용어를 쓰시오.\n\n• (  ①  ) 물리적인 연결 선로가 아니라 데이터 패킷이 전송될 경로를 미리 설정하는 방식을 말한다. 전송을 \n시작하기 전에 데이터가 송신자에서 수신자까지 이동할 경로를 설정하고, 그 경로를 통해 데이터 패킷들이 \n순차적으로 전달된다. 이 방식은 데이터의 순서를 보장하며, 신뢰성이 높은 통신을 제공하지만, 전송 경로\n를 미리 설정하는 과정으로 인해 초기 세팅에 시간이 필요하다는 단점이 있다.\n• (  ②  ) 각각의 패킷이 독립적으로 경로를 찾아 수신자에게 전달되는 방식이다. 이 방식에서는 패킷들이 \n서로 다른 경로를 통해 전달될 수 있으며, 결과적으로 도착하는 순서가 달라질 수 있다. 이 방식은 패킷의 \n독립성 때문에 유연성이 높고, 네트워크의 혼잡 상태에 대응할 수 있다는 장점이 있습니다. 그러나 패킷의 \n순서나 손실에 대한 보장이 없어, 이러한 측면에 대한 관리가 필요하다.\n",
+        "answer": "① 가상회선, ② 데이터그램",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 3,
+        "question": "03. 다음에서 설명하는 답을 작성하시오.\n\n• VPN(Virtual Private Network) 연결을 생성하는 데 사용되는 프로토콜이다.\n• 마이크로소프트의 PPTP와 시스코의 L2F를 결합해 만들어졌다.\n• 데이터를 안전하게 터널링하는 기능을 제공한다.\n• 하지만 이 프로토콜은 암호화를 제공하지 않아, 일반적으로 IPsec와 함께 사용되어 데이터의 암호화를 보장\n하며 보안성이 향상된 VPN 연결을 제공한다.\n",
+        "answer": "L2TP(Layer 2 Tunneling Protocol)",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 4,
+        "question": "04. 다음에서 설명하는 답을 작성하시오.\n\n• 네트워크상에서 다른 컴퓨터에 로그인하거나 원격에서 명령을 실행할 수 있는 애플리케이션 프로토콜이다. \n• 이 프로토콜은 주로 원격 컴퓨터 관리에 사용되며, 보안성이 뛰어나 데이터의 무단 접근 및 변조를 방지한다.\n• 인터넷을 통해 데이터를 전송할 때, 모든 트래픽(명령과 응답, 로그인 정보, 파일 전송 등)을 암호화하여 \n전송한다.\n• 22번 포트를 사용한다.\n\n\n- 1 -\n",
+        "answer": "SSH(Secure SHell)",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 5,
+        "question": "05. 아래 설명에 대한 알맞은 답을 쓰시오.\n\n• ( ① ) 네트워크를 통해 스스로를 복사하고 분산시키는 독립적인 프로그램 이다. 네트워크의 취약점을 이용\n하여 다른 시스템으로 전파되며, 감염된 시스템의 리소스를 사용하여 네트워크를 느리게 하거나 다운시키는 \n피해를 준다. 사용자의 액션 없이도 스스로 전파되는 능력이 있다.\n• ( ② ) 사용자가 유용하거나 흥미로워 보이는 프로그램으로 위장한 악성 코드이다. 사용자가 이 프로그램을 \n실행하면, ( ② )은/는 시스템에 악성 행동을 수행한다. 사용자의 개인 데이터를 훔치는 것부터 시스템의 제\n어권을 악성 소프트웨어 제작자에게 넘기는 것까지 다양하다.\n• ( ③ ) 다른 프로그램이나 실행 가능한 소프트웨어에 '붙어' 동작하는 악성 코드이다. 사용자가 감염된 프로\n그램을 실행하면, ( ③ )은/는 시스템에 퍼져 다른 프로그램을 감염시킨다. 파일을 삭제하거나 시스템 설정\n을 변경하는 등의 피해를 입힐 수 있습니다. ( ③ )은/는 ( ① )와/과 달리 사용자의 액션을 필요로 한다.\n",
+        "answer": "① 웜(Worm), ② 트로이 목마(Trojan horse), ③ 바이러스(Virus)",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 6,
+        "question": "06. 다음에서 설명하는 프로토콜을 영문 약어로 쓰시오.\n\n인터넷 프로토콜 스위트의 핵심 프로토콜 중 하나로, 네트워크 컴퓨터가 정보를 교환하거나 문제를 보고하는 \n데 사용된다. 운영 중인 네트워크의 문제를 진단하고, 오류 메시지를 전송하고, 정보를 요청하는 데 사용된다.\n기본적으로 네트워크의 상태를 보고하고 오류를 알리는 프로토콜이므로, 일반적인 데이터 전송에는 사용되지 \n않는다. TCP와 UDP 같은 다른 프로토콜들이 데이터 전송을 담당하고, 이것들과 함께 동작하여 네트워크의 원\n활한 운영을 지원한다.\n",
+        "answer": "ICMP(Internet Control Message Protocol)",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 7,
+        "question": "07. 다음에서 설명하는 디자인 패턴을 쓰시오.\n\n이 패턴은 소프트웨어 디자인 패턴 중 하나로, 어떤 객체에 대한 접근을 제어하거나 간접적으로 이루어지도록 \n하는 패턴이다. 이 패턴은 중개 역할을 하는 객체를 통해 다른 객체에 접근하는 방식을 사용한다. 내부적으로 \n실제 객체(Real Object)의 참조를 가지고 있으며, 클라이언트의 요청을 받아 실제 객체에 전달하고 그 결과를 \n클라이언트에 반환한다.\n",
+        "answer": "Proxy",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 8,
+        "question": "08. 다음은 데이터베이스에 관련된 내용이다. 각 괄호에 맞는 답을 쓰시오.\n\n• ( ① ) 데이터 테이블의 한 행(row)을 말한다.\n• 특정 테이블에 속하는 한 개체에 대한 정보를 나타내는 데이터 집합을 의미한다.\n• ( ② ) 특정 시점에서 관계 또는 테이블의 상태를 나타낸다.\n• ( ③ ) 특정 테이블의 행 수를 나타낸다. \n\n\n- 2 -\n",
+        "answer": "① 튜플, ② 릴레이션 인스턴스, ③ 카디널리티",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 9,
+        "question": "09. 다음은 스키마와 관련된 내용이다. 괄호에 알맞은 답을 쓰시오.\n\n• ( ① ) 사용자 또는 애플리케이션의 관점에서 본 데이터베이스의 뷰이다. 여러 개의 ( ① )가 있을 수 있고, \n각각은 사용자 그룹의 요구를 충족시키기 위해 데이터베이스의 특정 부분을 보여준다.\n• ( ② ) 전체 데이터베이스의 구조와 제약 조건을 정의한다. 모든 애플리케이션과 사용자들이 공유하는 데이\n터의 통합 뷰를 제공하며, 데이터베이스의 모든 개체, 속성, 관계, 그리고 이들에 적용되는 제약 조건들을 \n포함한다.\n• ( ③ ) 데이터가 물리적으로 저장되는 방식을 설명한다. 데이터베이스의 물리적인 구조, 인덱싱, 해싱, 데이\n터 액세스 경로, 저장 공간 할당 등을 정의한다.\n",
+        "answer": "① 외부 스키마(External Schema)② 개념 스키마(Conceptual Schema)③ 내부 스키마(Internal Schema)",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 10,
+        "question": "10. 다음 아래 제어 흐름 그래프가 분기 커버리지를 만족하기 위한 순서를 쓰시오.\n\n",
+        "answer": "1234561, 124567  or 1234567, 124561",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 11,
+        "question": "11. [학생] 테이블에서 학생 이름이 ‘민수’인 튜플을 삭제하는 쿼리를 작성하시오.\n\n(보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공되었습니다.)\n\n\n- 3 -\n",
+        "answer": "DELETE FROM 학생 WHERE 이름 = ‘민수’;",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 12,
+        "question": "12. 다음 성적 테이블에서 다음과 같은 결과가 나오도록 조건에 맞게 SQL을 작성하시오.\n\n순번과목이름점수\n1DB95\n2DB92\n3NETWORK90\n4S/W70\n5NETWORK65\n6S/W95\n  \n과목이름최소점수최대점수\nDB9295\n• 반드시 GROUP BY, HVING을 이용한다.\n• WHERE 절은 사용하지 않는다.\n• SELECT 절에 별칭을 사용한다.\n• 집계함수를 사용해야 한다.\n",
+        "answer": "SELECT    과목이름,     MIN(점수) AS 최소점수,    MAX(점수) AS 최대점수FROM 성적GROUP BY 과목이름HAVING AVG(점수) >= 90;",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 13,
+        "question": "13. 다음 자바코드의 결과값을 쓰시오.\n\nclass TestClass{ \n    public int a = 20;\n    static int b = 0;    \n}\nclass Main {\n    public static void main(String[] args) {\n        int a;\n        a = 10;\n        TestClass.b = a;\n        TestClass tc = new TestClass();\n        System.out.println(TestClass.b++);\n        System.out.println(tc.b);\n        System.out.println(a);\n        System.out.print(tc.a);\n    }\n}\n\n\n- 4 -\n",
+        "answer": "",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 14,
+        "question": "14. 다음 C언어 코드의 결과값을 쓰시오.\n\nchar a[] = \"Art\";\nchar* p = NULL;\np = a;\n \nprintf(\"%s \\n\", a);\nprintf(\"%c \\n\", *p);\nprintf(\"%c \\n\", *a);\nprintf(\"%s \\n\", p);\n \nfor(int i = 0; a[i] != ' \\0'; i++)\n    printf(\"%c\", a[i]);\n",
+        "answer": "",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 15,
+        "question": "15. 다음 C언어 코드의 결과값을 쓰시오.\n\nchar *a = \"qwer\";\nchar *b = \"qwtety\";\n \nfor(int i = 0; a[i] != ' \\0' ; i++) {\n    for(int j = 0; b[j] != ' \\0'; j++) {\n        if(a[i] == b[j]) printf(\"%c\", a[i]);\n    }\n}\n",
+        "answer": "",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 16,
+        "question": "16. 다음 코드는 이진수를 십진수로 변환하는 코드이다. 빈칸에 알맞은 답을 쓰시오.\n\nint input = 101110;\nint di = 1;\nint sum = 0;\n while (1) {\n    if (input == 0) break;\n    else {\n        sum = sum + (input (①) (②)) * di;\n        di = di * 2;\n        input = input / 10;\n     }\n} \nprintf(\"%d\", sum);\n\n\n- 5 -\n",
+        "answer": "",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음 코드에 알맞은 변수명을 쓰시오.\n\nvoid swap( int ary[], int idx1, int idx2) {\n    int tmp = ary[idx1];\n    ary[idx1] = ary[idx2];\n    ary[①] = tmp;\n}\nvoid sort( int ary[], int len ) {\n    for( int i = 0; i < len; i++ ) {\n        for( int j = 0; j < len - i - 1; j++ ) {\n            if( ary[j] > ary[j+1]  ) {\n                swap(ary, j, j+1);\n            }\n        }\n    }\n}\nvoid main() {\n    int ary[] = {15, 5, 20, 11, 8 };\n    int nx = 5;    \n    sort(ary, ②); \n    for(int i = 0; i < nx; i++) {      \n        printf(\"%d \\n\", ary[i]);\n    }\n}\n",
+        "answer": "",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음 파이썬 코드의 출력 결과를 쓰시오.\n\na = {'한국', '중국', '일본' }\na.add('베트남')\na.add('중국')\na.remove('일본')\na.update( {'홍콩', '한국', '태국' })\nprint(a)\n\n\n- 6 -\n",
+        "answer": "ArtAAArtArt",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음은 JAVA로 작성된 프로그램이다. 이를 실행한 출력 결과를 쓰시오.\n\nabstract class Vehicle {\n    String name;\n    public Vehicle(String val) {\n        this.name = val;\n    }\n    public String getName( ) {\n        return “Vehicle name : ” + name;\n    }\n}\nclass Car extends Vehicle {\n    private String name;\n    public Car(String val) {\n        name = super.name = val;\n    }\n    public String getName(String val) {\n        return “Car name : ” + val;\n    }\n    public String getName(byte val[ ]) {\n        return “Car name : ” + val;\n    }\n}\nVehicle obj = new Car(“Spark”);\nSystem.out.println(obj.getName( ));\n\n\n- 7 -\n",
+        "answer": "qwe",
+        "imageYN": "",
+        "test": "p_202301"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음은 JAVA로 작성된 프로그램이다. 이를 실행한 출력 결과를 쓰시오.\n\nclass Child extends Parent {\n    int x = 2000;\n    Child() {\n        this(5000);\n    }\n    Child(int x) {\n        this.x = x;\n    }\n}\nclass Parent {\n    int x = 100;\n    Parent() {\n        this(500);\n    }\n    Parent(int x) {\n        this.x = x;\n    } \n    int getX() {\n        return x;\n    }\n}\nChild obj = new Child();\nSystem.out.println(obj.getX());\n\n\n- 8 -\n",
+        "answer": "① %② 10 or 5 or 2",
+        "imageYN": "",
+        "test": "p_202301"
+    }
+]

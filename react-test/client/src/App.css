@@ -248,6 +248,19 @@ label {
   box-sizing: border-box; /* 패딩 포함한 사이징 */
 }
 
+.textarea {
+  width: 90%;
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 13px;
+  transition: border-color 0.3s ease-in-out;
+  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  resize: vertical;
+  border: none;
+  height: auto;
+}
+
 .form-row {
   display: flex;
   align-items: center;

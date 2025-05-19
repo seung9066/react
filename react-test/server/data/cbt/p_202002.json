@@ -1,0 +1,144 @@
+[
+    {
+        "no": 1,
+        "question": "01. 일정한 주기를 가지고 계속 검토해 나가며 필요할 때마다 요구사항을 더하고 수정하여 커다랗게 살을 붙이면서 \n개발해 나가는 프로세스 모델 방식이다. 미리 정해진 몇 개의 단계에 따라 엄격한 순서대로 이루어지는 \n일직선의 과정인 폭포수의 프로세스와는 비교가 많이 되는 반대의 개념이다. 이 소프트웨어 개발 방법론을 \n쓰시오.\n\n",
+        "answer": "애자일",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음은 데이터베이스 설계의 순서이다. 빈칸에 해당하는 설계 순서를 쓰시오.\n\n요구사항 분석 → (                    ) → (                    ) → (                    ) → 구현\n",
+        "answer": "개념적 설계, 논리적 설계, 물리적 설계",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 3,
+        "question": "03. 다음 빈칸에 알맞은 용어를 쓰시오.\n\n일반적으로 널리 알려진 HTTP, HTTPS, SMTP 등을 통해 XML 기반의 메시지를 컴퓨터 네트워크 상에서 교환\n하는 프로토콜이다. (    ) 은 웹 서비스에서 기본적인 메시지를 전달하는 기반이 되는데, (    ) 에는 몇 가지 \n형태의 메시지 패턴이 있지만, 보통의 경우 원격 프로시져 호출(Remote Procedure Call:RPC) 패턴으로, 네트\n워크 노드(클라이언트)에서 다른 쪽 노드(서버)로 메시지를 요청 하고, 서버는 메시지를 즉시 응답하게 되는 형\n식입니다. 즉 (       )는 XML을 이용해서 분산처리 환경에서 정보교환을 쉽게 할 수 있도록 도와준다.\n",
+        "answer": "SOAP",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 4,
+        "question": "04. 다음 빈칸 안에 공통으로 들어갈 가장 적합한 용어를 쓰시오.\n\n• (    )는 소프트웨어의 변경사항을 체계적으로 추적하고 통제하는 것으로, (    )는 일반적인 단순 \n버전관리 기반의 소프트웨어 운용을 좀 더 포괄적인 학술 분야의 형태로 넓히는 근간을 이야기한다.\n• (    )란 소프트웨어 소스 코드 뿐 아니라 개발 환경, 빌드 구조 등 전반적인 환경 전반적인 내역에 대한 \n관리 체계를 정의하고 있다.\n• 이를 지원하는 도구로 Git, SVN, CVS 등이 있다.\n",
+        "answer": "형상관리, Software Configuration Management",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 5,
+        "question": "05. 웹 페이지 전체를 다시 로딩하지 않고도, 웹 페이지의 일부분만을 갱신할 수 있는 비동기 방식 처리 기술의 \n약어를 쓰시오.\n\n\n\n- 2 -\n설계 원칙설명\n직관성누구나 쉽게 이해하고 사용할 수 있어야 한다.\n(        )사용자의 목적을 정확하게 달성하여야 한다.\n학습성누구나 쉽게 배우고 익힐 수 있어야 한다.\n유연성사용자의 요구사항을 최대한 수용하며, 오류를 최소화하여야 한다.\n",
+        "answer": "AJAX",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 6,
+        "question": "06. 다음은 UI의 설계 원칙 4가지이다. 빈칸에 알맞은 용어를 쓰시오.\n\n",
+        "answer": "유효성",
+        "imageYN": "Y",
+        "test": "p_202002",
+        "image": "data:image/jpeg;base64,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"
+    },
+    {
+        "no": 7,
+        "question": "07. 프로그램을 실행시키지 않고, 소스코드에 대한 코딩 표준, 코딩 스타일, 복잡도, 보안 취약점, 잠재적인 결함을 \n찾는 테스트 활동이 무엇인지 쓰시오.\n\n",
+        "answer": "정적분석, 정적테스트",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 8,
+        "question": "08. 아래 보기의 <학생> 테이블을 대상으로 <요구사항>을 적용하여 출력하는 SQL문을 작성하시오.\n \n< 요구사항 >\n1. 3학년이거나 4학년 학생의 학번과 이름을 검색하시오. \n2. 단, 조건절 작성 시 in 예약어를 사용하여 작성하시오.\n\n<학생> 테이블\n\n",
+        "answer": "select 학번, 이름 from 학생where 학년 in ( 3, 4 )",
+        "imageYN": "Y",
+        "test": "p_202002",
+        "image": "data:image/jpeg;base64,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"
+    },
+    {
+        "no": 9,
+        "question": "09. 다음 주어진 <student> 테이블의 name 속성을 오름차순하여 idx_name를 인덱스명으로 하는 인덱스를 \n생성하는 SQL 명령문을 작성하시오.\n\n",
+        "answer": "CREATE INDEX idx_nameON student (name asc)",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 10,
+        "question": "10. 보안의 취약점 중 하나인 SQL Injection(SQL 인젝션)에 대해 간략히 서술하시오.\n\n\n\n- 3 -\n",
+        "answer": "웹 프로그램에 SQL 구문을 삽입하여, 서버의 데이터베이스를 공격할 수 있는 공격방식 ",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 11,
+        "question": "11. SQL 제어어(DCL) 중 ROLLBACK 명령에 대해 간략히 설명하시오.\n\n",
+        "answer": "데이터베이스 내의 연산이 비정상적으로 종료되거나 정상수행이 되었다 하더라도 수행되기 이전의 상태로 되돌리기 위한 명령이다.",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 12,
+        "question": "12. 네트워크 계층(Network Layer, 3계층)인 IP 계층에서 IP 패킷 단위의 데이터 변조 방지 및 암호화 기능을 \n제공하는 통신규약을 쓰시오.\n\n",
+        "answer": "IPSec",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 13,
+        "question": "13. 리눅스 커널을 기반으로 동작하며 자바와 코틀린 언어로 개발된 핸드폰이나 소형기기에 사용되는 오픈소스 \n플랫폼인 모바일 운영체제는 무엇인지 쓰시오.\n\n",
+        "answer": "안드로이드",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 14,
+        "question": "14. 리눅스 또는 유닉스에서 a.txt 파일에 대해 다음 조건을 만족하는 권한을 부여하고자 한다. 다음 <조건>을 \n준수하여 적합한 명령어를 작성하시오.\n\n< 조 건 >\n• 사용자에게는 읽기, 쓰기, 실행의 세 개의 권한을 모두 부여한다.\n• 그룹에게는 읽기, 실행 두 개의 권한을 부여한다.\n• 그룹 외 사용자에게는 실행 권한을 부여한다.\n• 한 줄로 명령문이 작성되어야 하며,  8진수로 권한을 부여한다.\n",
+        "answer": "chmod 751 a.txt",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 15,
+        "question": "15. 다음은 IP 인프라 서비스 관리 실무와 관련된 <실무 사례>에 대한 설명이다. 가장 적합한 용어를 한글 또는 \n영문으로 쓰시오.\n\n< 실무 사례 >\nA는 (주)한국아이티 보안관제실에서 정보시스템의 정보관리를 위해 모니터링을 담당하며 근무하고 있다. 시스템 \n운영 중 자연재해나 시스템 장애 등의 이유로 대고객 서비스가 불가능한 경우가 종종 발생한다. A는 이런 \n장애 발생 시 서비스를 정상적으로 수행하기 위해 구축 시스템을 관리하는 역할을 한다. 이 용어는 이런 비상 \n상황이 발생 했을 때, “서비스 중단 시점과 서비스 복원 시점 간에 허용되는 최대 지연 시간”을 가리킨다.\n\n\n- 4 -\n",
+        "answer": "RTO(Recovery Time Objective) / 목표 복구 시간",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 16,
+        "question": "16. 한 객체의 상태가 바뀌면 그 객체에 의존하는 다른 객체들한테 연락이 가고, 자동으로 내용이 갱신되는 \n방식으로 일대다(one-to-many) 의존성을 정의하는 디자인 패턴명을 영문으로 쓰시오.\n\n",
+        "answer": "Observer Pattern",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음에서 설명하는 용어를 쓰시오.\n\n• 자유롭게 사용이 가능하며, 저작권 표시 및 변경 허락 조건하에 재배포 가능한 링크 기반 개방형 데이터\n• 연계 데이터(Linked data)와 오픈 데이터(Open data)가 결합된 단어로, 웹에 게시되는 데이터에 \n식별자(URI)를 부여하고 관련 정보를 구조적으로 제공하는 연계 데이터를 저작권 없이 무료로 제공하여 \n사용자가 정보를 다양하고 효율적으로 활용할 수 있도록 한다.\n• 하이퍼텍스트 전송 규약(HTTP), 자원 기술 프레임워크(RDF)와 인터넷 식별자(URI) 등의 웹 표준 기술을 \n이용하여 시맨틱 웹을 구축하고, 출처가 서로 다르지만 인터넷 식별자(URI)를 통해 데이터를 서로 연결한다. \n• 데이터를 재사용할 수 있고, 데이터 중복을 줄일 수 있는 장점이 있다. \n",
+        "answer": "Linked Open Data",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음은 Python언어로 작성된 프로그램이다. 이를 실행한 출력 결과를 쓰시오.\n\n>>> asia = {‘한국’, ‘중국’, ‘일본’}\n>>> asia.add(‘베트남’)\n>>> asia.add(‘중국’)\n>>> asia.remove(‘일본’)\n>>> asia.update([‘홍콩’, ‘한국’, ‘태국’])\n>>> print(asia)\n\n\n- 5 -\n",
+        "answer": "{‘한국’, ‘중국’, ‘홍콩’, ‘베트남’, ‘태국’}",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음에 제시된 JAVA 프로그램은 <처리결과>와 같이 결과가 출력된다. JAVA 프로그램의 <?> 에 들어갈 JAVA \n표현을 대소문자를 구별하여 쓰시오.\n\nclass Parent {\n    void show() {\n        System.out.println(“Parent”);\n    }\n}\nclass Child extends Parent {\n    void show() {\n        System.out.println(“Child”);\n    }\n}\npublic class Exam {\n    public static void main(String[] args) {\n        Parent pa = <?> Child() ;\n        pa.show() ;\n    }\n}\n",
+        "answer": "new",
+        "imageYN": "",
+        "test": "p_202002"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음은 JAVA로 작성된 프로그램이다. 이를 실행한 출력 결과를 쓰시오.\n\nclass A {\n    int a;\n    public A(int n) {\n        a = n;\n    }\n    public void print() {\n        System.out.println(“a=”+ a) ;\n    }\n}\nclass B extends A {\n    public B(int n) {\n        super(n);\n        super.print() ;\n    }\n}\npublic class Exam {\n    public static void main(String[] args) {\n        B obj = new B(10);\n    }\n}\n\n\n- 6 -\n",
+        "answer": "a=10",
+        "imageYN": "",
+        "test": "p_202002"
+    }
+]

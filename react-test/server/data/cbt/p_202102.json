@@ -1,0 +1,142 @@
+[
+    {
+        "no": 1,
+        "question": "01. 네트워크의구성및유지를위해기지국이나액세스포인트와같은기반네트워크장치를필요로하지않고, \n멀티홉라우팅기능에의해무선인터페이스가가지는통신거리상의제약을극복하며, 노드들의이동이\n자유롭기때문에네트워크토폴로지가동적으로변화되는특징이있다. 응용분야로는긴급구조, 긴급회의, \n전쟁터에서의군사네트워크등이있다. \n",
+        "answer": "AD-hoc Network",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음①, ②에설명하는알맞은답안을쓰시오.\n\n• (  ①) : 사용자가제품/서비스와상호작용할수있도록만들어진매개체\n• (  ②) : 사용자경험의약자로, 사용자가어떠한서비스/ 제품을직간접적으로이용하면서느끼는\n종합적인만족\n",
+        "answer": "①UI②UX",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 3,
+        "question": "03. 디자인패턴중클래스나서로상호작용하는방법이나책임분배방법을정의하는패턴으로, Chain of \nResponsibility, Command, Iterator, Observer 패턴등이있다. 이패턴이무엇인지쓰시오.\n\n",
+        "answer": "행위패턴",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 4,
+        "question": "04. 트랜잭션의특성중원자성에대해설명하시오.\n\n",
+        "answer": "연산의결과는모두반영되거나모두반영되지않아야한다.",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 5,
+        "question": "05. 부분함수적종속성을제거하여완전함수종속을만족하는정규형이무엇인지쓰시오.\n\n",
+        "answer": "제2정규형",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 6,
+        "question": "06. 다음에설명하는대칭키암호를쓰시오.\n\n• NIST가 주최한공모전에서채택된Rijndael알고리즘을가리킨다.\n• DES를대신하여새로운표준이되었다.\n• 블록크기는128bit 이고, 키길이는128/192/256bit 이다.\n• SPN 구조이다.\n\n\n- 2 -\n",
+        "answer": "AES",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 7,
+        "question": "07. 다음[학생] 테이블에서이름이'이'씨로시작하는사람을내림차순정렬로출력하는SQL 문을완성하시오.\n\n[학생]\n학번이름학년학과\n181101KKK1컴퓨터공학과\n171201HHH2전자공학과\n171302XXX3컴퓨터공학과\n161107YYY3건축공학과\n151403QQQ4전자공학과\n* 보기오류안내: ‘이’씨로시작하는사람을내림차순으로정렬하는문제이오나, 보기테이블의이름이‘KKK’, ‘HHH’, ‘XXX’, \n‘YYY’, ‘QQQ’로기입이되어있어문제풀이에혼란을드린점죄송합니다. 다만, 해당문제는보기테이블의내용이없어도\nSQL문을작성할수있는문제이고, 이미위의보기대로영상이촬영되었기때문에정정하였을경우또다른혼란을야기시킬\n수있어기존보기대로학습자료를제공하겠습니다. 다시한번학습에불편을드려대단히죄송합니다.\n",
+        "answer": "SELECT * FROM 학생WHERE 이름like ‘이%’ order by 이름DESC",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 8,
+        "question": "08. 하나의트랜잭션이데이터를액세스하는동안다른트랜잭션이그데이터항목을액세스할수없도록하는\n병행제어기법이무엇인지쓰시오.\n\n",
+        "answer": "로킹(Locking)",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 9,
+        "question": "09. 다음①, ②, ③에설명하는알맞은답안을쓰시오.\n\n• (  ①) : 모듈이다수의관련기능을가질때모듈내부의기능요소들이그기능을순차적으로수행할경우\n• (  ②) : 동일한입력과출력을사용하는소작업들이모인경우\n• (  ③) : 모듈내부의모든기능요소들이한문제와연관되어수행되는경우\n",
+        "answer": "①절차적②교환적③기능적",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 10,
+        "question": "10. 학생테이블에서점수가90점이상인학생의과목평가를‘A’로수정하는SQL 문을완성하시오.\n\n(  ①) 학생\n(  ②)\n    과목평가= ‘A’\nWHERE 점수>= 90\n\n\n- 3 -\n",
+        "answer": "①UPDATE②SET",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 11,
+        "question": "11. 다음패킷교환방식에대한설명으로①, ②에알맞은용어를쓰시오.\n\n• (  ①) : 패킷을전송하기전에논리적인연결을먼저수행하여패킷을주고받는다.\n• (  ②) : 각 전송패킷을미리정해진경로없이독립적으로처리하여교환하는방식이다.\n",
+        "answer": "①가상회선방식②데이터그램방식",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 12,
+        "question": "12. 학생정보와학과정보를조인하여결과값을출력하는SELECT문을완성하시오.\n\nSELECT * FROM 학생정보T1 JOIN 학과정보T2\n(  ①) T1.학과= T2.(  ②)\n",
+        "answer": "①ON②학과",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 13,
+        "question": "13. <보기>에해당하는용어를쓰시오.\n\n< 보기>\n• 특정시스템컴포넌트의개발이완료되지않은상황에서도필요한시험을진행하기위해생성된더미\n컴포넌트이다.\n• 하향식통합테스트에서사용하는임시모듈이다.\n",
+        "answer": "스텁(stup) ",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 14,
+        "question": "14. 화이트박스테스트에서수행하는구조적커버리지의설명으로알맞은것을쓰시오.\n\n• (  ①) : 시험대상의전체구문중에테스트에의해실행된구문을측정한다.\n• (  ②) : 시험대상의전체분기중테스트에의해실행된것을측정한다.\n• (  ③) : 모든조건식의true, false 중테스트에의해실행된것을측정한다.\n",
+        "answer": "①구문/문장②결정/분기③조건",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 15,
+        "question": "15. 럼바우객체지향분석기법의설명이다. 해당설명의유형을쓰시오.\n\n• (  ①) :  자료흐름도(DFD), 프로세스들의자료흐름을중심으로처리과정표현\n• (  ②) : 상태다이어그램, 시간의흐름에따라객체들사이의제어흐름, 동작순서등의동적인행위를\n표현\n• (  ③) : 객체다이어그램, 정보모델링이라고도하며시스템에서요구하는객체를찾고객체들간의\n관계를정의, 가장중요하며선행되어야함\n\n\n- 4 -\n",
+        "answer": "①기능모델링(Functional Modeling)②동적모델링(Dynamic Modeling)③객체모델링(Object Modeling)",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 16,
+        "question": "16. 클래스를생성하지않고사용할수있는메소드를선언할때사용하는명령어이다. 아래JAVA 소스코드에\n들어갈명령어가무엇인지쓰시오.\n\npublic class ClassA{\n    public static void main(String args[]) {\n        System.out.println(check(1));\n    }\n   (      ) String check(int num) {\n        return num;\n    }\n}\n",
+        "answer": "static",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음JAVA 프로그램의실행결과를쓰시오.\n\npublic class Class01 {\n    public static void main(String[] args) {\n        Class01 c1 = new Class01();\n        Class02 c2 = new Class02();\n        System.out.println( c1.sum(3, 2) + c2.sum(3, 2) );\n    }\n    int sum( int x, int y ) {\n        return x + y;\n    }\n}\nclass Class02 extends Class01 {\n    int sum( int x, int y )\n    {\n        return x ­ y + super.sum( x, y );\n    }\n}\n\n\n- 5 -\n",
+        "answer": "11",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음C 프로그램의실행결과를쓰시오.\n\nint main() {\n    int array[3];\n    int s = 0;\n    *(array + 0) = 1;\n    array[1] = *(array + 0) + 2;\n    array[2] = *array + 3;\n    for( int i = 0; i < 3; i++ ) {\n        s = s + array[i];\n    }\n    printf(“%d”, s);\n}\n",
+        "answer": "8",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음파이썬프로그램의실행결과를쓰시오.\n\na = 100\nresult = 0\nfor i in range(1, 3) :\n    result = a >> i\n    result = result + 1\nprint(result)\n",
+        "answer": "26",
+        "imageYN": "",
+        "test": "p_202102"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음C 프로그램의실행결과를쓰시오.\n\nint fp( int base, int exp ) {\n    int result = 1;\n    for(int i = 0; i < exp; i++ ) {\n        result = result * base;\n    }\n    return result;\n}\nint main() {\n    int result;\n    result = fp(2, 10);\n    printf(“%d”, result);\n    return 0;\n}\n\n\n- 6 -\n",
+        "answer": "1024",
+        "imageYN": "",
+        "test": "p_202102"
+    }
+]

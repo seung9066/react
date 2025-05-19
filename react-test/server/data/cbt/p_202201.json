@@ -1,0 +1,142 @@
+[
+    {
+        "no": 1,
+        "question": "01. 다음 설명에 맞는 RAID 단계를 쓰시오.\n \n• 두 개 이상의 하드디스크를 병렬로 연결해, 하나의 하드디스크처럼 이용하는 기술이다.\n• 스트라이프(Stripe) 방식으로 구현한다.\n• 데이터가 분산되어 저장되기 때문에 하나의 하드디스크에 문제가 생기면 다른 디스크까지 사용이 \n불가능해진다.\n",
+        "answer": "RAID 0",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음은 로그 기반 회복 기법에서 사용되는 명령어이다. 해당하는 항목을 보기에서 찾아 적으시오.\n\n(보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공되었습니다.)\n1. 트랜잭션 로그를 이용하여 오류가 발생한 트랜잭션을 재 실행하여 복구를 수행한다.\n2. 트랜잭션 로그를 이용하여 오류와 관련된 내용을 취소하여 복구를 수행한다.\n",
+        "answer": "① REDO② UNDO",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 3,
+        "question": "03. 데이터베이스의 이상 현상 중, 삭제 이상에 대해 간략히 서술하시오.\n\n",
+        "answer": "한 튜플을 삭제할 때 연쇄 삭제 현상으로 인해 정보 손실",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 4,
+        "question": "04. 아래 임시 키 무결성 프로토콜의 영문 약어를 쓰시오.\n \n• 임시 키 무결성 프로토콜은 IEEE 802.11의 무선 네트워킹 표준으로 사용되는 보안 프로토콜이다. \n• 임시 키 무결성 프로토콜은 IEEE 802.11i의 작업 그룹과 와이파이 얼라이언스에서 WEP를 하드웨어의 \n교체 없이 대체하기 위해 고안되었다.\n",
+        "answer": "TKIP(Temporal Key Integrity Protocol)",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 5,
+        "question": "05. 아래 설명하는 내용을 영문 약자로 쓰시오.\n\n특별한 하드웨어 없이 인간의 자연스러운 움직임을 인식하여 정보를 제공한다.\n\n\n- 1 -\n",
+        "answer": "NUI",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 6,
+        "question": "06. 다음 소스코드 분석 도구에 대한 설명으로 알맞은 답을 보기에서 찾아 작성하시오.\n\n(보기 없이 풀이가 가능한 문제이며, 정규 시험에서는 보기가 제공되었습니다.)\n1. 소스코드의 실행 없이, 코드의 의미를 분석하여 결함을 찾아내는 코드 분석 기법\n2. 소스코드를 실행하여 프로그램의 동작이나 결과를 확인하고, 메모리 누수, 스레드 결함 등을 분석하는 기법\n",
+        "answer": "① static② dynamic",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 7,
+        "question": "07. 아래에 설명하는 테스트 도구를 쓰시오.\n\n• 자바 프로그래밍 언어용 유닛 테스트 프레임워크\n• 테스트 결과는 Test클래스로 개발자에게 테스트 방법 및 클래스의 History를 공유 가능\n• 어노테이션으로 간결하게 지원\n",
+        "answer": "JUnit",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 8,
+        "question": "08. 다음 보기 중에서 블랙박스 테스트 기법을 3가지 골라 작성하시오.\n\n< 보기 >\n① Equivalence Partitioning    ② Boundary Value Analysis,\n③ Base Path Test    ④ Loop Test \n⑤ Decision Coverage  ⑥ Cause-effect Graph\n",
+        "answer": "①, ②, ⑥",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 9,
+        "question": "09. 다음 설명에 대한 답을 영어 약자로 쓰시오.\n\n기업이 주요 정보자산을 보호하기 위해 수립·관리·운영하는 정보 보호 관리체계가 인증 기준에 적합한지를 \n심사하여 인증을 부여하는 제도\n",
+        "answer": "ISMS",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 10,
+        "question": "10. 다음은 데이터베이스 키에 대한 설명이다. 빈칸에 들어갈 내용을 알맞게 쓰시오.\n\n1. 슈퍼키는 (①)의 속성을 갖는다.\n2. 후보키는 (①)과 (②)의 속성을 갖는다.\n\n\n- 2 -\n",
+        "answer": "① 유일성② 최소성",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 11,
+        "question": "11. 다음에서 설명하는 공격 유형을 쓰시오.\n\n이 공격은 APT 공격에서 주로 쓰이는 공격이며, 타겟이 자주 들어가는 홈페이지를 파악했다가, 그 홈페이지의 \n취약점을 통해 악성코드를 심어 사용자가 모르게 해당 악성코드를 다운로드 받게 하고, 다운로드 된 \n악성코드를 통해 공격을 하는 방식을 취한다.\n",
+        "answer": "Watering Hole",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 12,
+        "question": "12. 다음 V모델에서의 테스트 단계에 대한 설명으로 괄호 안에 들어갈 내용을 쓰시오.\n\n요구사항 분석( 4 )\n↓↑\n기능명세 분석( 3 )\n↓↑\n설계( 2 )\n↓↑\n개발( 1 )\n",
+        "answer": "① 단위 테스트② 통합 테스트③ 시스템 테스트④ 인수 테스트",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 13,
+        "question": "13. 다음 SQL 결과에 알맞은 쿼리를 작성하시오.\n\nNAMESCORE\nLEE95\nKIM90\nSONG60\nSELECT NAME, SCORE FROM 성적 ( ① ) BY ( ② ) ( ③ )\n",
+        "answer": "① ORDER② SCORE③ DESC",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 14,
+        "question": "14. 다음 설명과 관련된 파이썬 함수를 골라 작성하시오.\n\n1. 요소를 확장해주는 역할을 하며, 모든 항목을 하나의 요소로 추가\n2. 리스트 내부 요소를 꺼내주는 함수, 해당 함수를 호출하면 리스트에서 해당 값을 삭제하면서 리턴시켜 준다.\n3. 리스트 내부의 요소의 순서를 뒤집어주는 역할을 한다.\n\n\n- 3 -\n",
+        "answer": "① extend② pop③ reverse",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 15,
+        "question": "15. 다음 파이썬 코드에서 출력되는 결과를 작성하시오.\n\ndef func1(num1, num2=2) :\n    print(‘a=‘, num1, ‘b=‘, num2)\nfunc1(20)\n",
+        "answer": "a=20 b=2",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 16,
+        "question": "16. 다음 JAVA코드 중 밑줄에 들어갈 알맞은 코드를 작성하시오.\n\nclass Car implements Runnable {\n    int a;\n    public void fun() {\n        System.out.println(“func call”);\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Thread t1 = new Thread( new ________() );\n        t1.start();\n    }\n}\n\n\n- 4 -\n",
+        "answer": "Car",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음 JAVA 프로그램의 결과를 쓰시오.\n\nclass A {\n    int a;\n    int b;\n}\npublic class Main {\n    static void func1(A a) {\n        a.a *= 10;\n    }\n    static void func2(A a) {\n        a.a += a.b;\n    }\n}\nA a = new A();\na.a = 100;\nfunc1(a);\na.b = a.a;\nfunc2(a);\nSystem.out.println(a.a);\n",
+        "answer": "2000",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음 C언어 프로그램의 출력결과를 쓰시오.\n (단, 입력값은 5가 들어왔다고 가정한다.)\n#include<stdio.h>\nint func(int i) {\n    if( i <= 1 ) return 1;\n    return i * func( i ­ 2 );\n}\nint main() {\n    int in;\n    scanf(“%d”, &in);\n    printf(“%d”, func(in) );\n}\n\n\n- 5 -\n",
+        "answer": "15",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음 C언어 프로그램의 괄호 안에 들어갈 알맞은 답을 작성하시오.\n\n#include<stdio.h>\nint main() {\n    int num = 1234;\n    int div = 10;\n    int res = 0;\n    while( num ① 0 ) {\n        res = res * div;\n        res = res + num ② div;\n        num = num ③ div;\n    }\n    printf(“%d”, res);\n}\n",
+        "answer": "① >② %③ /",
+        "imageYN": "",
+        "test": "p_202201"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음 C언어 프로그램의 결과를 쓰시오.\n\nint isPrime(int number) { \n    int i; \n    for (i=2; i<number; i++) { \n        if (number % i == 0) return 0; \n    } \n    return 1; \n}  \nint main(void) { \n    int number = 13195, max_div=0, i; \n    for (i=2; i<number; i++) \n        if (isPrime(i) == 1 && number % i == 0) \n            max_div = i; \n    printf(\"%d\", max_div); \n    return 0; \n}\n\n\n- 6 -\n",
+        "answer": "29",
+        "imageYN": "",
+        "test": "p_202201"
+    }
+]

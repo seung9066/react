@@ -1,0 +1,142 @@
+[
+    {
+        "no": 1,
+        "question": "01. 다음중형상관리도구에해당하는것을모두고르시오.\n\nAnt, CVS, OLAP, Maven, SVN, Jenkins, OLTP, Git, Gradle\n",
+        "answer": "CVS, SVN, Git",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 2,
+        "question": "02. 다음은디자인패턴에대한설명이다. 괄호안에알맞은답을작성하시오.\n\n• ( ①)은/는구현부에서추상층을분리하여각자독립적으로변형이가능하고확장이가능하도록한다. 즉\n기능과구현에대해서두개를별도의클래스로구현을한다.\n• ( ②) 한객체의상태가바뀌면그객체에의존하는다른객체들한테연락이가고, 자동으로내용이\n갱신되는방식의패턴이다.\n",
+        "answer": "①Bridge②Observer",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 3,
+        "question": "03. 다음은UML에관한설명이다. 괄호안에알맞은답을작성하시오.\n\nUML은컴퓨터애플리케이션을모델링할수있는통합언어이다. \n구성요소로는사물, ( ①), 다이어그램으로이루어져있고, 구조다이어그램중( ②) 다이어그램은객체들의\n타입을정의하고, 객체들간의관계를도식화하여시스템의특정모듈이나일부및전체를구조화한다.\nUML 모델링에서( ③)는클래스와같은기타모델요소또는컴포넌트가구현해야하는오퍼레이션세트를\n정의하는모델요소이다.\n",
+        "answer": "①관계②클래스③인터페이스",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 4,
+        "question": "04. 아래점수에따라점수를출력하는테스트를진행하려고한다. 다음과같은테스트입력값을넣을때의테스트\n방식을쓰시오.\n\n점수금액\n90~100700만원\n80~89500만원\n70~79300만원\n0~690만원\n   \n테스트입력값\n②\n③\n④\n⑤\n테스트입력값: -1, 0, 1, 68, 69, 70, 99, 100, 101\n\n\n",
+        "answer": "Boundary Value Analysis",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 5,
+        "question": "05. 아래에설명하는용어를작성하시오.\n\n• 여러개의사이트에서한번의로그인으로여러가지다른사이트들을자동적으로접속하여이용하는\n방법을말한다.\n• 하나의시스템에서인증을할경우타시스템에서는인증정보가있는지확인하고있으면로그인처리를\n하도록하고, 없는경우다시통합인증을할수있도록만드는것을의미한다.\n",
+        "answer": "SSO",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 6,
+        "question": "06. ER 다이어그램기호문제\n기호기호이름설명\n사각형개체(Entity)\n마름모관계(Relationship)\n타원속성(Attribute)\n밑줄타원기본키속성\n이중타원복합속성\n선링크개체와속성연결\n점선관계속성연결\n",
+        "answer": "문제참조",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 7,
+        "question": "07. 다음은프로세스스케줄링에관련된내용이다. 괄호에알맞은답을작성하시오.\n\n• ( ①) : 선점형스케줄링기법으로CPU 점유시간이가장짧은프로세스에CPU를먼저할당하는방식\n• ( ②) : 시간단위(Time Quantum/Slice)를정해서프로세스를순서대로CPU를할당하는방식\n• ( ③) : 비선점형스케줄링기법으로실행시간이가장짧은프로세스에게CPU를할당하는방식\n\n\n",
+        "answer": "①SRT ②RR③SJF",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 8,
+        "question": "08. 192.168.1.0/24 네트워크를FLSM 방식으로3개의서브넷으로나눴을때, 두번째네트워크의브로드캐스트\n아이피를쓰시오.\n\n",
+        "answer": "192.168.1.127",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 9,
+        "question": "09. 아래설명에대한알맞은답을작성하시오\n• ( ①) 기술적인방법이아닌사람들간의기본적인신뢰를기반으로사람을속여비밀정보를획득하는기법\n• ( ②) 기업이정보를수집한후, 저장만하고분석에활용하고있지않은다량의데이터\n",
+        "answer": "①사회공학②다크데이터",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 10,
+        "question": "10. 아래설명에대한알맞은답을작성하시오\n• 네트워크하드웨어및응용프로그램에의해생성된보안경고의실시간분석을제공한다.\n• 빅데이터수준의데이터를장시간심층분석한인덱싱기반이다.\n• 주요기능은데이터통합, 상관관계, 알림, 대시보드\n",
+        "answer": "SIEM",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 11,
+        "question": "11. 아래설명에대한알맞은답을작성하시오.\n\n• ( ①) 독립적인보안구역을따로두어중요한정보를보호하는하드웨어기반의보안기술\n• ( ②) 사용자가사이트의URL 주소를입력할때철자를잘못입력하거나빠뜨리는실수를이용하여, \n해커가만들어놓은유사한URL로접속하도록유도하는공격\n",
+        "answer": "①Trust Zone ②타이포스쿼팅(Typosquatting)",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 12,
+        "question": "12. 다음항목에맞는관계대수기호를작성하시오.\n\n항목기호\n합집합A (  ) B\n차집합A (  ) B\n카티션프로덕트A (  ) B\n프로젝트A (  ) B\n조인A (  ) B\n\n\n",
+        "answer": "항목기호합집합A ( U ) B차집합A ( - ) B카티션프로덕트A ( X ) B프로젝트A ( π ) B조인A ( ￿ ) B",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 13,
+        "question": "13. 아래의테이블에서SQL 명령을수행할경우알맞은값을작성하시오.\n\ninsert into 부서(부서코드, 부서명) values(10, ‘영업팀’); \ninsert into 부서(부서코드, 부서명) values(20, ‘개발팀’);\ninsert into 부서(부서코드, 부서명) values(30, ‘기획팀’);\ninsert into 직원(직원코드, 부서코드)  value ('1000', '10');\ninsert into 직원(직원코드, 부서코드)  value ('2000', '10');\ninsert into 직원(직원코드, 부서코드)  value ('3000', '10');\ninsert into 직원(직원코드, 부서코드)  value ('4000', '20');\ninsert into 직원(직원코드, 부서코드)  value ('5000', '20');\ninsert into 직원(직원코드, 부서코드)  value ('6000', '30');\ninsert into 직원(직원코드, 부서코드)  value ('7000', '30');\ncreate table 부서(\n    부서코드int primary key,\n    부서명varchar(20)\n);\ncreate table 직원(\n    직원코드int primary key, \n    부서코드int, \n    직원명varchar(20),\n    foreign key(부서코드) references 부서(부서코드) \n    on delete cascade\n);\n부서코드부서명\n10영업팀\n20개발팀\n30기획팀\n  \n직원코드부서코드\n100010\n200010\n300010\n400020\n500020\n600030\n700030\nSELECT DISTINCT COUNT(직원코드) FROM 직원WHERE 부서코드=‘10’;\nDELETE FROM 부서WHERE 부서코드=‘10’;\nSELECT DISTINCT COUNT(직원코드) FROM 직원;\n\n\n",
+        "answer": "①3 ②4",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 14,
+        "question": "14. STUDENT 테이블에컴퓨터학과학생50명, 기계과학생100명, 건축과학생50명의데이터가있다. 다음\nSQL의실행결과튜플의수는몇인지작성하시오.\n\n①SELECT DEPT FROM STUDENT; \n②SELECT DISTINCT DEPT FROM STUDENT;\n③SELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT='건축과' ;\n",
+        "answer": "①200 ②3③1",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 15,
+        "question": "15. 다음프로그램의출력결과를2차원배열형태로작성하시오.\n\n   [참고] https://bit.ly/3GTNNbk\n#include <stdio.h>\nstatic int field[4][4] = {{0,1,0,1},{0,0,0,1},{1,1,1,0},{0,1,1,1}};\nstatic int mines[4][4] = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};\nvoid calculate(int w, int h, int j, int i) {\n    if (i >= 0 && i < w && j >= 0 && j < h) mines[i][j]++;\n}\nvoid main(){\n    int x, y, j, i, w = 4, h = 4;\n    for(y=0; y<h; y++) {\n        for(x=0; x<w; x++) {\n            if(field[x][y] ==0) continue;\n            for(j=y-1; j<=y+1; j++) {\n                for(i=x-1; i<=x+1; i++) {\n                    calculate(w,h,j,i);\n                }\n            }\n        }\n    }\n\n\n",
+        "answer": "문제참조(https://bit.ly/3GTNNbk)",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 16,
+        "question": "16. 다음C언어프로그램의출력결과를쓰시오.\n\nint main() {\n    int result[5];\n    int ary[] = {77, 32, 10, 99, 50};\n    for(int i = 0; i < 5; i++) {\n        result[i] = 1;\n        for(int j = 0; j < 5; j++)\n            if( ary[i] < ary[j] ) result[i]++;            \n    }\n    for( int i = 0; i < 5; i++ )\n        printf(“%d”, result[i]);\n}\n",
+        "answer": "24513",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 17,
+        "question": "17. 다음C언어프로그램의출력결과를쓰시오.\n\nint x, y;\nint cnt = 0;\nfor(int i=6; i<=30; i++){\n    x = 0;\n    y = i / 2;\n    for(int j = 1; j <= y; j++){\n        if(i % j == 0)\n            x=x+j;\n    }\n    if(x==i){\n        cnt++;\n    }\n}\nprintf(\"%d\", cnt);\n\n\n",
+        "answer": "2",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 18,
+        "question": "18. 다음JAVA 프로그램의출력결과를쓰시오.\n\nstatic int[] makeAry(){\n    int[] tmp = new int[4];\n    for(int i = 0; i < tmp.length; i++){\n        tmp[i] = i;\n    }\n    return tmp;\n}\npublic static void main(String[] args){\n    int[] inData = makeAry();\n    for(int i = 0; i < inData.length; i++)\n        System.out.print(inData[i]);\n}\n",
+        "answer": "0123",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 19,
+        "question": "19. 다음JAVA 프로그램의출력결과를쓰시오.\n\nint max = 0;\nfor(int i=1; i<999; i++){\n    if(i%3==0 && i%2!=0)\n        max = i;\n}\nSystem.out.print(max);\n",
+        "answer": "993",
+        "imageYN": "",
+        "test": "p_202203"
+    },
+    {
+        "no": 20,
+        "question": "20. 다음파이썬코드에대한출력값을작성하시오.\n\ntData = [1, 2, 3, 4, 5]\ntData = list(map(lambda num : num+100, tData))\nprint(tData)\n\n\n",
+        "answer": "[101, 102, 103, 104, 105]",
+        "imageYN": "",
+        "test": "p_202203"
+    }
+]
