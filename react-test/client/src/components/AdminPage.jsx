@@ -38,6 +38,7 @@ function AdminPage (props) {
     }
 
     const login = async () => {
+        utils.showToast('로그인 중입니다.');
         const loginAccept = await utils.login(userData, props.auth);
         loginAccept ? await getSessionAuthData() : null;
         setUserData(resetUserData);
