@@ -13,6 +13,7 @@ import FileStoreFactory from 'session-file-store';
 
 // CORS(Cross-Origin Resource Sharing) 설정을 위한 모듈
 import cors from 'cors';
+import os from "os";
 
 // path와 fs/promises 모듈로 라우터 자동 로딩
 import path from 'path';
@@ -32,8 +33,24 @@ const sessionDir = path.join(__dirname, '..', 'data', 'session');
 
 const FileStore = FileStoreFactory(session);
 
+function getLocalIP() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+      for (const iface of interfaces[name]) {
+          // 내부 주소 및 IPv6 제외
+          if (iface.family === 'IPv4' && !iface.internal) {
+              return iface.address;
+          }
+      }
+  }
+  return 'localhost';
+}
+
 // CORS 허용 설정 (다른 도메인에서 API 접근 가능하도록 허용)
-app.use(cors());
+app.use(cors({
+    origin: `http://${getLocalIP()}:5173`, // 클라이언트 주소
+    credentials: true // ✅ 쿠키 허용
+}));
 
 // JSON 파싱을 위한 미들웨어 (요청 본문이 JSON일 때 자동으로 파싱해줌)
 app.use(express.json({ limit: '10mb' }));
@@ -100,6 +117,6 @@ app.use((req, res, next) => {
 // 라우터 로딩 후 서버 시작
 loadRoutes().then(() => {
     app.listen(PORT, () => {
-        console.log(`🚀 서버 실행 중: http://localhost:${PORT}`);
+        console.log(`🚀 서버 실행 중: http://${getLocalIP()}:${PORT}`);
     });
 });

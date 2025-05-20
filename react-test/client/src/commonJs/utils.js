@@ -7,6 +7,7 @@ export const getAxios = async (url, data) => {
     try {
         const res = await axios.get('/api' + url, {
             params: data,
+            withCredentials: true,
         });
         if (res.status === 200) {
             return {msg : 'success', data : res.data};
@@ -26,6 +27,7 @@ export const postAxios = async (url, data) => {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify(data),
+            withCredentials: true,
         });
         if (res.status === 200) {
             return {msg: 'success', data: res.data};
@@ -40,7 +42,9 @@ export const postAxios = async (url, data) => {
 // axios post file
 export const postAxiosFile = async (url, data) => {
     try {
-        const res = await axios.post('/api' + url, data); // ✅ headers, data 설정 제거
+        const res = await axios.post('/api' + url, data, {
+            withCredentials: true,
+        }); // ✅ headers, data 설정 제거
         if (res.status === 200) {
             return { msg: 'success', data: res.data };
         } else {
@@ -59,6 +63,7 @@ export const patchAxios = async (url, data) => {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify(data),
+            withCredentials: true,
         });
         if (res.status === 200) {
             return {msg: 'success', data: res.data};
@@ -75,6 +80,7 @@ export const deleteAxios = async (url, data) => {
     try {
         const res = await axios.delete('/api' + url, {
             data,
+            withCredentials: true,
         });
         if (res.status === 200) {
             return {msg: 'success', data: res.data};
