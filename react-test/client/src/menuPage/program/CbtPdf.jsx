@@ -162,6 +162,37 @@ function CbtPdf( props ) {
             }
         }
 
+        for (const item2 of item) {
+            if (!item2.question) {
+                utils.showToast('문제를 입력해주세요');
+                return;
+            }
+
+            if (!item2.answer) {
+                utils.showToast('정답을 입력해주세요');
+                return;
+            }
+
+            if (cbtType === 'written') {
+                if (!item2.item1) {
+                    utils.showToast('보기1을 입력해주세요');
+                    return;
+                }
+                if (!item2.item2) {
+                    utils.showToast('보기2를 입력해주세요');
+                    return;
+                }
+                if (!item2.item3) {
+                    utils.showToast('보기3을 입력해주세요');
+                    return;
+                }
+                if (!item2.item4) {
+                    utils.showToast('보기4를 입력해주세요');
+                    return;
+                }
+            }
+        }
+
         saveData(saveTitle, item);
     }
 
