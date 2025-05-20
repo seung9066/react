@@ -32,6 +32,14 @@
         "upId": null
     },
     {
+        "upPath": "/play",
+        "path": "/lotto",
+        "no": 1,
+        "upId": "A003",
+        "id": "B013",
+        "title": "Lotto"
+    },
+    {
         "title": "TicTacToe",
         "path": "/ticTacToe",
         "id": "B001",
@@ -77,13 +85,6 @@
         "path": "/programDesign",
         "id": "B003",
         "upId": "A004"
-    },
-    {
-        "title": "Lotto",
-        "path": "/lotto",
-        "id": "B004",
-        "upId": "A004",
-        "upPath": "/program"
     },
     {
         "title": "Admin",

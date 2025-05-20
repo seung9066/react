@@ -23,7 +23,7 @@ function Lotto () {
     }
 
     const runAvg = () => {
-        let count = 100000;
+        let count = 1000000;
         setTotalArr([]);
         
         for (let i = 0; i < count; i++) {
@@ -157,7 +157,7 @@ function Lotto () {
     return (
         <>
             <div>
-                <button type='button' className='button' onClick={runAvg}>십만번 돌리기</button>
+                <button type='button' className='button' onClick={runAvg}>백만번 돌리기</button>
                 <div dangerouslySetInnerHTML={{ __html: avgNumDiv }} style={{ marginTop: "10%" }}></div>
             </div>
         </>
