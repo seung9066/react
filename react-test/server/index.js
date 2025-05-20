@@ -44,6 +44,7 @@ app.use(session({
         path: sessionDir,
         ttl: 60 * 60 * 24, // 세션 저장 시간 (초 단위)
         retries: 1, // 세션 저장 실패 시 재시도 횟수
+        logFn: function() {}
     }), 
     secret: 'SD1933GB357BG',  // 세션 ID를 암호화하는 데 사용되는 비밀 키
     resave: false,              // 세션을 항상 저장할지 여부 (변경이 없어도 저장)
