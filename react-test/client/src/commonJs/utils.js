@@ -169,11 +169,23 @@ export const getUserAuthSession = async () => {
 }
 
 // 세션 정보 가져오기
-export const getUserDataSession = async () => {
+export const getUserDataSession = async (col) => {
     try {
         const res = await getAxios('/session/getUserDataSession');
         if (res.msg === 'success') {
-            return res.data;
+            if (col) {
+                if (typeof col === 'object') {
+                    const result = {};
+                    for (const key of col) {
+                        result[key] = res.data[key];
+                    }
+                    return result;
+                } else {
+                    return res.data[col];
+                }
+            } else {
+                return res.data;
+            }
         } else {
             showToast('세션 정보를 가져오는 중 오류가 발생했습니다.', res.error);
             return null;
