@@ -105,6 +105,8 @@ export const checkRequired = (ref) => {
                 showToast(innerText + msg);
             } else if (item.placeholder) {
                 showToast(item.placeholder + msg);
+            } else {
+                showToast('필수값을 전부 입력해주세요.');
             }
             return false;
         }
