@@ -383,7 +383,6 @@ function Cbt( props ) {
 
     // 관리자 저장 기능
     const saveCbtData = () => {
-        getSessionAuthData();
         const title = selectedCbtData.test;
         const data = structuredClone(cbtData);
         saveData(title, data);
@@ -625,7 +624,7 @@ function Cbt( props ) {
                     {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {beforeWrong(wrongQuestionNo)}}>이전</button>}
                     {wrongQuestionNo > -1 && <button type='button' className='button' onClick={(e) => {nextWrong(wrongQuestionNo)}}>다음</button>}
 
-                    {sessionAuth === '999' && <div><button type='button' className='button primary' onClick={(e) => {saveCbtData()}}>저장</button></div>}
+                    {sessionAuth === '999' && cbtType === 'practical' && <div><button type='button' className='button primary' onClick={(e) => {saveCbtData()}}>저장</button></div>}
                 </div>
             </Modal>
 

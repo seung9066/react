@@ -26,16 +26,16 @@
         "id": "B006"
     },
     {
-        "title": "TicTacToe",
-        "path": "/ticTacToe",
-        "id": "B001",
-        "upId": "A003"
-    },
-    {
         "title": "Play",
         "path": "/play",
         "id": "A003",
         "upId": null
+    },
+    {
+        "title": "TicTacToe",
+        "path": "/ticTacToe",
+        "id": "B001",
+        "upId": "A003"
     },
     {
         "upId": "A002",
