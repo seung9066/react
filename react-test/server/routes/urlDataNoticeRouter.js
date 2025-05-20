@@ -19,7 +19,7 @@ const fileName = 'Man_doesnt_use_a_database.json';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const foldersRoot = path.join(__dirname, '..', 'data');
+const foldersRoot = path.join(__dirname, '..', '..', 'data');
 
 const getFolderPath = (req) => {
     let ip = req.ip || req.connection.remoteAddress;

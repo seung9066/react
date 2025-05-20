@@ -7,11 +7,15 @@ import fs from 'fs';
 // 경로 조작을 위한 path 모듈 불러옴
 import path from 'path';
 
+import { fileURLToPath } from 'url';
+
 // express의 라우터 인스턴스 생성
 const router = express.Router();
 
 // menu.json 파일의 절대 경로를 설정 (서버 기준으로 접근 가능해야 함)
-const dataPath = path.resolve('./data/menu.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dataPath = path.join(__dirname, '..', '..', 'data', 'menu.json');
 
 // GET: menu.json 데이터 읽기
 router.get('/getMenu', (req, res) => {

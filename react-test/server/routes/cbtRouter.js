@@ -17,7 +17,7 @@ const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const foldersRoot = path.join(__dirname, '..', 'data', 'cbt');
+const foldersRoot = path.join(__dirname, '..', '..', 'data', 'cbt');
 
 // 목록 가져오기
 router.get('/getList', (req, res) => {

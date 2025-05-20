@@ -11,7 +11,7 @@ const { getDocument } = pkg;
 // __dirname 대체
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const foldersRoot = path.join(__dirname, '..', 'data', 'pdf');
+const foldersRoot = path.join(__dirname, '..', '..', 'data', 'pdf');
 
 // 업로드 폴더가 존재하지 않으면 생성
 import fsSync from 'fs';
