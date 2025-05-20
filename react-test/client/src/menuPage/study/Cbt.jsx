@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Modal from '@components/Modal';
 import SggGridReact from '@components/SggGridReact';
 
-function Crawling( props ) {
+function Cbt( props ) {
     // 권한 정보
     const [sessionAuth, setSessionAuth] = useState('');
     // 필기 written, 실기 practical
@@ -680,4 +680,4 @@ function Crawling( props ) {
     );
 }
 
-export default Crawling;
+export default Cbt;

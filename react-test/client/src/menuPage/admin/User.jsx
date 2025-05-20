@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import SggGridReact from '@components/SggGridReact';
 
-function Menu( props ) {
+function User( props ) {
     const [userList, setUserList] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
 
@@ -164,4 +164,4 @@ function Menu( props ) {
     );
 }
 
-export default Menu;
+export default User;

@@ -4,7 +4,7 @@ import * as utils from '@utils';
 import Modal from '@components/Modal';
 import SggGridReact from '@components/SggGridReact';
 
-function Crawling( props ) {
+function CbtPdf( props ) {
     // input file
     const fileRef = useRef(null);
     const [cbtType, setCbtType] = useState('written'); // CBT 유형
@@ -792,4 +792,4 @@ function Crawling( props ) {
     );
 }
 
-export default Crawling;
+export default CbtPdf;
