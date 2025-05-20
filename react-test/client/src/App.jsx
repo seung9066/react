@@ -49,6 +49,11 @@ function App() {
   
   // 동적으로 불러온 컴포넌트들을 저장할 state
   const [components, setComponents] = useState([]);
+
+  const getSessionAuthData = async () => {
+      const sessionAuth = await utils.getUserAuthSession() || '';
+      setSessionUserAuth(sessionAuth);
+  }
   
   useEffect(() => {
       // 컴포넌트 동적 로딩 함수
@@ -72,6 +77,8 @@ function App() {
       loadComponents();
 
       getMenu();
+
+      getSessionAuthData();
 
       // 토스트 전역등록
       window.toastRef = toastRef;
