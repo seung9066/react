@@ -236,12 +236,10 @@ export const imageSrcToBase64Arr = async (imgSrcArr) => {
                 return res
             } else {
                 showToast("이미지 변환 실패", res.error);
-                console.log(res.error)
                 return false
             }
         });
     } catch (e) {
-        console.log(e);
         console.error('Image fetch or conversion failed', e);
         return null; // 에러 발생 시 null 반환
     }
