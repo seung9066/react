@@ -382,10 +382,14 @@ function Cbt( props ) {
     }
 
     // 관리자 저장 기능
-    const saveCbtData = () => {
+    const saveCbtData = async () => {
         const title = selectedCbtData.test;
         const data = structuredClone(cbtData);
-        saveData(title, data);
+        await utils.getUserAuthSession().then((res) => {
+            if (res === '999') {
+                saveData(title, data);
+            }
+        });
     }
 
     // 랜덤풀기용 전체 시험 조회
