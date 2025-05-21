@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import Draggable from 'react-draggable';
+
 function Modal({ isOpen, onClose, closeBtn, children, onConfirm, title }) {
     useEffect(() => {
         if (isOpen) {
@@ -17,13 +19,17 @@ function Modal({ isOpen, onClose, closeBtn, children, onConfirm, title }) {
 
     return (
         <div style={backdropStyle} onMouseDown={onClose}>
-            <div style={modalStyle} onMouseDown={(e) => e.stopPropagation()}>
-                <div style={contentStyle}>
-                    <h2>{title}</h2>
-                    {children}
-                    {onConfirm && <button type='button' className='button' onClick={onConfirm} style={closeBtnStyle}>확인</button>}
-                    {closeBtn !== false && <button type='button' className='button' onClick={onClose} style={closeBtnStyle}>닫기</button>}
-                </div>
+            <div onMouseDown={(e) => e.stopPropagation()}>
+                <Draggable cancel='.contentStyle'>
+                    <div style={modalStyle} onMouseDown={(e) => e.stopPropagation()}>
+                        <div style={contentStyle} className='contentStyle'>
+                            <h2>{title}</h2>
+                            {children}
+                            {onConfirm && <button type='button' className='button' onClick={onConfirm} style={closeBtnStyle}>확인</button>}
+                            {closeBtn !== false && <button type='button' className='button' onClick={onClose} style={closeBtnStyle}>닫기</button>}
+                        </div>
+                    </div>
+                </Draggable>
             </div>
         </div>
     );
@@ -41,7 +47,7 @@ const backdropStyle = {
 
 const modalStyle = {
     background: 'white',
-    padding: '20px',
+    padding: '30px',
     borderRadius: '8px',
     maxWidth: '80vw',         // 최대 너비
     maxHeight: '80vh',        // 최대 높이
