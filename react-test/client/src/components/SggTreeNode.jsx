@@ -123,6 +123,7 @@ const transformDataToTree = (data) => {
 const SggTreeNode = ({ showCol, data, setData, onSelect, diSelect, alwaysOpen }) => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [treeData, setTreeData] = useState(data);
+    const [newId, setNewId] = useState(1);
 
     // 외부 data가 변경되면 반영
     useEffect(() => {
@@ -182,6 +183,68 @@ const SggTreeNode = ({ showCol, data, setData, onSelect, diSelect, alwaysOpen })
 
     // 트리 구조 데이터 생성
     const treeStructure = useMemo(() => transformDataToTree(treeData), [treeData]);
+    
+    // 행추가
+	const addTreeNode = () => {
+        const newData = structuredClone(data);
+        const newObj = {};
+        for (const item of showCol) {
+            newObj[item] = '';
+		}
+        newObj.id = newId;
+        newObj.newNode = 'Y';
+        setNewId(newId + 1);
+        
+        if (selectedNode) {
+  			const id = selectedNode.id;
+            newObj.upId = id;          
+		}
+        
+        newData.push(newObj);
+        setTreeData(newData);
+    }
+    
+    // 행삭제
+	const deleteTreeNode = () => {
+        const newData = structuredClone(data);
+        const id = selectedNode.id;
+        
+        for (let i = newData.length - 1; i >= 0; i--) {
+            if (newData[i].id === id) {
+                if (newData[i].newNode) {
+                    newData.splice(i, 1);
+                } else {
+                    newData[i].delNode = 'Y';
+                }
+            }
+            
+            if (newData[i]?.upId === id) {
+                const upId = newData[i].id;
+                delNode(newNode, upId);
+                if (newData[i].newNode) {
+                    newData.splice(i, 1);
+                } else {
+                    newData[i].delNode = 'Y';
+                }
+            }
+        }
+        
+        setTreeData(newData);
+    }
+    
+    const delNode = (data, id) => {
+        for (let i = data.length - 1; i >= 0; i--) {
+            if (data[i]?.upId === id) {
+                const upId = data[i].id;
+                delNode(data, upId);
+                if (data[i]].newNode) {
+                    data.splice(i, 1);
+                } else {
+                    data[i.delNode = 'Y';
+                }
+            }
+        }
+    }
 
     return (
         <div className={styles.treeContainer}>
