@@ -247,7 +247,7 @@ const SggTreeNode = ({ showCol, data, setData, onSelect, diSelect, alwaysOpen })
     }
 
     return (
-        <div className={styles.treeContainer}>
+        <div className={styles.treeContainer} onClick={(e) => {!e.target.id && setSelectedNode(null)}}>
             {treeStructure.map((node) => (
                 <SggTree
                     key={node.id}
