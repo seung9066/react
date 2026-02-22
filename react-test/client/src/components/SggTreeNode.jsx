@@ -237,10 +237,10 @@ const SggTreeNode = ({ showCol, data, setData, onSelect, diSelect, alwaysOpen })
             if (data[i]?.upId === id) {
                 const upId = data[i].id;
                 delNode(data, upId);
-                if (data[i]].newNode) {
+                if (data[i].newNode) {
                     data.splice(i, 1);
                 } else {
-                    data[i.delNode = 'Y';
+                    data[i].delNode = 'Y';
                 }
             }
         }
